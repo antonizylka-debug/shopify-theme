@@ -107,6 +107,11 @@
     min-width: 0;
   }
 
+  /* bez zdjecia kolumna nie rozjezdza sie na cala szerokosc strony */
+  #shopify-section-{{ section.id }} .ob-contact__columns--noimage .ob-contact__right {
+    max-width: 720px;
+  }
+
   #shopify-section-{{ section.id }} .ob-contact__img {
     display: block;
     width: 100%;
@@ -419,7 +424,7 @@
     <div class="ob-contact__body">
       <div class="ob-contact__rule"></div>
 
-      <div class="ob-contact__columns">
+      <div class="ob-contact__columns{% if section.settings.image == blank %} ob-contact__columns--noimage{% endif %}">
         {%- if section.settings.image != blank -%}
           {%- comment -%}
             Filtr musi byc policzony wczesniej - tag render nie przyjmuje
