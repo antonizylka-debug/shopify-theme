@@ -75,12 +75,11 @@
         input.checked = !anyChecked;
       });
 
-      item.classList.toggle('tag--active', !anyChecked);
-
-      var form = trigger.closest('form');
-      if (form) {
-        form.dispatchEvent(new Event('input', { bubbles: true }));
-      }
+      // zdarzenie musi wyjsc Z CHECKBOXA, nie z formularza: motyw robi
+      // evt.target.closest('li'), przy formularzu dostaje null, wywala sie
+      // i zostawia isAnimating = true, przez co kolejne klikniecia sa martwe.
+      // Klase tag--active przelacza juz motyw, wiec tutaj jej nie ruszamy.
+      inputs[0].dispatchEvent(new Event('input', { bubbles: true }));
     });
     // pasek aktywnych filtrow: +N more / Show less
     document.addEventListener('click', function (event) {
