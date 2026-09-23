@@ -1,0 +1,148 @@
+<style>
+  {%- if settings.color_announcement == settings.color_body_bg -%}
+    .announcement-bar {
+      border-bottom: 1px solid;
+    }
+  {%- endif -%}
+
+  /* --- wszystkie wiadomosci w jednym rzedzie --- */
+  .announcement-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0 {{ section.settings.announcement_gap | default: 18 }}px;
+  }
+
+  .announcement-row__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .announcement-row__sep {
+    opacity: 0.55;
+  }
+
+  .announcement-bar--row .announcement-text {
+    font-weight: 600;
+  }
+
+  {%- if section.settings.announcement_sticky -%}
+    /* --- pasek przyklejony do gory, bez animacji --- */
+    #shopify-section-{{ section.id }} {
+      position: sticky;
+      top: 0;
+      z-index: 26;
+    }
+  {%- endif -%}
+</style>
+
+{%- render 'announcement-bar', section: section -%}
+
+{%- if section.settings.announcement_sticky -%}
+  <script>
+    (function () {
+      var section = document.getElementById('shopify-section-{{ section.id }}');
+      if (!section) return;
+
+      function setHeight() {
+        document.documentElement.style.setProperty('--announcement-h', section.offsetHeight + 'px');
+      }
+
+      setHeight();
+      window.addEventListener('resize', setHeight);
+      document.addEventListener('shopify:section:load', setHeight);
+
+
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.header.settings.header_announcement_bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "announcement_compact",
+      "label": "t:sections.header.settings.announcement_compact.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "announcement_sticky",
+      "label": "Stick to top when scrolling",
+      "default": false,
+      "info": "The bar stays visible above the sticky header."
+    },
+    {
+      "type": "select",
+      "id": "announcement_layout",
+      "label": "Layout",
+      "default": "slider",
+      "options": [
+        { "value": "slider", "label": "One message at a time" },
+        { "value": "row", "label": "All messages in one row" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "announcement_separator",
+      "label": "Separator",
+      "default": "dot",
+      "info": "Used only in the one row layout.",
+      "options": [
+        { "value": "dot", "label": "Dot" },
+        { "value": "line", "label": "Line" },
+        { "value": "dash", "label": "Dash" },
+        { "value": "none", "label": "None" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "announcement_gap",
+      "label": "Space between messages",
+      "min": 6,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "announcement",
+      "name": "t:sections.header.blocks.announcement.name",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.header.blocks.announcement.settings.text.label",
+          "default": "Easy returns"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "t:sections.header.blocks.announcement.settings.link_text.label",
+          "default": "30-day returns on all orders"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.header.blocks.announcement.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "settings": {}
+  },
+  "disabled_on": {
+    "groups": ["footer", "custom.popups"]
+  }
+}
+{% endschema %}

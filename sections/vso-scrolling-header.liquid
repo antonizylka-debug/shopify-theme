@@ -1,0 +1,261 @@
+{% comment %}
+WARNING: UNAUTHORIZED MODIFICATION PROHIBITED
+This code is proprietary property of Versio Studio. Any unauthorized tampering, 
+alteration, or distribution of this file is strictly forbidden and will be prosecuted to the maximum extent permitted by law.
+All modifications are logged.
+
+If you require assistance or have questions regarding this code, please contact support@versio.studio.
+{% endcomment %}
+
+{%- liquid
+  assign pause_on_hover = section.settings.pause_on_hover
+  assign speed = section.settings.speed
+  assign image_height = section.settings.image_height
+  assign item_gap = section.settings.item_gap
+  assign image_text_gap = section.settings.image_text_gap
+  assign image_border_radius = section.settings.image_border_radius
+  assign font_size = section.settings.font_size
+
+  assign background_image = section.settings.background_image
+  assign background_color = section.settings.background_color
+  assign foreground_color = section.settings.foreground_color
+
+  assign section_full_width = section.settings.section_full_width
+  assign section_max_width = section.settings.section_max_width
+  assign padding_desktop = section.settings.padding_desktop
+  assign padding_tablet_mobile = section.settings.padding_tablet_mobile
+  assign margin_desktop = section.settings.margin_desktop
+  assign margin_bottom_desktop = section.settings.margin_bottom_desktop
+  assign margin_tablet_mobile = section.settings.margin_tablet_mobile
+  assign margin_bottom_tablet_mobile = section.settings.margin_bottom_tablet_mobile
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    margin-top: {{ margin_tablet_mobile }}px;
+    margin-bottom: {{ margin_bottom_tablet_mobile }}px;
+  }
+
+  @media (min-width: 1280px) {
+    #shopify-section-{{ section.id }} {
+      margin-top: {{ margin_desktop }}px;
+      margin-bottom: {{ margin_bottom_desktop }}px;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .versio-section_container {
+    {% unless section_full_width %}
+      max-width: {{ section_max_width }}rem;
+    {% endunless %}
+    {% if background_image != blank %}
+      background-image: url("{{ background_image | image_url }}");
+    {% endif %}
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: unset !important;
+    padding-top: {{ padding_tablet_mobile }}px;
+    padding-bottom: {{ padding_tablet_mobile }}px;
+  }
+
+  @media (min-width: 1280px) {
+    #shopify-section-{{ section.id }} .versio-section_container {
+      padding-top: {{ padding_desktop }}px;
+      padding-bottom: {{ padding_desktop }}px;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .versio-section_content {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  #shopify-section-{{ section.id }} {
+    --versio-section-background-color: {{ background_color.red }},{{ background_color.green }},{{ background_color.blue }};
+    --versio-section-foreground-color: {{ foreground_color.red }},{{ foreground_color.green }},{{ foreground_color.blue }};
+  }
+
+  {% if background_color != blank %}
+    #shopify-section-{{ section.id }} .versio-section_container {
+      background: rgb(var(--versio-section-background-color));
+    }
+    #shopify-section-{{ section.id }} .versio-section__foreground--color {
+      color: rgb(var(--versio-section-foreground-color));
+    }
+  {% endif %}
+
+  .versio-scrolling-header-{{ section.id }} {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0.5rem 0;
+    --image-height: {{ image_height }}px;
+    --item-gap: {{ item_gap }}px;
+    --font-size: {{ font_size }}px;
+    --speed_marquee: {{ speed }}s;
+    --pause_on_hover: {% if pause_on_hover %}paused{% else %}running{% endif %};
+    --image-text-gap: {{ image_text_gap }}px;
+    --image-border-radius: {{ image_border_radius }}px;
+  }
+
+  @keyframes vso-marquee-{{ section.id }} {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .versio-scrolling-header-{{ section.id }} > .marquee {
+    display: flex;
+    align-items: center;
+  }
+
+  .versio-scrolling-header-{{ section.id }} > .marquee:hover > .marquee__item { animation-play-state: var(--pause_on_hover); }
+
+  .versio-scrolling-header-{{ section.id }} > .marquee > .marquee__item {
+    display: inline-flex !important;
+    flex-direction: row;
+    align-items: center;
+    will-change: transform;
+    animation: vso-marquee-{{ section.id }} var(--speed_marquee) linear infinite;
+  }
+
+  .versio-scrolling-header-{{ section.id }} > .marquee > .marquee__item > .marquee__content {
+    display: inline-flex !important;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin: 0 var(--item-gap);
+    height: var(--image-height);
+  }
+
+  .versio-scrolling-header-{{ section.id }} > .marquee > .marquee__item > .marquee__content > .marquee-image-wrapper {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    line-height: 0;
+    margin-right: var(--image-text-gap);
+  }
+
+  .versio-scrolling-header-{{ section.id }} > .marquee > .marquee__item > .marquee__content > .marquee-image-wrapper > img {
+    width: auto;
+    height: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    vertical-align: middle;
+    border-radius: var(--image-border-radius);
+  }
+
+  .versio-scrolling-header-{{ section.id }} > .marquee > .marquee__item > .marquee__content > .marquee-text {
+    font-size: var(--font-size);
+    white-space: nowrap;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  @media (max-width: 767px) {
+    .versio-scrolling-header-{{ section.id }} > .marquee > .marquee__item > .marquee__content {
+      gap: 5px;
+      margin: 0 calc(var(--item-gap) / 2);
+      height: calc(var(--image-height) * 0.8);
+    }
+    .versio-scrolling-header-{{ section.id }} > .marquee > .marquee__item > .marquee__content > .marquee-text {
+      font-size: calc(var(--font-size) * 0.9);
+    }
+  }
+{%- endstyle -%}
+
+{% capture marquee_comp %}
+<div class="marquee__item">
+  {% for i in (1..6) %}
+    {%- for block in section.blocks -%}
+      <div class="marquee__content versio-section__foreground--color">
+        {% if block.settings.image %}
+          <div class="marquee-image-wrapper">
+            {{ block.settings.image | image_url: height: 200 | image_tag: sizes: '100vw', widths: '375', loading: 'lazy', alt: block.settings.text | default: shop.name }}
+          </div>
+        {% endif %}
+        {% if block.settings.text != blank %}
+          <p class="marquee-text">
+            {% if block.settings.link != blank %}
+              <a class="versio-section__foreground--color" href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+            {% else %}{{ block.settings.text }}{% endif %}
+          </p>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% endfor %}
+</div>
+{% endcapture %}
+
+<div class="versio-section_container color-{{ section.settings.color_scheme }} gradient">
+  <div class="versio-section_content">
+    <div class="versio-scrolling-header-{{ section.id }}">
+      <div class="marquee">{{ marquee_comp }}{{ marquee_comp }}</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const outer = document.getElementById('shopify-section-' + '{{ section.id }}');
+  if(outer){
+    outer.classList.toggle('section--full-width', {{ section.settings.section_full_width | json }});
+    outer.classList.toggle('section--page-width', !{{ section.settings.section_full_width | json }});
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "VSO - Scrolling Header",
+  "class": "section versio-section",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Scrolling settings" },
+    { "type": "checkbox", "id": "pause_on_hover", "label": "Pause on hover", "default": true },
+    { "type": "range", "id": "speed", "label": "Speed (seconds)", "min": 10, "max": 100, "step": 1, "default": 100 },
+    { "type": "range", "id": "image_height", "label": "Image height", "min": 20, "max": 100, "step": 1, "unit": "px", "default": 30 },
+    { "type": "range", "id": "item_gap", "label": "Space between items", "min": 10, "max": 100, "step": 5, "unit": "px", "default": 30 },
+    { "type": "range", "id": "image_text_gap", "label": "Gap between image and text", "min": 0, "max": 30, "step": 1, "unit": "px", "default": 6 },
+    { "type": "range", "id": "image_border_radius", "label": "Image border radius", "min": 0, "max": 50, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "font_size", "label": "Text size", "min": 12, "max": 30, "step": 1, "unit": "px", "default": 14 },
+    { "type": "header", "content": "Section layout" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image" },
+    { "type": "checkbox", "id": "section_full_width", "label": "Section full width", "default": true },
+    { "type": "range", "id": "section_max_width", "min": 60, "max": 120, "step": 2, "unit": "rem", "label": "Section max width", "default": 100 },
+    { "type": "range", "id": "padding_desktop", "min": 0, "max": 50, "step": 1, "unit": "px", "label": "Padding desktop", "default": 5 },
+    { "type": "range", "id": "padding_tablet_mobile", "min": 0, "max": 30, "step": 1, "unit": "px", "label": "Padding tablet, mobile", "default": 5 },
+    { "type": "range", "id": "margin_desktop", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Margin top desktop", "default": 0 },
+    { "type": "range", "id": "margin_bottom_desktop", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Margin bottom desktop", "default": 0 },
+    { "type": "range", "id": "margin_tablet_mobile", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Margin top tablet, mobile", "default": 0 },
+    { "type": "range", "id": "margin_bottom_tablet_mobile", "min": 0, "max": 100, "step": 1, "unit": "px", "label": "Margin bottom tablet, mobile", "default": 0 },
+    { "type": "header", "content": "Section colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#000000" },
+    { "type": "color", "id": "foreground_color", "label": "Text color", "default": "#FFFFFF" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (optional)" },
+        { "type": "inline_richtext", "id": "text", "label": "Text", "default": "Announcement text here" },
+        { "type": "url", "id": "link", "label": "Link (optional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "VSO - Scrolling Header",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Free shipping all orders" } },
+        { "type": "item", "settings": { "text": "30-Day return policy" } },
+        { "type": "item", "settings": { "text": "Shipped in 24 hours" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,255 @@
+{% doc %}
+  @prompt
+    wygeneruj mi navigation menu gdzie bede moglwybrtac menu ktore bedzie sie pokazywac od lwewj do prawej i ustawiac szerokosc kolor tla czcionka wielkosc itd mozliwosc centrowania i wielkosc wysokosc paska 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-navigation-menu-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.bar_height }}px 0;
+  }
+
+  .ai-navigation-menu__container-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-navigation-menu__list-{{ ai_gen_id }} {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: {{ block.settings.item_spacing }}px;
+    {% if block.settings.alignment == 'left' %}
+      justify-content: flex-start;
+    {% elsif block.settings.alignment == 'center' %}
+      justify-content: center;
+    {% elsif block.settings.alignment == 'right' %}
+      justify-content: flex-end;
+    {% endif %}
+    flex-wrap: wrap;
+  }
+
+  .ai-navigation-menu__item-{{ ai_gen_id }} {
+    margin: 0;
+  }
+
+  .ai-navigation-menu__link-{{ ai_gen_id }} {
+    display: block;
+    color: {{ block.settings.text_color }};
+    text-decoration: none;
+    font-family: {{ block.settings.font_family.family }}, {{ block.settings.font_family.fallback_families }};
+    font-weight: {{ block.settings.font_family.weight }};
+    font-style: {{ block.settings.font_family.style }};
+    font-size: {{ block.settings.font_size }}px;
+    {% if block.settings.text_transform %}
+      text-transform: uppercase;
+    {% endif %}
+    transition: color 0.3s ease;
+  }
+
+  .ai-navigation-menu__link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.text_hover_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-navigation-menu__container-{{ ai_gen_id }} {
+      width: 100%;
+    }
+
+    .ai-navigation-menu__list-{{ ai_gen_id }} {
+      {% if block.settings.mobile_alignment == 'left' %}
+        justify-content: flex-start;
+      {% elsif block.settings.mobile_alignment == 'center' %}
+        justify-content: center;
+      {% elsif block.settings.mobile_alignment == 'right' %}
+        justify-content: flex-end;
+      {% endif %}
+    }
+
+    .ai-navigation-menu__link-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<nav class="ai-navigation-menu-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-navigation-menu__container-{{ ai_gen_id }}">
+    {% if block.settings.menu != blank %}
+      <ul class="ai-navigation-menu__list-{{ ai_gen_id }}">
+        {% for link in linklists[block.settings.menu].links %}
+          <li class="ai-navigation-menu__item-{{ ai_gen_id }}">
+            <a href="{{ link.url }}" class="ai-navigation-menu__link-{{ ai_gen_id }}">
+              {{ link.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <ul class="ai-navigation-menu__list-{{ ai_gen_id }}">
+        <li class="ai-navigation-menu__item-{{ ai_gen_id }}">
+          <a href="#" class="ai-navigation-menu__link-{{ ai_gen_id }}">Strona główna</a>
+        </li>
+        <li class="ai-navigation-menu__item-{{ ai_gen_id }}">
+          <a href="#" class="ai-navigation-menu__link-{{ ai_gen_id }}">Sklep</a>
+        </li>
+        <li class="ai-navigation-menu__item-{{ ai_gen_id }}">
+          <a href="#" class="ai-navigation-menu__link-{{ ai_gen_id }}">O nas</a>
+        </li>
+        <li class="ai-navigation-menu__item-{{ ai_gen_id }}">
+          <a href="#" class="ai-navigation-menu__link-{{ ai_gen_id }}">Kontakt</a>
+        </li>
+      </ul>
+    {% endif %}
+  </div>
+</nav>
+
+{% schema %}
+{
+  "name": "Navigation menu",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "Układ"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Wyrównanie na desktop",
+      "options": [
+        {
+          "value": "left",
+          "label": "Do lewej"
+        },
+        {
+          "value": "center",
+          "label": "Do środka"
+        },
+        {
+          "value": "right",
+          "label": "Do prawej"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "mobile_alignment",
+      "label": "Wyrównanie na mobile",
+      "options": [
+        {
+          "value": "left",
+          "label": "Do lewej"
+        },
+        {
+          "value": "center",
+          "label": "Do środka"
+        },
+        {
+          "value": "right",
+          "label": "Do prawej"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Szerokość na desktop",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "bar_height",
+      "label": "Wysokość paska",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "label": "Odstęp między elementami",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Kolory"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Kolor tła",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Kolor tekstu",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_hover_color",
+      "label": "Kolor tekstu po najechaniu",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Typografia"
+    },
+    {
+      "type": "font_picker",
+      "id": "font_family",
+      "label": "Czcionka",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Wielkość czcionki",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "text_transform",
+      "label": "Wielkie litery",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Navigation menu"
+    }
+  ]
+}
+{% endschema %}

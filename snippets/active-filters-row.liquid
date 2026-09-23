@@ -1,0 +1,48 @@
+{% comment %}
+  Pasek aktywnych filtrow nad siatka: "Colour: Beige x", "+2 more", "Clear all".
+  Parametry:
+   - filters (wymagany)
+   - visible_count (opcjonalny) - ile chipow widac przed rozwinieciem
+{% endcomment %}
+
+{%- liquid
+  assign visible_count = visible_count | default: 6
+
+  assign active_total = 0
+  for filter in filters
+    assign active_total = active_total | plus: filter.active_values.size
+  endfor
+-%}
+
+{%- if active_total > 0 -%}
+  <div class="active-filters" data-active-filters>
+    {%- assign chip_index = 0 -%}
+
+    {%- for filter in filters -%}
+      {%- for value in filter.active_values -%}
+        {%- liquid
+          assign chip_index = chip_index | plus: 1
+          assign filter_name = filter.label | split: ':' | last | strip
+        -%}
+
+        <a
+          href="{{ value.url_to_remove }}"
+          class="active-filters__chip{% if chip_index > visible_count %} active-filters__chip--extra{% endif %}"
+        >
+          <span class="active-filters__name">{{ filter_name | escape }}:</span>
+          <span class="active-filters__value">{{ value.label | escape }}</span>
+          <svg aria-hidden="true" focusable="false" role="presentation" class="active-filters__x" viewBox="0 0 10 10"><path d="M1 1l8 8M9 1l-8 8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+        </a>
+      {%- endfor -%}
+    {%- endfor -%}
+
+    {%- if active_total > visible_count -%}
+      {%- assign hidden_count = active_total | minus: visible_count -%}
+      <button type="button" class="active-filters__more" data-active-filters-more data-less="Show less">
+        +{{ hidden_count }} more
+      </button>
+    {%- endif -%}
+
+    <a href="{{ collection.url }}" class="active-filters__clear">Clear all</a>
+  </div>
+{%- endif -%}

@@ -1,0 +1,313 @@
+{%- liquid
+  assign per_row = section.settings.per_row | default: 4
+
+  assign shape_padding = ''
+  case section.settings.image_shape
+    when 'square'
+      assign shape_padding = '100%'
+    when 'landscape'
+      assign shape_padding = '66%'
+    when 'portrait'
+      assign shape_padding = '120%'
+    when 'tall'
+      assign shape_padding = '165%'
+  endcase
+-%}
+
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+<style>
+  {% if section.settings.image_height > 0 %}
+    #FeaturedProducts--{{ section.id }} .grid__image-ratio {
+      height: {{ section.settings.image_height }}px !important;
+    }
+    #FeaturedProducts--{{ section.id }} .grid__image-ratio:before {
+      display: none !important;
+    }
+  {% elsif shape_padding != blank %}
+    #FeaturedProducts--{{ section.id }} .grid__image-ratio:before {
+      padding-top: {{ shape_padding }} !important;
+    }
+  {% endif %}
+
+  {% if section.settings.image_height_mobile > 0 %}
+    @media only screen and (max-width: 768px) {
+      #FeaturedProducts--{{ section.id }} .grid__image-ratio {
+        height: {{ section.settings.image_height_mobile }}px !important;
+      }
+      #FeaturedProducts--{{ section.id }} .grid__image-ratio:before {
+        display: none !important;
+      }
+    }
+  {% endif %}
+
+  {% unless section.settings.image_crop == false %}
+    #FeaturedProducts--{{ section.id }} .grid__image-ratio img {
+      object-fit: cover !important;
+      height: 100% !important;
+      width: 100% !important;
+    }
+  {% endunless %}
+
+  #FeaturedProducts--{{ section.id }} .section-header__titles {
+    flex: 1 1 auto;
+  }
+
+  #FeaturedProducts--{{ section.id }} .section-header__eyebrow {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  #FeaturedProducts--{{ section.id }} .section-header__title {
+    font-size: {{ section.settings.heading_size | default: 30 }}px;
+    {% if section.settings.heading_bold %}font-weight: 700;{% endif %}
+    line-height: 1.1;
+    margin-bottom: 0;
+  }
+
+  #FeaturedProducts--{{ section.id }} .section-header__link--plain {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    border: 0;
+    background: none;
+    padding: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: inherit;
+    flex: 0 1 auto;
+  }
+
+  #FeaturedProducts--{{ section.id }} .section-header__arrow {
+    width: 24px;
+    height: 12px;
+    flex: 0 0 auto;
+    transition: transform 0.2s ease;
+  }
+
+  #FeaturedProducts--{{ section.id }} .section-header__link--plain:hover .section-header__arrow {
+    transform: translateX(4px);
+  }
+</style>
+
+<div
+  id="FeaturedProducts--{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="collection-grid"
+  data-context="featured-products">
+
+  {%- if section.settings.title != blank or section.settings.eyebrow != blank or section.settings.view_all_link != blank -%}
+    <div class="page-width">
+      <div class="section-header{% if section.settings.view_all_link != blank %} section-header--with-link{% endif %}">
+        <div class="section-header__titles">
+          {%- if section.settings.eyebrow != blank -%}
+            <span class="section-header__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+          {%- endif -%}
+          {%- if section.settings.title != blank -%}
+            <h2 class="section-header__title">{{ section.settings.title }}</h2>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.view_all_link != blank -%}
+          <a href="{{ section.settings.view_all_link }}" class="section-header__link--plain">
+            {{ section.settings.view_all_text | default: 'View all' }}
+            <svg aria-hidden="true" focusable="false" role="presentation" class="section-header__arrow" viewBox="0 0 24 12"><path d="M0 6h22M17.5 1.5 22 6l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="page-width{% if section.settings.mobile_scrollable %} page-width--flush-small{% endif %}">
+    <div{% if section.settings.mobile_scrollable %} class="grid-overflow-wrapper"{% endif %}>
+      <div class="grid grid--uniform"{% if section.settings.mobile_scrollable %} data-aos="overflow__animation"{% endif %}>
+        {%- liquid
+          if section.settings.mobile_scrollable
+            assign fallback = '39vw'
+          else
+            assign fallback = 'variable'
+          endif
+        -%}
+
+        {%- if section.blocks.size == 0 -%}
+          {%- capture grid_view -%}
+            {%- render 'products_per_row', products_per_row: per_row, style: 'fractions' -%}
+          {%- endcapture -%}
+
+          {%- for i in (1..per_row) -%}
+            <div class="grid__item grid-product {{ grid_view }}">
+              <div class="grid-product__content">
+                <div class="grid-product__image-mask">
+                  {%- capture current -%}{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+                  <div class="image-wrap">{{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                </div>
+                <div class="grid-product__meta">
+                  <div class="grid-product__title">{{ 'home_page.onboarding.product_title' | t }}</div>
+                  <div class="grid-product__price">$29</div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- assign featured_product = block.settings.product -%}
+
+            {%- if featured_product != blank -%}
+              {%- render 'product-grid-item',
+                product: featured_product,
+                per_row: per_row,
+                fallback: fallback
+              -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- if section.settings.divider -%}</div>{%- endif -%}
+
+{% schema %}
+{
+  "name": "Featured products",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured products"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small text above heading",
+      "info": "For example: MOST WANTED"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 18,
+      "max": 54,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_bold",
+      "label": "Bold heading",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all link"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all label",
+      "default": "View all"
+    },
+    {
+      "type": "range",
+      "id": "per_row",
+      "label": "Products per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "image_crop",
+      "label": "Crop images to same size",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_shape",
+      "label": "Image shape",
+      "default": "theme",
+      "options": [
+        { "value": "theme", "label": "Theme default" },
+        { "value": "square", "label": "Square" },
+        { "value": "landscape", "label": "Landscape" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "tall", "label": "Tall portrait" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height (desktop)",
+      "min": 0,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 0,
+      "info": "0 = use Image shape."
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "label": "Image height (mobile)",
+      "min": 0,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_scrollable",
+      "label": "Swipe on mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "divider",
+      "label": "Show section divider",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured products",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.popups"]
+  }
+}
+{% endschema %}

@@ -1,0 +1,95 @@
+{% comment %}
+  Filtr rozmiaru w stalej kolejnosci, ze scaleniem zapisow tego samego rozmiaru
+  (XXL = 2XL, XXXL = 3XL). Jeden chip = ukryte checkboxy wszystkich zapisow,
+  wiec dziala natywny AJAX motywu i wybor wielu rozmiarow naraz.
+
+  Parametry:
+   - filter (wymagany)
+   - show_unmatched (opcjonalny)
+{% endcomment %}
+
+{%- liquid
+  assign size_map = 'XXS|xxs;2xs,XS|xs,S|s;small,M|m;medium,L|l;large,XL|xl,2XL|2xl;xxl,3XL|3xl;xxxl,4XL|4xl;xxxxl,5XL|5xl,5|5,5.5|5.5,6|6,6.5|6.5,7|7,7.5|7.5,8|8,8.5|8.5,9|9,9.5|9.5,10|10,10.5|10.5,11|11,12|12,13|13' | split: ','
+-%}
+
+<ul class="no-bullets tag-list tag-list--chips">
+  {%- assign matched_labels = '' -%}
+
+  {%- for size in size_map -%}
+    {%- liquid
+      assign parts = size | split: '|'
+      assign size_label = parts[0]
+      assign variants = parts[1] | split: ';'
+
+      assign size_active = false
+      assign size_found = false
+    -%}
+
+    {%- capture size_inputs -%}
+      {%- for value in filter.values -%}
+        {%- liquid
+          assign value_label = value.label | downcase | strip
+          assign hit = false
+
+          for variant in variants
+            if value_label == variant
+              assign hit = true
+              break
+            endif
+          endfor
+        -%}
+
+        {%- if hit and value.count > 0 -%}
+          {%- liquid
+            assign size_found = true
+            assign matched_labels = matched_labels | append: '[' | append: value.label | append: ']'
+            if value.active
+              assign size_active = true
+            endif
+          -%}
+          <input
+            type="checkbox"
+            class="tag__input visually-hidden"
+            name="{{ value.param_name }}"
+            value="{{ value.value }}"
+            {% if value.active %}checked{% endif %}>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if size_found -%}
+      <li class="tag{% if size_active %} tag--active{% endif %}">
+        <button type="button" class="tag__checkbox-wrapper text-label" data-filter-group>
+          <span class="tag__text">{{ size_label }}</span>
+        </button>
+        {{ size_inputs }}
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if show_unmatched -%}
+    {%- for value in filter.values -%}
+      {%- liquid
+        assign lookup = '[' | append: value.label | append: ']'
+        assign already_shown = false
+        if matched_labels contains lookup
+          assign already_shown = true
+        endif
+      -%}
+
+      {%- unless already_shown or value.count == 0 -%}
+        <li class="tag{% if value.active %} tag--active{% endif %}">
+          <button type="button" class="tag__checkbox-wrapper text-label" data-filter-group>
+            <span class="tag__text">{{ value.label | escape }}</span>
+          </button>
+          <input
+            type="checkbox"
+            class="tag__input visually-hidden"
+            name="{{ value.param_name }}"
+            value="{{ value.value }}"
+            {% if value.active %}checked{% endif %}>
+        </li>
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endif -%}
+</ul>

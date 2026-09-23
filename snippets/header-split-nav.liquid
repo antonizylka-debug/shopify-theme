@@ -1,0 +1,21 @@
+{%- liquid
+  assign link_count = main_menu.links.size
+
+  # ile pozycji menu ma trafic na lewo od logo (0 = po rowno)
+  assign split_left = section.settings.split_menu_left | default: 0
+  if split_left <= 0 or split_left >= link_count
+    assign split_left = link_count | divided_by: 2
+  endif
+-%}
+
+<div class="header-item header-item--logo-split" role="navigation" aria-label="Primary">
+  <div class="header-item header-item--split-left">
+    {%- render 'header-desktop-nav', main_menu: main_menu, section: section, limit: split_left, dropdown_alignment: dropdown_alignment, hover_menu: hover_menu -%}
+  </div>
+  <div class="header-item header-item--logo">
+    {%- render 'header-logo-block', section: section -%}
+  </div>
+  <div class="header-item header-item--split-right">
+    {%- render 'header-desktop-nav', main_menu: main_menu, section: section, offset: split_left, dropdown_alignment: dropdown_alignment, hover_menu: hover_menu -%}
+  </div>
+</div>

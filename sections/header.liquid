@@ -1,0 +1,1059 @@
+{%- liquid
+  assign main_menu = linklists[section.settings.main_menu_link_list]
+  assign toolbar_menu = linklists[section.settings.toolbar_menu]
+
+  assign logo_alignment = 'left'
+  if section.settings.main_menu_alignment == 'center-left' or section.settings.main_menu_alignment == 'center-split' or section.settings.main_menu_alignment == 'center' or section.settings.main_menu_alignment == 'center-drawer'
+    assign logo_alignment = 'center'
+  endif
+
+  assign dropdown_alignment = 'left'
+  if section.settings.main_menu_alignment == 'left-center' or section.settings.main_menu_alignment == 'center-split' or section.settings.main_menu_alignment == 'center'
+    assign dropdown_alignment = 'center'
+  endif
+
+  assign template_name = template | replace: '.', ' ' | truncatewords: 2, '' | handle
+
+  assign sticky_header = false
+  if section.settings.header_style == 'sticky'
+    assign sticky_header = true
+  endif
+  assign overlay_header = false
+  if template_name == 'index' and section.settings.sticky_index
+    assign overlay_header = true
+  endif
+  if template_name contains 'collection' and collection.image and section.settings.sticky_collection
+    assign overlay_header = true
+  endif
+-%}
+
+{%- render 'drawer-menu',
+  section: section,
+  main_menu: main_menu,
+  toolbar_menu: toolbar_menu,
+  logo_alignment: logo_alignment
+-%}
+{%- render 'cart-drawer' -%}
+
+<style>
+  .site-nav__link,
+  .site-nav__dropdown-link:not(.site-nav__dropdown-link--top-level) {
+    font-size: {{ settings.type_navigation_size }}px;
+  }
+  {% if settings.type_navigation_capitalize %}
+    .site-nav__link, .mobile-nav__link--top-level {
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+    .mobile-nav__link--top-level {
+      font-size: 1.1em;
+    }
+  {% endif %}
+
+  {% if mainmenu.length > 6 %}
+    .site-nav__link {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  {% endif %}
+
+  {% unless section.settings.mega_menu_images %}
+    .megamenu__collection-image {
+      display: none;
+    }
+  {% endunless %}
+
+  /* --- odstepy i rozmiar pozycji menu w naglowku --- */
+  @media only screen and (min-width: 769px) {
+    .site-navigation .site-nav__link {
+      padding-left: {{ section.settings.nav_item_spacing | default: 15 }}px;
+      padding-right: {{ section.settings.nav_item_spacing | default: 15 }}px;
+    }
+
+    {%- if section.settings.nav_font_size > 0 -%}
+      .site-navigation .site-nav__link {
+        font-size: {{ section.settings.nav_font_size }}px;
+      }
+    {%- endif -%}
+
+    .header-item--logo-split .header-item--split-left {
+      padding-right: {{ section.settings.logo_gap | default: 0 }}px !important;
+    }
+
+    .header-item--logo-split .header-item--split-right {
+      padding-left: {{ section.settings.logo_gap | default: 0 }}px !important;
+    }
+  }
+
+  /* --- mega menu zawsze pod calym naglowkiem, nie pod rzedem nawigacji --- */
+  .site-nav__dropdown.megamenu {
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  /* --- uklad split: lupa razem z koszykiem po prawej + kreska --- */
+  @media only screen and (min-width: 769px) {
+    .header-layout--center-split .header-item--left .js-search-header {
+      display: none !important;
+    }
+
+    .header-layout--center-split .header-item--left.header-item--navigation {
+      flex: 0 0 0;
+      min-width: 0;
+    }
+
+    .header-layout--center-split .header-item--icons .js-search-header {
+      display: inline-block !important;
+    }
+
+    .header-layout--center-split .header-item--icons .site-nav__icons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    /* logo dokladnie na srodku strony, mimo ze ikony po prawej maja swoja szerokosc */
+    /* UWAGA: nie ustawiamy position na .header-layout - to odbieralo
+       mega menu pelna szerokosc. Logo centrujemy wzgledem .site-header,
+       ktory i tak ma position: relative i rozciaga sie na cale okno. */
+
+    .header-layout--center-split .header-item--logo-split .header-item--logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+
+    /* megamenu liczy sie wzgledem .site-header, wiec zostaje na pelna szerokosc */
+    .site-nav__dropdown.megamenu {
+      left: 0;
+      right: 0;
+    }
+
+    .header-layout--center-split .header-item--logo-split .header-item:not(.header-item--logo) {
+      flex: 1 1 50%;
+    }
+
+    /* ikony: kompensacja takiego samego paddingu jak w linkach menu */
+    .header-layout--center-split .header-item--icons .site-nav {
+      margin-right: -{{ section.settings.nav_item_spacing | default: 15 }}px;
+    }
+
+    /* --- wyrownanie tresci naglowka do krawedzi kontenera .page-width --- */
+    /* grupy nawigacji domyslnie lgna do logo (justify-content: flex-end),
+       przez co pierwszy link zaczyna sie w polowie szerokosci strony */
+    .header-layout--center-split .header-item--split-left {
+      justify-content: flex-start;
+    }
+
+    .header-layout--center-split .header-item--split-right {
+      justify-content: flex-end;
+    }
+
+    /* kompensacja wewnetrznego paddingu linku, zeby TEKST
+       lezal w jednej linii z trescia strony, nie pudelko linku */
+    .header-layout--center-split .header-item--split-left .site-navigation {
+      margin-left: -{{ section.settings.nav_item_spacing | default: 15 }}px;
+    }
+
+    .header-layout--center-split .header-item--split-right .site-navigation {
+      margin-right: -{{ section.settings.nav_item_spacing | default: 15 }}px;
+    }
+
+    .header-layout--center-split .header-item--icons .site-nav__icons::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 1px;
+      height: 16px;
+      margin: 0 10px 0 6px;
+      background: currentColor;
+      opacity: 0.25;
+    }
+  }
+
+  /* --- naglowek przyklejony pod paskiem ogloszen, bez animacji ---
+     sticky musi byc na kontenerze sekcji: wewnetrzny .header-sticky-wrapper
+     ma rodzica tej samej wysokosci, wiec nie ma po czym sie przesuwac */
+  #shopify-section-{{ section.id }} {
+    position: sticky;
+    top: var(--announcement-h, 0px);
+    z-index: 20;
+  }
+
+  /* --- wysokosc naglowka (odstep nad i pod logo) --- */
+  .site-header:not(.site-header--stuck) {
+    padding-top: {{ section.settings.header_padding_mobile | default: 7 }}px;
+    padding-bottom: {{ section.settings.header_padding_mobile | default: 7 }}px;
+  }
+
+  @media only screen and (min-width: 769px) {
+    .site-header:not(.site-header--stuck) {
+      padding-top: {{ section.settings.header_padding | default: 20 }}px;
+      padding-bottom: {{ section.settings.header_padding | default: 20 }}px;
+    }
+  }
+
+  /* --- wyszukiwarka: zaokraglone pole z wypelnieniem --- */
+  .site-header__search predictive-search form {
+    align-items: center;
+  }
+
+  .site-header__search .search__input {
+    background: #f4f4f4;
+    border: 1px solid #e8e8e8;
+    border-radius: 999px;
+    box-shadow: none;
+    height: 52px;
+    padding: 0 24px 0 56px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #16150f;
+  }
+
+  .site-header__search .search__input:focus {
+    background: #f0f0f0;
+    border-color: #d8d8d8;
+    box-shadow: none;
+    outline: 0;
+  }
+
+  .site-header__search .search__input::placeholder {
+    color: #8d8a83;
+    opacity: 1;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .site-header__search .btn--search {
+    left: 22px;
+    right: auto;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .site-header__search .btn--search .icon {
+    height: 19px;
+    width: 19px;
+  }
+
+  .site-header__search .btn--search .cls-1 {
+    stroke: #6f6c65;
+    stroke-width: 2.6px;
+  }
+
+  .site-header__search .btn--close-search {
+    padding: 0 4px 0 24px;
+    opacity: 0.75;
+    transition: opacity 0.15s ease;
+  }
+
+  .site-header__search .btn--close-search .icon {
+    height: 17px;
+    width: 17px;
+  }
+
+  .site-header__search .btn--close-search .cls-1 {
+    stroke-width: 2.4px;
+  }
+
+  .site-header__search .btn--close-search:hover,
+  .site-header__search .btn--close-search:focus {
+    opacity: 1;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .site-header__search .search__input {
+      height: 46px;
+      font-size: 14px;
+      padding: 0 18px 0 48px;
+    }
+
+    .site-header__search .btn--search {
+      left: 18px;
+    }
+
+    .site-header__search .btn--close-search {
+      padding-left: 14px;
+    }
+  }
+
+  /* --- linki zakresowe pod podpowiedziami wyszukiwarki --- */
+  .results__scopes {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .results__scope-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .results__scope-link .results__scope-name {
+    font-weight: 600;
+  }
+
+  .results__scope-link svg {
+    margin-left: 2px;
+  }
+
+  .results__scope-link:hover {
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .megamenu--editorial .page-width {
+    padding-top: 34px;
+    padding-bottom: 44px;
+  }
+
+  /* mostek: likwiduje przerwe miedzy linkiem w nawigacji a panelem */
+  .site-nav--is-megamenu .site-nav__details::after {
+    content: "";
+    display: none;
+  }
+
+  .site-nav--is-megamenu .site-nav__details[open]::after {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 24px;
+    z-index: 7;
+  }
+
+  /* --- mega menu: lista kolekcji z licznikami + kafel promocyjny --- */
+  .megamenu__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 38%);
+    column-gap: 72px;
+    align-items: start;
+  }
+
+  .megamenu__inner--no-promo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .megamenu__heading {
+    margin: 0 0 {{ section.settings.megamenu_heading_gap | default: 22 }}px;
+    font-size: {{ section.settings.megamenu_heading_size | default: 12 }}px;
+    font-weight: {{ section.settings.megamenu_heading_weight | default: 600 }};
+    letter-spacing: {{ section.settings.megamenu_heading_spacing | default: 18 | divided_by: 100.0 }}em;
+    text-transform: {% if section.settings.megamenu_heading_uppercase == false %}none{% else %}uppercase{% endif %};
+    line-height: 1.2;
+  }
+
+  .megamenu__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    columns: 2;
+    column-gap: 64px;
+  }
+
+  /* bez kafla promo: nadal 2 kolumny, tylko ograniczona szerokosc,
+     zeby lista nie rozjechala sie na cala szerokosc ekranu */
+  .megamenu__inner--no-promo .megamenu__list {
+    columns: 2;
+    max-width: 780px;
+  }
+
+  .megamenu__list-item {
+    list-style: none;
+    margin: 0;
+    break-inside: avoid;
+  }
+
+  .megamenu__link.site-nav__dropdown-link {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: {{ section.settings.megamenu_row_spacing | default: 7 }}px 0;
+    font-size: {{ section.settings.megamenu_link_size | default: 15 }}px;
+    line-height: 1.4;
+    white-space: normal;
+    text-decoration: none;
+  }
+
+  .megamenu__link:hover .megamenu__link-title,
+  .megamenu__link:focus .megamenu__link-title {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .megamenu__link-count {
+    flex: 0 0 auto;
+    font-size: {{ section.settings.megamenu_count_size | default: 13 }}px;
+    opacity: 0.4;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .megamenu__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 28px;
+    font-size: {{ section.settings.megamenu_viewall_size | default: 12 }}px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .megamenu__arrow {
+    width: 22px;
+    height: 11px;
+    flex: 0 0 auto;
+    transition: transform 0.2s ease;
+  }
+
+  .megamenu__chev {
+    width: 5.5px;
+    height: 10px;
+  }
+
+  .megamenu__view-all:hover .megamenu__arrow,
+  .megamenu__promo-card:hover .megamenu__arrow {
+    transform: translateX(4px);
+  }
+
+  .megamenu__promo-card {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 3 / 2;
+    background: var(--promo-bg, #8d8a83);
+    color: var(--promo-color, #ffffff);
+    text-decoration: none;
+  }
+
+  .megamenu__promo-card image-element {
+    display: block;
+    height: 100%;
+  }
+
+  .megamenu__promo-card .megamenu__promo-image.image-element {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+    transition: transform 0.6s cubic-bezier(0.2, 0.06, 0.05, 0.95);
+  }
+
+  .megamenu__promo-card:hover .megamenu__promo-image.image-element {
+    transform: scale(1.03);
+  }
+
+  .megamenu__promo-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 62%),
+      rgba(0, 0, 0, var(--promo-overlay, 0.3));
+    pointer-events: none;
+  }
+
+  .megamenu__promo-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 32px 34px;
+  }
+
+  .megamenu__promo-eyebrow {
+    margin-bottom: 6px;
+    font-size: 11.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+
+  .megamenu__promo-heading {
+    margin-bottom: 20px;
+    font-size: 27px;
+    font-weight: 400;
+    line-height: 1.15;
+  }
+
+  .megamenu__promo-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding: 17px 30px;
+    background: #ffffff;
+    color: #16150f;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: background 0.2s ease;
+  }
+
+  .megamenu__promo-btn .megamenu__arrow {
+    width: 26px;
+    height: 12px;
+  }
+
+  .megamenu__promo-card:hover .megamenu__promo-btn {
+    background: #f2f0ec;
+  }
+
+  @media screen and (max-width: 1200px) {
+    .megamenu__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 36%);
+      column-gap: 44px;
+    }
+
+    .megamenu__list {
+      column-gap: 40px;
+    }
+
+    .megamenu__promo-heading {
+      font-size: 22px;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .megamenu__inner {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .megamenu__promo {
+      display: none;
+    }
+
+    .megamenu__list,
+    .megamenu__inner--no-promo .megamenu__list {
+      columns: 2;
+      max-width: none;
+    }
+  }
+
+  {%- if settings.color_header == settings.color_body_bg or settings.color_body_bg contains settings.color_header -%}
+    .site-header {
+      box-shadow: 0 0 1px rgba(0,0,0,0.2);
+    }
+
+    .toolbar + .header-sticky-wrapper .site-header {
+      border-top: 0;
+    }
+  {%- endif -%}
+</style>
+
+<div data-section-id="{{ section.id }}" data-section-type="header">
+
+  {%- unless overlay_header -%}
+    {%- if section.settings.show_locale_selector or section.settings.show_currency_selector or section.settings.toolbar_social or section.settings.toolbar_menu != blank -%}
+      {%- render 'toolbar',
+        section: section,
+        toolbar_menu: toolbar_menu,
+        overlay_header: overlay_header
+      -%}
+    {%- endif -%}
+  {%- endunless -%}
+
+  <div class="header-sticky-wrapper">
+    <div id="HeaderWrapper" class="header-wrapper{% if overlay_header %} header-wrapper--sticky is-light{% endif %}">
+
+      {%- if overlay_header -%}
+        {%- if section.settings.show_locale_selector or section.settings.show_currency_selector or section.settings.toolbar_social or section.settings.toolbar_menu != blank -%}
+          {%- render 'toolbar',
+            section: section,
+            toolbar_menu: toolbar_menu,
+            overlay_header: overlay_header
+          -%}
+        {%- endif -%}
+      {%- endif -%}
+      <header
+        id="SiteHeader"
+        class="site-header{% if settings.type_navigation_style == 'heading' %} site-header--heading-style{% endif %}"
+        data-sticky="{{ sticky_header }}"
+        data-overlay="{{ overlay_header }}">
+        <div class="page-width">
+          <div
+            class="header-layout header-layout--{{ section.settings.main_menu_alignment }}"
+            data-logo-align="{{ logo_alignment }}">
+
+            {%- if logo_alignment == 'left' -%}
+              <div class="header-item header-item--logo">
+                {%- render 'header-logo-block', section: section -%}
+              </div>
+            {%- endif -%}
+
+            {%- if logo_alignment == 'left' and section.settings.main_menu_alignment != 'left-drawer' -%}
+              <div class="header-item header-item--navigation{% if section.settings.main_menu_alignment == 'left-center' %} text-center{% endif %}" role="navigation" aria-label="Primary">
+                {%- render 'header-desktop-nav', main_menu: main_menu, section: section, dropdown_alignment: dropdown_alignment, hover_menu: section.settings.hover_menu -%}
+              </div>
+            {%- endif -%}
+
+            {%- if logo_alignment == 'center' -%}
+              <div class="header-item header-item--left header-item--navigation">
+                {%- if section.settings.main_menu_alignment == 'center' or section.settings.main_menu_alignment == 'center-split' -%}
+                  {%- if settings.search_enable -%}
+                    <div class="site-nav small--hide">
+                      <a href="{{ routes.search_url }}" class="site-nav__link site-nav__link--icon js-search-header">
+                        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-search" viewBox="0 0 64 64"><title>icon-search</title><path d="M47.16 28.58A18.58 18.58 0 1 1 28.58 10a18.58 18.58 0 0 1 18.58 18.58ZM54 54 41.94 42"/></svg>
+                        <span class="icon__fallback-text">{{ 'general.search.title' | t }}</span>
+                      </a>
+                    </div>
+                  {%- endif -%}
+                {%- endif -%}
+
+                {%- if section.settings.main_menu_alignment == 'center-left' -%}
+                  {%- render 'header-desktop-nav', main_menu: main_menu, section: section, dropdown_alignment: dropdown_alignment, hover_menu: section.settings.hover_menu -%}
+                {%- endif -%}
+
+                <div class="site-nav{% unless section.settings.main_menu_alignment == 'center-drawer' %} medium-up--hide{% endunless %}">
+                  <button
+                    type="button"
+                    class="site-nav__link site-nav__link--icon js-drawer-open-nav"
+                    aria-controls="NavDrawer">
+                    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-hamburger" viewBox="0 0 64 64"><title>icon-hamburger</title><path d="M7 15h51M7 32h43M7 49h51"/></svg>
+                    <span class="icon__fallback-text">{{ 'general.drawers.navigation' | t }}</span>
+                  </button>
+                </div>
+              </div>
+
+              {%- if section.settings.main_menu_alignment == 'center-split' -%}
+                {%- render 'header-split-nav', main_menu: main_menu, section: section, dropdown_alignment: dropdown_alignment, hover_menu: section.settings.hover_menu -%}
+              {%- endif -%}
+
+              {%- if section.settings.main_menu_alignment != 'center-split' -%}
+                <div class="header-item header-item--logo">
+                  {%- render 'header-logo-block', section: section -%}
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+
+            <div class="header-item header-item--icons">
+              {%- render 'header-icons', section: section -%}
+            </div>
+          </div>
+
+          {%- if section.settings.main_menu_alignment == 'center' -%}
+            <div class="text-center">
+              {%- render 'header-desktop-nav', main_menu: main_menu, section: section, dropdown_alignment: dropdown_alignment, hover_menu: section.settings.hover_menu -%}
+            </div>
+          {%- endif -%}
+        </div>
+        <div class="site-header__search-container">
+          <div class="site-header__search">
+            <div class="page-width">
+              {% render 'predictive-search', context: 'header' %}
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "main_menu_link_list",
+      "label": "t:sections.header.settings.main_menu_link_list.label",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_menu",
+      "label": "t:sections.header.settings.hover_menu.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mega_menu_images",
+      "label": "t:sections.header.settings.mega_menu_images.label",
+      "default": true,
+      "info": "t:sections.header.settings.mega_menu_images.info"
+    },
+    {
+      "type": "range",
+      "id": "split_menu_left",
+      "label": "Menu items left of logo",
+      "min": 0, "max": 12, "step": 1, "default": 0,
+      "info": "Only for the Logo center, menu split layout. 0 = split evenly. The rest go to the right."
+    },
+    {
+      "type": "header",
+      "content": "Header menu"
+    },
+    {
+      "type": "range",
+      "id": "nav_item_spacing",
+      "label": "Space between menu items",
+      "min": 0, "max": 40, "step": 1, "unit": "px", "default": 15,
+      "info": "Padding on each side of a menu item, so the visible gap is twice this value."
+    },
+    {
+      "type": "range",
+      "id": "nav_font_size",
+      "label": "Menu font size",
+      "min": 0, "max": 24, "step": 1, "unit": "px", "default": 0,
+      "info": "0 = use Theme settings, Typography, Navigation."
+    },
+    {
+      "type": "range",
+      "id": "logo_gap",
+      "label": "Space around logo",
+      "min": 0, "max": 400, "step": 10, "unit": "px", "default": 0,
+      "info": "Extra space between the logo and the menu. Logo center, menu split layout only."
+    },
+    {
+      "type": "header",
+      "content": "Header height"
+    },
+    {
+      "type": "range",
+      "id": "header_padding",
+      "label": "Header height (desktop)",
+      "min": 0, "max": 60, "step": 1, "unit": "px", "default": 20,
+      "info": "Space above and below the logo row."
+    },
+    {
+      "type": "range",
+      "id": "header_padding_mobile",
+      "label": "Header height (mobile)",
+      "min": 0, "max": 40, "step": 1, "unit": "px", "default": 7
+    },
+    {
+      "type": "header",
+      "content": "Mega menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "megamenu_narrow_dropdowns",
+      "label": "Keep narrow dropdowns",
+      "default": false,
+      "info": "When off, any menu item with enough links opens as a full-width mega menu (list of collections + promo image)."
+    },
+    {
+      "type": "range",
+      "id": "megamenu_min_links",
+      "label": "Minimum links for mega menu",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 5,
+      "info": "Menu items with fewer links keep the simple dropdown."
+    },
+    {
+      "type": "checkbox",
+      "id": "megamenu_show_counts",
+      "label": "Show product count next to each link",
+      "default": true,
+      "info": "Only appears on links that point to a collection."
+    },
+    {
+      "type": "text",
+      "id": "megamenu_view_all_label",
+      "label": "\"View all\" link label",
+      "default": "Se alle",
+      "info": "The menu item title is appended automatically, e.g. \"Se alle KVINDER\". Leave empty to hide the link."
+    },
+    {
+      "type": "header",
+      "content": "Mega menu typography"
+    },
+    {
+      "type": "range",
+      "id": "megamenu_heading_size",
+      "label": "Heading size",
+      "min": 10, "max": 30, "step": 1, "unit": "px", "default": 12
+    },
+    {
+      "type": "range",
+      "id": "megamenu_heading_weight",
+      "label": "Heading weight",
+      "min": 300, "max": 800, "step": 100, "default": 600
+    },
+    {
+      "type": "range",
+      "id": "megamenu_heading_spacing",
+      "label": "Heading letter spacing",
+      "min": 0, "max": 30, "step": 1, "unit": "%", "default": 18
+    },
+    {
+      "type": "checkbox",
+      "id": "megamenu_heading_uppercase",
+      "label": "Heading in uppercase",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "megamenu_heading_gap",
+      "label": "Space below heading",
+      "min": 8, "max": 60, "step": 2, "unit": "px", "default": 22
+    },
+    {
+      "type": "range",
+      "id": "megamenu_link_size",
+      "label": "Link size",
+      "min": 12, "max": 22, "step": 1, "unit": "px", "default": 15
+    },
+    {
+      "type": "range",
+      "id": "megamenu_row_spacing",
+      "label": "Space between links",
+      "min": 2, "max": 18, "step": 1, "unit": "px", "default": 7
+    },
+    {
+      "type": "range",
+      "id": "megamenu_count_size",
+      "label": "Product count size",
+      "min": 9, "max": 18, "step": 1, "unit": "px", "default": 13
+    },
+    {
+      "type": "range",
+      "id": "megamenu_viewall_size",
+      "label": "View all link size",
+      "min": 9, "max": 18, "step": 1, "unit": "px", "default": 12
+    },
+    {
+      "type": "select",
+      "id": "main_menu_alignment",
+      "label": "t:sections.header.settings.main_menu_alignment.label",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.header.settings.main_menu_alignment.options.left.label"
+        },
+        {
+          "value": "left-center",
+          "label": "t:sections.header.settings.main_menu_alignment.options.left-center.label"
+        },
+        {
+          "value": "left-drawer",
+          "label": "t:sections.header.settings.main_menu_alignment.options.left-drawer.label"
+        },
+        {
+          "value": "center-left",
+          "label": "t:sections.header.settings.main_menu_alignment.options.center-left.label"
+        },
+        {
+          "value": "center-split",
+          "label": "t:sections.header.settings.main_menu_alignment.options.center-split.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.header.settings.main_menu_alignment.options.center.label"
+        },
+        {
+          "value": "center-drawer",
+          "label": "t:sections.header.settings.main_menu_alignment.options.center-drawer.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_style",
+      "label": "t:sections.header.settings.header_style.label",
+      "default": "normal",
+      "options": [
+        {
+          "value": "normal",
+          "label": "t:sections.header.settings.header_style.options.normal.label"
+        },
+        {
+          "value": "sticky",
+          "label": "t:sections.header.settings.header_style.options.sticky.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_index",
+      "label": "t:sections.header.settings.sticky_index.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_collection",
+      "label": "t:sections.header.settings.sticky_collection.label",
+      "info": "t:sections.header.settings.sticky_collection.info",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header_toolbar"
+    },
+    {
+      "type": "link_list",
+      "id": "toolbar_menu",
+      "label": "t:sections.header.settings.toolbar_menu.label",
+      "info": "t:sections.header.settings.toolbar_menu.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "toolbar_social",
+      "label": "t:sections.header.settings.toolbar_social.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header_localization"
+      
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_selector",
+      "label": "t:sections.header.settings.show_currency_selector.label",
+      "default": true,
+      "info": "t:sections.header.settings.header_currency_selector"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_flags",
+      "label": "t:sections.header.settings.show_currency_flags.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_locale_selector",
+      "label": "t:sections.header.settings.show_locale_selector.label",
+      "default": true,
+      "info": "t:sections.header.settings.header_language_selector"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "t:sections.header.blocks.logo.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "t:sections.header.blocks.logo.settings.logo.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo-inverted",
+          "label": "t:sections.header.blocks.logo.settings.logo-inverted.label",
+          "info": "t:sections.header.blocks.logo.settings.logo-inverted.info"
+        },
+        {
+          "type": "range",
+          "id": "desktop_logo_width",
+          "label": "t:sections.header.blocks.logo.settings.desktop_logo_width.label",
+          "default": 200,
+          "min": 100,
+          "max": 400,
+          "step": 10,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "mobile_logo_width",
+          "label": "t:sections.header.blocks.logo.settings.mobile_logo_width.label",
+          "default": 140,
+          "min": 60,
+          "max": 200,
+          "step": 10,
+          "unit": "px",
+          "info": "t:sections.header.blocks.logo.settings.mobile_logo_width.info"
+        }
+      ]
+    },
+    {
+      "type": "megamenu_promo",
+      "name": "Mega menu promo",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Adds an image card on the right side of one menu item's mega menu."
+        },
+        {
+          "type": "text",
+          "id": "menu_title",
+          "label": "Menu item title",
+          "info": "Must match the top-level menu item exactly, e.g. KVINDER."
+        },
+        {
+          "type": "url",
+          "id": "view_all_link",
+          "label": "View all goes to",
+          "info": "Collection opened by the View all link under the list. Leave empty to use the menu item link."
+        },
+        {
+          "type": "text",
+          "id": "view_all_label",
+          "label": "View all label override",
+          "info": "Optional. Replaces the whole label for this menu item."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Small text above heading",
+          "default": "NY SÆSON"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "SHOP NU"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Leave empty to use the menu item's own link."
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Image darkening",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "%",
+          "default": 25
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color (shown until an image is picked)",
+          "default": "#8d8a83"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "settings": {}
+  },
+  "disabled_on": {
+    "groups": ["footer", "custom.popups"]
+  }
+}
+{% endschema %}

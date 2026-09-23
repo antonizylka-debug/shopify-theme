@@ -1,0 +1,804 @@
+{% comment %}
+  Dodatkowe style sklepu Stilhuset Nord.
+  Wczytywane globalnie z layout/theme.liquid, zaraz po theme.css.
+{% endcomment %}
+
+<style>
+  /* --- karta produktu: tytul wersalikami, swatche nad cena --- */
+  .grid-product__title {
+    text-transform: uppercase;
+    font-size: 13px;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .grid-product__colors {
+    margin-top: 8px;
+    margin-bottom: 2px;
+  }
+
+  .grid-product__price {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .grid-product__price--original {
+    margin-right: 6px;
+    font-weight: 400;
+    opacity: 0.45;
+  }
+
+  .grid-product__price--savings {
+    margin-left: 6px;
+    font-weight: 600;
+  }
+
+  /* --- naglowek kolekcji --- */
+  .template-collection .section-header__title,
+  .template-search .section-header__title {
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  .collection-count {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    opacity: 0.65;
+  }
+
+  /* --- pole sortowania jako ramka, nie goly select --- */
+  #SortBy {
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    border-radius: 0;
+    background-color: #ffffff;
+    padding: 13px 38px 13px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    height: auto;
+  }
+
+  /* --- pasek linkow kategorii nad siatka --- */
+  .collection-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 26px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .collection-pills__link {
+    display: inline-block;
+    padding: 11px 20px;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .collection-pills__link:hover {
+    border-color: rgba(0, 0, 0, 0.45);
+  }
+
+  .collection-pills__link--active {
+    background: #16150f;
+    border-color: #16150f;
+    color: #ffffff;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .collection-pills {
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .collection-pills__link {
+      padding: 9px 14px;
+      font-size: 11px;
+    }
+  }
+  /* --- kolumna filtrow: naglowek, chipy, kolory w dwoch kolumnach --- */
+  .collection-sidebar__title {
+    margin: 0 0 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  #CollectionSidebar .tag-list__header {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  #CollectionSidebar .tag-list--chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  #CollectionSidebar .tag-list--chips .tag {
+    margin: 0;
+  }
+
+  #CollectionSidebar .tag-list--chips .tag__checkbox-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    padding: 6px 10px;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    font-size: 11px;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+
+  #CollectionSidebar .tag-list--chips .tag__checkbox-wrapper:hover {
+    border-color: rgba(0, 0, 0, 0.45);
+  }
+
+  #CollectionSidebar .tag-list--chips .tag__checkbox {
+    display: none;
+  }
+
+  #CollectionSidebar .tag-list--chips .tag--active .tag__checkbox-wrapper {
+    background: #16150f;
+    border-color: #16150f;
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  #CollectionSidebar .tag-list--swatches {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 14px;
+  }
+
+  #CollectionSidebar .tag-list--swatches .tag {
+    margin: 0;
+  }
+
+  /* cena: suwak nad wartosciami w ramkach, jak w referencji */
+  #CollectionSidebar .price-range {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #CollectionSidebar .price-range__slider-wrapper {
+    order: 1;
+  }
+
+  #CollectionSidebar .price-range__display-wrapper {
+    order: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  #CollectionSidebar .price-range__display-min,
+  #CollectionSidebar .price-range__display-max {
+    flex: 1 1 0;
+    padding: 9px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    font-size: 13px;
+  }
+  /* --- dlugie listy filtrow: 10 wartosci + Show all / Show less --- */
+  #CollectionSidebar .tag-list--limited > .tag:nth-child(n + 11) {
+    display: none;
+  }
+
+  #CollectionSidebar .tag-list--limited.is-expanded > .tag:nth-child(n + 11) {
+    display: block;
+  }
+
+  #CollectionSidebar .tag-list--limited:not(.tag-list--swatches).is-expanded > .tag:nth-child(n + 11) {
+    display: list-item;
+  }
+
+  #CollectionSidebar .filter-toggle {
+    display: inline-block;
+    margin: -14px 0 26px;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  #CollectionSidebar .filter-toggle:hover {
+    opacity: 0.7;
+  }
+  /* --- grupa filtrow: wspolny naglowek + wciete podfiltry --- */
+  .collection-sidebar__group-title {
+    margin: 26px 0 10px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  #CollectionSidebar .collection-sidebar__group--nested {
+    padding-left: 12px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  #CollectionSidebar .collection-sidebar__group--nested .tag-list__header {
+    font-size: 12px;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+  /* --- linki kategorii nad siatka (blok Collection links) jako pigulki --- */
+  .collection-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 28px;
+  }
+
+  .collection-links--center { justify-content: center; }
+  .collection-links--right { justify-content: flex-end; }
+
+  .collection-links__item {
+    display: inline-block;
+    padding: 11px 20px;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .collection-links__item:hover {
+    border-color: rgba(0, 0, 0, 0.45);
+  }
+
+  .collection-links__item--current {
+    background: #16150f;
+    border-color: #16150f;
+    color: #ffffff;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .collection-links { gap: 8px; margin-bottom: 18px; }
+    .collection-links__item { padding: 9px 14px; font-size: 11px; }
+  }
+  /* --- kompaktowa kolumna filtrow --- */
+  #CollectionSidebar .tag__count {
+    display: none;
+  }
+
+  #CollectionSidebar .tag-list--chips {
+    gap: 6px;
+  }
+
+  #CollectionSidebar .color-swatch--filter {
+    width: 15px;
+    height: 15px;
+    min-width: 15px;
+    margin-right: 8px;
+  }
+
+  #CollectionSidebar .tag-list--swatches {
+    gap: 10px 14px;
+  }
+
+  #CollectionSidebar .tag-list--swatches .tag__text {
+    font-size: 11px;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #CollectionSidebar .tag-list--swatches .tag__checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  #CollectionSidebar .tag-list__header {
+    font-size: 12px;
+  }
+
+  #CollectionSidebar .filter-toggle {
+    font-size: 11px;
+  }
+
+  #CollectionSidebar .price-range__display-min,
+  #CollectionSidebar .price-range__display-max {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+  /* --- zwykle listy filtrow: checkbox + licznik po prawej --- */
+  #CollectionSidebar .tag-list:not(.tag-list--chips):not(.tag-list--swatches):not(.tag-list--active-tags) .tag__checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  #CollectionSidebar .tag-list:not(.tag-list--chips):not(.tag-list--swatches):not(.tag-list--active-tags) .tag__checkbox-wrapper > span:last-child {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  #CollectionSidebar .tag-list:not(.tag-list--chips):not(.tag-list--swatches) .tag__count {
+    display: inline;
+    opacity: 0.5;
+  }
+
+  /* --- rzad podkolekcji nad siatka --- */
+  .subrow {
+    position: relative;
+    margin: 0 0 30px;
+  }
+
+  .subrow__nav-wrap {
+    position: absolute;
+    top: -62px;
+    right: 0;
+    display: flex;
+    gap: 8px;
+  }
+
+  .subrow__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    background: #ffffff;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .subrow__nav svg {
+    width: 8px;
+    height: 14px;
+  }
+
+  .subrow__nav:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  .subrow__track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .subrow__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .subrow__item {
+    flex: 0 0 calc(var(--subrow-width, 16.6%) - 16px);
+    scroll-snap-align: start;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .subrow__media {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: #ece9e4;
+  }
+
+  .subrow__media .subrow__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+  }
+
+  .subrow__meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  .subrow__count {
+    flex: 0 0 auto;
+    opacity: 0.45;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .subrow__item {
+      flex: 0 0 42%;
+    }
+
+    .subrow__nav-wrap {
+      display: none;
+    }
+  }
+  /* --- kolory jako czyste krazki, bez etykiet --- */
+  #CollectionSidebar .tag-list--swatches .tag__checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  #CollectionSidebar .tag-list--swatches .tag__text.hide {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  #CollectionSidebar .tag-list--swatches .color-swatch--filter {
+    width: 17px;
+    height: 17px;
+    min-width: 17px;
+    margin: 0;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: none;
+    transition: box-shadow 0.15s ease;
+  }
+
+  #CollectionSidebar .tag-list--swatches .tag__checkbox-wrapper:hover .color-swatch--filter {
+    box-shadow: 0 0 0 1px #16150f;
+  }
+
+  #CollectionSidebar .tag-list--swatches .tag--active .color-swatch--filter {
+    box-shadow: 0 0 0 2px #16150f;
+  }
+
+  #CollectionSidebar .tag-list--swatches .tag__checkbox {
+    display: none;
+  }
+  /* --- podpisy kolorow wersalikami --- */
+  #CollectionSidebar .tag-list--swatches .tag__text {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* --- rzad kategorii i sortowania oddzielony liniami --- */
+  .template-collection .collection-links {
+    margin-bottom: 0;
+  }
+
+  .template-collection .collection-links-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+  /* --- pasek: pigulki po lewej, sortowanie po prawej --- */
+  .collection-links-row__sort {
+    flex: 0 0 auto;
+  }
+
+  .collection-links-row .collection-links {
+    flex: 1 1 auto;
+    margin: 0;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .template-collection .collection-links-row {
+      flex-wrap: wrap;
+      gap: 14px;
+      padding: 16px 0;
+    }
+  }
+  /* --- breadcrumbs jak w referencji --- */
+  .breadcrumb {
+    margin: 0 0 14px;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .breadcrumb a {
+    text-decoration: none;
+    opacity: 0.55;
+    transition: opacity 0.15s ease;
+  }
+
+  .breadcrumb a:hover {
+    opacity: 1;
+  }
+
+  .breadcrumb__divider {
+    margin: 0 7px;
+    opacity: 0.35;
+  }
+
+  .breadcrumb__current {
+    font-weight: 600;
+  }
+
+  .template-collection .section-header--flush .breadcrumb {
+    margin-top: 0;
+  }
+  /* --- pasek aktywnych filtrow nad siatka --- */
+  .active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 24px;
+  }
+
+  .active-filters__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    background: #f4f2ef;
+    font-size: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s ease;
+  }
+
+  .active-filters__chip:hover {
+    background: #e8e4df;
+  }
+
+  .active-filters__name {
+    opacity: 0.55;
+  }
+
+  .active-filters__x {
+    width: 9px;
+    height: 9px;
+    flex: 0 0 auto;
+    opacity: 0.55;
+  }
+
+  .active-filters__chip--extra {
+    display: none;
+  }
+
+  .active-filters.is-expanded .active-filters__chip--extra {
+    display: inline-flex;
+  }
+
+  .active-filters__more {
+    padding: 7px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    background: none;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .active-filters__clear {
+    margin-left: 6px;
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: inherit;
+  }
+
+  /* licznik zaznaczen przy naglowku sekcji filtra */
+  #CollectionSidebar .filter-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    padding: 0 5px;
+    background: #16150f;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  /* stara lista aktywnych tagow w kolumnie - niepotrzebna, jest pasek */
+  #CollectionSidebar .tag-list--active-tags {
+    display: none;
+  }
+
+  /* zaznaczony kolor: pogrubiony podpis */
+  #CollectionSidebar .tag-list--swatches .tag--active .tag__text {
+    font-weight: 600;
+  }
+  /* --- krazki kolorow: pelne wypelnienie, MULTI jako gradient --- */
+  #CollectionSidebar .color-swatch--filter {
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+  }
+
+  #CollectionSidebar .color-swatch--multi {
+    background: conic-gradient(#d13c3c 0deg 90deg, #2b4a7d 90deg 180deg, #4a7d55 180deg 270deg, #d8c14a 270deg 360deg);
+  }
+
+  /* chip rozmiaru jako link, nie label */
+  #CollectionSidebar .tag-list--chips .tag__checkbox-wrapper {
+    text-decoration: none;
+    color: inherit;
+  }
+  /* linki filtrow bez podkreslenia (kolory i rozmiary sa teraz <a>) */
+  #CollectionSidebar .tag-list--swatches .tag__checkbox-wrapper,
+  #CollectionSidebar .tag-list--chips .tag__checkbox-wrapper {
+    text-decoration: none;
+    color: inherit;
+  }
+  /* --- zaznaczone filtry na jasnym tle --- */
+  #CollectionSidebar .tag-list--swatches .tag--active .tag__text {
+    font-weight: 600;
+  }
+
+  #CollectionSidebar .tag-list:not(.tag-list--chips):not(.tag-list--swatches) .tag--active .tag__checkbox-wrapper {
+    font-weight: 600;
+  }
+
+  .active-filters__chip {
+    background: #E8EDF5;
+  }
+
+  .active-filters__chip:hover {
+    background: #d8e1ee;
+  }
+  /* ukryte checkboxy grup filtrow */
+  #CollectionSidebar .tag__input.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
+  }
+
+  #CollectionSidebar .tag button.tag__checkbox-wrapper {
+    font-family: inherit;
+    cursor: pointer;
+  }
+  /* === wszystko, co przyklejone, zachowuje sie tak samo: bez animacji === */
+
+
+  /* stan "stuck" z JS motywu nie jest juz potrzebny - zero animacji i przeskokow */
+  .site-header--stuck {
+    position: static !important;
+    transform: none !important;
+    transition: none !important;
+    top: auto !important;
+  }
+
+  .site-header--opening {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* kolumna filtrow przyklejona pod naglowkiem */
+  @media only screen and (min-width: 769px) {
+    #CollectionSidebar .collection-sidebar {
+      position: sticky;
+      top: calc(var(--announcement-h, 0px) + var(--header-h, 0px) + 24px);
+      max-height: calc(100vh - var(--announcement-h, 0px) - var(--header-h, 0px) - 48px);
+      overflow-y: auto;
+      overflow-x: visible;
+      scrollbar-width: thin;
+      /* zapas na obwodke zaznaczonego krazka, inaczej scrollowanie ja przycina */
+      padding: 2px 8px 2px 6px;
+      margin: -2px -8px -2px -6px;
+    }
+
+    #CollectionSidebar .collection-sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    #CollectionSidebar .collection-sidebar::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.18);
+    }
+  }
+  /* === liczby zmierzone na stronie referencyjnej (1500 px) === */
+
+  /* pasek ogloszen: 13.6 px, spacing 0.8 px, wysokosc ~34 px */
+  .announcement-bar {
+    padding: 8px 0;
+    font-size: 13.6px;
+    letter-spacing: 0.8px;
+  }
+
+  .announcement-bar--row .announcement-text {
+    font-weight: 600;
+  }
+
+  /* nawigacja naglowka: 14 px, waga 500, spacing 0.84 px */
+  @media only screen and (min-width: 769px) {
+    .site-navigation .site-nav__link {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.84px;
+    }
+  }
+
+  /* tytul kolekcji: 38 px, waga 600 */
+  .template-collection .section-header__title,
+  .template-search .section-header__title {
+    font-size: 38px;
+    font-weight: 600;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .template-collection .section-header__title {
+      font-size: 28px;
+    }
+  }
+
+  /* linki mega menu: 15 px, jak w referencji */
+  .megamenu__link.site-nav__dropdown-link {
+    font-size: 15px;
+  }
+  /* --- krazki kolorow: pelny kolor, bez bialego srodka --- */
+  /* theme rysuje pseudo-element z biala ramka 4 px do srodka - stad efekt obwarzanka */
+  #CollectionSidebar .color-swatch--filter:before {
+    display: none;
+  }
+
+  #CollectionSidebar .color-swatch--filter {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.16);
+    border: 0;
+    overflow: visible;
+  }
+
+  #CollectionSidebar .tag--active .color-swatch--filter {
+    box-shadow: 0 0 0 2px #16150f;
+  }
+
+  #CollectionSidebar .tag-list--swatches .tag__checkbox-wrapper:hover .color-swatch--filter {
+    box-shadow: 0 0 0 1px #16150f;
+  }
+</style>

@@ -1,0 +1,267 @@
+{%- liquid
+  unless limit
+    assign limit = main_menu.links.size
+  endunless
+  unless offset
+    assign offset = 0
+  endunless
+
+  # ustawienia mega menu (fallbacky, gdyby sekcja nie zostala przekazana)
+  assign mm_min_links = section.settings.megamenu_min_links | default: 5
+  assign mm_narrow = section.settings.megamenu_narrow_dropdowns
+  assign mm_counts = true
+  if section.settings.megamenu_show_counts == false
+    assign mm_counts = false
+  endif
+  assign mm_view_all_label = section.settings.megamenu_view_all_label | default: 'Se alle'
+-%}
+
+<ul
+  class="site-nav site-navigation small--hide"
+>
+  {%- for link in main_menu.links limit: limit offset: offset -%}
+    {%- liquid
+      assign has_dropdown = false
+      assign is_megamenu = false
+      if link.links != blank
+        assign has_dropdown = true
+        if link.levels > 1
+          assign is_megamenu = true
+        elsif mm_narrow != true and link.links.size >= mm_min_links
+          assign is_megamenu = true
+        endif
+      endif
+    -%}
+
+    <li class="site-nav__item site-nav__expanded-item{% if has_dropdown %} site-nav--has-dropdown{% endif %}{% if is_megamenu %} site-nav--is-megamenu{% endif %}">
+      {% if is_megamenu or has_dropdown %}
+        <details
+          data-hover="{{ hover_menu }}"
+          id="site-nav-item--{{ forloop.index }}"
+          class="site-nav__details"
+        >
+          <summary
+            data-link="{{ link.url }}"
+            aria-expanded="false"
+            aria-controls="site-nav-item--{{ forloop.index }}"
+            class="site-nav__link site-nav__link--underline{% if has_dropdown %} site-nav__link--has-dropdown{% endif %}"
+          >
+            {{ link.title }} <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-chevron-down" viewBox="0 0 28 16"><path d="m1.57 1.59 12.76 12.77L27.1 1.59" stroke-width="2" stroke="#000" fill="none"/></svg>
+          </summary>
+      {% else %}
+        <a
+          href="{{ link.url }}"
+          class="site-nav__link site-nav__link--underline{% if has_dropdown %} site-nav__link--has-dropdown{% endif %}"
+        >
+          {{ link.title }}
+        </a>
+      {% endif %}
+        {%- if is_megamenu -%}
+          {%- liquid
+            # 1. blok promocyjny dopasowany po tytule pozycji menu
+            assign promo_block = blank
+            assign current_title = link.title | downcase | strip
+
+            for block in section.blocks
+              if block.type == 'megamenu_promo' and block.settings.menu_title != blank
+                assign block_title = block.settings.menu_title | downcase | strip
+                if block_title == current_title
+                  assign promo_block = block
+                  break
+                endif
+              endif
+            endfor
+
+            # 2. dane promo (blok ma pierwszenstwo, fallback: obraz kolekcji z pozycji menu)
+            assign promo_image = blank
+            assign promo_eyebrow = blank
+            assign promo_heading = blank
+            assign promo_button = blank
+            assign promo_url = link.url
+            assign promo_overlay = 30
+            assign promo_color = '#ffffff'
+            assign promo_bg = '#8d8a83'
+
+            if promo_block != blank
+              assign promo_image = promo_block.settings.image
+              assign promo_eyebrow = promo_block.settings.eyebrow
+              assign promo_heading = promo_block.settings.heading
+              assign promo_button = promo_block.settings.button_label
+              assign promo_overlay = promo_block.settings.overlay_opacity | default: 30
+              assign promo_color = promo_block.settings.text_color | default: '#ffffff'
+              assign promo_bg = promo_block.settings.background_color | default: '#8d8a83'
+              if promo_block.settings.link != blank
+                assign promo_url = promo_block.settings.link
+              endif
+            else
+              # fallback: obraz kolekcji, na ktora wskazuje pozycja menu
+              assign parent_collection = blank
+              if link.type == 'collection_link' and link.object != blank
+                assign parent_collection = link.object
+              elsif link.url contains '/collections/'
+                assign parent_handle = link.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+                assign parent_collection = collections[parent_handle]
+              endif
+
+              if parent_collection.image != blank
+                assign promo_image = parent_collection.image
+                assign promo_url = parent_collection.url | default: link.url
+              else
+                # fallback 2: najwieksza podkolekcja - jej obraz, a jak go nie ma,
+                # to zdjecie pierwszego produktu (zeby kafel nie byl pusty)
+                assign best_collection = blank
+                assign best_count = 0
+
+                for childlink in link.links limit: 12
+                  assign child_collection = blank
+                  if childlink.type == 'collection_link' and childlink.object != blank
+                    assign child_collection = childlink.object
+                  elsif childlink.url contains '/collections/'
+                    assign child_handle = childlink.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+                    assign child_collection = collections[child_handle]
+                  else
+                    assign child_handle = childlink.title | handleize
+                    assign child_collection = collections[child_handle]
+                  endif
+
+                  if child_collection.handle != blank and child_collection.all_products_count > best_count
+                    assign best_count = child_collection.all_products_count
+                    assign best_collection = child_collection
+                  endif
+                endfor
+
+                if best_collection.image != blank
+                  assign promo_image = best_collection.image
+                  assign promo_url = best_collection.url
+                elsif best_collection.products.first.featured_image != blank
+                  assign promo_image = best_collection.products.first.featured_image
+                  assign promo_url = best_collection.url
+                endif
+              endif
+
+              if promo_image != blank
+                assign promo_heading = link.title
+              endif
+            endif
+
+            # kafel pokazujemy takze bez zdjecia, jesli blok promo jest skonfigurowany
+            assign has_promo = false
+            if promo_image != blank or promo_block != blank
+              assign has_promo = true
+            endif
+
+            # 3. link "View all": docelowa kolekcja i etykieta z bloku maja pierwszenstwo
+            assign view_all_url = link.url
+            assign view_all_text = blank
+
+            if mm_view_all_label != blank
+              assign view_all_text = mm_view_all_label | append: ' ' | append: link.title
+            endif
+
+            if promo_block != blank
+              if promo_block.settings.view_all_link != blank
+                assign view_all_url = promo_block.settings.view_all_link
+              endif
+              if promo_block.settings.view_all_label != blank
+                assign view_all_text = promo_block.settings.view_all_label
+              endif
+            endif
+
+            assign show_view_all = false
+            if view_all_text != blank and view_all_url != blank and view_all_url != '#'
+              assign show_view_all = true
+            endif
+          -%}
+
+          <div class="site-nav__dropdown megamenu megamenu--editorial text-left">
+            <div class="page-width">
+              <div class="megamenu__inner{% unless has_promo %} megamenu__inner--no-promo{% endunless %}">
+                <div class="megamenu__links appear-animation appear-delay-1">
+                  <p class="megamenu__heading">{{ link.title | escape }}</p>
+
+                  <ul class="megamenu__list">
+                    {%- for childlink in link.links -%}
+                      {%- render 'megamenu-link', item: childlink, show_count: mm_counts -%}
+
+                      {%- for grandchildlink in childlink.links -%}
+                        {%- render 'megamenu-link', item: grandchildlink, show_count: mm_counts -%}
+                      {%- endfor -%}
+                    {%- endfor -%}
+                  </ul>
+
+                  {%- if show_view_all -%}
+                    <a href="{{ view_all_url }}" class="megamenu__view-all">
+                      {{ view_all_text }}
+                      <svg aria-hidden="true" focusable="false" role="presentation" class="megamenu__arrow megamenu__chev" viewBox="0 0 8 14"><path d="m1 1 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                    </a>
+                  {%- endif -%}
+                </div>
+
+                {%- if has_promo -%}
+                  <div class="megamenu__promo appear-animation appear-delay-2"{% if promo_block != blank %} {{ promo_block.shopify_attributes }}{% endif %}>
+                    <a href="{{ promo_url }}" class="megamenu__promo-card" style="--promo-overlay: {{ promo_overlay | divided_by: 100.0 }}; --promo-color: {{ promo_color }}; --promo-bg: {{ promo_bg }};">
+                      {%- if promo_image != blank -%}
+                        {%- render 'image-element',
+                          img: promo_image,
+                          sizeVariable: '40vw',
+                          alt: promo_heading,
+                          classes: 'megamenu__promo-image'
+                        -%}
+                      {%- endif -%}
+
+                      <span class="megamenu__promo-content">
+                        {%- if promo_eyebrow != blank -%}
+                          <span class="megamenu__promo-eyebrow">{{ promo_eyebrow | escape }}</span>
+                        {%- endif -%}
+                        {%- if promo_heading != blank -%}
+                          <span class="megamenu__promo-heading">{{ promo_heading | escape }}</span>
+                        {%- endif -%}
+                        {%- if promo_button != blank -%}
+                          <span class="megamenu__promo-btn">
+                            {{ promo_button | escape }}
+                            <svg aria-hidden="true" focusable="false" role="presentation" class="megamenu__arrow" viewBox="0 0 24 12"><path d="M0 6h22M17.5 1.5 22 6l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+                          </span>
+                        {%- endif -%}
+                      </span>
+                    </a>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- elsif has_dropdown -%}
+          <ul class="site-nav__dropdown text-left">
+            {%- for childlink in link.links -%}
+              {%- liquid
+                assign has_sub_dropdown = false
+                if childlink.links != blank
+                  assign has_sub_dropdown = true
+                endif
+              -%}
+
+              <li class="{% if has_sub_dropdown %} site-nav__deep-dropdown-trigger{% endif %}">
+                <a href="{{ childlink.url }}" class="site-nav__dropdown-link site-nav__dropdown-link--second-level{% if has_sub_dropdown %} site-nav__dropdown-link--has-children{% endif %}">
+                  {{ childlink.title | escape }}
+                  {%- if has_sub_dropdown -%}
+                    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon--wide icon-chevron-down" viewBox="0 0 28 16"><path d="m1.57 1.59 12.76 12.77L27.1 1.59" stroke-width="2" stroke="#000" fill="none"/></svg>
+                  {%- endif -%}
+                </a>
+                {%- if has_sub_dropdown -%}
+                  <ul class="site-nav__deep-dropdown">
+                    {%- for grandchildlink in childlink.links -%}
+                      <li>
+                        <a href="{{ grandchildlink.url }}" class="site-nav__dropdown-link">{{ grandchildlink.title | escape }}</a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      {% if is_megamenu or has_dropdown %}
+        </details>
+      {% endif %}
+    </li>
+  {%- endfor -%}
+</ul>

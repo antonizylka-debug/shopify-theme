@@ -1,0 +1,306 @@
+{% doc %}
+  @prompt
+    Annoucementbar ktory sie przesuwa co x sekund albo mozna myszka mozna go przesunac lub palcem na telefonie i tam moge sobie dac wiadomosci , ale jedno na raz sie wyswietla dodaj mozliwosc ustaiwenia koloru i paddingow itd czyli wysokosc , czemu na gorze jest mniejszy padding a na dole mwiekszy i nie moge tego usunac pomuimo ze jest 0 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-announcement-bar-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    color: {{ block.settings.text_color }};
+    overflow: hidden;
+    position: relative;
+    padding: {{ block.settings.padding_top }}px {{ block.settings.padding_horizontal }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_horizontal }}px;
+  }
+
+  .ai-announcement-bar-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: {{ block.settings.bar_height }}px;
+  }
+
+  .ai-announcement-bar-message-{{ ai_gen_id }} {
+    font-size: {{ block.settings.font_size }}px;
+    text-align: center;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    transition: opacity 0.5s ease;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-announcement-bar-message-{{ ai_gen_id }} p {
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-announcement-bar-message-{{ ai_gen_id }}.active {
+    opacity: 1;
+    position: relative;
+  }
+
+  .ai-announcement-bar-message-{{ ai_gen_id }} a {
+    color: {{ block.settings.link_color }};
+    text-decoration: underline;
+  }
+
+  .ai-announcement-bar-message-{{ ai_gen_id }} a:hover {
+    opacity: 0.8;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-announcement-bar-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding_top | times: 0.8 }}px {{ block.settings.padding_horizontal | times: 0.8 }}px {{ block.settings.padding_bottom | times: 0.8 }}px {{ block.settings.padding_horizontal | times: 0.8 }}px;
+    }
+
+    .ai-announcement-bar-message-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<announcement-bar-{{ ai_gen_id }}
+  class="ai-announcement-bar-{{ ai_gen_id }}"
+  data-autoplay="{{ block.settings.autoplay }}"
+  data-autoplay-speed="{{ block.settings.autoplay_speed }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-announcement-bar-wrapper-{{ ai_gen_id }}">
+    {% if block.settings.message_1 != blank %}
+      <div class="ai-announcement-bar-message-{{ ai_gen_id }}" data-index="0">
+        {{ block.settings.message_1 }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.message_2 != blank %}
+      <div class="ai-announcement-bar-message-{{ ai_gen_id }}" data-index="1">
+        {{ block.settings.message_2 }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.message_3 != blank %}
+      <div class="ai-announcement-bar-message-{{ ai_gen_id }}" data-index="2">
+        {{ block.settings.message_3 }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.message_4 != blank %}
+      <div class="ai-announcement-bar-message-{{ ai_gen_id }}" data-index="3">
+        {{ block.settings.message_4 }}
+      </div>
+    {% endif %}
+
+    {% if block.settings.message_5 != blank %}
+      <div class="ai-announcement-bar-message-{{ ai_gen_id }}" data-index="4">
+        {{ block.settings.message_5 }}
+      </div>
+    {% endif %}
+  </div>
+</announcement-bar-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class AnnouncementBar{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.messages = Array.from(this.querySelectorAll('.ai-announcement-bar-message-{{ ai_gen_id }}'));
+        this.currentIndex = 0;
+        this.autoplayInterval = null;
+        this.autoplay = this.dataset.autoplay === 'true';
+        this.autoplaySpeed = parseInt(this.dataset.autoplaySpeed) * 1000;
+      }
+
+      connectedCallback() {
+        if (this.messages.length === 0) return;
+
+        this.showMessage(0);
+
+        if (this.autoplay && this.messages.length > 1) {
+          this.startAutoplay();
+        }
+      }
+
+      disconnectedCallback() {
+        this.stopAutoplay();
+      }
+
+      showMessage(index) {
+        this.messages.forEach((msg, i) => {
+          if (i === index) {
+            msg.classList.add('active');
+          } else {
+            msg.classList.remove('active');
+          }
+        });
+        this.currentIndex = index;
+      }
+
+      nextMessage() {
+        const nextIndex = (this.currentIndex + 1) % this.messages.length;
+        this.showMessage(nextIndex);
+      }
+
+      startAutoplay() {
+        this.stopAutoplay();
+        this.autoplayInterval = setInterval(() => {
+          this.nextMessage();
+        }, this.autoplaySpeed);
+      }
+
+      stopAutoplay() {
+        if (this.autoplayInterval) {
+          clearInterval(this.autoplayInterval);
+          this.autoplayInterval = null;
+        }
+      }
+    }
+
+    customElements.define('announcement-bar-{{ ai_gen_id }}', AnnouncementBar{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Messages"
+    },
+    {
+      "type": "richtext",
+      "id": "message_1",
+      "label": "Message 1",
+      "default": "<p>Welcome to our store!</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "message_2",
+      "label": "Message 2",
+      "default": "<p>Free shipping on orders over $50</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "message_3",
+      "label": "Message 3",
+      "default": "<p>New arrivals just landed</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "message_4",
+      "label": "Message 4"
+    },
+    {
+      "type": "richtext",
+      "id": "message_5",
+      "label": "Message 5"
+    },
+    {
+      "type": "header",
+      "content": "Autoplay"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "bar_height",
+      "label": "Minimum height",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Padding horizontal",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#d1a972"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar"
+    }
+  ]
+}
+{% endschema %}

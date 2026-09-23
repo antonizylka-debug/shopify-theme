@@ -1,0 +1,139 @@
+{% comment %}
+  Zwijanie dlugich list filtrow: pokazuje 10 wartosci + przycisk "Show all X".
+  Wczytywane raz z layout/theme.liquid.
+{% endcomment %}
+
+<script>
+  (function () {
+    document.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-filter-toggle]');
+      if (!button) return;
+
+      event.preventDefault();
+
+      var list = button.previousElementSibling;
+      while (list && list.tagName !== 'UL') {
+        list = list.previousElementSibling;
+      }
+      if (!list) return;
+
+      var expanded = list.classList.toggle('is-expanded');
+
+      if (expanded) {
+        if (!button.dataset.more) {
+          button.dataset.more = button.textContent.trim();
+        }
+        button.textContent = button.dataset.less || 'Show less';
+      } else {
+        button.textContent = button.dataset.more || button.textContent;
+      }
+
+      button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+
+      // akordeon theme trzyma sztywna wysokosc w px - po zmianie liczby wierszy
+      // trzeba ja przeliczyc, inaczej reszta wartosci i przycisk sa przyciete
+      var panel = button.closest('.collapsible-content');
+      if (panel) {
+        requestAnimationFrame(function () {
+          var inner = panel.querySelector('.collapsible-content__inner');
+          var target = inner ? inner.offsetHeight : panel.scrollHeight;
+          panel.style.height = target + 'px';
+        });
+      }
+    });
+
+    // wysokosc naglowka do obliczenia offsetu przyklejonych filtrow
+    var siteHeader = document.getElementById('SiteHeader');
+    if (siteHeader) {
+      var setHeaderHeight = function () {
+        document.documentElement.style.setProperty('--header-h', siteHeader.offsetHeight + 'px');
+      };
+
+      setHeaderHeight();
+      window.addEventListener('resize', setHeaderHeight);
+      document.addEventListener('shopify:section:load', setHeaderHeight);
+    }
+    // chipy i krazki grupujace kilka wartosci filtra:
+    // przelaczamy ukryte checkboxy i zglaszamy zdarzenie, ktorego slucha motyw
+    document.addEventListener('click', function (event) {
+      var trigger = event.target.closest('[data-filter-group]');
+      if (!trigger) return;
+
+      event.preventDefault();
+
+      var item = trigger.closest('.tag');
+      if (!item) return;
+
+      var inputs = item.querySelectorAll('input[type="checkbox"]');
+      if (!inputs.length) return;
+
+      var anyChecked = Array.prototype.some.call(inputs, function (input) {
+        return input.checked;
+      });
+
+      Array.prototype.forEach.call(inputs, function (input) {
+        input.checked = !anyChecked;
+      });
+
+      item.classList.toggle('tag--active', !anyChecked);
+
+      var form = trigger.closest('form');
+      if (form) {
+        form.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    });
+    // pasek aktywnych filtrow: +N more / Show less
+    document.addEventListener('click', function (event) {
+      var more = event.target.closest('[data-active-filters-more]');
+      if (!more) return;
+
+      event.preventDefault();
+
+      var row = more.closest('[data-active-filters]');
+      if (!row) return;
+
+      var expanded = row.classList.toggle('is-expanded');
+
+      if (expanded) {
+        if (!more.dataset.more) {
+          more.dataset.more = more.textContent.trim();
+        }
+        more.textContent = more.dataset.less || 'Show less';
+      } else {
+        more.textContent = more.dataset.more || more.textContent;
+      }
+    });
+    // strzalki w rzedzie podkolekcji
+    document.addEventListener('click', function (event) {
+      var nav = event.target.closest('[data-subrow-prev], [data-subrow-next]');
+      if (!nav) return;
+
+      var row = nav.closest('[data-subrow]');
+      var track = row && row.querySelector('[data-subrow-track]');
+      if (!track) return;
+
+      var step = track.clientWidth * 0.8;
+      track.scrollLeft += nav.hasAttribute('data-subrow-next') ? step : -step;
+    });
+
+    // wygaszanie strzalek na koncach
+    function updateArrows(row) {
+      var track = row.querySelector('[data-subrow-track]');
+      var prev = row.querySelector('[data-subrow-prev]');
+      var next = row.querySelector('[data-subrow-next]');
+      if (!track || !prev || !next) return;
+
+      var maxScroll = track.scrollWidth - track.clientWidth - 2;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= maxScroll;
+    }
+
+    document.querySelectorAll('[data-subrow]').forEach(function (row) {
+      var track = row.querySelector('[data-subrow-track]');
+      if (!track) return;
+      updateArrows(row);
+      track.addEventListener('scroll', function () { updateArrows(row); });
+      window.addEventListener('resize', function () { updateArrows(row); });
+    });
+  })();
+</script>

@@ -1,0 +1,72 @@
+{% comment %}
+  Przewijany rzad podkolekcji: zdjecie, nazwa, liczba produktow.
+  Parametry:
+   - sub_collection_links (wymagany) - linki dzieci z menu
+   - per_row (opcjonalny) - ile kafli widac naraz
+   - parent_url (opcjonalny) - pomija link do samego siebie
+{% endcomment %}
+
+{%- liquid
+  assign visible = per_row | default: 6
+  assign tile_width = 100.0 | divided_by: visible
+-%}
+
+<div class="subrow" data-subrow style="--subrow-width: {{ tile_width }}%;">
+  <div class="subrow__nav-wrap">
+    <button type="button" class="subrow__nav" data-subrow-prev aria-label="{{ 'general.pagination.previous' | t }}">
+      <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 8 14"><path d="M7 1 1 7l6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+    </button>
+    <button type="button" class="subrow__nav" data-subrow-next aria-label="{{ 'general.pagination.next' | t }}">
+      <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 8 14"><path d="m1 1 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+    </button>
+  </div>
+
+  <div class="subrow__track" data-subrow-track>
+    {%- for sub_collection_link in sub_collection_links -%}
+      {%- liquid
+        assign sub_collection = blank
+
+        if sub_collection_link.type == 'collection_link' and sub_collection_link.object != blank
+          assign sub_collection = sub_collection_link.object
+        elsif sub_collection_link.url contains '/collections/'
+          assign sub_handle = sub_collection_link.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+          assign sub_collection = collections[sub_handle]
+        else
+          assign sub_handle = sub_collection_link.title | handleize
+          assign sub_collection = collections[sub_handle]
+        endif
+
+        assign sub_image = blank
+        if sub_collection.image != blank
+          assign sub_image = sub_collection.image
+        elsif sub_collection.products.first.featured_image != blank
+          assign sub_image = sub_collection.products.first.featured_image
+        endif
+      -%}
+
+      {%- if sub_collection != blank and sub_collection.handle != blank -%}
+        {%- unless parent_url == sub_collection.url -%}
+          <a href="{{ sub_collection.url }}" class="subrow__item">
+            <span class="subrow__media">
+              {%- if sub_image != blank -%}
+                {%- render 'image-element',
+                  img: sub_image,
+                  sizeVariable: '20vw',
+                  alt: sub_collection_link.title,
+                  classes: 'subrow__image'
+                -%}
+              {%- endif -%}
+            </span>
+
+            <span class="subrow__meta">
+              <span class="subrow__title">{{ sub_collection_link.title | escape }}</span>
+              {%- if sub_collection.all_products_count > 0 -%}
+                <span class="subrow__count">{{ sub_collection.all_products_count }}</span>
+              {%- endif -%}
+            </span>
+          </a>
+        {%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>

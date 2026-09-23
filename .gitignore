@@ -1,0 +1,13 @@
+# Shopify CLI
+.shopify/
+*.zip
+
+# systemowe
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# edytory
+.vscode/
+.idea/
+*.swp

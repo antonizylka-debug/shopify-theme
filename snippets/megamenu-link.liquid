@@ -1,0 +1,35 @@
+{% comment %}
+  Pozycja listy w mega menu: link + liczba produktow w kolekcji.
+  Parametry:
+   - item (wymagany) - obiekt linku z menu
+   - show_count (opcjonalny) - bool, czy pokazywac licznik produktow
+{% endcomment %}
+
+{%- liquid
+  assign item_collection = blank
+
+  if item.type == 'collection_link' and item.object != blank
+    assign item_collection = item.object
+  elsif item.url contains '/collections/'
+    assign item_handle = item.url | split: '/collections/' | last | split: '?' | first | split: '#' | first | split: '/' | first
+    assign item_collection = collections[item_handle]
+  else
+    # awaryjnie: link bez adresu kolekcji (np. "#") - dopasuj po tytule
+    assign item_handle = item.title | handleize
+    assign item_collection = collections[item_handle]
+  endif
+
+  assign item_count = 0
+  if show_count and item_collection != blank and item_collection.handle != blank
+    assign item_count = item_collection.all_products_count
+  endif
+-%}
+
+<li class="megamenu__list-item">
+  <a href="{{ item.url }}" class="site-nav__dropdown-link megamenu__link">
+    <span class="megamenu__link-title">{{ item.title | escape }}</span>
+    {%- if item_count > 0 -%}
+      <span class="megamenu__link-count">{{ item_count }}</span>
+    {%- endif -%}
+  </a>
+</li>

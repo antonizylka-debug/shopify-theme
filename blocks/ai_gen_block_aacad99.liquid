@@ -1,0 +1,1057 @@
+{% doc %}
+  @prompt
+    Create a full-width top trust bar section with 5 inline items. Each item should contain an icon and short text. The layout should be horizontal, evenly spaced, and responsive.
+    
+    Include 5 items:
+    1. Verified reviews with rating (e.g. "Zweryfikowane opinie ⭐ 4,9/5")
+    2. Brand award info
+    3. Customer trust statement (2.5M+ customers)
+    4. Secure payments info
+    5. Contact phone number
+    
+    Each item should support:
+    - editable text
+    - selectable icon (SVG)
+    - optional link
+    
+    Settings:
+    - background color
+    - text color
+    - font size
+    - spacing between items
+    - alignment (center / space-between)
+    - mobile behavior (scroll or wrap)
+    
+    On mobile: enable horizontal scrolling.
+    
+    Style: minimal, clean, small icons, subtle spacing., Create a full-width trust bar section with multiple inline items.
+    
+    The first item should be a "Verified Reviews" block styled similar to Trustpilot:
+    - green star rating icons
+    - text: "Verified Reviews" and "Rated 4.9/5"
+    - optional Trustpilot-style branding
+    
+    When clicking this item, open a modal popup (not a link).
+    
+    The modal must include:
+    - rich text title (editable)
+    - rich text content (fully flexible: headings, paragraphs, bold, links, lists)
+    - optional CTA button with label + link
+    
+    IMPORTANT:
+    Use richtext fields instead of plain text to allow flexible formatting.
+    
+    Settings for modal:
+    - enable/disable modal
+    - modal title (richtext)
+    - modal content (richtext)
+    - button label
+    - button link
+    
+    General section settings:
+    - icons for each item
+    - text editable
+    - colors (background, text)
+    - spacing
+    - alignment
+    
+    Mobile:
+    - horizontal scroll for trust bar
+    - modal full width
+    
+    Style:
+    - minimal, premium, clean (Trustpilot-inspired)
+    - smooth fade-in modal animation
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-trust-bar-modal-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.vertical_padding }}px 0;
+  }
+
+  .ai-trust-bar-modal-container-{{ ai_gen_id }} {
+    display: flex;
+    {% if block.settings.alignment == 'center' %}
+      justify-content: center;
+    {% else %}
+      justify-content: space-between;
+    {% endif %}
+    align-items: center;
+    gap: {{ block.settings.item_spacing }}px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-trust-bar-modal-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    text-decoration: none;
+    color: {{ block.settings.text_color }};
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .ai-trust-bar-modal-item-{{ ai_gen_id }}:hover {
+    opacity: 0.8;
+  }
+
+  .ai-trust-bar-modal-icon-{{ ai_gen_id }} {
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    flex-shrink: 0;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-trust-bar-modal-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    fill: none;
+  }
+
+  .ai-trust-bar-modal-icon-{{ ai_gen_id }}.ai-trust-bar-modal-icon-filled-{{ ai_gen_id }} svg {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .ai-trust-bar-modal-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.font_size }}px;
+    white-space: nowrap;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-trust-bar-modal-reviews-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .ai-trust-bar-modal-stars-{{ ai_gen_id }} {
+    display: flex;
+    gap: 2px;
+  }
+
+  .ai-trust-bar-modal-star-{{ ai_gen_id }} {
+    width: {{ block.settings.star_size }}px;
+    height: {{ block.settings.star_size }}px;
+    color: {{ block.settings.star_color }};
+  }
+
+  .ai-trust-bar-modal-star-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  .ai-trust-bar-modal-rating-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.font_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-trust-bar-modal-overlay-{{ ai_gen_id }} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .ai-trust-bar-modal-overlay-{{ ai_gen_id }}.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .ai-trust-bar-modal-popup-{{ ai_gen_id }} {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background-color: {{ block.settings.modal_bg_color }};
+    border-radius: {{ block.settings.modal_border_radius }}px;
+    max-width: {{ block.settings.modal_max_width }}px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .ai-trust-bar-modal-popup-{{ ai_gen_id }}.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .ai-trust-bar-modal-popup-content-{{ ai_gen_id }} {
+    padding: {{ block.settings.modal_padding }}px;
+    color: {{ block.settings.modal_text_color }};
+  }
+
+  .ai-trust-bar-modal-popup-header-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .ai-trust-bar-modal-popup-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.modal_title_size }}px;
+    font-weight: 600;
+    margin: 0;
+    color: {{ block.settings.modal_text_color }};
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .ai-trust-bar-modal-popup-title-{{ ai_gen_id }} p {
+    margin: 0;
+  }
+
+  .ai-trust-bar-modal-close-{{ ai_gen_id }} {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: {{ block.settings.modal_text_color }};
+    opacity: 0.7;
+    flex-shrink: 0;
+    margin-left: 15px;
+  }
+
+  .ai-trust-bar-modal-close-{{ ai_gen_id }}:hover {
+    opacity: 1;
+  }
+
+  .ai-trust-bar-modal-close-{{ ai_gen_id }} svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} {
+    font-size: {{ block.settings.modal_content_size }}px;
+    line-height: 1.6;
+    color: {{ block.settings.modal_text_color }};
+    margin-bottom: 25px;
+  }
+
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} p {
+    margin: 0 0 15px;
+  }
+
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} h1,
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} h2,
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} h3,
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} h4,
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} h5,
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} h6 {
+    margin: 0 0 15px;
+    line-height: 1.3;
+  }
+
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} ul,
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} ol {
+    margin: 0 0 15px;
+    padding-left: 20px;
+  }
+
+  .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} a {
+    color: {{ block.settings.modal_link_color }};
+    text-decoration: underline;
+  }
+
+  .ai-trust-bar-modal-popup-button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: {{ block.settings.modal_button_bg }};
+    color: {{ block.settings.modal_button_text }};
+    text-decoration: none;
+    border-radius: {{ block.settings.modal_button_radius }}px;
+    font-size: {{ block.settings.modal_button_size }}px;
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-trust-bar-modal-popup-button-{{ ai_gen_id }}:hover {
+    opacity: 0.85;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-trust-bar-modal-container-{{ ai_gen_id }} {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      justify-content: flex-start;
+      padding: 0 15px;
+    }
+
+    .ai-trust-bar-modal-container-{{ ai_gen_id }}::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ai-trust-bar-modal-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.9 }}px;
+    }
+
+    .ai-trust-bar-modal-icon-{{ ai_gen_id }} {
+      width: {{ block.settings.icon_size | times: 0.9 }}px;
+      height: {{ block.settings.icon_size | times: 0.9 }}px;
+    }
+
+    .ai-trust-bar-modal-star-{{ ai_gen_id }} {
+      width: {{ block.settings.star_size | times: 0.9 }}px;
+      height: {{ block.settings.star_size | times: 0.9 }}px;
+    }
+
+    .ai-trust-bar-modal-popup-{{ ai_gen_id }} {
+      width: 95%;
+      max-height: 90vh;
+    }
+
+    .ai-trust-bar-modal-popup-content-{{ ai_gen_id }} {
+      padding: {{ block.settings.modal_padding | times: 0.7 }}px;
+    }
+
+    .ai-trust-bar-modal-popup-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.modal_title_size | times: 0.85 }}px;
+    }
+
+    .ai-trust-bar-modal-popup-body-{{ ai_gen_id }} {
+      font-size: {{ block.settings.modal_content_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<trust-bar-modal-{{ ai_gen_id }} class="ai-trust-bar-modal-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-trust-bar-modal-container-{{ ai_gen_id }}">
+    {% if block.settings.reviews_enabled %}
+      <button
+        class="ai-trust-bar-modal-item-{{ ai_gen_id }} ai-trust-bar-modal-reviews-{{ ai_gen_id }}"
+        data-modal-trigger
+        aria-label="View verified reviews"
+      >
+        <div class="ai-trust-bar-modal-stars-{{ ai_gen_id }}">
+          {% for i in (1..5) %}
+            <div class="ai-trust-bar-modal-star-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+          {% endfor %}
+        </div>
+        <span class="ai-trust-bar-modal-rating-text-{{ ai_gen_id }}">{{ block.settings.reviews_text }}</span>
+      </button>
+    {% endif %}
+
+    {% for i in (2..5) %}
+      {% liquid
+        assign item_enabled_key = 'item_' | append: i | append: '_enabled'
+        assign item_text_key = 'item_' | append: i | append: '_text'
+        assign item_icon_key = 'item_' | append: i | append: '_icon'
+        assign item_link_key = 'item_' | append: i | append: '_link'
+
+        assign item_enabled = block.settings[item_enabled_key]
+        assign item_text = block.settings[item_text_key]
+        assign item_icon = block.settings[item_icon_key]
+        assign item_link = block.settings[item_link_key]
+      %}
+
+      {% if item_enabled and item_text != blank %}
+        {% if item_link != blank %}
+          <a href="{{ item_link }}" class="ai-trust-bar-modal-item-{{ ai_gen_id }}">
+        {% else %}
+          <div class="ai-trust-bar-modal-item-{{ ai_gen_id }}">
+        {% endif %}
+
+          <div class="ai-trust-bar-modal-icon-{{ ai_gen_id }} {% if item_icon == 'shield' %}ai-trust-bar-modal-icon-filled-{{ ai_gen_id }}{% endif %}">
+            {% case item_icon %}
+              {% when 'award' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="8" r="7"></circle>
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                </svg>
+              {% when 'users' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              {% when 'shield' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              {% when 'phone' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+              {% when 'check' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              {% when 'heart' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              {% when 'truck' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="3" width="15" height="13"></rect>
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                  <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                  <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
+              {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            {% endcase %}
+          </div>
+
+          <span class="ai-trust-bar-modal-text-{{ ai_gen_id }}">{{ item_text }}</span>
+
+        {% if item_link != blank %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if block.settings.modal_enabled %}
+    <div class="ai-trust-bar-modal-overlay-{{ ai_gen_id }}" data-modal-overlay></div>
+    <div class="ai-trust-bar-modal-popup-{{ ai_gen_id }}" data-modal-popup>
+      <div class="ai-trust-bar-modal-popup-content-{{ ai_gen_id }}">
+        <div class="ai-trust-bar-modal-popup-header-{{ ai_gen_id }}">
+          {% if block.settings.modal_title != blank %}
+            <div class="ai-trust-bar-modal-popup-title-{{ ai_gen_id }}">
+              {{ block.settings.modal_title }}
+            </div>
+          {% endif %}
+          <button class="ai-trust-bar-modal-close-{{ ai_gen_id }}" data-modal-close aria-label="Close modal">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        {% if block.settings.modal_content != blank %}
+          <div class="ai-trust-bar-modal-popup-body-{{ ai_gen_id }}">
+            {{ block.settings.modal_content }}
+          </div>
+        {% endif %}
+
+        {% if block.settings.modal_button_label != blank and block.settings.modal_button_link != blank %}
+          <a href="{{ block.settings.modal_button_link }}" class="ai-trust-bar-modal-popup-button-{{ ai_gen_id }}">
+            {{ block.settings.modal_button_label }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+</trust-bar-modal-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class TrustBarModal{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.container = this.querySelector('.ai-trust-bar-modal-container-{{ ai_gen_id }}');
+        this.modalTrigger = this.querySelector('[data-modal-trigger]');
+        this.modalOverlay = this.querySelector('[data-modal-overlay]');
+        this.modalPopup = this.querySelector('[data-modal-popup]');
+        this.modalClose = this.querySelector('[data-modal-close]');
+        
+        if (window.innerWidth <= 749) {
+          this.enableSmoothScroll();
+        }
+
+        if (this.modalTrigger && this.modalOverlay && this.modalPopup) {
+          this.setupModal();
+        }
+      }
+
+      enableSmoothScroll() {
+        if (!this.container) return;
+        
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        this.container.addEventListener('mousedown', (e) => {
+          isDown = true;
+          startX = e.pageX - this.container.offsetLeft;
+          scrollLeft = this.container.scrollLeft;
+        });
+
+        this.container.addEventListener('mouseleave', () => {
+          isDown = false;
+        });
+
+        this.container.addEventListener('mouseup', () => {
+          isDown = false;
+        });
+
+        this.container.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - this.container.offsetLeft;
+          const walk = (x - startX) * 2;
+          this.container.scrollLeft = scrollLeft - walk;
+        });
+      }
+
+      setupModal() {
+        this.modalTrigger.addEventListener('click', () => {
+          this.openModal();
+        });
+
+        this.modalClose.addEventListener('click', () => {
+          this.closeModal();
+        });
+
+        this.modalOverlay.addEventListener('click', () => {
+          this.closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.modalPopup.classList.contains('active')) {
+            this.closeModal();
+          }
+        });
+      }
+
+      openModal() {
+        this.modalOverlay.classList.add('active');
+        this.modalPopup.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      closeModal() {
+        this.modalOverlay.classList.remove('active');
+        this.modalPopup.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    customElements.define('trust-bar-modal-{{ ai_gen_id }}', TrustBarModal{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Trust bar with modal",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "space-between",
+          "label": "Space between"
+        }
+      ],
+      "default": "space-between"
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "label": "Item spacing",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "vertical_padding",
+      "label": "Vertical padding",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#191919"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 14,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Verified reviews item"
+    },
+    {
+      "type": "checkbox",
+      "id": "reviews_enabled",
+      "label": "Enable reviews item",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "reviews_text",
+      "label": "Reviews text",
+      "default": "Rated 4.9/5"
+    },
+    {
+      "type": "range",
+      "id": "star_size",
+      "label": "Star size",
+      "min": 12,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#00b67a"
+    },
+    {
+      "type": "header",
+      "content": "Item 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "item_2_enabled",
+      "label": "Enable item 2",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "item_2_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "award",
+          "label": "Award"
+        },
+        {
+          "value": "users",
+          "label": "Users"
+        },
+        {
+          "value": "shield",
+          "label": "Shield"
+        },
+        {
+          "value": "phone",
+          "label": "Phone"
+        },
+        {
+          "value": "check",
+          "label": "Check"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "truck",
+          "label": "Truck"
+        }
+      ],
+      "default": "award"
+    },
+    {
+      "type": "text",
+      "id": "item_2_text",
+      "label": "Text",
+      "default": "Award Winning Brand"
+    },
+    {
+      "type": "url",
+      "id": "item_2_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Item 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "item_3_enabled",
+      "label": "Enable item 3",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "item_3_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "award",
+          "label": "Award"
+        },
+        {
+          "value": "users",
+          "label": "Users"
+        },
+        {
+          "value": "shield",
+          "label": "Shield"
+        },
+        {
+          "value": "phone",
+          "label": "Phone"
+        },
+        {
+          "value": "check",
+          "label": "Check"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "truck",
+          "label": "Truck"
+        }
+      ],
+      "default": "users"
+    },
+    {
+      "type": "text",
+      "id": "item_3_text",
+      "label": "Text",
+      "default": "2.5M+ Happy Customers"
+    },
+    {
+      "type": "url",
+      "id": "item_3_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Item 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "item_4_enabled",
+      "label": "Enable item 4",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "item_4_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "award",
+          "label": "Award"
+        },
+        {
+          "value": "users",
+          "label": "Users"
+        },
+        {
+          "value": "shield",
+          "label": "Shield"
+        },
+        {
+          "value": "phone",
+          "label": "Phone"
+        },
+        {
+          "value": "check",
+          "label": "Check"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "truck",
+          "label": "Truck"
+        }
+      ],
+      "default": "shield"
+    },
+    {
+      "type": "text",
+      "id": "item_4_text",
+      "label": "Text",
+      "default": "Secure Payments"
+    },
+    {
+      "type": "url",
+      "id": "item_4_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Item 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "item_5_enabled",
+      "label": "Enable item 5",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "item_5_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "award",
+          "label": "Award"
+        },
+        {
+          "value": "users",
+          "label": "Users"
+        },
+        {
+          "value": "shield",
+          "label": "Shield"
+        },
+        {
+          "value": "phone",
+          "label": "Phone"
+        },
+        {
+          "value": "check",
+          "label": "Check"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "truck",
+          "label": "Truck"
+        }
+      ],
+      "default": "phone"
+    },
+    {
+      "type": "text",
+      "id": "item_5_text",
+      "label": "Text",
+      "default": "Contact: +48 123 456 789"
+    },
+    {
+      "type": "url",
+      "id": "item_5_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Modal settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "modal_enabled",
+      "label": "Enable modal",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "modal_title",
+      "label": "Modal title",
+      "default": "<p>Verified Reviews</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "modal_content",
+      "label": "Modal content",
+      "default": "<p>Our customers have rated us <strong>4.9 out of 5 stars</strong> based on thousands of verified reviews.</p><p>We're committed to providing exceptional service and quality products that exceed expectations.</p>"
+    },
+    {
+      "type": "text",
+      "id": "modal_button_label",
+      "label": "Button label",
+      "default": "Read All Reviews"
+    },
+    {
+      "type": "url",
+      "id": "modal_button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Modal style"
+    },
+    {
+      "type": "range",
+      "id": "modal_max_width",
+      "label": "Max width",
+      "min": 400,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "modal_padding",
+      "label": "Padding",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "modal_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "modal_bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "modal_text_color",
+      "label": "Text color",
+      "default": "#191919"
+    },
+    {
+      "type": "color",
+      "id": "modal_link_color",
+      "label": "Link color",
+      "default": "#00b67a"
+    },
+    {
+      "type": "range",
+      "id": "modal_title_size",
+      "label": "Title size",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "modal_content_size",
+      "label": "Content size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Modal button"
+    },
+    {
+      "type": "color",
+      "id": "modal_button_bg",
+      "label": "Background color",
+      "default": "#00b67a"
+    },
+    {
+      "type": "color",
+      "id": "modal_button_text",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "modal_button_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "modal_button_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 5
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust bar with modal"
+    }
+  ]
+}
+{% endschema %}

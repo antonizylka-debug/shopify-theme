@@ -1,0 +1,104 @@
+{% comment %}
+  Filtr koloru sprowadzony do stalej listy rodzin.
+  Kazda rodzina to jeden widoczny krazek + ukryte checkboxy wszystkich
+  pasujacych wartosci, dzieki czemu dziala natywny AJAX motywu i wybor wielu naraz.
+
+  Parametry:
+   - filter (wymagany)
+   - enable_swatch_labels (opcjonalny)
+   - show_unmatched (opcjonalny)
+{% endcomment %}
+
+{%- liquid
+  assign color_map = 'Black|#111111|black,White|#ffffff|white;ivory,Grey|#8b8b8b|grey;gray,Beige|#e8dcc4|beige;nude;apricot,Brown|#6b4a2f|brown;chocolate;coffee;camel;tan,Blue|#2b4a7d|blue;denim;navy;azure,Green|#4a7d55|green;olive;mint,Khaki|#a89f68|khaki,Red|#b3262c|red;scarlet,Burgundy|#6b2233|burgundy;wine;maroon,Pink|#e8a8bb|pink;rose;blush,Purple|#6b4a8f|purple;violet;lilac,Orange|#d2793a|orange;coral;rust,Yellow|#d8c14a|yellow;mustard;lemon,Gold|#c9a227|gold;bronze,Multi|multi|multi;colorful;rainbow;floral;print;pattern;pictured' | split: ','
+-%}
+
+<ul class="no-bullets tag-list tag-list--swatches">
+  {%- assign matched_labels = '' -%}
+
+  {%- for family in color_map -%}
+    {%- liquid
+      assign parts = family | split: '|'
+      assign family_label = parts[0]
+      assign family_color = parts[1]
+      assign keywords = parts[2] | split: ';'
+
+      assign family_active = false
+      assign family_found = false
+    -%}
+
+    {%- capture family_inputs -%}
+      {%- for value in filter.values -%}
+        {%- liquid
+          assign value_label = value.label | downcase
+          assign hit = false
+
+          for keyword in keywords
+            if value_label contains keyword
+              assign hit = true
+              break
+            endif
+          endfor
+        -%}
+
+        {%- if hit and value.count > 0 -%}
+          {%- liquid
+            assign family_found = true
+            assign matched_labels = matched_labels | append: '[' | append: value.label | append: ']'
+            if value.active
+              assign family_active = true
+            endif
+          -%}
+          <input
+            type="checkbox"
+            class="tag__input visually-hidden"
+            name="{{ value.param_name }}"
+            value="{{ value.value }}"
+            {% if value.active %}checked{% endif %}>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if family_found -%}
+      <li class="tag tag--swatch{% if family_active %} tag--active{% endif %}{% if enable_swatch_labels %} tag--show-label{% endif %}">
+        <button type="button" class="tag__checkbox-wrapper text-label" data-filter-group>
+          {%- if family_color == 'multi' -%}
+            <span class="color-swatch color-swatch--filter color-swatch--multi"></span>
+          {%- else -%}
+            <span class="color-swatch color-swatch--filter" style="background-color: {{ family_color }};"></span>
+          {%- endif -%}
+          <span class="tag__text{% unless enable_swatch_labels %} hide{% endunless %}">{{ family_label }}</span>
+        </button>
+        {{ family_inputs }}
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if show_unmatched -%}
+    {%- for value in filter.values -%}
+      {%- liquid
+        assign lookup = '[' | append: value.label | append: ']'
+        assign already_shown = false
+        if matched_labels contains lookup
+          assign already_shown = true
+        endif
+        assign fallback_color = value.label | split: ' ' | last | handle
+      -%}
+
+      {%- unless already_shown or value.count == 0 -%}
+        <li class="tag tag--swatch{% if value.active %} tag--active{% endif %}{% if enable_swatch_labels %} tag--show-label{% endif %}">
+          <button type="button" class="tag__checkbox-wrapper text-label" data-filter-group>
+            <span class="color-swatch color-swatch--filter" style="background-color: {{ fallback_color }};"></span>
+            <span class="tag__text{% unless enable_swatch_labels %} hide{% endunless %}">{{ value.label | escape }}</span>
+          </button>
+          <input
+            type="checkbox"
+            class="tag__input visually-hidden"
+            name="{{ value.param_name }}"
+            value="{{ value.value }}"
+            {% if value.active %}checked{% endif %}>
+        </li>
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endif -%}
+</ul>
