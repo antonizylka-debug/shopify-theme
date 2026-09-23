@@ -6,8 +6,7 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */
-{
+ */{
   "type": "footer",
   "name": "t:sections.footer-group.name",
   "sections": {
@@ -162,10 +161,66 @@
         "link_spacing_mobile": 2,
         "hide_mobile_separators": false
       }
+    },
+    "usp-bar": {
+      "type": "usp-bar",
+      "blocks": {
+        "dispatch": {
+          "type": "item",
+          "settings": {
+            "icon": "box",
+            "title": "Fast dispatch",
+            "text": "Dispatched in 1 to 3 working days"
+          }
+        },
+        "returns": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "Easy returns",
+            "text": "Within 14 days of delivery"
+          }
+        },
+        "tracking": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Tracked delivery",
+            "text": "Tracking on every parcel"
+          }
+        },
+        "help": {
+          "type": "item",
+          "settings": {
+            "icon": "chat",
+            "title": "Here to help",
+            "text": "Answers within 1 to 2 working days"
+          }
+        }
+      },
+      "block_order": [
+        "dispatch",
+        "returns",
+        "tracking",
+        "help"
+      ],
+      "settings": {
+        "padding": 25,
+        "padding_mobile": 17,
+        "show_border_top": true,
+        "show_border_bottom": true,
+        "icon_box": true,
+        "scroll_seconds": 24,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6e6b65",
+        "color_line": "#e6e3de"
+      }
     }
   },
   "order": [
     "footer-promotions",
+    "usp-bar",
     "footer"
   ]
 }
