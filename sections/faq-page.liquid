@@ -1,0 +1,461 @@
+{%- liquid
+  assign color_text = section.settings.color_text
+  assign color_muted = section.settings.color_muted
+  assign color_border = section.settings.color_border
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .ob-faqp {
+    color: {{ color_text }};
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__wrap {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 64px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    column-gap: 72px;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__head {
+    grid-column: 1 / -1;
+    padding: 72px 0 48px;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__eyebrow {
+    margin: 0 0 12px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: {{ color_muted }};
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__title {
+    margin: 0;
+    font-size: 38px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__sub {
+    max-width: 675px;
+    margin: 12px 0 0;
+    font-size: 17px;
+    line-height: 1.5;
+    color: {{ color_muted }};
+  }
+
+  /* --- spis tresci --- */
+
+  #shopify-section-{{ section.id }} .ob-faqp__nav {
+    position: sticky;
+    top: calc(var(--announcement-h, 0px) + var(--header-h, 0px) + 24px);
+    align-self: start;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__nav-title {
+    margin: 0 0 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__nav-link {
+    display: block;
+    padding: 9px 0 9px 13px;
+    border-left: 3px solid transparent;
+    font-size: 13px;
+    line-height: 1.4;
+    color: {{ color_muted }};
+    text-decoration: none;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__nav-link:hover,
+  #shopify-section-{{ section.id }} .ob-faqp__nav-link.is-current {
+    color: {{ color_text }};
+    border-left-color: {{ color_text }};
+  }
+
+  /* --- grupy pytan --- */
+
+  #shopify-section-{{ section.id }} .ob-faqp__sec {
+    scroll-margin-top: calc(var(--announcement-h, 0px) + var(--header-h, 0px) + 24px);
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__sec + .ob-faqp__sec {
+    margin-top: 44px;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__sec-title {
+    margin: 0 0 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__row {
+    border-bottom: 1px solid {{ color_border }};
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__q-h {
+    margin: 0;
+    font-size: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    padding: 17px 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__q-text {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.056em;
+    line-height: 1.4;
+  }
+
+  /* plus, ktory po otwarciu zostaje minusem */
+  #shopify-section-{{ section.id }} .ob-faq__pm {
+    position: relative;
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__pm:before,
+  #shopify-section-{{ section.id }} .ob-faq__pm:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: {{ color_text }};
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__pm:before {
+    width: 14px;
+    height: 1.5px;
+    transform: translate(-50%, -50%);
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__pm:after {
+    width: 1.5px;
+    height: 14px;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__row.is-open .ob-faq__pm:after {
+    opacity: 0;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__row.is-open .ob-faq__panel {
+    grid-template-rows: 1fr;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__panel-inner {
+    overflow: hidden;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__panel-inner p {
+    margin: 0 0 20px;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faq__panel-inner a {
+    color: inherit;
+  }
+
+  /* --- ramka kontaktowa --- */
+
+  #shopify-section-{{ section.id }} .ob-faqp__contact {
+    margin-top: 44px;
+    padding: 28px;
+    background: {{ section.settings.color_contact_bg }};
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__contact-title {
+    margin: 0 0 12px;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__contact-body {
+    max-width: 640px;
+    margin: 0 0 20px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: {{ color_muted }};
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__contact-body p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__contact-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 220px;
+    height: 43px;
+    padding: 0 24px;
+    border: 1px solid {{ color_text }};
+    background: {{ color_text }};
+    color: {{ section.settings.color_contact_bg }};
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .ob-faqp__contact-btn:hover {
+    background: none;
+    color: {{ color_text }};
+  }
+
+  @media only screen and (max-width: 900px) {
+    #shopify-section-{{ section.id }} .ob-faqp__wrap {
+      display: block;
+      padding: 0 16px;
+    }
+
+    #shopify-section-{{ section.id }} .ob-faqp__head {
+      padding: 40px 0 24px;
+    }
+
+    #shopify-section-{{ section.id }} .ob-faqp__title {
+      font-size: 28px;
+    }
+
+    #shopify-section-{{ section.id }} .ob-faqp__sub {
+      font-size: 15px;
+    }
+
+    #shopify-section-{{ section.id }} .ob-faqp__nav {
+      position: static;
+      margin-bottom: 32px;
+    }
+
+    #shopify-section-{{ section.id }} .ob-faq__q-text {
+      font-size: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .ob-faq__panel-inner {
+      font-size: 14px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="ob-faqp">
+  <div class="ob-faqp__wrap">
+    <div class="ob-faqp__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="ob-faqp__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.title != blank -%}
+        <h1 class="ob-faqp__title">{{ section.settings.title | escape }}</h1>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="ob-faqp__sub">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_nav -%}
+      <aside class="ob-faqp__nav">
+        {%- if section.settings.nav_title != blank -%}
+          <p class="ob-faqp__nav-title">{{ section.settings.nav_title | escape }}</p>
+        {%- endif -%}
+        <nav class="ob-faqp__nav-list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'group' -%}
+              <a class="ob-faqp__nav-link" href="#faq-{{ block.id }}" data-faq-nav>
+                {{ block.settings.nav_label | default: block.settings.title | escape }}
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </nav>
+      </aside>
+    {%- endif -%}
+
+    <div class="ob-faqp__main">
+      {%- comment -%}
+        Pytania naleza do ostatniej grupy nad nimi. Zakres liczymy z gory,
+        zeby kazda sekcja miala domkniete znaczniki.
+      {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'group' -%}
+          {%- liquid
+            assign group_start = forloop.index
+            assign group_end = 99999
+
+            for next_block in section.blocks
+              if forloop.index > group_start and next_block.type == 'group'
+                assign group_end = forloop.index
+                break
+              endif
+            endfor
+          -%}
+
+          <section class="ob-faqp__sec" id="faq-{{ block.id }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.title != blank -%}
+              <h2 class="ob-faqp__sec-title">{{ block.settings.title | escape }}</h2>
+            {%- endif -%}
+
+            <div class="ob-faqp__rows">
+              {%- for question in section.blocks -%}
+                {%- if forloop.index > group_start and forloop.index < group_end and question.type == 'question' -%}
+                  <div class="ob-faq__row" data-faq-row {{ question.shopify_attributes }}>
+                    <h3 class="ob-faq__q-h">
+                      <button
+                        type="button"
+                        class="ob-faq__q"
+                        id="faq-q-{{ question.id }}"
+                        aria-controls="faq-a-{{ question.id }}"
+                        aria-expanded="false"
+                      >
+                        <span class="ob-faq__q-text">{{ question.settings.title | escape }}</span>
+                        <span class="ob-faq__pm" aria-hidden="true"></span>
+                      </button>
+                    </h3>
+                    <div class="ob-faq__panel" id="faq-a-{{ question.id }}" role="region" aria-labelledby="faq-q-{{ question.id }}">
+                      <div class="ob-faq__panel-inner">{{ question.settings.text }}</div>
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </section>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if section.settings.contact_title != blank or section.settings.contact_text != blank -%}
+        <div class="ob-faqp__contact">
+          {%- if section.settings.contact_title != blank -%}
+            <h2 class="ob-faqp__contact-title">{{ section.settings.contact_title | escape }}</h2>
+          {%- endif -%}
+          {%- if section.settings.contact_text != blank -%}
+            <div class="ob-faqp__contact-body">{{ section.settings.contact_text }}</div>
+          {%- endif -%}
+          {%- if section.settings.contact_button_label != blank -%}
+            <a class="ob-faqp__contact-btn" href="{{ section.settings.contact_button_link | default: '/pages/contact' }}">
+              {{ section.settings.contact_button_label | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+
+    section.addEventListener('click', function (event) {
+      var trigger = event.target.closest('.ob-faq__q');
+      if (!trigger) return;
+
+      var row = trigger.closest('[data-faq-row]');
+      var open = row.classList.toggle('is-open');
+      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // podswietlenie pozycji w spisie tresci wedlug widocznej grupy
+    var links = section.querySelectorAll('[data-faq-nav]');
+    if (!links.length || !('IntersectionObserver' in window)) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+
+        links.forEach(function (link) {
+          link.classList.toggle('is-current', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    section.querySelectorAll('.ob-faqp__sec').forEach(function (group) {
+      observer.observe(group);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ page",
+  "max_blocks": 50,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Help" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Frequently asked questions" },
+    { "type": "text", "id": "subheading", "label": "Subheading" },
+    { "type": "header", "content": "On this page" },
+    { "type": "checkbox", "id": "show_nav", "label": "Show list of sections", "default": true },
+    { "type": "text", "id": "nav_title", "label": "List heading", "default": "On this page" },
+    { "type": "header", "content": "Help box" },
+    { "type": "text", "id": "contact_title", "label": "Heading", "default": "Still need help?" },
+    { "type": "richtext", "id": "contact_text", "label": "Text" },
+    { "type": "text", "id": "contact_button_label", "label": "Button label", "default": "Contact us" },
+    { "type": "url", "id": "contact_button_link", "label": "Button link" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_text", "label": "Text", "default": "#1c1d1d" },
+    { "type": "color", "id": "color_muted", "label": "Secondary text", "default": "#4a4844" },
+    { "type": "color", "id": "color_border", "label": "Row lines", "default": "#e6e3de" },
+    { "type": "color", "id": "color_contact_bg", "label": "Help box background", "default": "#f3f6fa" }
+  ],
+  "blocks": [
+    {
+      "type": "group",
+      "name": "Group",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading" },
+        { "type": "text", "id": "nav_label", "label": "Label in the list", "info": "Falls back to the heading." }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Question" },
+        { "type": "richtext", "id": "text", "label": "Answer" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ page",
+      "blocks": [
+        { "type": "group" },
+        { "type": "question" },
+        { "type": "question" }
+      ]
+    }
+  ]
+}
+{% endschema %}
