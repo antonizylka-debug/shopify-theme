@@ -1,43 +1,60 @@
 {% comment %}
   Pasek aktywnych filtrow nad siatka: "Colour: Beige x", "+2 more", "Clear all".
+
+  Dla filtrow grupowanych (kolor, rozmiar) chip odpowiada KAFLOWI w sidebarze,
+  a nie pojedynczej wartosci z Shopify - jeden zaznaczony kolor to jeden chip,
+  nawet jesli kryje kilkanascie zapisow typu "Ivory With Black Trim".
+
   Parametry:
    - filters (wymagany)
    - visible_count (opcjonalny) - ile chipow widac przed rozwinieciem
 {% endcomment %}
 
-{%- liquid
-  assign visible_count = visible_count | default: 6
+{%- assign visible_count = visible_count | default: 6 -%}
 
-  assign active_total = 0
-  for filter in filters
-    assign active_total = active_total | plus: filter.active_values.size
-  endfor
--%}
+{%- capture chips_html -%}
+  {%- for filter in filters -%}
+    {%- liquid
+      assign label_check = filter.label | downcase
+      assign short_name = filter.label | split: ':' | last | strip
 
-{%- if active_total > 0 -%}
-  <div class="active-filters" data-active-filters>
-    {%- assign chip_index = 0 -%}
+      assign is_size_filter = false
+      if label_check contains 'size' or label_check contains 'rrelse'
+        assign is_size_filter = true
+      endif
 
-    {%- for filter in filters -%}
+      assign is_color_filter = false
+      if label_check contains 'color' or label_check contains 'colour'
+        assign is_color_filter = true
+      elsif label_check contains 'farve'
+        assign is_color_filter = true
+      endif
+    -%}
+
+    {%- if is_color_filter -%}
+      {%- render 'filter-color-families', filter: filter, mode: 'chips', filter_name: short_name -%}
+    {%- elsif is_size_filter -%}
+      {%- render 'filter-size-chips', filter: filter, mode: 'chips', filter_name: short_name -%}
+    {%- else -%}
       {%- for value in filter.active_values -%}
-        {%- liquid
-          assign chip_index = chip_index | plus: 1
-          assign filter_name = filter.label | split: ':' | last | strip
-        -%}
-
-        <a
-          href="{{ value.url_to_remove }}"
-          class="active-filters__chip{% if chip_index > visible_count %} active-filters__chip--extra{% endif %}"
-        >
-          <span class="active-filters__name">{{ filter_name | escape }}:</span>
+        <a href="{{ value.url_to_remove }}" class="active-filters__chip">
+          <span class="active-filters__name">{{ short_name | escape }}:</span>
           <span class="active-filters__value">{{ value.label | escape }}</span>
           <svg aria-hidden="true" focusable="false" role="presentation" class="active-filters__x" viewBox="0 0 10 10"><path d="M1 1l8 8M9 1l-8 8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
         </a>
       {%- endfor -%}
-    {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
 
-    {%- if active_total > visible_count -%}
-      {%- assign hidden_count = active_total | minus: visible_count -%}
+{%- assign chip_count = chips_html | split: 'class="active-filters__chip"' | size | minus: 1 -%}
+
+{%- if chip_count > 0 -%}
+  <div class="active-filters" data-active-filters data-visible-chips="{{ visible_count }}">
+    {{ chips_html }}
+
+    {%- if chip_count > visible_count -%}
+      {%- assign hidden_count = chip_count | minus: visible_count -%}
       <button type="button" class="active-filters__more" data-active-filters-more data-less="Show less">
         +{{ hidden_count }} more
       </button>

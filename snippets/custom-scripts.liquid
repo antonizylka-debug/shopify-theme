@@ -81,6 +81,36 @@
       // Klase tag--active przelacza juz motyw, wiec tutaj jej nie ruszamy.
       inputs[0].dispatchEvent(new Event('input', { bubbles: true }));
     });
+    // chip w pasku usuwa cala grupe: klikamy odpowiadajacy kafel w sidebarze,
+    // zeby przejsc ta sama sciezka co zwykle klikniecie filtra
+    document.addEventListener('click', function (event) {
+      var chip = event.target.closest('[data-clear-group]');
+      if (!chip) return;
+
+      event.preventDefault();
+
+      var label = chip.getAttribute('data-clear-group');
+      var group = document.querySelector(
+        '.tag[data-group-label="' + label.replace(/"/g, '\\"') + '"] [data-filter-group]'
+      );
+
+      if (group) group.click();
+    });
+
+    // chipy ponad limitem chowamy do czasu klikniecia "+N more"
+    var markExtraChips = function () {
+      document.querySelectorAll('[data-active-filters]').forEach(function (row) {
+        var limit = parseInt(row.getAttribute('data-visible-chips'), 10);
+        if (!limit) return;
+
+        row.querySelectorAll('.active-filters__chip').forEach(function (chip, index) {
+          chip.classList.toggle('active-filters__chip--extra', index >= limit);
+        });
+      });
+    };
+
+    markExtraChips();
+    document.addEventListener('collection:reloaded', markExtraChips);
     // pasek aktywnych filtrow: +N more / Show less
     document.addEventListener('click', function (event) {
       var more = event.target.closest('[data-active-filters-more]');

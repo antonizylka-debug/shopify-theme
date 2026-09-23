@@ -5,91 +5,130 @@
 
   Parametry:
    - filter (wymagany)
+   - mode (opcjonalny) - 'list' (domyslnie) albo 'chips' dla paska nad siatka
+   - filter_name (opcjonalny) - etykieta filtra w chipie, np. "Size"
    - show_unmatched (opcjonalny)
 {% endcomment %}
 
 {%- liquid
   assign size_map = 'XXS|xxs;2xs,XS|xs,S|s;small,M|m;medium,L|l;large,XL|xl,2XL|2xl;xxl,3XL|3xl;xxxl,4XL|4xl;xxxxl,5XL|5xl,5|5,5.5|5.5,6|6,6.5|6.5,7|7,7.5|7.5,8|8,8.5|8.5,9|9,9.5|9.5,10|10,10.5|10.5,11|11,12|12,13|13' | split: ','
+
+  assign render_mode = mode | default: 'list'
 -%}
 
-<ul class="no-bullets tag-list tag-list--chips">
-  {%- assign matched_labels = '' -%}
-
+{%- if render_mode == 'chips' -%}
   {%- for size in size_map -%}
     {%- liquid
       assign parts = size | split: '|'
       assign size_label = parts[0]
       assign variants = parts[1] | split: ';'
-
       assign size_active = false
-      assign size_found = false
+
+      for value in filter.values
+        assign value_label = value.label | downcase | strip
+
+        for variant in variants
+          if value_label == variant and value.active
+            assign size_active = true
+            break
+          endif
+        endfor
+
+        if size_active
+          break
+        endif
+      endfor
     -%}
 
-    {%- capture size_inputs -%}
-      {%- for value in filter.values -%}
-        {%- liquid
-          assign value_label = value.label | downcase | strip
-          assign hit = false
-
-          for variant in variants
-            if value_label == variant
-              assign hit = true
-              break
-            endif
-          endfor
-        -%}
-
-        {%- if hit and value.count > 0 -%}
-          {%- liquid
-            assign size_found = true
-            assign matched_labels = matched_labels | append: '[' | append: value.label | append: ']'
-            if value.active
-              assign size_active = true
-            endif
-          -%}
-          <input
-            type="checkbox"
-            class="tag__input visually-hidden"
-            name="{{ value.param_name }}"
-            value="{{ value.value }}"
-            {% if value.active %}checked{% endif %}>
-        {%- endif -%}
-      {%- endfor -%}
-    {%- endcapture -%}
-
-    {%- if size_found -%}
-      <li class="tag{% if size_active %} tag--active{% endif %}">
-        <button type="button" class="tag__checkbox-wrapper text-label" data-filter-group>
-          <span class="tag__text">{{ size_label }}</span>
-        </button>
-        {{ size_inputs }}
-      </li>
+    {%- if size_active -%}
+      <button type="button" class="active-filters__chip" data-clear-group="{{ size_label | escape }}">
+        <span class="active-filters__name">{{ filter_name | default: filter.label | escape }}:</span>
+        <span class="active-filters__value">{{ size_label | escape }}</span>
+        <svg aria-hidden="true" focusable="false" role="presentation" class="active-filters__x" viewBox="0 0 10 10"><path d="M1 1l8 8M9 1l-8 8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+      </button>
     {%- endif -%}
   {%- endfor -%}
 
-  {%- if show_unmatched -%}
-    {%- for value in filter.values -%}
+{%- else -%}
+  <ul class="no-bullets tag-list tag-list--chips">
+    {%- assign matched_labels = '' -%}
+
+    {%- for size in size_map -%}
       {%- liquid
-        assign lookup = '[' | append: value.label | append: ']'
-        assign already_shown = false
-        if matched_labels contains lookup
-          assign already_shown = true
-        endif
+        assign parts = size | split: '|'
+        assign size_label = parts[0]
+        assign variants = parts[1] | split: ';'
+
+        assign size_active = false
+        assign size_found = false
       -%}
 
-      {%- unless already_shown or value.count == 0 -%}
-        <li class="tag{% if value.active %} tag--active{% endif %}">
+      {%- capture size_inputs -%}
+        {%- for value in filter.values -%}
+          {%- liquid
+            assign value_label = value.label | downcase | strip
+            assign hit = false
+
+            for variant in variants
+              if value_label == variant
+                assign hit = true
+                break
+              endif
+            endfor
+          -%}
+
+          {%- if hit and value.count > 0 -%}
+            {%- liquid
+              assign size_found = true
+              assign matched_labels = matched_labels | append: '[' | append: value.label | append: ']'
+              if value.active
+                assign size_active = true
+              endif
+            -%}
+            <input
+              type="checkbox"
+              class="tag__input visually-hidden"
+              name="{{ value.param_name }}"
+              value="{{ value.value }}"
+              {% if value.active %}checked{% endif %}>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+
+      {%- if size_found -%}
+        <li class="tag{% if size_active %} tag--active{% endif %}" data-group-label="{{ size_label | escape }}">
           <button type="button" class="tag__checkbox-wrapper text-label" data-filter-group>
-            <span class="tag__text">{{ value.label | escape }}</span>
+            <span class="tag__text">{{ size_label }}</span>
           </button>
-          <input
-            type="checkbox"
-            class="tag__input visually-hidden"
-            name="{{ value.param_name }}"
-            value="{{ value.value }}"
-            {% if value.active %}checked{% endif %}>
+          {{ size_inputs }}
         </li>
-      {%- endunless -%}
+      {%- endif -%}
     {%- endfor -%}
-  {%- endif -%}
-</ul>
+
+    {%- if show_unmatched -%}
+      {%- for value in filter.values -%}
+        {%- liquid
+          assign lookup = '[' | append: value.label | append: ']'
+          assign already_shown = false
+          if matched_labels contains lookup
+            assign already_shown = true
+          endif
+        -%}
+
+        {%- unless already_shown or value.count == 0 -%}
+          <li class="tag{% if value.active %} tag--active{% endif %}" data-group-label="{{ value.label | escape }}">
+            <button type="button" class="tag__checkbox-wrapper text-label" data-filter-group>
+              <span class="tag__text">{{ value.label | escape }}</span>
+            </button>
+            <input
+              type="checkbox"
+              class="tag__input visually-hidden"
+              name="{{ value.param_name }}"
+              value="{{ value.value }}"
+              {% if value.active %}checked{% endif %}>
+          </li>
+        {%- endunless -%}
+      {%- endfor -%}
+    {%- endif -%}
+  </ul>
+{%- endif -%}

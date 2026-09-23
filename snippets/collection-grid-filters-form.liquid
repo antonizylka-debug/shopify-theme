@@ -43,7 +43,41 @@
     elsif filter_label_check contains 'rrelse'
       assign is_size_filter = true
     endif
+
+    # ten sam test co nizej, ale potrzebny juz teraz - do licznika przy naglowku
+    assign is_color_filter = false
+    if filter_label_check contains 'color' or filter_label_check contains 'colour'
+      assign is_color_filter = true
+    elsif filter_label_check contains 'farve'
+      assign is_color_filter = true
+    endif
+
+    assign grouping_on = true
+    if group_colors == false
+      assign grouping_on = false
+    endif
   -%}
+
+  {%- liquid
+    comment
+      Licznik przy naglowku ma pokazywac liczbe zaznaczonych KAFLI, nie surowych
+      wartosci filtra. Jedna rodzina koloru to kilkanascie zapisow w Shopify,
+      wiec active_values.size dawalo np. 6 przy jednym zaznaczonym kolorze.
+    endcomment
+    assign badge_count = filter.active_values.size
+  -%}
+
+  {%- if grouping_on and is_color_filter -%}
+    {%- capture active_group_chips -%}
+      {%- render 'filter-color-families', filter: filter, mode: 'chips' -%}
+    {%- endcapture -%}
+    {%- assign badge_count = active_group_chips | split: 'data-clear-group' | size | minus: 1 -%}
+  {%- elsif grouping_on and is_size_filter -%}
+    {%- capture active_group_chips -%}
+      {%- render 'filter-size-chips', filter: filter, mode: 'chips' -%}
+    {%- endcapture -%}
+    {%- assign badge_count = active_group_chips | split: 'data-clear-group' | size | minus: 1 -%}
+  {%- endif -%}
 
   {%- if filter_group != blank and filter_group != filter_group_previous -%}
     <p class="collection-sidebar__group-title">{{ filter_group | escape }}</p>
@@ -58,8 +92,8 @@
           aria-controls="{{ location }}-{{ filter_index }}{% if filter_id %}-{{ filter_id }}{% endif %}"
           data-collapsible-id="{{ filter_id }}">
           {{ filter_label | escape }}
-          {%- if filter.active_values.size > 0 -%}
-            <span class="filter-badge">{{ filter.active_values.size }}</span>
+          {%- if badge_count > 0 -%}
+            <span class="filter-badge">{{ badge_count }}</span>
           {%- endif -%}
           {%- render 'collapsible-icons' -%}
       </button>
