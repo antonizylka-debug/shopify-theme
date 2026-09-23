@@ -421,10 +421,15 @@
 
       <div class="ob-contact__columns">
         {%- if section.settings.image != blank -%}
+          {%- comment -%}
+            Filtr musi byc policzony wczesniej - tag render nie przyjmuje
+            filtrow w argumentach.
+          {%- endcomment -%}
+          {%- assign image_alt = section.settings.image.alt | default: section.settings.title -%}
           <div class="ob-contact__media">
             {%- render 'image-element',
               img: section.settings.image,
-              alt: section.settings.image.alt | default: section.settings.title,
+              alt: image_alt,
               classes: 'ob-contact__img',
               sizeVariable: '50vw'
             -%}
