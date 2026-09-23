@@ -67,6 +67,10 @@
                 render 'footer-menu', block: block
               when 'follow_shop_cta'
                 render 'follow-shop-cta', block: block
+              when 'contact'
+                render 'footer-contact', block: block
+              when 'divider'
+                echo '<div class="footer__divider"></div>'
             endcase
           -%}
         </div>
@@ -96,15 +100,30 @@
       {%- endunless -%}
     {%- endif -%}
 
-    {%- if section.settings.show_copyright -%}
-      <p class="footer__small-text">
-        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
-        {%- if section.settings.copyright_text != blank -%}
-          {{ section.settings.copyright_text }}
+    {%- if section.settings.show_copyright or section.settings.show_back_to_top -%}
+      <div class="footer__bottom">
+        <div class="footer__bottom-left">
+          {%- if section.settings.show_copyright -%}
+            <p class="footer__small-text">
+              &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
+              {%- if section.settings.copyright_text != blank -%}
+                {{ section.settings.copyright_text }}
+              {%- endif -%}
+            </p>
+          {%- endif -%}
+          {%- unless section.settings.hide_powered_by -%}
+            <p class="footer__small-text">{{ powered_by_link }}</p>
+          {%- endunless -%}
+        </div>
+
+        {%- if section.settings.show_back_to_top -%}
+          <button type="button" class="footer__to-top" data-back-to-top>
+            {{ section.settings.back_to_top_label | default: 'Back to top' }}
+            <svg aria-hidden="true" focusable="false" role="presentation" viewBox="0 0 10 12"><path d="M5 11V1m0 0L1 5m4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+          </button>
         {%- endif -%}
-      </p>
+      </div>
     {%- endif -%}
-    <p class="footer__small-text">{{ powered_by_link }}</p>
 
   </div>
 </footer>
@@ -157,6 +176,24 @@
       "type": "text",
       "id": "copyright_text",
       "label": "t:sections.footer.settings.copyright_text.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_powered_by",
+      "label": "Hide \"Powered by Shopify\"",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_back_to_top",
+      "label": "Show \"Back to top\" link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "back_to_top_label",
+      "label": "\"Back to top\" label",
+      "default": "Back to top"
     }
   ],
   "blocks": [
@@ -178,6 +215,17 @@
           "min": 20,
           "max": 120,
           "unit": "px"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text under the logo"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social",
+          "label": "Show social icons",
+          "default": true
         },
         {
           "type": "range",
@@ -244,6 +292,24 @@
           "label": "t:sections.footer.blocks.newsletter_and_social.settings.text.label",
           "info": "t:sections.footer.blocks.newsletter_and_social.settings.text.info",
           "default": "<p>Be the first to know about new arrivals and special offers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Subscribe",
+          "info": "Leave empty to use the icon button."
+        },
+        {
+          "type": "richtext",
+          "id": "disclaimer",
+          "label": "Text under the form"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social",
+          "label": "Show social icons",
+          "default": false
         },
         {
           "type": "range",
@@ -313,6 +379,69 @@
           "unit": "%"
         }
       ]
+    },
+    {
+      "type": "contact",
+      "name": "Contact",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Contact"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Phone"
+        },
+        {
+          "type": "text",
+          "id": "hours",
+          "label": "Opening hours"
+        },
+        {
+          "type": "text",
+          "id": "address",
+          "label": "Address"
+        },
+        {
+          "type": "range",
+          "id": "container_width",
+          "label": "Width",
+          "default": 25,
+          "min": 15,
+          "max": 100,
+          "step": 5,
+          "unit": "%"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "A horizontal line across the footer. Place it between rows."
+        },
+        {
+          "type": "range",
+          "id": "container_width",
+          "label": "Width",
+          "default": 100,
+          "min": 15,
+          "max": 100,
+          "step": 5,
+          "unit": "%"
+        }
+      ]
     }
   ],
   "default": {
@@ -329,7 +458,10 @@
     ]
   },
   "disabled_on": {
-    "groups": ["header", "custom.popups"]
+    "groups": [
+      "header",
+      "custom.popups"
+    ]
   }
 }
 {% endschema %}

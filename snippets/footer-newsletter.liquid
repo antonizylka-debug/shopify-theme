@@ -32,16 +32,26 @@
           <input type="hidden" name="contact[context]" value="footer">
           <div class="footer__newsletter">
             <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" name="contact[email]" id="Email-{{ block.id }}" class="footer__newsletter-input" autocorrect="off" autocapitalize="off" required>
-            <button type="submit" id="newsletter-submit-{{ block.id }}" class="footer__newsletter-btn" name="commit">
-              <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-email" viewBox="0 0 64 64"><title>icon-email</title><path d="M63 52H1V12h62ZM1 12l25.68 24h9.72L63 12M21.82 31.68 1.56 51.16m60.78.78L41.27 31.68"/></svg>
-              <span class="footer__newsletter-btn-label">
-                {{ 'general.newsletter_form.submit' | t }}
-              </span>
+            <button type="submit" id="newsletter-submit-{{ block.id }}" class="footer__newsletter-btn{% if block.settings.button_label != blank %} footer__newsletter-btn--text{% endif %}" name="commit">
+              {%- if block.settings.button_label != blank -%}
+                {{ block.settings.button_label | escape }}
+              {%- else -%}
+                <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-email" viewBox="0 0 64 64"><title>icon-email</title><path d="M63 52H1V12h62ZM1 12l25.68 24h9.72L63 12M21.82 31.68 1.56 51.16m60.78.78L41.27 31.68"/></svg>
+                <span class="footer__newsletter-btn-label">
+                  {{ 'general.newsletter_form.submit' | t }}
+                </span>
+              {%- endif -%}
             </button>
           </div>
         {%- endform -%}
 
-        {% render 'social-icons', additional_classes: 'footer__social' %}
+        {%- if block.settings.disclaimer != blank -%}
+          <div class="footer__newsletter-note">{{ block.settings.disclaimer }}</div>
+        {%- endif -%}
+
+        {%- unless block.settings.show_social == false -%}
+          {% render 'social-icons', additional_classes: 'footer__social' %}
+        {%- endunless -%}
 
       </div>
     </div>

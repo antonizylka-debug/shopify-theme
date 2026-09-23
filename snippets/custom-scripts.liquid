@@ -132,6 +132,15 @@
         more.textContent = more.dataset.more || more.textContent;
       }
     });
+    // powrot na gore ze stopki
+    document.addEventListener('click', function (event) {
+      if (!event.target.closest('[data-back-to-top]')) return;
+
+      event.preventDefault();
+
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    });
     // strzalki w rzedzie podkolekcji
     document.addEventListener('click', function (event) {
       var nav = event.target.closest('[data-subrow-prev], [data-subrow-next]');
