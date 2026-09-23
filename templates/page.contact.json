@@ -101,6 +101,7 @@
         "home_label": "Home",
         "title": "Get in touch",
         "tagline": "Questions about an order, sizing or a return? Write to us and a person answers, not a bot.",
+        "image": "shopify://shop_images/New_Hero_Mobile.webp",
         "image_height": 860,
         "support_title": "Customer support",
         "support_note": "How to reach us, and when we are around.",
