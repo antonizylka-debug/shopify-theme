@@ -1,1 +1,117 @@
-{"sections":{"main":{"type":"main-page","disabled":true,"settings":{}},"rich-text":{"type":"rich-text","blocks":{"heading":{"type":"heading","settings":{"title":"Get in touch"}},"text":{"type":"text","settings":{}}},"block_order":["heading","text"],"settings":{}},"form":{"type":"contact-form","settings":{}}},"order":["main","rich-text","form"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {}
+    },
+    "contact": {
+      "type": "contact-page",
+      "blocks": {
+        "support-1": {
+          "type": "support",
+          "settings": {
+            "icon": "mail",
+            "label": "Email",
+            "value": "support@stilhusetnord.dk"
+          }
+        },
+        "support-2": {
+          "type": "support",
+          "settings": {
+            "icon": "phone",
+            "label": "Phone",
+            "value": "[ADD: phone number, or delete this block]"
+          }
+        },
+        "support-3": {
+          "type": "support",
+          "settings": {
+            "icon": "clock",
+            "label": "Support hours",
+            "value": "[ADD: days and hours you answer]"
+          }
+        },
+        "support-4": {
+          "type": "support",
+          "settings": {
+            "icon": "pin",
+            "label": "Address",
+            "value": "[ADD: business address, or delete this block]"
+          }
+        },
+        "faq-1": {
+          "type": "faq",
+          "settings": {
+            "question": "How quickly will you reply to my message?",
+            "answer": "<p>Within one to two working days, Monday to Friday. Messages sent at the weekend are answered on the next working day.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I change or cancel an order after checkout?",
+            "answer": "<p>Yes, as long as it has not been dispatched. Email us with your order number straight away &mdash; there is a short window before the order goes to the warehouse.</p>"
+          }
+        },
+        "faq-3": {
+          "type": "faq",
+          "settings": {
+            "question": "Where is my order?",
+            "answer": "<p>Your tracking number is emailed as soon as the parcel is dispatched, and you can follow it on our <a href=\"/pages/track-order\">Track my order</a> page. If nothing has moved for 7 days, get in touch.</p>"
+          }
+        },
+        "faq-4": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I return or exchange an item?",
+            "answer": "<p>Email us within 14 days of delivery and we will send the return address. We do not swap sizes directly &mdash; return the item and place a new order in the size you want.</p>"
+          }
+        },
+        "faq-5": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I find the right size?",
+            "answer": "<p>Go by the measurements on the product page rather than the size you usually take. There is more in our <a href=\"/pages/faq\">FAQ</a>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "support-1",
+        "support-2",
+        "support-3",
+        "support-4",
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5"
+      ],
+      "settings": {
+        "show_breadcrumbs": true,
+        "home_label": "Home",
+        "title": "Get in touch",
+        "tagline": "Questions about an order, sizing or a return? Write to us and a person answers, not a bot.",
+        "image_height": 860,
+        "support_title": "Customer support",
+        "support_note": "How to reach us, and when we are around.",
+        "form_title": "Send us a message",
+        "form_note": "We aim to reply within one to two working days.",
+        "button_label": "Send message",
+        "faq_eyebrow": "FAQs",
+        "faq_title": "Frequently asked questions",
+        "faq_sub": "Quick answers to the questions we are asked most.",
+        "color_text": "#1c1d1d",
+        "color_muted": "#4a4844",
+        "color_soft": "#6e6e6e",
+        "color_line": "#e6e3de",
+        "color_box": "#f3f6fa",
+        "color_button_text": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "contact"
+  ]
+}
