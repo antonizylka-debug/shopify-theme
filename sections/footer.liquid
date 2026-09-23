@@ -24,6 +24,65 @@
   {%- endstyle -%}
 {%- endif -%}
 
+{%- liquid
+  assign divider_color = section.settings.divider_color
+  if divider_color == blank or divider_color == 'rgba(0,0,0,0)'
+    assign divider_color = settings.color_footer_text
+  endif
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .site-footer {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  #shopify-section-{{ section.id }} .footer__divider {
+    background: {{ divider_color }};
+    margin-top: {{ section.settings.divider_spacing }}px;
+    margin-bottom: {{ section.settings.divider_spacing }}px;
+  }
+
+  #shopify-section-{{ section.id }} .footer__bottom {
+    border-top-color: {{ divider_color }};
+    margin-top: {{ section.settings.divider_spacing }}px;
+    padding-top: {{ section.settings.divider_spacing | times: 0.7 | round }}px;
+  }
+
+  #shopify-section-{{ section.id }} .site-footer__linklist li {
+    margin-bottom: {{ section.settings.link_spacing }}px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .site-footer {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+
+    #shopify-section-{{ section.id }} .footer__clear {
+      height: {{ section.settings.block_spacing_mobile }}px;
+    }
+
+    #shopify-section-{{ section.id }} .site-footer .grid__item {
+      padding-bottom: {{ section.settings.block_spacing_mobile }}px;
+    }
+
+    #shopify-section-{{ section.id }} .site-footer__linklist li {
+      margin-bottom: {{ section.settings.link_spacing_mobile }}px;
+    }
+
+    #shopify-section-{{ section.id }} .site-footer__linklist a {
+      padding: {{ section.settings.link_spacing_mobile }}px 0;
+    }
+
+    {%- if section.settings.hide_mobile_separators -%}
+      #shopify-section-{{ section.id }} .site-footer .grid__item:after {
+        display: none;
+      }
+    {%- endif -%}
+  }
+{%- endstyle -%}
+
 <footer class="site-footer" data-section-id="{{ section.id }}" data-section-type="footer-section">
   <div class="page-width">
 
@@ -194,6 +253,114 @@
       "id": "back_to_top_label",
       "label": "\"Back to top\" label",
       "default": "Back to top"
+    },
+    {
+      "type": "header",
+      "content": "Spacing and divider"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider line colour",
+      "default": "#2b2c2c"
+    },
+    {
+      "type": "range",
+      "id": "divider_spacing",
+      "label": "Space around divider",
+      "default": 36,
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Padding - desktop"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "default": 60,
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "default": 60,
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Padding - mobile"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding",
+      "default": 36,
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding",
+      "default": 28,
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "block_spacing_mobile",
+      "label": "Space between blocks",
+      "default": 24,
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Links"
+    },
+    {
+      "type": "range",
+      "id": "link_spacing",
+      "label": "Space between links (desktop)",
+      "default": 10,
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "link_spacing_mobile",
+      "label": "Space between links (mobile)",
+      "default": 2,
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_mobile_separators",
+      "label": "Hide dividing lines between blocks on mobile",
+      "default": false
     }
   ],
   "blocks": [
