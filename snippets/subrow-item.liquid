@@ -1,0 +1,42 @@
+{% comment %}
+  Pojedynczy kafel w rzedzie podkolekcji.
+  Parametry:
+   - sub_collection (wymagany)
+   - title (opcjonalny) - domyslnie tytul kolekcji
+   - parent_url (opcjonalny) - pomija link do samego siebie
+{% endcomment %}
+
+{%- if sub_collection != blank and sub_collection.handle != blank -%}
+  {%- unless parent_url == sub_collection.url -%}
+    {%- liquid
+      assign tile_title = title | default: sub_collection.title
+
+      assign sub_image = blank
+      if sub_collection.image != blank
+        assign sub_image = sub_collection.image
+      elsif sub_collection.products.first.featured_image != blank
+        assign sub_image = sub_collection.products.first.featured_image
+      endif
+    -%}
+
+    <a href="{{ sub_collection.url }}" class="subrow__item">
+      <span class="subrow__media">
+        {%- if sub_image != blank -%}
+          {%- render 'image-element',
+            img: sub_image,
+            sizeVariable: '20vw',
+            alt: tile_title,
+            classes: 'subrow__image'
+          -%}
+        {%- endif -%}
+      </span>
+
+      <span class="subrow__meta">
+        <span class="subrow__title">{{ tile_title | escape }}</span>
+        {%- if sub_collection.all_products_count > 0 -%}
+          <span class="subrow__count">{{ sub_collection.all_products_count }}</span>
+        {%- endif -%}
+      </span>
+    </a>
+  {%- endunless -%}
+{%- endif -%}

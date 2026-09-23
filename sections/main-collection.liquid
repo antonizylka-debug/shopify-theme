@@ -15,15 +15,36 @@
     <div class="page-width">
       {%- liquid
         assign links_block = blank
+        assign subcollections_block = blank
         for block in section.blocks
           if block.type == 'collection_links' and block.settings.menu != blank
             assign links_block = block
-            break
+          endif
+          if block.type == 'subcollections'
+            assign subcollections_block = block
           endif
         endfor
 
+        comment
+          Rzad podkolekcji chowamy przy aktywnych filtrach i na dalszych stronach.
+          canonical_url zawiera page= dopiero od drugiej strony.
+        endcomment
+        assign show_subcollections = false
+        if subcollections_block != blank and current_filter_size == 0
+          unless canonical_url contains 'page='
+            assign show_subcollections = true
+          endunless
+        endif
+
         assign sort_in_row = section.settings.enable_sort
       -%}
+
+      {%- if show_subcollections -%}
+        {%- render 'subcollections',
+          per_row: subcollections_block.settings.subcollections_per_row,
+          menu: subcollections_block.settings.menu
+        -%}
+      {%- endif -%}
 
       {%- if links_block != blank or sort_in_row -%}
         <div class="collection-links-row">
@@ -31,10 +52,33 @@
             {%- assign links_menu = linklists[links_block.settings.menu] -%}
             <nav class="collection-links collection-links--{{ links_block.settings.alignment }}" {{ links_block.shopify_attributes }}>
               {%- for menu_link in links_menu.links -%}
+                {%- liquid
+                  comment
+                    Pigulka jest aktywna takze na podstronach kolekcji nadrzednej,
+                    np. WOMEN'S zostaje czarne na /collections/womens-dresses.
+                  endcomment
+                  assign link_is_current = false
+
+                  if menu_link.url == collection.url
+                    assign link_is_current = true
+                  elsif menu_link.url contains '/collections/'
+                    assign link_handle = menu_link.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
+
+                    if link_handle != blank and link_handle != 'all'
+                      assign link_prefix = link_handle | append: '-'
+                      assign link_prefix_size = link_prefix.size
+                      assign collection_head = collection.handle | slice: 0, link_prefix_size
+
+                      if collection_head == link_prefix
+                        assign link_is_current = true
+                      endif
+                    endif
+                  endif
+                -%}
                 <a
                   href="{{ menu_link.url }}"
-                  class="collection-links__item{% if menu_link.url == collection.url %} collection-links__item--current{% endif %}"
-                  {% if menu_link.url == collection.url %}aria-current="page"{% endif %}
+                  class="collection-links__item{% if link_is_current %} collection-links__item--current{% endif %}"
+                  {% if link_is_current %}aria-current="page"{% endif %}
                 >{{ menu_link.title | escape }}</a>
               {%- endfor -%}
             </nav>
@@ -109,9 +153,10 @@
                   {%- endif -%}
                 {%- endif -%}
               {%- when 'subcollections' -%}
-                {%- if paginate.current_page == 1 and current_filter_size == 0 -%}
-                  {%- render 'subcollections', per_row: block.settings.subcollections_per_row, menu: block.settings.menu -%}
-                {%- endif -%}
+                {%- comment -%}
+                  Renderowany wyzej, nad rzedem pigulek i poza kolumna z siatka,
+                  zeby zajmowal cala szerokosc kontenera strony.
+                {%- endcomment -%}
               {%- when 'product_grid' -%}
                 <div data-scroll-to>
                   {% render 'collection-grid',

@@ -1,6 +1,13 @@
 {% comment %}
   Rzad podkolekcji dla otwartej kolekcji.
-  Dzieci brane sa z wybranego menu (ustawienie bloku), nie na sztywno z main-menu.
+
+  Zrodlo 1 (priorytet): wybrane menu - daje pelna kontrole nad kolejnoscia i nazwami,
+  ale wymaga, zeby pozycja menu prowadzila do kolekcji, a nie do "#".
+
+  Zrodlo 2 (zapas): automatyczne wykrycie dzieci po prefiksie uchwytu,
+  np. na /collections/womens beda to womens-dresses, womens-sweaters itd.
+  Kolejnosc: od najliczniejszej kolekcji.
+
   Parametry:
    - per_row (opcjonalny)
    - menu (opcjonalny) - uchwyt menu, domyslnie main-menu
@@ -12,9 +19,9 @@
     assign subrow_menu = linklists['main-menu']
   endif
 
-  unless current_tags
-    assign current_items = ''
+  assign current_items = ''
 
+  unless current_tags
     for link in subrow_menu.links
       if link.active and link.levels > 0 and link.child_active == false
         unless current_items contains link.title
@@ -48,3 +55,34 @@
     endfor
   endunless
 -%}
+
+{%- comment -%} Menu nic nie dalo - probujemy wykryc dzieci po uchwycie {%- endcomment -%}
+{%- if current_items == blank and current_tags == blank and collection.handle != blank -%}
+  {%- liquid
+    assign child_prefix = collection.handle | append: '-'
+    assign prefix_size = child_prefix.size
+    assign sortable = ''
+
+    for child in collections
+      assign head = child.handle | slice: 0, prefix_size
+      if head == child_prefix and child.all_products_count > 0
+        assign sort_key = child.all_products_count | plus: 1000000
+        assign sortable = sortable | append: sort_key | append: ':' | append: child.handle | append: ' '
+      endif
+    endfor
+
+    assign sorted_rows = sortable | split: ' ' | sort | reverse
+
+    assign child_handles = ''
+    for row in sorted_rows
+      assign row_handle = row | split: ':' | last
+      assign child_handles = child_handles | append: row_handle | append: ','
+    endfor
+
+    assign child_handle_list = child_handles | split: ','
+  -%}
+
+  {%- if child_handle_list.size > 0 -%}
+    {%- render 'collection-subrow', per_row: per_row, sub_collection_handles: child_handle_list -%}
+  {%- endif -%}
+{%- endif -%}
