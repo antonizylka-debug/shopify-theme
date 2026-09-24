@@ -22,7 +22,23 @@
           "settings": {
             "icon": "mail",
             "label": "Email",
-            "value": "support@stilhusetnord.dk"
+            "value": "kontakt@stilhusetnord.dk"
+          }
+        },
+        "support_DemmGD": {
+          "type": "support",
+          "settings": {
+            "icon": "phone",
+            "label": "Phone",
+            "value": "+44 7537 171591"
+          }
+        },
+        "support_KQYaGF": {
+          "type": "support",
+          "settings": {
+            "icon": "clock",
+            "label": "SUPPORT HOURS",
+            "value": "Monday to Friday, 9:00 AM to 6:00 PM"
           }
         },
         "faq-1": {
@@ -36,7 +52,7 @@
           "type": "faq",
           "settings": {
             "question": "Can I change or cancel an order after checkout?",
-            "answer": "<p>Yes, as long as it has not been dispatched. Email us with your order number straight away &mdash; there is a short window before the order goes to the warehouse.</p>"
+            "answer": "<p>Yes, as long as it has not been dispatched. Email us with your order number straight away — there is a short window before the order goes to the warehouse.</p>"
           }
         },
         "faq-3": {
@@ -50,7 +66,7 @@
           "type": "faq",
           "settings": {
             "question": "How do I return or exchange an item?",
-            "answer": "<p>Email us within 14 days of delivery and we will send the return address. We do not swap sizes directly &mdash; return the item and place a new order in the size you want.</p>"
+            "answer": "<p>Email us within 30 days of delivery and we will send the return address. We do not swap sizes directly — return the item and place a new order in the size you want.</p>"
           }
         },
         "faq-5": {
@@ -63,6 +79,8 @@
       },
       "block_order": [
         "support-1",
+        "support_DemmGD",
+        "support_KQYaGF",
         "faq-1",
         "faq-2",
         "faq-3",
@@ -73,7 +91,7 @@
         "show_breadcrumbs": true,
         "home_label": "Home",
         "title": "Get in touch",
-        "tagline": "Questions about an order, sizing or a return? Write to us and a person answers, not a bot.",
+        "tagline": "Questions about an order, sizing, or just want to say hello? A real person from our London team replies, every time.",
         "image": "shopify://shop_images/New_Hero_Mobile.webp",
         "image_height": 860,
         "support_title": "Customer support",
