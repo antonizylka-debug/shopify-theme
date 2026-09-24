@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "type": "footer",
   "name": "t:sections.footer-group.name",
   "sections": {
@@ -57,6 +58,61 @@
         "hide_homepage": true
       }
     },
+    "usp-bar": {
+      "type": "usp-bar",
+      "blocks": {
+        "dispatch": {
+          "type": "item",
+          "settings": {
+            "icon": "box",
+            "title": "Fast dispatch",
+            "text": "Dispatched in 1 to 3 working days"
+          }
+        },
+        "returns": {
+          "type": "item",
+          "settings": {
+            "icon": "return",
+            "title": "Easy returns",
+            "text": "Within 14 days of delivery"
+          }
+        },
+        "tracking": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Tracked delivery",
+            "text": "Tracking on every parcel"
+          }
+        },
+        "help": {
+          "type": "item",
+          "settings": {
+            "icon": "chat",
+            "title": "Here to help",
+            "text": "Answers within 1 to 2 working days"
+          }
+        }
+      },
+      "block_order": [
+        "dispatch",
+        "returns",
+        "tracking",
+        "help"
+      ],
+      "settings": {
+        "padding": 25,
+        "padding_mobile": 17,
+        "show_border_top": true,
+        "show_border_bottom": true,
+        "icon_box": true,
+        "scroll_seconds": 24,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6e6b65",
+        "color_line": "#e6e3de"
+      }
+    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -65,25 +121,25 @@
           "settings": {
             "logo": "shopify://shop_images/white_logo.png",
             "desktop_logo_height": 34,
-            "text": "<p>Considered wardrobe pieces for everyday wear. Quiet design, made to last.</p>",
+            "text": "<p>Premium fashion and homewares. Considered design for the modern wardrobe and home.</p>",
             "show_social": true,
-            "container_width": 37
+            "container_width": 25
           }
         },
         "menu_shop": {
           "type": "menu",
           "settings": {
             "show_footer_title": true,
-            "menu": "footer",
-            "container_width": 21
+            "menu": "shop-footer",
+            "container_width": 25
           }
         },
         "menu_help": {
           "type": "menu",
           "settings": {
             "show_footer_title": true,
-            "menu": "footer",
-            "container_width": 21
+            "menu": "header-customercare",
+            "container_width": 25
           }
         },
         "menu_policies": {
@@ -91,7 +147,7 @@
           "settings": {
             "show_footer_title": true,
             "menu": "customer-support-copy",
-            "container_width": 21
+            "container_width": 25
           }
         },
         "divider_main": {
@@ -160,61 +216,6 @@
         "link_spacing": 10,
         "link_spacing_mobile": 2,
         "hide_mobile_separators": false
-      }
-    },
-    "usp-bar": {
-      "type": "usp-bar",
-      "blocks": {
-        "dispatch": {
-          "type": "item",
-          "settings": {
-            "icon": "box",
-            "title": "Fast dispatch",
-            "text": "Dispatched in 1 to 3 working days"
-          }
-        },
-        "returns": {
-          "type": "item",
-          "settings": {
-            "icon": "return",
-            "title": "Easy returns",
-            "text": "Within 14 days of delivery"
-          }
-        },
-        "tracking": {
-          "type": "item",
-          "settings": {
-            "icon": "truck",
-            "title": "Tracked delivery",
-            "text": "Tracking on every parcel"
-          }
-        },
-        "help": {
-          "type": "item",
-          "settings": {
-            "icon": "chat",
-            "title": "Here to help",
-            "text": "Answers within 1 to 2 working days"
-          }
-        }
-      },
-      "block_order": [
-        "dispatch",
-        "returns",
-        "tracking",
-        "help"
-      ],
-      "settings": {
-        "padding": 25,
-        "padding_mobile": 17,
-        "show_border_top": true,
-        "show_border_bottom": true,
-        "icon_box": true,
-        "scroll_seconds": 24,
-        "color_bg": "#ffffff",
-        "color_text": "#1c1d1d",
-        "color_muted": "#6e6b65",
-        "color_line": "#e6e3de"
       }
     }
   },
