@@ -217,7 +217,7 @@
           "type": "question",
           "settings": {
             "title": "How do I care for my item?",
-            "text": "<p>Follow the care label in the garment &mdash; it takes priority over anything general.</p><p>As a rule: wash at 30&deg;C on a gentle cycle, turn prints and dark colours inside out, skip the tumble dryer, and dry knitwear flat rather than on a hanger.</p>"
+            "text": "<p>Follow the care label in the garment — it takes priority over anything general.</p><p>As a rule: wash at 30°C on a gentle cycle, turn prints and dark colours inside out, skip the tumble dryer, and dry knitwear flat rather than on a hanger.</p>"
           }
         }
       },
@@ -259,9 +259,11 @@
         "show_nav": true,
         "nav_title": "On this page",
         "contact_title": "Still need help?",
-        "contact_text": "<p>Email <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> with your order number. We answer every message, normally within one to two working days.</p>",
+        "contact_text": "<p>Email <a href=\"mailto:support@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number. Monday to Friday, 9am to 6pm UK time.<br/>We answer every message, normally within one to two working days.</p>",
         "contact_button_label": "Contact us",
         "contact_button_link": "/pages/contact",
+        "padding_bottom": 96,
+        "padding_bottom_mobile": 56,
         "color_text": "#1c1d1d",
         "color_muted": "#4a4844",
         "color_border": "#e6e3de",
