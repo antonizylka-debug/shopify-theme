@@ -1,1 +1,110 @@
-{"sections":{"main":{"type":"main-page","disabled":true,"settings":{}},"slideshow":{"type":"slideshow","blocks":{"slideshow-0":{"type":"image","settings":{}}},"block_order":["slideshow-0"],"settings":{}},"rich-text":{"type":"rich-text","blocks":{"heading":{"type":"heading","settings":{}},"text":{"type":"text","settings":{}}},"block_order":["heading","text"],"settings":{}},"map":{"type":"map","settings":{}},"text-columns":{"type":"text-columns","blocks":{"column1":{"type":"text_block","settings":{}},"column2":{"type":"text_block","settings":{}},"column3":{"type":"text_block","settings":{}}},"block_order":["column1","column2","column3"],"settings":{}},"featured-collection":{"type":"featured-collection","settings":{}},"form":{"type":"contact-form","settings":{}}},"order":["main","slideshow","rich-text","text-columns","map","featured-collection","form"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {}
+    },
+    "about": {
+      "type": "about-story",
+      "blocks": {
+        "intro": {
+          "type": "intro",
+          "settings": {
+            "eyebrow": "About Stilhuset Nord",
+            "heading": "Considered pieces for everyday wear.",
+            "text": "<p>Stilhuset Nord is an online shop built around one idea: clothes that look like the photos, arrive when we say they will, and still look right after a season of wear.</p><p>[ADD: one or two sentences on where you are based and who is behind the shop. This is the part customers actually read, and it is the only part I cannot write for you.]</p>"
+          }
+        },
+        "row-why": {
+          "type": "row",
+          "settings": {
+            "eyebrow": "Why we started",
+            "heading": "Because online shopping should feel simpler.",
+            "text": "<p>[ADD: your own reason for starting the shop. Two honest sentences beat a polished paragraph that says nothing.]</p><p>What we can promise is the part we control: sizing you can check before you order, tracking on every parcel, and a person answering your email rather than a script.</p>",
+            "image_position": "right"
+          }
+        },
+        "row-how": {
+          "type": "row",
+          "settings": {
+            "eyebrow": "How we work",
+            "heading": "Direct from our suppliers.",
+            "text": "<p>We work directly with the manufacturers who make our pieces and ship from their facilities, which keeps the usual retail markup out of the price.</p><p>It also means an order with several items can arrive in more than one parcel, each with its own tracking. Nothing extra to pay &mdash; just more than one delivery.</p>",
+            "image_position": "left"
+          }
+        },
+        "values-head": {
+          "type": "values_head",
+          "settings": {
+            "heading": "Our promises to you",
+            "text": "<p>Here is exactly what to expect when you order, in plain terms.</p>"
+          }
+        },
+        "value-1": {
+          "type": "value",
+          "settings": {
+            "icon": "truck",
+            "title": "Tracked delivery",
+            "text": "Every parcel ships with tracking. [ADD: your typical delivery window.]"
+          }
+        },
+        "value-2": {
+          "type": "value",
+          "settings": {
+            "icon": "return",
+            "title": "Simple returns",
+            "text": "14 days from delivery to send something back."
+          }
+        },
+        "value-3": {
+          "type": "value",
+          "settings": {
+            "icon": "box",
+            "title": "Fast dispatch",
+            "text": "Orders leave us within 1 to 3 working days."
+          }
+        },
+        "value-4": {
+          "type": "value",
+          "settings": {
+            "icon": "chat",
+            "title": "Here to help",
+            "text": "Answers within 1 to 2 working days."
+          }
+        },
+        "cta": {
+          "type": "cta",
+          "settings": {
+            "heading": "See what is new",
+            "text": "<p>New pieces land regularly. Start with the full collection.</p>",
+            "button_label": "Shop all",
+            "button_link": "/collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "intro",
+        "row-why",
+        "row-how",
+        "values-head",
+        "value-1",
+        "value-2",
+        "value-3",
+        "value-4",
+        "cta"
+      ],
+      "settings": {
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_cell": "#f8f8f6",
+        "color_line": "#e6e3de",
+        "color_btn_text": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "about"
+  ]
+}
