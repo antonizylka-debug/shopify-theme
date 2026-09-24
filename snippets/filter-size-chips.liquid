@@ -105,6 +105,52 @@
       {%- endif -%}
     {%- endfor -%}
 
+    {%- comment -%}
+      Rozmiary liczbowe (EU: 34, 38.5, 46) nie sa w slowniku liter, a Shopify
+      zwraca je alfabetycznie - "10, 34, 4, 40". Ustawiamy je po kolei rosnaco:
+      klucz sortowania to liczba razy 10 plus 100000, wiec wszystkie maja
+      te sama dlugosc i sortowanie tekstowe daje porzadek liczbowy.
+    {%- endcomment -%}
+    {%- liquid
+      assign numeric_rows = ''
+
+      for value in filter.values
+        assign lookup = '[' | append: value.label | append: ']'
+        unless matched_labels contains lookup
+          assign as_number = value.label | times: 1.0
+          if as_number > 0 and value.count > 0
+            assign sort_key = as_number | times: 10 | plus: 100000 | round
+            assign numeric_rows = numeric_rows | append: sort_key | append: ':' | append: value.label | append: ' '
+          endif
+        endunless
+      endfor
+
+      assign numeric_sorted = numeric_rows | split: ' ' | sort
+    -%}
+
+    {%- for row in numeric_sorted -%}
+      {%- liquid
+        assign row_label = row | split: ':' | last
+        assign matched_labels = matched_labels | append: '[' | append: row_label | append: ']'
+      -%}
+
+      {%- for value in filter.values -%}
+        {%- if value.label == row_label -%}
+          <li class="tag{% if value.active %} tag--active{% endif %}" data-group-label="{{ value.label | escape }}">
+            <button type="button" class="tag__checkbox-wrapper text-label" data-filter-group>
+              <span class="tag__text">{{ value.label | escape }}</span>
+            </button>
+            <input
+              type="checkbox"
+              class="tag__input visually-hidden"
+              name="{{ value.param_name }}"
+              value="{{ value.value }}"
+              {% if value.active %}checked{% endif %}>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+
     {%- if show_unmatched -%}
       {%- for value in filter.values -%}
         {%- liquid
