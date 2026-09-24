@@ -28,14 +28,14 @@
           "type": "question",
           "settings": {
             "title": "How do I start a return?",
-            "text": "<p>Email us at <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> with your order number and the item you want to send back, within 14 days of receiving it. We reply with the return address and short instructions.</p><p>Please wait for that reply before posting anything &mdash; parcels sent back on their own often reach a warehouse that cannot process them.</p>"
+            "text": "<p>Email us at <a href=\"mailto:support@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number and the item you want to send back, within 30 days of receiving it. We reply with the return address and short instructions.</p><p>Please wait for that reply before posting anything — parcels sent back on their own often reach a warehouse that cannot process them.</p>"
           }
         },
         "q-3": {
           "type": "question",
           "settings": {
             "title": "What can I return?",
-            "text": "<p>Anything unworn and unwashed, in original condition with the tags still attached, within 14 days of delivery.</p><p>For hygiene reasons we cannot take back pierced jewellery once the seal is broken. Faulty items are handled separately, see below.</p>"
+            "text": "<p>Anything unworn and unwashed, in original condition with the tags still attached, within 30 days of delivery.</p><p>For hygiene reasons we cannot take back pierced jewellery once the seal is broken. Faulty items are handled separately, see below.</p>"
           }
         },
         "q-4": {
@@ -49,21 +49,21 @@
           "type": "question",
           "settings": {
             "title": "Who pays for return postage?",
-            "text": "<p>You do, unless the item arrived faulty, damaged, or was not what you ordered &mdash; then we cover it.</p><p>Use a tracked service. Until the parcel reaches us, it is still your responsibility.</p>"
+            "text": "<p>You do, unless the item arrived faulty, damaged, or was not what you ordered — then we cover it.</p><p>Use a tracked service. Until the parcel reaches us, it is still your responsibility.</p>"
           }
         },
         "q-6": {
           "type": "question",
           "settings": {
             "title": "Where do returns go?",
-            "text": "<p>To the address we send you when you open the return &mdash; not to the sender address printed on the parcel. Those are usually warehouses that cannot handle returns, and parcels sent there are hard to recover.</p>"
+            "text": "<p>To the address we send you when you open the return — not to the sender address printed on the parcel. Those are usually warehouses that cannot handle returns, and parcels sent there are hard to recover.</p>"
           }
         },
         "q-7": {
           "type": "question",
           "settings": {
             "title": "My item arrived damaged or wrong. What now?",
-            "text": "<p>Email <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> within 14 days of delivery with your order number and photos. We send a replacement or refund you, and we pay the return postage.</p>"
+            "text": "<p>Email <a href=\"mailto:support@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> within 30 days of delivery with your order number and photos. We send a replacement or refund you, and we pay the return postage.</p>"
           }
         },
         "q-8": {
@@ -77,14 +77,14 @@
           "type": "question",
           "settings": {
             "title": "How long do refunds take?",
-            "text": "<p>We issue the refund within 14 days of receiving your return. Your bank or card provider then needs another 3&ndash;5 working days before it shows on your statement.</p>"
+            "text": "<p>We issue the refund within 14 days of receiving your return. Your bank or card provider then needs another 3–5 working days before it shows on your statement.</p>"
           }
         },
         "q-10": {
           "type": "question",
           "settings": {
             "title": "Will I get my money back?",
-            "text": "<p>Yes &mdash; to the original payment method, for the full price of the returned items. If you return a complete order, the standard delivery charge you paid is refunded too.</p>"
+            "text": "<p>Yes — to the original payment method, for the full price of the returned items. If you return a complete order, the standard delivery charge you paid is refunded too.</p>"
           }
         },
         "group-11": {
@@ -98,7 +98,7 @@
           "type": "question",
           "settings": {
             "title": "How long does delivery take?",
-            "text": "<p>We prepare and dispatch orders within 1&ndash;3 working days. Delivery takes [ADD: your typical delivery window] on top of that.</p><p>Orders placed at the weekend or on a public holiday start processing the next working day.</p>"
+            "text": "<p>We prepare and dispatch orders within 3 to 4 working days. Delivery takes 3 to 6 more on top of that.</p><p>Orders placed at the weekend or on a public holiday start processing the next working day.</p>"
           }
         },
         "q-13": {
@@ -112,7 +112,7 @@
           "type": "question",
           "settings": {
             "title": "My order is late. What should I do?",
-            "text": "<p>Tracking sometimes goes quiet for a few days while a parcel moves between carriers. On its own, that does not mean it is lost.</p><p>If nothing has moved for 7 days, or the estimated date has passed, email <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> with your order number and we will chase it.</p>"
+            "text": "<p>Tracking sometimes goes quiet for a few days while a parcel moves between carriers. On its own, that does not mean it is lost.</p><p>If nothing has moved for 7 days, or the estimated date has passed, email <a href=\"mailto:support@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number and we will chase it.</p>"
           }
         },
         "q-15": {
@@ -126,28 +126,28 @@
           "type": "question",
           "settings": {
             "title": "Tracking says delivered, but I don't have it.",
-            "text": "<p>Check with the people you live with, your neighbours, and any parcel box or pickup point nearby &mdash; carriers often leave parcels there and mark them delivered.</p><p>If it still has not turned up, contact us within 7 days of the delivery scan, while the carrier still holds the records.</p>"
+            "text": "<p>Check with the people you live with, your neighbours, and any parcel box or pickup point nearby — carriers often leave parcels there and mark them delivered.</p><p>If it still has not turned up, contact us within 7 days of the delivery scan, while the carrier still holds the records.</p>"
           }
         },
         "q-17": {
           "type": "question",
           "settings": {
             "title": "Do you offer express delivery?",
-            "text": "<p>[ADD: yes or no, and what it costs. If you do not offer it, say so plainly here.]</p>"
+            "text": "<p>Not at the moment. Every order ships free with tracked standard delivery, so we can't promise a specific arrival date. If you have a deadline, allow 6 to 10 business days.</p>"
           }
         },
         "q-18": {
           "type": "question",
           "settings": {
             "title": "Where do you deliver, and will I pay customs?",
-            "text": "<p>[ADD: the countries you ship to.]</p><p>[ADD: whether duties and import VAT are included at checkout or paid on arrival. This is the answer customers complain about most when it is missing, so be precise.]</p>"
+            "text": "<p>We ship to a wide range of international destinations, including:</p><ul><li><strong>Europe:</strong> United Kingdom, Austria, Belgium, France, Germany, Greece, Ireland, Italy, the Netherlands, Portugal, Spain (and Denmark).</li></ul><p>&nbsp;We cover all import duties, customs charges and taxes, so there's nothing extra to pay. We deliver to homes, businesses and US PO Boxes, but not to APO or FPO addresses.</p><h3></h3>"
           }
         },
         "q-19": {
           "type": "question",
           "settings": {
             "title": "Which carriers do you use?",
-            "text": "<p>[ADD: the carriers that actually deliver your parcels, for example PostNord, GLS or DHL.] The carrier is named in your tracking email.</p>"
+            "text": "<p>We work with leading international shipping partners and reliable couriers (such as DHL, FedEx, UPS, and local postal networks depending on your destination) to ensure safe and timely delivery</p>"
           }
         },
         "group-20": {
@@ -161,7 +161,7 @@
           "type": "question",
           "settings": {
             "title": "Can I cancel my order?",
-            "text": "<p>Yes, as long as it has not been dispatched. Email <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> with your order number as soon as you can &mdash; there is a short window before the order goes to the warehouse.</p><p>Once it has shipped, the quickest route is to accept delivery and return it.</p>"
+            "text": "<p>Yes, as long as it has not been dispatched. Email <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> with your order number as soon as you can — there is a short window before the order goes to the warehouse.</p><p>Once it has shipped, the quickest route is to accept delivery and return it.</p>"
           }
         },
         "q-22": {
@@ -175,21 +175,21 @@
           "type": "question",
           "settings": {
             "title": "I ordered something by mistake. Can you remove it?",
-            "text": "<p>If the order has not been dispatched, yes &mdash; tell us which item and we remove it and refund that part. After dispatch it has to go through the normal return.</p>"
+            "text": "<p>If the order has not been dispatched, yes — tell us which item and we remove it and refund that part. After dispatch it has to go through the normal return.</p>"
           }
         },
         "q-24": {
           "type": "question",
           "settings": {
             "title": "Will a sold out size come back?",
-            "text": "<p>Sometimes, but we cannot promise it &mdash; stock depends on what our suppliers can produce. We do not run back-in-stock alerts at the moment, so the newsletter is the best way to hear when a range returns.</p>"
+            "text": "<p>Sometimes, but we cannot promise it — stock depends on what our suppliers can produce. We do not run back-in-stock alerts at the moment, so the newsletter is the best way to hear when a range returns.</p>"
           }
         },
         "q-25": {
           "type": "question",
           "settings": {
             "title": "I paid but got no confirmation email.",
-            "text": "<p>Check your spam folder first, then the address you typed at checkout &mdash; a single wrong character is the usual cause.</p><p>If it is still missing, email <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> with the name and address you ordered under and we will resend it. A missing email does not mean the order failed.</p>"
+            "text": "<p>Check your spam folder first, then the address you typed at checkout — a single wrong character is the usual cause.</p><p>If it is still missing, email <a href=\"mailto:support@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with the name and address you ordered under and we will resend it. A missing email does not mean the order failed.</p>"
           }
         },
         "group-26": {
