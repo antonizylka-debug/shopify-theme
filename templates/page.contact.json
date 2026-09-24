@@ -25,30 +25,6 @@
             "value": "support@stilhusetnord.dk"
           }
         },
-        "support-2": {
-          "type": "support",
-          "settings": {
-            "icon": "phone",
-            "label": "Phone",
-            "value": "[ADD: phone number, or delete this block]"
-          }
-        },
-        "support-3": {
-          "type": "support",
-          "settings": {
-            "icon": "clock",
-            "label": "Support hours",
-            "value": "[ADD: days and hours you answer]"
-          }
-        },
-        "support-4": {
-          "type": "support",
-          "settings": {
-            "icon": "pin",
-            "label": "Address",
-            "value": "[ADD: business address, or delete this block]"
-          }
-        },
         "faq-1": {
           "type": "faq",
           "settings": {
@@ -87,9 +63,6 @@
       },
       "block_order": [
         "support-1",
-        "support-2",
-        "support-3",
-        "support-4",
         "faq-1",
         "faq-2",
         "faq-3",
@@ -104,7 +77,7 @@
         "image": "shopify://shop_images/New_Hero_Mobile.webp",
         "image_height": 860,
         "support_title": "Customer support",
-        "support_note": "How to reach us, and when we are around.",
+        "support_note": "Write to us and a person answers, usually within one to two working days.",
         "form_title": "Send us a message",
         "form_note": "We aim to reply within one to two working days.",
         "button_label": "Send message",

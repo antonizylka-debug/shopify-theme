@@ -13,7 +13,7 @@
           "settings": {
             "eyebrow": "About Stilhuset Nord",
             "heading": "Considered pieces for everyday wear.",
-            "text": "<p>Stilhuset Nord is an online shop built around one idea: clothes that look like the photos, arrive when we say they will, and still look right after a season of wear.</p><p>[ADD: one or two sentences on where you are based and who is behind the shop. This is the part customers actually read, and it is the only part I cannot write for you.]</p>"
+            "text": "<p>Stilhuset Nord is a small online shop for women&rsquo;s clothing, built around one idea: pieces that look like the photos, arrive when we say they will, and still look right after a season of wear.</p><p>We sell across Denmark and the wider Nordics, with prices in Danish kroner and tracking on every parcel we send.</p>"
           }
         },
         "row-why": {
@@ -21,7 +21,7 @@
           "settings": {
             "eyebrow": "Why we started",
             "heading": "Because online shopping should feel simpler.",
-            "text": "<p>[ADD: your own reason for starting the shop. Two honest sentences beat a polished paragraph that says nothing.]</p><p>What we can promise is the part we control: sizing you can check before you order, tracking on every parcel, and a person answering your email rather than a script.</p>",
+            "text": "<p>Too much of online fashion is guesswork. Sizes that mean nothing between brands, photos that flatter more than they inform, and a support address that replies three days later with a template.</p><p>We built Stilhuset Nord around the parts we can actually control: measurements you can check before you order, tracking on every parcel, and a person reading your email rather than a script.</p>",
             "image_position": "right"
           }
         },
@@ -30,7 +30,7 @@
           "settings": {
             "eyebrow": "How we work",
             "heading": "Direct from our suppliers.",
-            "text": "<p>We work directly with the manufacturers who make our pieces and ship from their facilities, which keeps the usual retail markup out of the price.</p><p>It also means an order with several items can arrive in more than one parcel, each with its own tracking. Nothing extra to pay &mdash; just more than one delivery.</p>",
+            "text": "<p>We work directly with the manufacturers who make our pieces and ship from their facilities. Cutting out the traditional retail middleman is what keeps the price where it is, without dropping the quality to get there.</p><p>It also means an order with several items can arrive in more than one parcel, each with its own tracking. Nothing extra to pay &mdash; just more than one delivery.</p>",
             "image_position": "left"
           }
         },
@@ -38,7 +38,7 @@
           "type": "values_head",
           "settings": {
             "heading": "Our promises to you",
-            "text": "<p>Here is exactly what to expect when you order, in plain terms.</p>"
+            "text": "<p>Transparency matters more than slogans. Here is exactly what to expect when you order with us.</p>"
           }
         },
         "value-1": {
@@ -46,7 +46,7 @@
           "settings": {
             "icon": "truck",
             "title": "Tracked delivery",
-            "text": "Every parcel ships with tracking. [ADD: your typical delivery window.]"
+            "text": "Every parcel ships with tracking you can follow from dispatch."
           }
         },
         "value-2": {
@@ -70,7 +70,7 @@
           "settings": {
             "icon": "chat",
             "title": "Here to help",
-            "text": "Answers within 1 to 2 working days."
+            "text": "A person answers, within 1 to 2 working days."
           }
         },
         "cta": {
