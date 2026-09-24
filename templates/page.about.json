@@ -76,10 +76,19 @@
         "cta": {
           "type": "cta",
           "settings": {
-            "heading": "See what is new",
-            "text": "<p>New pieces land regularly. Start with the full collection.</p>",
-            "button_label": "Shop all",
+            "heading": "Start with the new season.",
+            "text": "<p>Browse the full collection and find the pieces you will actually reach for.</p>",
+            "button_label": "Shop the collection",
             "button_link": "/collections/all"
+          }
+        },
+        "row-support": {
+          "type": "row",
+          "settings": {
+            "eyebrow": "We are here for you",
+            "heading": "A real person, always within reach.",
+            "text": "<p>Your message does not go into a queue. Someone reads it and answers.</p><p>Most replies land within one to two working days, Monday to Friday. If something has gone wrong with an order, send the order number and we will sort it out rather than reply with a link to a policy.</p><p>Write to us at support@stilhusetnord.dk.</p>",
+            "image_position": "right"
           }
         }
       },
@@ -92,6 +101,7 @@
         "value-2",
         "value-3",
         "value-4",
+        "row-support",
         "cta"
       ],
       "settings": {
