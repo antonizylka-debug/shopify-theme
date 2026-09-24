@@ -1,0 +1,119 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {}
+    },
+    "size-guide": {
+      "type": "size-guide",
+      "blocks": {
+        "tops": {
+          "type": "table",
+          "settings": {
+            "group": "Women's",
+            "pill": "Tops",
+            "title": "Women's tops size guide",
+            "note": "Between sizes? Size up for a looser fit.",
+            "columns": "Size, Bust, Waist, Sleeve length",
+            "rows": "XS | 82-85 | 63-66 | 58\nS | 86-89 | 67-70 | 59\nM | 90-94 | 71-75 | 60\nL | 95-99 | 76-80 | 61\nXL | 100-105 | 81-86 | 62\n2XL | 106-112 | 87-93 | 63\n3XL | 113-119 | 94-100 | 64\n4XL | 120-126 | 101-107 | 65",
+            "convert_units": true,
+            "fit": "True to size, regular fit. Size up for easier layering.",
+            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
+            "measure": "Measure around the fullest part of the bust, and from the centre back of the neck along the shoulder to the wrist for sleeve length."
+          }
+        },
+        "bottoms": {
+          "type": "table",
+          "settings": {
+            "group": "Women's",
+            "pill": "Bottoms",
+            "title": "Women's bottoms size guide",
+            "note": "Between sizes? Size up for a looser fit.",
+            "columns": "Size, Waist, Hip, Inside leg",
+            "rows": "XS | 63-66 | 88-91 | 76\nS | 67-70 | 92-95 | 77\nM | 71-75 | 96-100 | 78\nL | 76-80 | 101-105 | 79\nXL | 81-86 | 106-111 | 80\n2XL | 87-93 | 112-118 | 81\n3XL | 94-100 | 119-125 | 82\n4XL | 101-107 | 126-132 | 83",
+            "convert_units": true,
+            "fit": "True to size at the waist. Elasticated styles give roughly 4 cm more.",
+            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
+            "measure": "Measure the waist at its narrowest point, the hip at its fullest, and the inside leg from crotch to ankle."
+          }
+        },
+        "dresses": {
+          "type": "table",
+          "settings": {
+            "group": "Women's",
+            "pill": "Dresses",
+            "title": "Women's dresses size guide",
+            "note": "Between sizes? Size up for a looser fit.",
+            "columns": "Size, Bust, Waist, Hip",
+            "rows": "XS | 82-85 | 63-66 | 88-91\nS | 86-89 | 67-70 | 92-95\nM | 90-94 | 71-75 | 96-100\nL | 95-99 | 76-80 | 101-105\nXL | 100-105 | 81-86 | 106-111\n2XL | 106-112 | 87-93 | 112-118\n3XL | 113-119 | 94-100 | 119-125\n4XL | 120-126 | 101-107 | 126-132",
+            "convert_units": true,
+            "fit": "Dresses are sized on bust, waist and hip. Fitted styles run closer to the body.",
+            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
+            "measure": "Bust at the fullest point, waist at the narrowest, hip at the fullest point roughly 20 cm below the waist."
+          }
+        },
+        "sets": {
+          "type": "table",
+          "settings": {
+            "group": "Women's",
+            "pill": "Sets",
+            "title": "Women's sets size guide",
+            "note": "Between sizes? Size up for a looser fit.",
+            "columns": "Size, Bust, Waist, Hip",
+            "rows": "XS | 82-85 | 63-66 | 88-91\nS | 86-89 | 67-70 | 92-95\nM | 90-94 | 71-75 | 96-100\nL | 95-99 | 76-80 | 101-105\nXL | 100-105 | 81-86 | 106-111\n2XL | 106-112 | 87-93 | 112-118\n3XL | 113-119 | 94-100 | 119-125",
+            "convert_units": true,
+            "fit": "Both pieces follow the same size. If your top and bottom sizes differ, choose for the piece that matters most.",
+            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
+            "measure": "Use the same measurements as dresses: bust, waist and hip."
+          }
+        },
+        "footwear": {
+          "type": "table",
+          "settings": {
+            "group": "Women's",
+            "pill": "Footwear",
+            "title": "Women's footwear size guide",
+            "note": "Sizes shown as EU, with UK and US equivalents.",
+            "columns": "EU, UK, US, Foot length (cm)",
+            "rows": "36 | 3 | 5 | 22.8\n37 | 4 | 6 | 23.5\n38 | 5 | 7 | 24.1\n39 | 6 | 8 | 24.8\n40 | 6.5 | 9 | 25.4\n41 | 7.5 | 10 | 26.0\n42 | 8 | 11 | 26.7\n43 | 9 | 12 | 27.3",
+            "convert_units": false,
+            "fit": "Between sizes, or with a wider foot, take the larger size.",
+            "care": "Wipe clean and let shoes dry at room temperature, away from direct heat.",
+            "measure": "Stand on a sheet of paper in the evening, mark heel and longest toe, and measure the distance. Use the longer foot."
+          }
+        }
+      },
+      "block_order": [
+        "tops",
+        "bottoms",
+        "dresses",
+        "sets",
+        "footwear"
+      ],
+      "settings": {
+        "eyebrow": "Size guide",
+        "title": "Find your fit",
+        "intro": "Check the key measurements for each category before you order. Switch between centimetres and inches, and find fit, care and measuring notes under every table.",
+        "default_unit": "cm",
+        "unit_label": "Units",
+        "note_cm": "Measurements shown in centimetres.",
+        "note_in": "Measurements shown in inches.",
+        "fit_label": "Fit",
+        "care_label": "Care",
+        "measure_label": "How to measure",
+        "notes": "<p>These are body measurements, not the measurements of the garment itself. Where a product page lists its own measurements, those take priority &mdash; cuts vary between ranges.</p><p>Still unsure? Email <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> with the product name and we will check it for you before you order.</p>",
+        "color_text": "#1c1d1d",
+        "color_muted": "#7b7c7c",
+        "color_line": "#e8e8e1",
+        "color_line_strong": "#c4c4c4",
+        "color_card": "#ffffff",
+        "color_pill_text": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "size-guide"
+  ]
+}

@@ -1,0 +1,605 @@
+{%- liquid
+  assign c_text = section.settings.color_text
+  assign c_muted = section.settings.color_muted
+  assign c_line = section.settings.color_line
+  assign c_line_strong = section.settings.color_line_strong
+  assign default_unit = section.settings.default_unit | default: 'cm'
+
+  assign tables = section.blocks | where: 'type', 'table'
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .obsgp {
+    color: {{ c_text }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__shell {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 56px 0 72px;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__header {
+    max-width: 720px;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__eyebrow {
+    margin: 0 0 16px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__title {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__intro {
+    max-width: 560px;
+    margin: 18px 0 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: {{ c_muted }};
+  }
+
+  /* --- nawigacja kategorii --- */
+
+  #shopify-section-{{ section.id }} .obsgp__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px 44px;
+    margin-top: 40px;
+    padding: 26px 0 30px;
+    border-bottom: 1px solid {{ c_line }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__nav-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: {{ c_muted }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__pill {
+    padding: 10px 18px;
+    border: 1px solid {{ c_line_strong }};
+    background: none;
+    color: {{ c_text }};
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__pill.is-active {
+    border-color: {{ c_text }};
+    background: {{ c_text }};
+    color: {{ section.settings.color_pill_text }};
+  }
+
+  /* --- karta z tabela --- */
+
+  #shopify-section-{{ section.id }} .obsgp__panel {
+    margin-top: 32px;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__panel.is-hidden {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__card {
+    border: 1px solid {{ c_line }};
+    background: {{ section.settings.color_card }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    border-bottom: 1px solid {{ c_line }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__card-title {
+    display: flex;
+    align-items: center;
+    padding: 24px 28px 22px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 28px;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__toggle-label {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: {{ c_muted }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__unit-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid {{ c_line_strong }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__unit-toggle button {
+    padding: 9px 14px;
+    border: 0;
+    background: none;
+    color: {{ c_text }};
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__unit-toggle button.is-active {
+    background: {{ c_text }};
+    color: {{ section.settings.color_pill_text }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__meta {
+    padding: 24px 28px 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: {{ c_muted }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__table-wrap {
+    padding: 20px 0 8px;
+    overflow-x: auto;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__table th,
+  #shopify-section-{{ section.id }} .obsgp__table td {
+    padding: 18px 14px 18px 28px;
+    text-align: left;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__table th {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border-bottom: 1px solid {{ c_line_strong }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__table td {
+    font-size: 16px;
+    border-bottom: 1px solid {{ c_line }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__table tr:last-child td {
+    border-bottom: 0;
+  }
+
+  /* druga wartosc trzyma szerokosc kolumny, zeby nie skakala przy przelaczeniu */
+  #shopify-section-{{ section.id }} .obsgp__sizer {
+    display: block;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__secondary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid {{ c_line }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__info-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: {{ c_muted }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__info-cell + .obsgp__info-cell {
+    border-left: 1px solid {{ c_line }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__info-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: {{ c_text }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__notes {
+    margin-top: 34px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: {{ c_muted }};
+  }
+
+  #shopify-section-{{ section.id }} .obsgp__notes p {
+    margin: 0 0 10px;
+  }
+
+  @media only screen and (max-width: 900px) {
+    #shopify-section-{{ section.id }} .obsgp__shell {
+      padding: 32px 0 48px;
+    }
+
+    #shopify-section-{{ section.id }} .obsgp__title {
+      font-size: 26px;
+    }
+
+    #shopify-section-{{ section.id }} .obsgp__nav {
+      gap: 20px 24px;
+      margin-top: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .obsgp__toolbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+
+    #shopify-section-{{ section.id }} .obsgp__card-title {
+      padding-bottom: 8px;
+    }
+
+    #shopify-section-{{ section.id }} .obsgp__toggle-wrap {
+      padding: 0 28px 20px;
+    }
+
+    #shopify-section-{{ section.id }} .obsgp__table th,
+    #shopify-section-{{ section.id }} .obsgp__table td {
+      padding: 14px 12px 14px 20px;
+      white-space: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .obsgp__secondary {
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .obsgp__info-cell + .obsgp__info-cell {
+      border-left: 0;
+      border-top: 1px solid {{ c_line }};
+    }
+  }
+{%- endstyle -%}
+
+<div class="obsgp" data-obsgp>
+  <div class="page-width">
+    <div class="obsgp__shell">
+      <div class="obsgp__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="obsgp__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h1 class="obsgp__title">{{ section.settings.title | escape }}</h1>
+        {%- if section.settings.intro != blank -%}
+          <p class="obsgp__intro">{{ section.settings.intro | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if tables.size > 0 -%}
+        {%- comment -%}
+          Nawigacja: grupujemy tabele po polu "group", zachowujac kolejnosc blokow.
+        {%- endcomment -%}
+        {%- assign seen_groups = '' -%}
+        <div class="obsgp__nav">
+          {%- for table in tables -%}
+            {%- liquid
+              assign group_name = table.settings.group | default: 'Sizes'
+              assign group_key = '[' | append: group_name | append: ']'
+            -%}
+            {%- unless seen_groups contains group_key -%}
+              {%- assign seen_groups = seen_groups | append: group_key -%}
+              <div class="obsgp__nav-group">
+                <span class="obsgp__nav-label">{{ group_name | escape }}</span>
+                <div class="obsgp__pills">
+                  {%- for pill in tables -%}
+                    {%- assign pill_group = pill.settings.group | default: 'Sizes' -%}
+                    {%- if pill_group == group_name -%}
+                      <button
+                        type="button"
+                        class="obsgp__pill{% if forloop.first and seen_groups == group_key %} is-active{% endif %}"
+                        data-obsgp-pill="{{ pill.id }}"
+                        aria-pressed="false"
+                      >{{ pill.settings.pill | default: pill.settings.title | escape }}</button>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+
+        {%- for table in tables -%}
+          {%- liquid
+            assign columns = table.settings.columns | split: ','
+            assign raw_rows = table.settings.rows | strip | newline_to_br | split: '<br />'
+          -%}
+
+          <div
+            class="obsgp__panel{% unless forloop.first %} is-hidden{% endunless %}"
+            data-obsgp-panel="{{ table.id }}"
+            {{ table.shopify_attributes }}
+          >
+            <div class="obsgp__card">
+              <div class="obsgp__toolbar">
+                <span class="obsgp__card-title">{{ table.settings.title | escape }}</span>
+
+                {%- unless table.settings.convert_units == false -%}
+                <div class="obsgp__toggle-wrap">
+                  <span class="obsgp__toggle-label">{{ section.settings.unit_label | escape }}</span>
+                  <div class="obsgp__unit-toggle" role="group" aria-label="{{ section.settings.unit_label | escape }}">
+                    <button type="button" data-obsgp-unit="cm" class="{% if default_unit == 'cm' %}is-active{% endif %}" aria-pressed="{% if default_unit == 'cm' %}true{% else %}false{% endif %}">Cm</button>
+                    <button type="button" data-obsgp-unit="in" class="{% if default_unit == 'in' %}is-active{% endif %}" aria-pressed="{% if default_unit == 'in' %}true{% else %}false{% endif %}">In</button>
+                  </div>
+                </div>
+                {%- endunless -%}
+              </div>
+
+              {%- if table.settings.note != blank -%}
+                <p class="obsgp__meta">
+                  {%- unless table.settings.convert_units == false -%}<span data-obsgp-unit-note
+                    data-note-cm="{{ section.settings.note_cm | escape }}"
+                    data-note-in="{{ section.settings.note_in | escape }}"
+                  >{% if default_unit == 'cm' %}{{ section.settings.note_cm | escape }}{% else %}{{ section.settings.note_in | escape }}{% endif %}</span>{%- endunless -%}
+                  {{ table.settings.note | escape }}
+                </p>
+              {%- endif -%}
+
+              <div class="obsgp__table-wrap">
+                <table class="obsgp__table">
+                  <thead>
+                    <tr>
+                      {%- for column in columns -%}
+                        <th scope="col">{{ column | strip | escape }}</th>
+                      {%- endfor -%}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {%- for raw_row in raw_rows -%}
+                      {%- assign cells = raw_row | strip_newlines | strip | split: '|' -%}
+                      {%- if cells.size > 0 -%}
+                        <tr>
+                          {%- for cell in cells -%}
+                            {%- liquid
+                              assign value = cell | strip
+
+                              comment
+                                Pierwsza kolumna to nazwa rozmiaru - nie przeliczamy.
+                                Pozostale traktujemy jak centymetry i liczymy cale,
+                                obslugujac tez zakresy typu 82-85.
+                              endcomment
+                              assign is_measure = false
+                              if forloop.first == false and table.settings.convert_units != false
+                                assign parts = value | split: '-'
+                                assign first_number = parts[0] | strip | times: 1.0
+                                if first_number > 0
+                                  assign is_measure = true
+                                endif
+                              endif
+                            -%}
+
+                            {%- if is_measure -%}
+                              {%- capture inches -%}
+                                {%- for part in parts -%}
+                                  {%- liquid
+                                    assign cm_value = part | strip | times: 1.0
+                                    assign in_value = cm_value | times: 0.393701 | times: 2 | round | divided_by: 2.0
+
+                                    comment
+                                      Liquid wypisalby 33.0 zamiast 33, wiec calkowite
+                                      wartosci pokazujemy bez czesci dziesietnej.
+                                    endcomment
+                                    assign in_whole = in_value | round
+                                    assign in_display = in_value
+                                    if in_value == in_whole
+                                      assign in_display = in_whole
+                                    endif
+                                  -%}
+                                  {%- unless forloop.first %}-{% endunless -%}
+                                  {{- in_display -}}
+                                {%- endfor -%}
+                              {%- endcapture -%}
+                              {%- assign inches = inches | strip -%}
+
+                              <td data-obsgp-cm="{{ value }}" data-obsgp-in="{{ inches }}">
+                                <span data-obsgp-val>{% if default_unit == 'cm' %}{{ value }}{% else %}{{ inches }}{% endif %}</span>
+                                <span class="obsgp__sizer" aria-hidden="true">{% if default_unit == 'cm' %}{{ inches }}{% else %}{{ value }}{% endif %}</span>
+                              </td>
+                            {%- else -%}
+                              <td>{{ value | escape }}</td>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </tr>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </tbody>
+                </table>
+              </div>
+
+              {%- if table.settings.fit != blank or table.settings.care != blank or table.settings.measure != blank -%}
+                <div class="obsgp__secondary">
+                  {%- if table.settings.fit != blank -%}
+                    <div class="obsgp__info-cell">
+                      <span class="obsgp__info-title">{{ section.settings.fit_label | escape }}</span>
+                      <span>{{ table.settings.fit | escape }}</span>
+                    </div>
+                  {%- endif -%}
+                  {%- if table.settings.care != blank -%}
+                    <div class="obsgp__info-cell">
+                      <span class="obsgp__info-title">{{ section.settings.care_label | escape }}</span>
+                      <span>{{ table.settings.care | escape }}</span>
+                    </div>
+                  {%- endif -%}
+                  {%- if table.settings.measure != blank -%}
+                    <div class="obsgp__info-cell">
+                      <span class="obsgp__info-title">{{ section.settings.measure_label | escape }}</span>
+                      <span>{{ table.settings.measure | escape }}</span>
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- if section.settings.notes != blank -%}
+        <div class="obsgp__notes">{{ section.settings.notes }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section.id }}');
+    if (!root) return;
+
+    root.addEventListener('click', function (event) {
+      var pill = event.target.closest('[data-obsgp-pill]');
+      if (pill) {
+        var id = pill.getAttribute('data-obsgp-pill');
+
+        root.querySelectorAll('[data-obsgp-pill]').forEach(function (button) {
+          var on = button === pill;
+          button.classList.toggle('is-active', on);
+          button.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+
+        root.querySelectorAll('[data-obsgp-panel]').forEach(function (panel) {
+          panel.classList.toggle('is-hidden', panel.getAttribute('data-obsgp-panel') !== id);
+        });
+        return;
+      }
+
+      var unitButton = event.target.closest('[data-obsgp-unit]');
+      if (!unitButton) return;
+
+      var unit = unitButton.getAttribute('data-obsgp-unit');
+
+      root.querySelectorAll('[data-obsgp-unit]').forEach(function (button) {
+        var on = button.getAttribute('data-obsgp-unit') === unit;
+        button.classList.toggle('is-active', on);
+        button.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+
+      root.querySelectorAll('td[data-obsgp-cm]').forEach(function (cell) {
+        var shown = cell.querySelector('[data-obsgp-val]');
+        var sizer = cell.querySelector('.obsgp__sizer');
+        if (!shown) return;
+
+        var next = cell.getAttribute('data-obsgp-' + unit);
+        var other = cell.getAttribute('data-obsgp-' + (unit === 'cm' ? 'in' : 'cm'));
+
+        shown.textContent = next;
+        if (sizer) sizer.textContent = other;
+      });
+
+      root.querySelectorAll('[data-obsgp-unit-note]').forEach(function (note) {
+        note.textContent = note.getAttribute('data-note-' + unit) || '';
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Size guide",
+  "max_blocks": 20,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Size guide" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Find your fit" },
+    { "type": "text", "id": "intro", "label": "Intro" },
+    {
+      "type": "select",
+      "id": "default_unit",
+      "label": "Unit shown first",
+      "default": "cm",
+      "options": [
+        { "value": "cm", "label": "Centimetres" },
+        { "value": "in", "label": "Inches" }
+      ]
+    },
+    { "type": "richtext", "id": "notes", "label": "Notes below the tables" },
+    { "type": "header", "content": "Labels" },
+    { "type": "text", "id": "unit_label", "label": "Unit switch", "default": "Units" },
+    { "type": "text", "id": "note_cm", "label": "Note when centimetres", "default": "Measurements shown in centimetres." },
+    { "type": "text", "id": "note_in", "label": "Note when inches", "default": "Measurements shown in inches." },
+    { "type": "text", "id": "fit_label", "label": "Column 1", "default": "Fit" },
+    { "type": "text", "id": "care_label", "label": "Column 2", "default": "Care" },
+    { "type": "text", "id": "measure_label", "label": "Column 3", "default": "How to measure" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_text", "label": "Text", "default": "#1c1d1d" },
+    { "type": "color", "id": "color_muted", "label": "Secondary text", "default": "#7b7c7c" },
+    { "type": "color", "id": "color_line", "label": "Light lines", "default": "#e8e8e1" },
+    { "type": "color", "id": "color_line_strong", "label": "Strong lines", "default": "#c4c4c4" },
+    { "type": "color", "id": "color_card", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "color_pill_text", "label": "Active button text", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "table",
+      "name": "Size table",
+      "settings": [
+        { "type": "text", "id": "group", "label": "Group", "info": "Tables sharing a group sit under one label, e.g. Women's." },
+        { "type": "text", "id": "pill", "label": "Button label" },
+        { "type": "text", "id": "title", "label": "Table heading" },
+        { "type": "text", "id": "note", "label": "Note next to the unit line" },
+        { "type": "text", "id": "columns", "label": "Columns", "info": "Separated by commas, first one is the size." },
+        {
+          "type": "textarea",
+          "id": "rows",
+          "label": "Rows",
+          "info": "One row per line, cells separated by | . Enter measurements in centimetres - inches are worked out for you. Ranges like 82-85 are fine."
+        },
+        { "type": "checkbox", "id": "convert_units", "label": "Values are in centimetres", "default": true, "info": "Turn off for tables of size codes such as EU/UK/US, where converting to inches makes no sense." },
+        { "type": "text", "id": "fit", "label": "Fit note" },
+        { "type": "text", "id": "care", "label": "Care note" },
+        { "type": "text", "id": "measure", "label": "Measuring note" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Size guide", "blocks": [{ "type": "table" }] }
+  ]
+}
+{% endschema %}
