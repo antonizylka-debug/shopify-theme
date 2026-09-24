@@ -91,9 +91,73 @@
             "care": "Wipe clean and let shoes dry at room temperature, away from direct heat.",
             "measure": "Stand on a sheet of paper in the evening, mark heel and longest toe, and measure the distance. Use the longer foot."
           }
+        },
+        "mens-tops": {
+          "type": "table",
+          "settings": {
+            "group": "Men's",
+            "pill": "Tops",
+            "title": "Men's tops size guide",
+            "note": "Between sizes? Size up for a looser fit.",
+            "columns": "Size, Chest, Waist, Sleeve length",
+            "rows": "XS | 86-89 | 71-74 | 60\nS | 90-94 | 75-79 | 61.5\nM | 95-100 | 80-85 | 63\nL | 101-106 | 86-91 | 64.5\nXL | 107-113 | 92-98 | 66\n2XL | 114-120 | 99-105 | 67.5\n3XL | 121-127 | 106-112 | 69\n4XL | 128-134 | 113-119 | 70",
+            "convert_units": true,
+            "fit": "True to size, regular fit. Size up for a roomier look or easier layering.",
+            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
+            "measure": "Measure around the fullest part of the chest, and from the centre back of the neck along the shoulder to the cuff for sleeve length."
+          }
+        },
+        "mens-bottoms": {
+          "type": "table",
+          "settings": {
+            "group": "Men's",
+            "pill": "Bottoms",
+            "title": "Men's bottoms size guide",
+            "note": "Between sizes? Size up for a looser fit.",
+            "columns": "Size, Waist, Hip, Inside leg",
+            "rows": "XS | 71-74 | 88-91 | 79\nS | 75-79 | 92-96 | 80\nM | 80-85 | 97-102 | 81\nL | 86-91 | 103-108 | 82\nXL | 92-98 | 109-115 | 83\n2XL | 99-105 | 116-122 | 84\n3XL | 106-112 | 123-129 | 85\n4XL | 113-119 | 130-136 | 86",
+            "convert_units": true,
+            "fit": "True to size at the waist. Elasticated and drawstring styles give roughly 4 cm more.",
+            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
+            "measure": "Measure the waist where you wear the trousers, the hip at its fullest, and the inside leg from crotch to ankle."
+          }
+        },
+        "mens-belts": {
+          "type": "table",
+          "settings": {
+            "group": "Men's",
+            "pill": "Belts",
+            "title": "Men's belts size guide",
+            "note": "Choose by trouser waist, not by clothing size.",
+            "columns": "Size, Waist, Total length",
+            "rows": "S | 75-85 | 100\nM | 85-95 | 110\nL | 95-105 | 120\nXL | 105-115 | 130",
+            "convert_units": true,
+            "fit": "The middle hole should land on your usual trouser waist.",
+            "care": "Wipe with a dry cloth. Keep leather away from prolonged damp.",
+            "measure": "Measure an existing belt from the buckle fold to the hole you use most."
+          }
+        },
+        "mens-footwear": {
+          "type": "table",
+          "settings": {
+            "group": "Men's",
+            "pill": "Footwear",
+            "title": "Men's footwear size guide",
+            "note": "Sizes shown as EU, with UK and US equivalents.",
+            "columns": "EU, UK, US, Foot length (cm)",
+            "rows": "40 | 6.5 | 7 | 25.4\n41 | 7.5 | 8 | 26.0\n42 | 8 | 9 | 26.7\n43 | 9 | 10 | 27.3\n44 | 9.5 | 10.5 | 28.0\n45 | 10.5 | 11.5 | 28.6\n46 | 11 | 12 | 29.2\n47 | 12 | 13 | 29.9",
+            "convert_units": false,
+            "fit": "Between sizes, or with a wider foot, take the larger size. Dress shoes run slightly narrower than sneakers.",
+            "care": "Wipe clean and let shoes dry at room temperature, away from direct heat.",
+            "measure": "Stand on a sheet of paper in the evening, mark heel and longest toe, and measure the distance. Use the longer foot."
+          }
         }
       },
       "block_order": [
+        "mens-tops",
+        "mens-bottoms",
+        "mens-belts",
+        "mens-footwear",
         "tops",
         "bottoms",
         "dresses",

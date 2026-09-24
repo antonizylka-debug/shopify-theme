@@ -65,7 +65,16 @@
 
     for child in collections
       assign head = child.handle | slice: 0, prefix_size
-      if head == child_prefix and child.all_products_count > 0
+      comment
+        Kafel ma sens, gdy jest co pokazac: produkty albo chociaz zdjecie
+        kolekcji. Pusta kolekcja bez zdjecia zostawialaby dziure w rzedzie.
+      endcomment
+      assign child_has_content = false
+      if child.all_products_count > 0 or child.image != blank
+        assign child_has_content = true
+      endif
+
+      if head == child_prefix and child_has_content
         assign sort_key = child.all_products_count | plus: 1000000
         assign sortable = sortable | append: sort_key | append: ':' | append: child.handle | append: ' '
       endif
