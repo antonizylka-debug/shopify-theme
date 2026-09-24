@@ -160,9 +160,9 @@
           "type": "contact",
           "settings": {
             "title": "Contact",
-            "email": "support@stilhusetnord.dk",
-            "phone": "",
-            "hours": "",
+            "email": "kontakt@stilhusetnord.dk",
+            "phone": "+44 7537 171591",
+            "hours": "Mon to Fri, 9:00 AM to 6:00 PM",
             "address": "",
             "container_width": 50
           }
