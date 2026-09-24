@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -18,9 +27,9 @@
             "columns": "Size, Bust, Waist, Sleeve length",
             "rows": "XS | 82-85 | 63-66 | 58\nS | 86-89 | 67-70 | 59\nM | 90-94 | 71-75 | 60\nL | 95-99 | 76-80 | 61\nXL | 100-105 | 81-86 | 62\n2XL | 106-112 | 87-93 | 63\n3XL | 113-119 | 94-100 | 64\n4XL | 120-126 | 101-107 | 65",
             "convert_units": true,
-            "fit": "True to size, regular fit. Size up for easier layering.",
-            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
-            "measure": "Measure around the fullest part of the bust, and from the centre back of the neck along the shoulder to the wrist for sleeve length."
+            "fit": "True-to-size. A two-piece is sized on the bust, the waist and the hip together, so go by whichever is largest rather than by the bust alone.",
+            "care": "Machine wash cold with similar colours; lay flat or hang to dry. Wash the two pieces together so they age at the same rate.",
+            "measure": "Measure the fullest part of the bust, the natural waistline and the fullest part of the hips, then take the size that fits the largest of the three."
           }
         },
         "bottoms": {
@@ -48,7 +57,7 @@
             "columns": "Size, Bust, Waist, Hip",
             "rows": "XS | 82-85 | 63-66 | 88-91\nS | 86-89 | 67-70 | 92-95\nM | 90-94 | 71-75 | 96-100\nL | 95-99 | 76-80 | 101-105\nXL | 100-105 | 81-86 | 106-111\n2XL | 106-112 | 87-93 | 112-118\n3XL | 113-119 | 94-100 | 119-125\n4XL | 120-126 | 101-107 | 126-132",
             "convert_units": true,
-            "fit": "Dresses are sized on bust, waist and hip. Fitted styles run closer to the body.",
+            "fit": "True-to-size. A two-piece is sized on the bust, the waist and the hip together, so go by whichever is largest rather than by the bust alone.",
             "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
             "measure": "Bust at the fullest point, waist at the narrowest, hip at the fullest point roughly 20 cm below the waist."
           }
@@ -94,15 +103,15 @@
       "settings": {
         "eyebrow": "Size guide",
         "title": "Find your fit",
-        "intro": "Check the key measurements for each category before you order. Switch between centimetres and inches, and find fit, care and measuring notes under every table.",
+        "intro": "Check the key measurements for every category before you order. Switch between inches and centimetres, and find fit, care and measuring notes under each table.",
         "default_unit": "cm",
+        "notes": "<p>These are body measurements, not the measurements of the garment itself. Where a product page lists its own measurements, those take priority — cuts vary between ranges.</p><p>Still unsure? Email <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> with the product name and we will check it for you before you order.</p>",
         "unit_label": "Units",
         "note_cm": "Measurements shown in centimetres.",
         "note_in": "Measurements shown in inches.",
         "fit_label": "Fit",
         "care_label": "Care",
         "measure_label": "How to measure",
-        "notes": "<p>These are body measurements, not the measurements of the garment itself. Where a product page lists its own measurements, those take priority &mdash; cuts vary between ranges.</p><p>Still unsure? Email <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> with the product name and we will check it for you before you order.</p>",
         "color_text": "#1c1d1d",
         "color_muted": "#7b7c7c",
         "color_line": "#e8e8e1",
