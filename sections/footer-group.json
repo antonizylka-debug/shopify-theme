@@ -66,7 +66,7 @@
           "settings": {
             "icon": "box",
             "title": "Fast dispatch",
-            "text": "Dispatched in 1 to 3 working days"
+            "text": "Dispatched in 3 to 4 working days"
           }
         },
         "returns": {
@@ -74,7 +74,7 @@
           "settings": {
             "icon": "return",
             "title": "Easy returns",
-            "text": "Within 14 days of delivery"
+            "text": "Within 30 days of delivery"
           }
         },
         "tracking": {
@@ -90,7 +90,7 @@
           "settings": {
             "icon": "chat",
             "title": "Here to help",
-            "text": "Answers within 1 to 2 working days"
+            "text": "Monday to Friday"
           }
         }
       },
