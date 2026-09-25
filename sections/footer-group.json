@@ -215,7 +215,8 @@
         "block_spacing_mobile": 30,
         "link_spacing": 10,
         "link_spacing_mobile": 8,
-        "hide_mobile_separators": false
+        "hide_mobile_separators": true,
+        "collapse_menus_mobile": false
       }
     }
   },

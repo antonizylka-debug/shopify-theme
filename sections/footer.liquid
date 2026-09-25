@@ -120,6 +120,28 @@
       letter-spacing: 0.025em;
     }
 
+    {%- unless section.settings.collapse_menus_mobile -%}
+      {%- comment -%}
+        Motyw zwija menu stopki w akordeon na telefonie. Pokazujemy zwykly
+        naglowek zamiast przycisku i rozwijamy tresc na stale - linki sa
+        od razu widoczne, bez dodatkowego kliniecia.
+      {%- endcomment -%}
+      #shopify-section-{{ section.id }} .footer__title.small--hide {
+        display: block !important;
+      }
+
+      #shopify-section-{{ section.id }} .footer__title.collapsible-trigger {
+        display: none !important;
+      }
+
+      #shopify-section-{{ section.id }} .site-footer .collapsible-content {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        opacity: 1 !important;
+      }
+    {%- endunless -%}
+
     #shopify-section-{{ section.id }} .footer__brand-text,
     #shopify-section-{{ section.id }} .ob-support,
     #shopify-section-{{ section.id }} .footer__contact {
@@ -420,7 +442,15 @@
       "type": "checkbox",
       "id": "hide_mobile_separators",
       "label": "Hide dividing lines between blocks on mobile",
-      "default": false
+      "default": true,
+      "info": "Motyw rysuje wlasna kreske pod kazdym blokiem. Przy wlasnych blokach Divider daje to podwojne linie."
+    },
+    {
+      "type": "checkbox",
+      "id": "collapse_menus_mobile",
+      "label": "Collapse menus on mobile",
+      "default": false,
+      "info": "Off: links are always visible, like on desktop."
     }
   ],
   "blocks": [
