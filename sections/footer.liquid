@@ -134,11 +134,17 @@
         display: none !important;
       }
 
-      #shopify-section-{{ section.id }} .site-footer .collapsible-content {
+      {%- comment -%}
+        Motyw chowa zwinieta tresc przez visibility: hidden. Bez tej linii
+        linki zajmuja miejsce, ale sa niewidoczne - zostaje sama pustka.
+      {%- endcomment -%}
+      #shopify-section-{{ section.id }} .site-footer .collapsible-content,
+      #shopify-section-{{ section.id }} .site-footer .collapsible-content__inner {
         height: auto !important;
         max-height: none !important;
         overflow: visible !important;
         opacity: 1 !important;
+        visibility: visible !important;
       }
     {%- endunless -%}
 
