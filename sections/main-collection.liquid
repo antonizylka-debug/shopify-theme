@@ -59,7 +59,13 @@
                   endcomment
                   assign link_is_current = false
 
+                  assign link_url_clean = menu_link.url | split: '?' | first
                   if menu_link.active or menu_link.child_active
+                    assign link_is_current = true
+                  elsif collection.handle == 'all' and link_url_clean contains '/collections/all'
+                    # "ALL" na stronie wszystkich produktow (kolekcja wirtualna)
+                    assign link_is_current = true
+                  elsif collection.handle == 'all' and link_url_clean == '/collections'
                     assign link_is_current = true
                   elsif menu_link.url == collection.url
                     assign link_is_current = true
