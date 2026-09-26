@@ -106,7 +106,7 @@
         "show_border_top": true,
         "show_border_bottom": true,
         "icon_box": true,
-        "scroll_seconds": 24,
+        "scroll_seconds": 20,
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6e6b65",
