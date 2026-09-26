@@ -35,6 +35,7 @@
     capture result
       render 'size-canon', label: label, uk: size_uk
     endcapture
+    assign result = result | strip
   endif
 
   if result == blank

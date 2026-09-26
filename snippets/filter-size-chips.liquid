@@ -1,11 +1,13 @@
 {% comment %}
-  Filtr rozmiaru jako chipy w dwoch grupach:
+  Filtr rozmiaru jako chipy w grupach:
    1. litery w stalej kolejnosci (XXS ... 6XL, One Size), ze scaleniem
       zapisow tego samego rozmiaru (XXL = 2XL, Medium = M),
    2. liczby rosnaco, ze scaleniem zapisow (snippet size-canon):
       "10 US - 44 EU" i "44" to jeden chip 44.
   Tylko rozmiary EU: brytyjskie rozmiary odziezy damskiej sa przeliczane
-  (UK 10 => 38). Naglowek liczb: EU, na spodniach Talje, na akcesoriach Numre.
+  (UK 10 => 38). Liczby dziela sie na ubrania ("Tøj (EU)", na spodniach
+  "Talje") i buty ("Sko (EU)") - na stronach butow i dzialow liczba to
+  rozmiar buta, chyba ze powstala z przeliczenia UK -> EU.
 
   Jeden chip = ukryte checkboxy wszystkich zapisow, wiec dziala natywny
   AJAX motywu i wybor wielu rozmiarow naraz.
@@ -26,7 +28,7 @@
     assign letter_variants = letter_variants | append: variants_part | append: '|'
   endfor
 
-  # grupa liczbowa: klucz sortowania (liczba x10 + 100000) i nazwa chipa
+  # grupa liczbowa: klucz sortowania (liczba x10 + 1000000, zawsze 7 cyfr) i nazwa chipa
   # UK-rozmiary odziezy damskiej pokazujemy jako EU (UK 10 => 38);
   # spodnie (talia w calach), buty i akcesoria zostaja bez przeliczania
   assign ctx = collection.handle | default: ''
@@ -43,7 +45,19 @@
     assign keep_small = true
   endif
 
+  # buty (S) czy ubrania (T): na butach i na stronach dzialow liczby to
+  # rozmiary butow EU, chyba ze powstaly z przeliczenia UK -> EU (ubrania)
+  assign shoe_ctx = false
+  if ctx contains 'footwear'
+    assign shoe_ctx = true
+  endif
+  unless ctx contains '-'
+    assign shoe_ctx = true
+  endunless
+
   assign numeric_rows = ''
+  # "|<indeks wartosci>=<grupa>:<rozmiar EU>|" - uzywane przy budowie chipow
+  assign value_map = '|'
   for value in filter.values
     assign raw = value.label | downcase | strip
     assign raw_lookup = '|' | append: raw | append: '|'
@@ -51,16 +65,34 @@
       capture canon
         render 'size-canon', label: value.label, uk: size_uk
       endcapture
+      # render zostawia biale znaki (nowa linia), a split: ' ' w Shopify tnie tez po nich
+      assign canon = canon | strip
+      capture canon_plain
+        render 'size-canon', label: value.label
+      endcapture
+      assign canon_plain = canon_plain | strip
+
+      assign size_group = 'T'
+      if size_uk and canon != canon_plain
+        assign size_group = 'T'
+      elsif shoe_ctx
+        assign size_group = 'S'
+      endif
+
+      if canon != blank
+        assign value_map = value_map | append: forloop.index | append: '=' | append: size_group | append: ':' | append: canon | append: '|'
+      endif
+
       if canon != blank and value.count > 0 or canon != blank and value.active
         # zakres "36-38" trafia do obu chipow, 36 i 38 - bez osobnych kafli z zakresami
         assign canon_parts = canon | split: '-'
         for part in canon_parts
           assign as_number = part | times: 1.0
-          # ponizej 30 to rozmiary US/UK butow i pierscionkow - poza spodniami
-          # i akcesoriami ich nie pokazujemy, zostaja tylko rozmiary EU
-          if keep_small or as_number >= 30
-            assign sort_key = as_number | times: 10 | plus: 100000 | round
-            assign row = sort_key | append: ':' | append: part
+          # ponizej 30 to rozmiary US/UK butow i pierscionkow, powyzej 60 centymetry
+          # paskow - poza spodniami i akcesoriami ich nie pokazujemy
+          if keep_small or as_number >= 30 and as_number <= 60
+            assign sort_key = as_number | times: 10 | plus: 1000000 | round
+            assign row = size_group | append: sort_key | append: ':' | append: part
             assign row_lookup = ' ' | append: row | append: ' '
             assign padded = ' ' | append: numeric_rows
             unless padded contains row_lookup
@@ -73,11 +105,11 @@
   endfor
   assign numeric_sorted = numeric_rows | strip | split: ' ' | sort
 
-  assign numeric_title = 'EU'
+  assign clothes_title = 'Tøj (EU)'
   if ctx contains 'bottoms'
-    assign numeric_title = 'Talje'
+    assign clothes_title = 'Talje'
   elsif ctx contains 'accessories'
-    assign numeric_title = 'Numre'
+    assign clothes_title = 'Numre'
   endif
 
   assign render_mode = mode | default: 'list'
@@ -111,22 +143,27 @@
 
   {%- for row in numeric_sorted -%}
     {%- liquid
+      assign row_group = row | slice: 0
       assign row_canon = row | split: ':' | last
       assign size_active = false
-      for value in filter.active_values
-        capture value_canon
-          render 'size-canon', label: value.label, uk: size_uk
-        endcapture
-        assign value_parts = value_canon | split: '-'
-        if value_parts contains row_canon
-          assign size_active = true
-          break
+      for value in filter.values
+        if value.active
+          assign map_key = '|' | append: forloop.index | append: '='
+          if value_map contains map_key
+            assign entry = value_map | split: map_key | last | split: '|' | first
+            assign entry_group = entry | slice: 0
+            assign entry_parts = entry | split: ':' | last | split: '-'
+            if entry_group == row_group and entry_parts contains row_canon
+              assign size_active = true
+              break
+            endif
+          endif
         endif
       endfor
     -%}
 
     {%- if size_active -%}
-      <button type="button" class="active-filters__chip" data-clear-group="{{ row_canon | escape }}">
+      <button type="button" class="active-filters__chip" data-clear-group="{{ row_group }}{{ row_canon | escape }}">
         <span class="active-filters__name">{{ filter_name | default: filter.label | escape }}:</span>
         <span class="active-filters__value">{{ row_canon | escape }}</span>
         <svg aria-hidden="true" focusable="false" role="presentation" class="active-filters__x" viewBox="0 0 10 10"><path d="M1 1l8 8M9 1l-8 8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
@@ -178,61 +215,84 @@
     {%- endfor -%}
   {%- endcapture -%}
 
-  {%- capture numeric_chips -%}
-    {%- for row in numeric_sorted -%}
-      {%- liquid
-        assign row_canon = row | split: ':' | last
-        assign size_active = false
-      -%}
+  {%- capture clothes_chips -%}{%- endcapture -%}
+  {%- capture shoe_chips -%}{%- endcapture -%}
+  {%- for row in numeric_sorted -%}
+    {%- liquid
+      assign row_group = row | slice: 0
+      assign row_canon = row | split: ':' | last
+      assign size_active = false
+    -%}
 
-      {%- capture size_inputs -%}
-        {%- for value in filter.values -%}
-          {%- liquid
-            assign raw = value.label | downcase | strip
-            assign raw_lookup = '|' | append: raw | append: '|'
-            assign value_canon = ''
-            unless letter_variants contains raw_lookup
-              capture value_canon
-                render 'size-canon', label: value.label, uk: size_uk
-              endcapture
-            endunless
-          -%}
-          {%- assign value_parts = value_canon | split: '-' -%}
-          {%- if value_parts contains row_canon -%}
-            {%- if value.count > 0 or value.active -%}
-              {%- if value.active -%}{%- assign size_active = true -%}{%- endif -%}
-              <input
-                type="checkbox"
-                class="tag__input visually-hidden"
-                name="{{ value.param_name }}"
-                value="{{ value.value }}"
-                {% if value.active %}checked{% endif %}>
-            {%- endif -%}
+    {%- capture size_inputs -%}
+      {%- for value in filter.values -%}
+        {%- liquid
+          assign in_chip = false
+          assign map_key = '|' | append: forloop.index | append: '='
+          if value_map contains map_key
+            assign entry = value_map | split: map_key | last | split: '|' | first
+            assign entry_group = entry | slice: 0
+            assign entry_parts = entry | split: ':' | last | split: '-'
+            if entry_group == row_group and entry_parts contains row_canon
+              assign in_chip = true
+            endif
+          endif
+        -%}
+        {%- if in_chip -%}
+          {%- if value.count > 0 or value.active -%}
+            {%- if value.active -%}{%- assign size_active = true -%}{%- endif -%}
+            <input
+              type="checkbox"
+              class="tag__input visually-hidden"
+              name="{{ value.param_name }}"
+              value="{{ value.value }}"
+              {% if value.active %}checked{% endif %}>
           {%- endif -%}
-        {%- endfor -%}
-      {%- endcapture -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
 
-      <li class="tag{% if size_active %} tag--active{% endif %}" data-group-label="{{ row_canon | escape }}">
+    {%- capture chip -%}
+      <li class="tag{% if size_active %} tag--active{% endif %}" data-group-label="{{ row_group }}{{ row_canon | escape }}">
         <button type="button" class="tag__checkbox-wrapper text-label" data-filter-group>
           <span class="tag__text">{{ row_canon }}</span>
         </button>
         {{ size_inputs }}
       </li>
-    {%- endfor -%}
-  {%- endcapture -%}
+    {%- endcapture -%}
 
-  {%- assign has_letters = false -%}
-  {%- if letter_chips contains 'data-group-label' -%}{%- assign has_letters = true -%}{%- endif -%}
-  {%- assign has_numbers = false -%}
-  {%- if numeric_chips contains 'data-group-label' -%}{%- assign has_numbers = true -%}{%- endif -%}
+    {%- if row_group == 'S' -%}
+      {%- assign shoe_chips = shoe_chips | append: chip -%}
+    {%- else -%}
+      {%- assign clothes_chips = clothes_chips | append: chip -%}
+    {%- endif -%}
+  {%- endfor -%}
 
-  {%- if has_letters -%}
-    {%- if has_numbers -%}<p class="size-group__title">Tøj</p>{%- endif -%}
+  {%- liquid
+    assign group_count = 0
+    if letter_chips contains 'data-group-label'
+      assign group_count = group_count | plus: 1
+    endif
+    if clothes_chips contains 'data-group-label'
+      assign group_count = group_count | plus: 1
+    endif
+    if shoe_chips contains 'data-group-label'
+      assign group_count = group_count | plus: 1
+    endif
+  -%}
+
+  {%- if letter_chips contains 'data-group-label' -%}
+    {%- if group_count > 1 -%}<p class="size-group__title">Tøj</p>{%- endif -%}
     <ul class="no-bullets tag-list tag-list--chips">{{ letter_chips }}</ul>
   {%- endif -%}
 
-  {%- if has_numbers -%}
-    {%- if has_letters -%}<p class="size-group__title">{{ numeric_title }}</p>{%- endif -%}
-    <ul class="no-bullets tag-list tag-list--chips">{{ numeric_chips }}</ul>
+  {%- if clothes_chips contains 'data-group-label' -%}
+    {%- if group_count > 1 -%}<p class="size-group__title">{{ clothes_title }}</p>{%- endif -%}
+    <ul class="no-bullets tag-list tag-list--chips">{{ clothes_chips }}</ul>
+  {%- endif -%}
+
+  {%- if shoe_chips contains 'data-group-label' -%}
+    {%- if group_count > 1 -%}<p class="size-group__title">Sko (EU)</p>{%- endif -%}
+    <ul class="no-bullets tag-list tag-list--chips">{{ shoe_chips }}</ul>
   {%- endif -%}
 {%- endif -%}
