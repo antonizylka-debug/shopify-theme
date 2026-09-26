@@ -1,12 +1,12 @@
 {% comment %}
-  Filtr "Product tag" z Search & Discovery rozbity na osobne grupy wedlug
-  prefiksu tagu: "Dress Style: Maxi" i "Dress Length: Midi" daja grupy
-  "Stil" (Maxi, ...) i "Længde" (Midi, ...). Shopify liczy wartosci dla
-  otwartej kolekcji, wiec na "Kjoler" widac tylko cechy sukienek.
+  Filtr "Product tag" z Search & Discovery pokazany jako jedna lista
+  "Kategori" - podkategorie z tagow "Kategori: Maxikjoler", "Kategori:
+  Bomberjakker" itd. Dziala jak dawne podkolekcje: na "Kjoler" widac
+  Maxikjoler / Midikjoler / Minikjoler, na "Dame" wszystkie kategorie
+  damskie. Shopify liczy wartosci dla otwartej kolekcji.
 
-  Pomijamy tagi, ktore dubluja kolekcje albo inne filtry (dzial, kategoria,
-  typ produktu, styl buta ze starego importu, kolor, rozmiar), tagi bez dwukropka i grupy z jedna
-  wartoscia - taki filtr nic nie zaweza.
+  Inne tagi (dzial, kolor, typ...) sa pomijane, a lista z jedna wartoscia
+  nic nie zaweza, wiec tez sie nie pokazuje.
 
   Parametry:
    - filter (wymagany) - filtr z param_name 'filter.p.tag'
@@ -14,25 +14,19 @@
 {% endcomment %}
 
 {%- liquid
-  assign skip_prefixes = '|department|shopping category|catalog group|product type|footwear style|colour|color|size|gender|brand|vendor|badge|fbt|upsell|'
+  # tylko te prefiksy tagow staja sie filtrami
+  assign allowed_prefixes = '|kategori|'
 
-  # na stronach dzialow (mens, womens) cechy z roznych kategorii mieszalyby sie
-  # w jedna liste - pokazujemy je tylko na kategoriach (uchwyt z myslnikiem)
   assign prefixes = '|'
-  assign show_groups = false
-  if collection.handle contains '-'
-    assign show_groups = true
-  endif
-
-  # unikalne prefiksy w kolejnosci wystapienia
   for value in filter.values
-    if show_groups and value.label contains ':'
-      assign prefix = value.label | split: ':' | first | strip
-      assign prefix_key = prefix | downcase
+    if value.label contains ':'
+      assign prefix_key = value.label | split: ':' | first | strip | downcase
       assign lookup = '|' | append: prefix_key | append: '|'
-      unless skip_prefixes contains lookup or prefixes contains lookup
-        assign prefixes = prefixes | append: prefix_key | append: '|'
-      endunless
+      if allowed_prefixes contains lookup
+        unless prefixes contains lookup
+          assign prefixes = prefixes | append: prefix_key | append: '|'
+        endunless
+      endif
     endif
   endfor
 
