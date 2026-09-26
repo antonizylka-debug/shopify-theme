@@ -5,7 +5,7 @@
   otwartej kolekcji, wiec na "Kjoler" widac tylko cechy sukienek.
 
   Pomijamy tagi, ktore dubluja kolekcje albo inne filtry (dzial, kategoria,
-  typ produktu, kolor, rozmiar), tagi bez dwukropka i grupy z jedna
+  typ produktu, styl buta ze starego importu, kolor, rozmiar), tagi bez dwukropka i grupy z jedna
   wartoscia - taki filtr nic nie zaweza.
 
   Parametry:
@@ -14,12 +14,19 @@
 {% endcomment %}
 
 {%- liquid
-  assign skip_prefixes = '|department|shopping category|catalog group|product type|colour|color|size|gender|brand|vendor|'
+  assign skip_prefixes = '|department|shopping category|catalog group|product type|footwear style|colour|color|size|gender|brand|vendor|badge|fbt|upsell|'
+
+  # na stronach dzialow (mens, womens) cechy z roznych kategorii mieszalyby sie
+  # w jedna liste - pokazujemy je tylko na kategoriach (uchwyt z myslnikiem)
+  assign prefixes = '|'
+  assign show_groups = false
+  if collection.handle contains '-'
+    assign show_groups = true
+  endif
 
   # unikalne prefiksy w kolejnosci wystapienia
-  assign prefixes = '|'
   for value in filter.values
-    if value.label contains ':'
+    if show_groups and value.label contains ':'
       assign prefix = value.label | split: ':' | first | strip
       assign prefix_key = prefix | downcase
       assign lookup = '|' | append: prefix_key | append: '|'
