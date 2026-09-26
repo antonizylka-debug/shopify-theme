@@ -25,9 +25,18 @@
   endif
 -%}
 
-<li class="megamenu__list-item">
+{%- capture hl -%}{%- render 'menu-highlight', item: item, section: section -%}{%- endcapture -%}
+{%- assign hl = hl | strip -%}
+{%- if hl != '' -%}
+  {%- assign hl_badge_key = 'mm_hl' | append: hl | append: '_badge' -%}
+  {%- assign hl_badge = section.settings[hl_badge_key] -%}
+{%- endif -%}
+
+<li class="megamenu__list-item{% if hl != '' %} menu-hl--{{ hl }}{% endif %}">
   <a href="{{ item.url }}" class="site-nav__dropdown-link megamenu__link">
-    <span class="megamenu__link-title">{{ item.title | escape }}</span>
+    <span class="megamenu__link-title">{{ item.title | escape }}
+      {%- if hl != '' and hl_badge != blank %}<span class="menu-hl__badge">{{ hl_badge | escape }}</span>{% endif -%}
+    </span>
     {%- if item_count > 0 -%}
       <span class="megamenu__link-count">{{ item_count }}</span>
     {%- endif -%}

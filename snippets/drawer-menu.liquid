@@ -87,11 +87,17 @@
                               {%- render 'collapsible-icons-alt' -%}
                             </button>
                           {%- else -%}
+                            {%- capture hl -%}{%- render 'menu-highlight', item: childlink, section: section -%}{%- endcapture -%}
+                            {%- assign hl = hl | strip -%}
                             <a href="{{ childlink.url }}"
-                              class="mobile-nav__link"
+                              class="mobile-nav__link{% if hl != '' %} menu-hl--{{ hl }}{% endif %}"
                               id="Sublabel-{{ grand_child_list_handle }}"
                               {% if childlink.active %}data-active="true"{% endif %}>
                               {{ childlink.title | escape }}
+                              {%- if hl != '' -%}
+                                {%- assign hl_badge_key = 'mm_hl' | append: hl | append: '_badge' -%}
+                                {%- if section.settings[hl_badge_key] != blank %}<span class="menu-hl__badge">{{ section.settings[hl_badge_key] | escape }}</span>{% endif -%}
+                              {%- endif -%}
                             </a>
                           {%- endif -%}
                           {%- if childlink.url != '#' and has_sub_dropdown -%}
@@ -114,8 +120,14 @@
                               <ul class="mobile-nav__grandchildlist">
                                 {%- for grandchildlink in childlink.links -%}
                                   <li class="mobile-nav__item">
-                                    <a href="{{ grandchildlink.url }}" class="mobile-nav__link"{% if grandchildlink.active %} data-active="true"{% endif %}>
+                                    {%- capture hl -%}{%- render 'menu-highlight', item: grandchildlink, section: section -%}{%- endcapture -%}
+                                    {%- assign hl = hl | strip -%}
+                                    <a href="{{ grandchildlink.url }}" class="mobile-nav__link{% if hl != '' %} menu-hl--{{ hl }}{% endif %}"{% if grandchildlink.active %} data-active="true"{% endif %}>
                                       {{ grandchildlink.title }}
+                                      {%- if hl != '' -%}
+                                        {%- assign hl_badge_key = 'mm_hl' | append: hl | append: '_badge' -%}
+                                        {%- if section.settings[hl_badge_key] != blank %}<span class="menu-hl__badge">{{ section.settings[hl_badge_key] | escape }}</span>{% endif -%}
+                                      {%- endif -%}
                                     </a>
                                   </li>
                                 {%- endfor -%}
