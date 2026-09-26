@@ -1,0 +1,44 @@
+{% comment %}
+  Etykieta rozmiaru do pokazania klientowi - tylko EU albo litery, bez
+  dopiskow US/UK: "10 US - 44 EU" => 44, "36|UK3.5" => 36, UK 10 => 38,
+  "Medium (US 32-34" => M. Wartosc wariantu w formularzu zostaje bez zmian.
+
+  Parametry:
+   - label (wymagany) - wartosc opcji rozmiaru
+   - product (opcjonalny) - produkt; z tagow wynika, czy liczby to rozmiary UK
+   - uk (opcjonalny) - jak w size-canon, gdy nie ma produktu
+{% endcomment %}
+
+{%- liquid
+  assign size_uk = uk | default: false
+  if product
+    assign size_uk = false
+    if product.tags contains 'Department: Women'
+      assign size_uk = true
+      if product.tags contains 'Shopping Category: Bottoms' or product.tags contains 'Shopping Category: Footwear'
+        assign size_uk = false
+      elsif product.tags contains 'Shopping Category: Accessories'
+        assign size_uk = false
+      endif
+    endif
+  endif
+
+  assign raw = label | downcase | strip
+  assign result = ''
+  if raw contains 'medium (us'
+    assign result = 'M'
+  elsif raw contains 'xs i '
+    assign result = 'XS'
+  endif
+
+  if result == blank
+    capture result
+      render 'size-canon', label: label, uk: size_uk
+    endcapture
+  endif
+
+  if result == blank
+    assign result = label
+  endif
+-%}
+{{- result -}}

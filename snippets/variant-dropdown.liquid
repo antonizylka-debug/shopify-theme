@@ -1,3 +1,13 @@
+{%- liquid
+  # rozmiary tylko w EU - patrz snippet size-label
+  assign size_names = 'size,størrelse,storrelse,rozmiar'
+  assign downcased_option = option.name | downcase
+  assign is_size_option = false
+  if size_names contains downcased_option
+    assign is_size_option = true
+  endif
+-%}
+
 <div class="variant-wrapper variant-wrapper--dropdown js" data-type="dropdown">
   <label class="variant__label{% if option.name == 'Default' or option.name == 'Title' %} hidden-label{% endif %}{% unless variant_labels %} hidden-label{% endunless %}"
     for="SingleOptionSelector-{{ section_id }}-{{ product.id }}-option-{{ forloop.index0 }}">
@@ -25,7 +35,11 @@
           name="{{ option.name }}"
           class="variant-input"
           data-index="option{{ forloop.index }}">
-          {{ value }}
+          {%- if is_size_option -%}
+            {%- render 'size-label', label: value, product: product -%}
+          {%- else -%}
+            {{ value }}
+          {%- endif -%}
         </option>
       {%- endfor -%}
     </select>

@@ -21,7 +21,12 @@
       {%- unless product.product.has_only_default_variant -%}
         <div class="cart__item--variants">
           {%- for option in product.options_with_values -%}
-            <div><span>{{ option.name }}:</span> {{ option.value }}</div>
+            {%- assign option_check = option.name | downcase -%}
+            {%- if option_check == 'size' or option_check == 'størrelse' -%}
+              <div><span>{{ option.name }}:</span> {% render 'size-label', label: option.value, product: product.product %}</div>
+            {%- else -%}
+              <div><span>{{ option.name }}:</span> {{ option.value }}</div>
+            {%- endif -%}
           {%- endfor -%}
         </div>
       {%- endunless -%}

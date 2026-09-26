@@ -11,7 +11,7 @@
   {%- for filter_value in filter.active_values -%}
   <li class="tag tag--remove">
     <a class="btn btn--small" href="{{ filter_value.url_to_remove }}">
-      {{ filter_value.label | escape }}
+      {{ filter_value.label | split: ':' | last | strip | escape }}
     </a>
     <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><title>icon-X</title><path d="m19 17.61 27.12 27.13m0-27.12L19 44.74"/></svg>
   </li>
@@ -24,6 +24,31 @@
 {%- for filter in filters -%}
   {%- capture filter_id -%}filter-{{ filter.label | handleize }}{%- endcapture -%}
   {%- assign filter_index = forloop.index -%}
+
+  {%- liquid
+    # filtr z jedna wartoscia nic nie zaweza - np. "Produkttype" na stronie
+    # "Kjoler" pokazywal tylko "Dresses". Taki filtr pomijamy.
+    assign useful_values = 0
+    for value in filter.values
+      if value.count > 0 or value.active
+        assign useful_values = useful_values | plus: 1
+      endif
+    endfor
+
+    assign skip_filter = false
+    if filter.type == 'list' and useful_values < 2 and filter.active_values.size == 0
+      assign skip_filter = true
+    endif
+  -%}
+
+  {%- if filter.param_name == 'filter.p.tag' -%}
+    {%- render 'filter-tag-groups', filter: filter, filter_index: filter_index, location: location, collapsed: collapsed -%}
+    {%- continue -%}
+  {%- endif -%}
+
+  {%- if skip_filter -%}
+    {%- continue -%}
+  {%- endif -%}
 
   {%- liquid
     # etykieta "Size: Clothing" => naglowek grupy "Size" + podetykieta "Clothing"
@@ -137,17 +162,8 @@
                     {%- endfor -%}
                   </ul>
                   {%- if filter.values.size > 10 -%}
-                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Show less">
-                      {%- liquid
-      assign filter_word = filter.label | downcase | split: ':' | last | strip
-      assign last_char = filter_word | slice: -1
-      if last_char == 'y'
-        assign filter_word = filter_word | remove_last: 'y' | append: 'ies'
-      elsif last_char != 's'
-        assign filter_word = filter_word | append: 's'
-      endif
-    -%}
-    Show all {{ filter.values.size }} {{ filter_word }}
+                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Vis færre">
+                      Vis alle {{ filter.values.size }}
                     </button>
                   {%- endif -%}
 
@@ -164,6 +180,10 @@
                       if downcased_label contains swatch_trigger
                         assign is_color = true
                       elsif swatch_trigger == 'color' and downcased_label contains 'colour'
+                        assign is_color = true
+                      elsif downcased_label contains 'farve'
+                        # dunska etykieta filtra - bez tego po zmianie "Colour" na "Farve"
+                        # znikaly rodziny kolorow i kolka
                         assign is_color = true
                       endif
                     endif
@@ -228,17 +248,8 @@
                     {%- endfor -%}
                   </ul>
                   {%- if filter.values.size > 10 -%}
-                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Show less">
-                      {%- liquid
-      assign filter_word = filter.label | downcase | split: ':' | last | strip
-      assign last_char = filter_word | slice: -1
-      if last_char == 'y'
-        assign filter_word = filter_word | remove_last: 'y' | append: 'ies'
-      elsif last_char != 's'
-        assign filter_word = filter_word | append: 's'
-      endif
-    -%}
-    Show all {{ filter.values.size }} {{ filter_word }}
+                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Vis færre">
+                      Vis alle {{ filter.values.size }}
                     </button>
                   {%- endif -%}
                   {%- endif -%}
@@ -278,17 +289,8 @@
                       {%- endfor -%}
                     </ul>
                     {%- if filter.values.size > 10 -%}
-                      <button type="button" class="filter-toggle" data-filter-toggle data-less="Show less">
-                        {%- liquid
-      assign filter_word = filter.label | downcase | split: ':' | last | strip
-      assign last_char = filter_word | slice: -1
-      if last_char == 'y'
-        assign filter_word = filter_word | remove_last: 'y' | append: 'ies'
-      elsif last_char != 's'
-        assign filter_word = filter_word | append: 's'
-      endif
-    -%}
-    Show all {{ filter.values.size }} {{ filter_word }}
+                      <button type="button" class="filter-toggle" data-filter-toggle data-less="Vis færre">
+                        Vis alle {{ filter.values.size }}
                       </button>
                     {%- endif -%}
                   </div>
@@ -320,17 +322,8 @@
                     {%- endfor -%}
                   </ul>
                   {%- if filter.values.size > 10 -%}
-                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Show less">
-                      {%- liquid
-      assign filter_word = filter.label | downcase | split: ':' | last | strip
-      assign last_char = filter_word | slice: -1
-      if last_char == 'y'
-        assign filter_word = filter_word | remove_last: 'y' | append: 'ies'
-      elsif last_char != 's'
-        assign filter_word = filter_word | append: 's'
-      endif
-    -%}
-    Show all {{ filter.values.size }} {{ filter_word }}
+                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Vis færre">
+                      Vis alle {{ filter.values.size }}
                     </button>
                   {%- endif -%}
 

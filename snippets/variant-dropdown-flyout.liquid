@@ -44,14 +44,14 @@
           {% if option.selected_value == value %} selected="selected"{% endif %}
           name="{{ option.name }}"
           data-index="option{{ option_index }}">
-          {{ value }}
+          {%- render 'size-label', label: value, product: product -%}
         </option>
       {%- endfor -%}
     </select>
 
     <button type="button" class="sz-opener" data-sz-opener aria-expanded="false" aria-haspopup="listbox">
       <span class="sz-opener-text" data-sz-current>
-        {%- if product.selected_variant -%}{{ selected_value }}{%- else -%}Vælg størrelse{%- endif -%}
+        {%- if product.selected_variant -%}{%- render 'size-label', label: selected_value, product: product -%}{%- else -%}Vælg størrelse{%- endif -%}
       </span>
       <svg class="sz-caret" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M3.5 6l4.5 4.5L12.5 6" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -109,7 +109,7 @@
         <li role="option" data-sz-row data-value="{{ value | escape }}" {% if row_is_selected %}aria-selected="true"{% endif %}>
           <span class="sz-opt" data-available="{{ row_variant.available }}" {% unless row_variant.available %}aria-disabled="true"{% endunless %}>
             <span class="sz-radio" data-checked="{{ row_is_selected }}"></span>
-            <span class="sz-opt-name">{{ value }}</span>
+            <span class="sz-opt-name">{%- render 'size-label', label: value, product: product -%}</span>
             <span class="sz-opt-right" data-sz-opt-right>
               {%- if row_variant.available -%}
                 <span class="sz-opt-price">{{ row_variant.price | money }}</span>
@@ -394,7 +394,9 @@
           nativeSelect.value = value;
           nativeSelect.dispatchEvent(new Event('change', { bubbles: true }));
 
-          currentText.textContent = value;
+          // pokazujemy etykiete EU z wiersza, nie surowa wartosc wariantu
+          var nameEl = row.querySelector('.sz-opt-name');
+          currentText.textContent = nameEl ? nameEl.textContent.trim() : value;
           list.querySelectorAll('[data-sz-row]').forEach(function (r) {
             r.removeAttribute('aria-selected');
             r.querySelector('.sz-radio').setAttribute('data-checked', 'false');
