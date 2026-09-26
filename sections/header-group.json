@@ -71,11 +71,12 @@
             "menu_title": "MEN'S",
             "view_all_link": "shopify://collections/mens",
             "view_all_label": "",
+            "image": "shopify://shop_images/navigation_Image_mens.webp",
             "eyebrow": "NEW SEASON",
             "heading": "Men's Collection",
             "button_label": "SHOP MEN'S",
             "link": "",
-            "overlay_opacity": 25,
+            "overlay_opacity": 5,
             "text_color": "#ffffff",
             "background_color": "#8d8a83"
           }
