@@ -26,7 +26,7 @@
     assign letter_variants = letter_variants | append: variants_part | append: '|'
   endfor
 
-  # grupa liczbowa: klucz sortowania (liczba x10 + 100000) i nazwa chipa
+  # grupa liczbowa: klucz sortowania (liczba x10 + 1000000, zawsze 7 cyfr) i nazwa chipa
   # UK-rozmiary odziezy damskiej pokazujemy jako EU (UK 10 => 38);
   # spodnie (talia w calach), buty i akcesoria zostaja bez przeliczania
   assign ctx = collection.handle | default: ''
@@ -51,6 +51,8 @@
       capture canon
         render 'size-canon', label: value.label, uk: size_uk
       endcapture
+      # render zostawia biale znaki (nowa linia), a split: ' ' w Shopify tnie tez po nich
+      assign canon = canon | strip
       if canon != blank and value.count > 0 or canon != blank and value.active
         # zakres "36-38" trafia do obu chipow, 36 i 38 - bez osobnych kafli z zakresami
         assign canon_parts = canon | split: '-'
@@ -58,8 +60,9 @@
           assign as_number = part | times: 1.0
           # ponizej 30 to rozmiary US/UK butow i pierscionkow - poza spodniami
           # i akcesoriami ich nie pokazujemy, zostaja tylko rozmiary EU
-          if keep_small or as_number >= 30
-            assign sort_key = as_number | times: 10 | plus: 100000 | round
+          # powyzej 60 to centymetry (paski) - tez tylko na akcesoriach
+          if keep_small or as_number >= 30 and as_number <= 60
+            assign sort_key = as_number | times: 10 | plus: 1000000 | round
             assign row = sort_key | append: ':' | append: part
             assign row_lookup = ' ' | append: row | append: ' '
             assign padded = ' ' | append: numeric_rows
@@ -117,6 +120,7 @@
         capture value_canon
           render 'size-canon', label: value.label, uk: size_uk
         endcapture
+        assign value_canon = value_canon | strip
         assign value_parts = value_canon | split: '-'
         if value_parts contains row_canon
           assign size_active = true
@@ -195,6 +199,7 @@
               capture value_canon
                 render 'size-canon', label: value.label, uk: size_uk
               endcapture
+              assign value_canon = value_canon | strip
             endunless
           -%}
           {%- assign value_parts = value_canon | split: '-' -%}
