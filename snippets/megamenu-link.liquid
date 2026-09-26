@@ -23,13 +23,6 @@
   if show_count and item_collection != blank and item_collection.handle != blank
     assign item_count = item_collection.all_products_count
   endif
-
-  # Nyheder / Bestsellers / Udsalg to przekroje calego dzialu - licznik
-  # "Nyheder 1609" wygladalby dziwnie, wiec przy nich go nie pokazujemy
-  assign special_handle = item_collection.handle | default: ''
-  if special_handle contains 'nyheder' or special_handle contains 'bestseller' or special_handle contains 'udsalg'
-    assign item_count = 0
-  endif
 -%}
 
 <li class="megamenu__list-item">
