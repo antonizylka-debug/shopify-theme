@@ -70,7 +70,7 @@
           "settings": {
             "menu_title": "MEN'S",
             "view_all_link": "shopify://collections/mens",
-            "view_all_label": "",
+            "view_all_label": "SHOP ALL",
             "image": "shopify://shop_images/navigation_Image_mens.webp",
             "eyebrow": "NEW SEASON",
             "heading": "Men's Collection",
@@ -86,7 +86,7 @@
           "settings": {
             "menu_title": "WOMEN'S",
             "view_all_link": "shopify://collections/womens",
-            "view_all_label": "",
+            "view_all_label": "SHOP ALL",
             "image": "shopify://shop_images/navigation_Image_mens.webp",
             "eyebrow": "NEW SEASON",
             "heading": "Women's Collection",
