@@ -1,0 +1,163 @@
+{% comment %}
+  Doladowanie kolejnych produktow w kolekcji zamiast numerow stron.
+  Pobiera nastepna strone przez Section Rendering API (tylko ta sekcja)
+  i dokleja produkty do siatki [data-product-grid].
+
+  Parametry:
+   - paginate (wymagany) - obiekt paginate z sekcji
+   - mode (wymagany) - 'load_more' (przycisk) albo 'infinite' (samo przy przewijaniu)
+   - section_id (wymagany) - id sekcji kolekcji
+{% endcomment %}
+
+{%- liquid
+  assign shown = paginate.current_offset | plus: paginate.page_size
+  if shown > paginate.items
+    assign shown = paginate.items
+  endif
+  assign progress = shown | times: 100 | divided_by: paginate.items
+-%}
+
+<div
+  class="load-more"
+  data-load-more-wrap
+  data-mode="{{ mode }}"
+  data-section-id="{{ section_id }}"
+  {% if paginate.next %}data-next-url="{{ paginate.next.url }}"{% endif %}>
+  <p class="load-more__count">Du har set {{ shown }} af {{ paginate.items }} produkter</p>
+  <div class="load-more__bar" aria-hidden="true"><span style="width: {{ progress }}%;"></span></div>
+  {%- if paginate.next -%}
+    <button type="button" class="btn btn--secondary load-more__btn" data-load-more>
+      <span class="load-more__label">Vis flere</span>
+      <span class="load-more__spinner" aria-hidden="true"></span>
+    </button>
+    <noscript>{%- render 'pagination', paginate: paginate -%}</noscript>
+  {%- endif -%}
+</div>
+
+{%- style -%}
+  .load-more {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 10px;
+    text-align: center;
+  }
+  .load-more__count {
+    margin: 0;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+  }
+  .load-more__bar {
+    position: relative;
+    width: 200px;
+    height: 2px;
+    background: rgba(0, 0, 0, 0.12);
+  }
+  .load-more__bar span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: currentColor;
+  }
+  .load-more__btn {
+    position: relative;
+    min-width: 220px;
+    margin-top: 6px;
+  }
+  .load-more__spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: load-more-spin 0.7s linear infinite;
+  }
+  .load-more__btn.is-loading .load-more__label { visibility: hidden; }
+  .load-more__btn.is-loading .load-more__spinner {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -8px 0 0 -8px;
+  }
+  .load-more[data-mode="infinite"] .load-more__btn:not(.is-loading) { visibility: hidden; }
+  @keyframes load-more-spin { to { transform: rotate(360deg); } }
+{%- endstyle -%}
+
+<script>
+  (function () {
+    // skrypt laduje sie raz; kolejne przyciski (po filtrowaniu, po doladowaniu)
+    // obsluguje delegacja zdarzen
+    if (window.__loadMoreReady) return;
+    window.__loadMoreReady = true;
+
+    var observer = null;
+
+    function loadMore(wrap) {
+      if (!wrap || wrap.dataset.loading) return;
+      var nextUrl = wrap.getAttribute('data-next-url');
+      if (!nextUrl) return;
+
+      wrap.dataset.loading = '1';
+      var btn = wrap.querySelector('[data-load-more]');
+      if (btn) btn.classList.add('is-loading');
+
+      var url = nextUrl + (nextUrl.indexOf('?') === -1 ? '?' : '&') + 'section_id=' + wrap.getAttribute('data-section-id');
+
+      fetch(url, { credentials: 'same-origin' })
+        .then(function (res) { return res.text(); })
+        .then(function (html) {
+          var doc = new DOMParser().parseFromString(html, 'text/html');
+          var grid = document.querySelector('[data-product-grid]');
+          var newGrid = doc.querySelector('[data-product-grid]');
+          if (grid && newGrid) {
+            Array.prototype.slice.call(newGrid.children).forEach(function (item) {
+              grid.appendChild(document.importNode(item, true));
+            });
+          }
+
+          var newWrap = doc.querySelector('[data-load-more-wrap]');
+          if (newWrap) {
+            wrap.replaceWith(document.importNode(newWrap, true));
+          } else {
+            wrap.remove();
+          }
+
+          if (window.theme && typeof theme.reinitProductGridItem === 'function') theme.reinitProductGridItem();
+          if (window.AOS) AOS.refreshHard();
+          watchInfinite();
+        })
+        .catch(function () {
+          // przy bledzie sieci przechodzimy na zwykla strone
+          window.location.href = nextUrl;
+        });
+    }
+
+    function watchInfinite() {
+      if (observer) observer.disconnect();
+      var wrap = document.querySelector('[data-load-more-wrap][data-mode="infinite"][data-next-url]');
+      if (!wrap || !('IntersectionObserver' in window)) return;
+      observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) loadMore(entry.target);
+        });
+      }, { rootMargin: '600px 0px' });
+      observer.observe(wrap);
+    }
+
+    document.addEventListener('click', function (event) {
+      var btn = event.target.closest('[data-load-more]');
+      if (!btn) return;
+      event.preventDefault();
+      loadMore(btn.closest('[data-load-more-wrap]'));
+    });
+
+    document.addEventListener('collection:reloaded', watchInfinite);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', watchInfinite);
+    } else {
+      watchInfinite();
+    }
+  })();
+</script>

@@ -171,7 +171,12 @@
                     quick_shop_enable: settings.quick_shop_enable
                   %}
                   {%- if paginate.pages > 1 -%}
-                    {%- render 'pagination', paginate: paginate -%}
+                    {%- assign pagination_type = block.settings.pagination_type | default: 'load_more' -%}
+                    {%- if pagination_type == 'pages' -%}
+                      {%- render 'pagination', paginate: paginate -%}
+                    {%- else -%}
+                      {%- render 'load-more', paginate: paginate, mode: pagination_type, section_id: section.id -%}
+                    {%- endif -%}
                   {%- endif -%}
                 </div>
               {%- endcase -%}
@@ -381,6 +386,17 @@
           "id": "mobile_flush_grid",
           "label": "t:sections.main-collection.blocks.products.settings.mobile_flush_grid.label",
           "default": false
+        },
+        {
+          "type": "select",
+          "id": "pagination_type",
+          "label": "Kolejne produkty",
+          "default": "load_more",
+          "options": [
+            { "value": "load_more", "label": "Przycisk „Vis flere”" },
+            { "value": "infinite", "label": "Automatycznie przy przewijaniu" },
+            { "value": "pages", "label": "Numery stron" }
+          ]
         }
       ],
       "limit": 1
