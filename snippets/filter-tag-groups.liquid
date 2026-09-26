@@ -77,11 +77,25 @@
           {% unless collapsed %}style="height: auto;"{% endunless %}>
           <div class="collapsible-content__inner">
             <ul class="no-bullets tag-list{% if group_values > 10 %} tag-list--limited{% endif %}">
+              {%- liquid
+                # wartosci alfabetycznie, jak na liscie kategorii u Oliver & Blake
+                assign sorted_texts = ''
+                for value in filter.values
+                  assign value_prefix = value.label | split: ':' | first | strip | downcase
+                  if value.label contains ':' and value_prefix == prefix_key
+                    assign value_text = value.label | split: ':' | last | strip
+                    assign sorted_texts = sorted_texts | append: value_text | append: '|'
+                  endif
+                endfor
+                assign sorted_texts = sorted_texts | split: '|' | sort_natural
+              -%}
+              {%- for sorted_text in sorted_texts -%}
               {%- for value in filter.values -%}
                 {%- liquid
                   assign value_prefix = value.label | split: ':' | first | strip | downcase
                   assign show_value = false
-                  if value.label contains ':' and value_prefix == prefix_key
+                  assign this_text = value.label | split: ':' | last | strip
+                  if value.label contains ':' and value_prefix == prefix_key and this_text == sorted_text
                     if value.count > 0 or value.active
                       assign show_value = true
                     endif
@@ -100,11 +114,12 @@
                         {% if value.active %}checked{% endif %}>
                       <span class="tag__checkbox"></span>
                       <span>
-                        <span class="tag__text">{{ value_text | escape }}</span> <span class="tag__count">({{ value.count }})</span>
+                        <span class="tag__text">{{ value_text | escape }}</span> <span class="tag__count">{{ value.count }}</span>
                       </span>
                     </label>
                   </li>
                 {%- endif -%}
+              {%- endfor -%}
               {%- endfor -%}
             </ul>
             {%- if group_values > 10 -%}
