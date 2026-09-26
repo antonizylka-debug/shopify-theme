@@ -75,7 +75,23 @@
             "eyebrow": "NEW SEASON",
             "heading": "Men's Collection",
             "button_label": "SHOP MEN'S",
-            "link": "",
+            "link": "shopify://collections/mens",
+            "overlay_opacity": 5,
+            "text_color": "#ffffff",
+            "background_color": "#8d8a83"
+          }
+        },
+        "megamenu_promo_t6GW6h": {
+          "type": "megamenu_promo",
+          "settings": {
+            "menu_title": "WOMEN'S",
+            "view_all_link": "shopify://collections/womens",
+            "view_all_label": "",
+            "image": "shopify://shop_images/navigation_Image_mens.webp",
+            "eyebrow": "NEW SEASON",
+            "heading": "Women's Collection",
+            "button_label": "SHOP WOMEN'S",
+            "link": "shopify://collections/womens",
             "overlay_opacity": 5,
             "text_color": "#ffffff",
             "background_color": "#8d8a83"
@@ -84,7 +100,8 @@
       },
       "block_order": [
         "logo",
-        "megamenu_promo_women"
+        "megamenu_promo_women",
+        "megamenu_promo_t6GW6h"
       ],
       "settings": {
         "main_menu_link_list": "womens-menu",
