@@ -181,6 +181,10 @@
                         assign is_color = true
                       elsif swatch_trigger == 'color' and downcased_label contains 'colour'
                         assign is_color = true
+                      elsif downcased_label contains 'farve'
+                        # dunska etykieta filtra - bez tego po zmianie "Colour" na "Farve"
+                        # znikaly rodziny kolorow i kolka
+                        assign is_color = true
                       endif
                     endif
                   -%}
