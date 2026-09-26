@@ -26,7 +26,7 @@
         "collection_links_UHFKqz": {
           "type": "collection_links",
           "settings": {
-            "menu": "new-menu-copy",
+            "menu": "",
             "alignment": "left"
           }
         },
@@ -46,7 +46,7 @@
           "settings": {
             "enable_collection_count": false,
             "per_row": 4,
-            "rows_per_page": 7,
+            "rows_per_page": 20,
             "mobile_flush_grid": true
           }
         }
@@ -64,8 +64,8 @@
         "enable_color_swatches": true,
         "enable_swatch_labels": true,
         "group_colors": true,
-        "enable_sort": true,
-        "size_filter_mode": "footwear"
+        "size_filter_mode": "footwear",
+        "enable_sort": true
       }
     }
   },
