@@ -132,7 +132,14 @@
         {%- else -%}
           <label
             for="ProductSelect-{{ section_id }}-{{ product.id }}-option-{{ option.name | handleize }}-{{ value | url_encode }}"
-            class="variant__button-label{% unless product_available %} disabled{% endunless %}">{{ value | escape }}</label>
+            class="variant__button-label{% unless product_available %} disabled{% endunless %}">
+            {%- if is_size -%}
+              {%- capture size_text -%}{%- render 'size-label', label: value, product: product -%}{%- endcapture -%}
+              {{- size_text | escape -}}
+            {%- else -%}
+              {{- value | escape -}}
+            {%- endif -%}
+          </label>
         {%- endif -%}
       </div>
     {%- endfor -%}

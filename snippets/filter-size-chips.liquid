@@ -4,8 +4,8 @@
       zapisow tego samego rozmiaru (XXL = 2XL, Medium = M),
    2. liczby rosnaco, ze scaleniem zapisow (snippet size-canon):
       "10 US - 44 EU" i "44" to jeden chip 44.
-  Naglowek grupy liczbowej zalezy od kolekcji: buty => EU, spodnie => Talje,
-  odziez damska => UK, reszta => Numre.
+  Tylko rozmiary EU: brytyjskie rozmiary odziezy damskiej sa przeliczane
+  (UK 10 => 38). Naglowek liczb: EU, na spodniach Talje, na akcesoriach Numre.
 
   Jeden chip = ukryte checkboxy wszystkich zapisow, wiec dziala natywny
   AJAX motywu i wybor wielu rozmiarow naraz.
@@ -27,13 +27,24 @@
   endfor
 
   # grupa liczbowa: klucz sortowania (liczba x10 + 100000) i nazwa chipa
+  # UK-rozmiary odziezy damskiej pokazujemy jako EU (UK 10 => 38);
+  # spodnie (talia w calach), buty i akcesoria zostaja bez przeliczania
+  assign ctx = collection.handle | default: ''
+  assign size_uk = false
+  if ctx contains 'womens'
+    assign size_uk = true
+    if ctx contains 'bottoms' or ctx contains 'footwear' or ctx contains 'accessories'
+      assign size_uk = false
+    endif
+  endif
+
   assign numeric_rows = ''
   for value in filter.values
     assign raw = value.label | downcase | strip
     assign raw_lookup = '|' | append: raw | append: '|'
     unless letter_variants contains raw_lookup
       capture canon
-        render 'size-canon', label: value.label
+        render 'size-canon', label: value.label, uk: size_uk
       endcapture
       if canon != blank and value.count > 0 or canon != blank and value.active
         assign as_number = canon | split: '-' | first | times: 1.0
@@ -49,14 +60,11 @@
   endfor
   assign numeric_sorted = numeric_rows | strip | split: ' ' | sort
 
-  assign numeric_title = 'Numre'
-  assign ctx = collection.handle | default: ''
-  if ctx contains 'footwear'
-    assign numeric_title = 'EU'
-  elsif ctx contains 'bottoms'
+  assign numeric_title = 'EU'
+  if ctx contains 'bottoms'
     assign numeric_title = 'Talje'
-  elsif ctx contains 'womens-'
-    assign numeric_title = 'UK'
+  elsif ctx contains 'accessories'
+    assign numeric_title = 'Numre'
   endif
 
   assign render_mode = mode | default: 'list'
@@ -94,7 +102,7 @@
       assign size_active = false
       for value in filter.active_values
         capture value_canon
-          render 'size-canon', label: value.label
+          render 'size-canon', label: value.label, uk: size_uk
         endcapture
         if value_canon == row_canon
           assign size_active = true
@@ -171,7 +179,7 @@
             assign value_canon = ''
             unless letter_variants contains raw_lookup
               capture value_canon
-                render 'size-canon', label: value.label
+                render 'size-canon', label: value.label, uk: size_uk
               endcapture
             endunless
           -%}
