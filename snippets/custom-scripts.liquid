@@ -175,3 +175,15 @@
     });
   })();
 </script>
+
+<script>
+  // ramka sortowania na telefonie: od razu pokazujemy wybrana opcje
+  document.addEventListener('change', function (event) {
+    if (!event.target.matches('#SortBy')) return;
+    var select = event.target;
+    var label = document.querySelector('[data-sort-current]');
+    if (label && select.selectedIndex > -1) {
+      label.textContent = select.options[select.selectedIndex].text;
+    }
+  });
+</script>

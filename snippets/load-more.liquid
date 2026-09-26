@@ -14,7 +14,6 @@
   if shown > paginate.items
     assign shown = paginate.items
   endif
-  assign progress = shown | times: 100 | divided_by: paginate.items
 -%}
 
 <div
@@ -23,8 +22,7 @@
   data-mode="{{ mode }}"
   data-section-id="{{ section_id }}"
   {% if paginate.next %}data-next-url="{{ paginate.next.url }}"{% endif %}>
-  <p class="load-more__count">Du har set {{ shown }} af {{ paginate.items }} produkter</p>
-  <div class="load-more__bar" aria-hidden="true"><span style="width: {{ progress }}%;"></span></div>
+  <p class="load-more__count">Viser {{ shown }} af {{ paginate.items }} produkter</p>
   {%- if paginate.next -%}
     <button type="button" class="btn btn--secondary load-more__btn" data-load-more>
       <span class="load-more__label">Vis flere</span>
@@ -46,23 +44,26 @@
   .load-more__count {
     margin: 0;
     font-size: 13px;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
+    opacity: 0.6;
   }
-  .load-more__bar {
+  /* jak u Oliver & Blake: pelna szerokosc, obrys, wersaliki */
+  .load-more .load-more__btn {
     position: relative;
-    width: 200px;
-    height: 2px;
-    background: rgba(0, 0, 0, 0.12);
+    width: 100%;
+    max-width: 480px;
+    min-height: 46px;
+    margin-top: 4px;
+    border: 1px solid currentColor;
+    background: transparent;
+    color: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
-  .load-more__bar span {
-    position: absolute;
-    inset: 0 auto 0 0;
-    background: currentColor;
-  }
-  .load-more__btn {
-    position: relative;
-    min-width: 220px;
-    margin-top: 6px;
+  @media only screen and (max-width: 768px) {
+    .load-more .load-more__btn { max-width: none; }
   }
   .load-more__spinner {
     display: none;
