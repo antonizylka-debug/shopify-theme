@@ -36,6 +36,15 @@
     endfor
 
     assign skip_filter = false
+
+    # na akcesoriach rozmiary to centymetry paskow i rozmiary pierscionkow -
+    # filtr rozmiaru nic tam nie daje, wiec go nie pokazujemy
+    assign size_label_check = filter.label | downcase
+    if size_label_check contains 'size' or size_label_check contains 'rrelse'
+      if collection.handle contains 'accessories' or section.settings.size_filter_mode == 'accessories'
+        assign skip_filter = true
+      endif
+    endif
     if filter.type == 'list' and useful_values < 2 and filter.active_values.size == 0
       assign skip_filter = true
     endif

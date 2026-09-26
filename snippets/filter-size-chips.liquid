@@ -1,14 +1,17 @@
 {% comment %}
-  Filtr rozmiaru jako chipy w grupach:
+  Filtr rozmiaru jako jedna lista chipow, bez naglowkow:
    1. litery w stalej kolejnosci (XXS ... 6XL, One Size), ze scaleniem
       zapisow tego samego rozmiaru (XXL = 2XL, Medium = M),
-   2. liczby rosnaco, ze scaleniem zapisow (snippet size-canon):
+   2. potem numery EU rosnaco, ze scaleniem zapisow (snippet size-canon):
       "10 US - 44 EU" i "44" to jeden chip 44.
-  Tylko rozmiary EU: brytyjskie rozmiary odziezy damskiej sa przeliczane
-  (UK 10 => 38). Liczby dziela sie na ubrania ("Tøj (EU)", na spodniach
-  "Talje") i buty ("Sko (EU)", tylko na stronach butow). Na stronach
-  dzialow zwykle liczby sa pomijane - "30" to ta sama wartosc dla spodni
-  i butow, wiec filtr pokazywalby jedno i drugie.
+
+  Co trafia na liste zalezy od rodzaju kolekcji (szablon albo uchwyt):
+   - odziez damska: brytyjskie rozmiary przeliczone na EU (UK 10 => 38),
+   - buty: tylko numery EU (bez liter),
+   - spodnie: litery i talia,
+   - dzialy (Dame, Herre, all): litery i rozmiary przeliczone z UK; zwykle
+     liczby sa pomijane, bo "30" to ta sama wartosc dla spodni i butow,
+   - akcesoria: filtr rozmiaru jest ukryty (collection-grid-filters-form).
 
   Jeden chip = ukryte checkboxy wszystkich zapisow, wiec dziala natywny
   AJAX motywu i wybor wielu rozmiarow naraz.
@@ -312,35 +315,15 @@
 
   {%- liquid
     # na butach rozmiary to tylko numery EU - litery (XS, M...) sa bledem w danych
-    # pojedynczych produktow i nie powinny tworzyc osobnej grupy
+    # pojedynczych produktow
     if shoe_ctx
       assign letter_chips = ''
     endif
-
-    assign group_count = 0
-    if letter_chips contains 'data-group-label'
-      assign group_count = group_count | plus: 1
-    endif
-    if clothes_chips contains 'data-group-label'
-      assign group_count = group_count | plus: 1
-    endif
-    if shoe_chips contains 'data-group-label'
-      assign group_count = group_count | plus: 1
-    endif
+    assign all_chips = letter_chips | append: clothes_chips | append: shoe_chips
   -%}
 
-  {%- if letter_chips contains 'data-group-label' -%}
-    {%- if group_count > 1 -%}<p class="size-group__title">Tøj</p>{%- endif -%}
-    <ul class="no-bullets tag-list tag-list--chips">{{ letter_chips }}</ul>
-  {%- endif -%}
-
-  {%- if clothes_chips contains 'data-group-label' -%}
-    {%- if group_count > 1 -%}<p class="size-group__title">{{ clothes_title }}</p>{%- endif -%}
-    <ul class="no-bullets tag-list tag-list--chips">{{ clothes_chips }}</ul>
-  {%- endif -%}
-
-  {%- if shoe_chips contains 'data-group-label' -%}
-    {%- if group_count > 1 -%}<p class="size-group__title">Sko (EU)</p>{%- endif -%}
-    <ul class="no-bullets tag-list tag-list--chips">{{ shoe_chips }}</ul>
+  {%- comment -%} jedna lista bez naglowkow: najpierw litery, potem numery EU {%- endcomment -%}
+  {%- if all_chips contains 'data-group-label' -%}
+    <ul class="no-bullets tag-list tag-list--chips">{{ all_chips }}</ul>
   {%- endif -%}
 {%- endif -%}
