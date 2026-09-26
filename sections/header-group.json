@@ -1,1 +1,126 @@
-{"type":"header","name":"t:sections.header-group.name","sections":{"announcement":{"type":"announcement","blocks":{"announcement_KLL7pz":{"type":"announcement","settings":{"text":"STORE BESPARELSER","link_text":"Op til 70% rabat, i en begrænset periode","link":""}},"announcement_74VRyz":{"type":"announcement","settings":{"text":"GRATIS FRAGT","link_text":"Fri fragt, intet minimum","link":""}},"announcement_tH4RpX":{"type":"announcement","settings":{"text":"NEM RETUR","link_text":"30 dages returret på alle ordrer","link":""}}},"block_order":["announcement_KLL7pz","announcement_74VRyz","announcement_tH4RpX"],"settings":{"announcement_compact":true,"announcement_sticky":true,"announcement_layout":"arrows","announcement_separator":"dot","announcement_gap":18}},"header":{"type":"header","blocks":{"logo":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/logo.png","logo-inverted":"shopify:\/\/shop_images\/white_logo.png","desktop_logo_width":130,"mobile_logo_width":110}},"megamenu_promo_women":{"type":"megamenu_promo","settings":{"menu_title":"WOMEN","view_all_link":"\/collections\/womens-dresses","view_all_label":"","eyebrow":"NEW SEASON","heading":"Women's Collection","button_label":"SHOP WOMEN'S","link":"","overlay_opacity":25,"text_color":"#ffffff","background_color":"#8d8a83"}}},"block_order":["logo","megamenu_promo_women"],"settings":{"main_menu_link_list":"womens-menu","hover_menu":true,"mega_menu_images":true,"split_menu_left":4,"nav_item_spacing":12,"nav_font_size":0,"logo_gap":120,"header_padding":15,"header_padding_mobile":0,"megamenu_narrow_dropdowns":false,"megamenu_min_links":5,"megamenu_show_counts":true,"megamenu_view_all_label":"View all","megamenu_heading_size":12,"megamenu_heading_weight":600,"megamenu_heading_spacing":18,"megamenu_heading_uppercase":true,"megamenu_heading_gap":22,"megamenu_link_size":15,"megamenu_row_spacing":7,"megamenu_count_size":13,"megamenu_viewall_size":12,"main_menu_alignment":"center-split","header_style":"sticky","sticky_index":false,"sticky_collection":false,"toolbar_menu":"","toolbar_social":false,"show_currency_selector":false,"show_currency_flags":false,"show_locale_selector":false}}},"order":["announcement","header"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "t:sections.header-group.name",
+  "sections": {
+    "announcement": {
+      "type": "announcement",
+      "blocks": {
+        "announcement_KLL7pz": {
+          "type": "announcement",
+          "settings": {
+            "text": "STORE BESPARELSER",
+            "link_text": "Op til 70% rabat, i en begrænset periode",
+            "link": ""
+          }
+        },
+        "announcement_74VRyz": {
+          "type": "announcement",
+          "settings": {
+            "text": "GRATIS FRAGT",
+            "link_text": "Fri fragt, intet minimum",
+            "link": ""
+          }
+        },
+        "announcement_tH4RpX": {
+          "type": "announcement",
+          "settings": {
+            "text": "NEM RETUR",
+            "link_text": "30 dages returret på alle ordrer",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_KLL7pz",
+        "announcement_74VRyz",
+        "announcement_tH4RpX"
+      ],
+      "settings": {
+        "announcement_compact": true,
+        "announcement_sticky": true,
+        "announcement_layout": "arrows",
+        "announcement_separator": "dot",
+        "announcement_gap": 18
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "logo": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/logo.png",
+            "logo-inverted": "shopify://shop_images/white_logo.png",
+            "desktop_logo_width": 130,
+            "mobile_logo_width": 110
+          }
+        },
+        "megamenu_promo_women": {
+          "type": "megamenu_promo",
+          "settings": {
+            "menu_title": "WOMEN",
+            "view_all_link": "/collections/womens-dresses",
+            "view_all_label": "",
+            "eyebrow": "NEW SEASON",
+            "heading": "Women's Collection",
+            "button_label": "SHOP WOMEN'S",
+            "link": "",
+            "overlay_opacity": 25,
+            "text_color": "#ffffff",
+            "background_color": "#8d8a83"
+          }
+        }
+      },
+      "block_order": [
+        "logo",
+        "megamenu_promo_women"
+      ],
+      "settings": {
+        "main_menu_link_list": "womens-menu",
+        "hover_menu": true,
+        "mega_menu_images": true,
+        "split_menu_left": 4,
+        "nav_item_spacing": 12,
+        "nav_font_size": 0,
+        "logo_gap": 120,
+        "header_padding": 15,
+        "header_padding_mobile": 0,
+        "megamenu_narrow_dropdowns": false,
+        "megamenu_min_links": 5,
+        "megamenu_show_counts": true,
+        "megamenu_view_all_label": "View all",
+        "megamenu_heading_size": 12,
+        "megamenu_heading_weight": 600,
+        "megamenu_heading_spacing": 18,
+        "megamenu_heading_uppercase": true,
+        "megamenu_heading_gap": 22,
+        "megamenu_link_size": 15,
+        "megamenu_row_spacing": 7,
+        "megamenu_count_size": 13,
+        "megamenu_viewall_size": 12,
+        "main_menu_alignment": "center-split",
+        "header_style": "sticky",
+        "sticky_index": false,
+        "sticky_collection": false,
+        "toolbar_menu": "",
+        "toolbar_social": false,
+        "show_currency_selector": false,
+        "show_currency_flags": false,
+        "show_locale_selector": false
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "header"
+  ]
+}

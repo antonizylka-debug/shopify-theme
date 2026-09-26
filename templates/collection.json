@@ -26,7 +26,7 @@
         "collection_links_UHFKqz": {
           "type": "collection_links",
           "settings": {
-            "menu": "new-menu-copy",
+            "menu": "shop-footer",
             "alignment": "left"
           }
         },
@@ -47,7 +47,8 @@
             "enable_collection_count": false,
             "per_row": 4,
             "rows_per_page": 7,
-            "mobile_flush_grid": true
+            "mobile_flush_grid": true,
+            "pagination_type": "load_more"
           }
         }
       },
@@ -64,6 +65,7 @@
         "enable_color_swatches": true,
         "enable_swatch_labels": true,
         "group_colors": true,
+        "size_filter_mode": "auto",
         "enable_sort": true
       }
     }
