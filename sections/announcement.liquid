@@ -28,7 +28,13 @@
     font-weight: 600;
   }
 
-  /* --- jedna wiadomosc ze strzalkami (uklad "arrows") --- */
+  /* --- uklad "arrows": rzad na desktopie, strzalki na telefonie i tablecie --- */
+  .announcement-bar.announcement-mobile-only { display: none; }
+  @media only screen and (max-width: 1024px) {
+    .announcement-bar.announcement-desktop-only { display: none; }
+    .announcement-bar.announcement-mobile-only { display: flex; }
+  }
+  /* --- jedna wiadomosc ze strzalkami --- */
   .announcement-arrows {
     position: relative;
     display: flex;
@@ -89,7 +95,7 @@
   .announcement-arrows__btn--prev { left: 4px; }
   .announcement-arrows__btn--next { right: 4px; }
   @media only screen and (max-width: 768px) {
-    /* na telefonie tylko krotka wiadomosc - jak u Oliver & Blake jedna linia */
+    /* na telefonie tylko naglowek wiadomosci - jak u Oliver & Blake jedna linia */
     .announcement-arrows__text { display: none; }
     .announcement-arrows__slide .announcement-arrows__title:only-child,
     .announcement-arrows__title { font-size: 15px; }
@@ -189,14 +195,14 @@
       "default": "slider",
       "options": [
         { "value": "slider", "label": "One message at a time" },
-        { "value": "arrows", "label": "One message at a time, with arrows" },
+        { "value": "arrows", "label": "One row on desktop, arrows on phone and tablet" },
         { "value": "row", "label": "All messages in one row" }
       ]
     },
     {
       "type": "range",
       "id": "announcement_interval",
-      "label": "Seconds per message (arrows layout)",
+      "label": "Seconds per message (phone and tablet)",
       "min": 3,
       "max": 12,
       "step": 1,

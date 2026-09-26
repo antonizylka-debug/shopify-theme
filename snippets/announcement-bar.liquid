@@ -28,10 +28,35 @@
 {% if show_announcement %}
   {%- if section.settings.announcement_layout == 'arrows' -%}
     {%- comment -%}
+      Uklad "arrows": na desktopie wszystkie wiadomosci w jednym rzedzie,
+      na telefonie i tablecie jedna wiadomosc ze strzalkami (CSS w sekcji).
+    {%- endcomment -%}
+    <div class="announcement-bar announcement-bar--row announcement-desktop-only">
+      <div class="page-width">
+        <div class="announcement-row">
+          {%- assign item_index = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'announcement' -%}
+              {%- if item_index > 0 and separator != blank -%}
+                <span class="announcement-row__sep" aria-hidden="true">{{ separator }}</span>
+              {%- endif -%}
+              <span class="announcement-row__item">
+                {%- if block.settings.link != blank -%}<a class="announcement-link" href="{{ block.settings.link }}">{%- endif -%}
+                  {%- if block.settings.text != blank -%}<span class="announcement-text">{{ block.settings.text }}</span>{%- endif -%}
+                  {%- if block.settings.link_text != blank -%}<span class="announcement-link-text">{{ block.settings.link_text }}</span>{%- endif -%}
+                {%- if block.settings.link != blank -%}</a>{%- endif -%}
+              </span>
+              {%- assign item_index = item_index | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+    {%- comment -%}
       Jedna wiadomosc naraz ze strzalkami po bokach, zmiana co kilka sekund -
       jak pasek u Oliver & Blake. Strzalki pokazuja sie przy 2+ wiadomosciach.
     {%- endcomment -%}
-    <div class="announcement-bar announcement-arrows" data-announcement-arrows data-interval="{{ section.settings.announcement_interval | default: 5 }}">
+    <div class="announcement-bar announcement-arrows announcement-mobile-only" data-announcement-arrows data-interval="{{ section.settings.announcement_interval | default: 5 }}">
       {%- if announcement_block_count > 1 -%}
         <button type="button" class="announcement-arrows__btn announcement-arrows__btn--prev" data-announcement-prev aria-label="Forrige">
           <svg aria-hidden="true" focusable="false" viewBox="0 0 10 16" width="10" height="16"><path d="M8.5 1.5 2 8l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
