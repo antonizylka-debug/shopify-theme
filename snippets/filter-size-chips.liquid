@@ -59,6 +59,33 @@
     assign dept_page = false
   endif
 
+  # szablon kolekcji moze wprost powiedziec, co to za kolekcja
+  # (ustawienie sekcji "Filtr rozmiarow: rodzaj kolekcji") - wtedy uchwyt
+  # kolekcji nie ma znaczenia, np. dla Nyheder czy Udsalg
+  assign size_mode = section.settings.size_filter_mode | default: 'auto'
+  if size_mode != 'auto'
+    assign size_uk = false
+    assign shoe_ctx = false
+    assign dept_page = false
+    assign keep_small = false
+    case size_mode
+      when 'womens_department'
+        assign size_uk = true
+        assign dept_page = true
+      when 'mens_department'
+        assign dept_page = true
+      when 'womens_clothing'
+        assign size_uk = true
+      when 'footwear'
+        assign shoe_ctx = true
+      when 'bottoms'
+        assign keep_small = true
+      when 'accessories'
+        assign keep_small = true
+    endcase
+  endif
+
+
   assign numeric_rows = ''
   # "|<indeks wartosci>=<grupa>:<rozmiar EU>|" - uzywane przy budowie chipow
   assign value_map = '|'
@@ -117,6 +144,15 @@
   elsif ctx contains 'accessories'
     assign clothes_title = 'Numre'
   endif
+
+  case size_mode
+    when 'bottoms'
+      assign clothes_title = 'Talje'
+    when 'accessories'
+      assign clothes_title = 'Numre'
+    when 'womens_department', 'mens_department', 'womens_clothing', 'mens_clothing', 'footwear'
+      assign clothes_title = 'Tøj (EU)'
+  endcase
 
   assign render_mode = mode | default: 'list'
 -%}

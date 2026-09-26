@@ -319,6 +319,23 @@
       "info": "Army Green, Olive Green and Green become one GREEN swatch."
     },
     {
+      "type": "select",
+      "id": "size_filter_mode",
+      "label": "Filtr rozmiarów: rodzaj kolekcji",
+      "info": "Ustala, jak liczby w filtrze Størrelse są grupowane. Automatycznie = według uchwytu kolekcji.",
+      "default": "auto",
+      "options": [
+        { "value": "auto", "label": "Automatycznie" },
+        { "value": "womens_department", "label": "Dział damski (Dame, Nyheder, Udsalg…)" },
+        { "value": "mens_department", "label": "Dział męski (Herre, Nyheder, Udsalg…)" },
+        { "value": "womens_clothing", "label": "Odzież damska (UK → EU)" },
+        { "value": "mens_clothing", "label": "Odzież męska" },
+        { "value": "footwear", "label": "Buty (Sko EU)" },
+        { "value": "bottoms", "label": "Spodnie (Talje)" },
+        { "value": "accessories", "label": "Akcesoria" }
+      ]
+    },
+    {
       "type": "checkbox",
       "id": "enable_sort",
       "label": "t:sections.main-collection.settings.enable_sort.label",
