@@ -1,0 +1,21 @@
+{% comment %}
+  Jedna nazwa dla roznych zapisow tego samego rozmiaru liczbowego:
+   "10 US - 44 EU" => 44, "36|UK3.5" => 36, 30" => 30, "28 l XS" => 28,
+   "12/14" => 12-14. Zwraca pusty tekst, gdy to nie jest rozmiar liczbowy.
+
+  Parametry:
+   - label (wymagany) - wartosc filtra z Shopify
+{% endcomment %}
+
+{%- liquid
+  assign canon = label | strip
+  if canon contains ' EU'
+    assign canon = canon | split: '-' | last | remove: 'EU' | strip
+  elsif canon contains '|'
+    assign canon = canon | split: '|' | first | strip
+  endif
+  assign canon = canon | remove: '"' | replace: '/', '-' | split: ' ' | first
+  assign first_char = canon | slice: 0
+  assign digits = '0123456789'
+-%}
+{%- if canon != blank and digits contains first_char -%}{{- canon -}}{%- endif -%}
