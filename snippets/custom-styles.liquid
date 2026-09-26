@@ -1365,4 +1365,18 @@
   #CollectionSidebar .tag-list--limited-8.is-expanded > .tag:nth-child(n + 9) {
     display: list-item;
   }
+
+  /* pigulki kategorii: bez podkreslen i ciemny tekst niezaleznie od stylow
+     linkow z innych miejsc; aktywna czarna z bialym tekstem */
+  .collection-links a.collection-links__item {
+    color: #16150f !important;
+    text-decoration: none !important;
+    background: #ffffff;
+  }
+
+  .collection-links a.collection-links__item--current {
+    background: #16150f !important;
+    border-color: #16150f !important;
+    color: #ffffff !important;
+  }
 </style>
