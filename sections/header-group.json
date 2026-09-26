@@ -95,7 +95,7 @@
         "header_padding": 15,
         "header_padding_mobile": 0,
         "megamenu_narrow_dropdowns": false,
-        "megamenu_min_links": 5,
+        "megamenu_min_links": 2,
         "megamenu_show_counts": true,
         "megamenu_view_all_label": "View all",
         "megamenu_heading_size": 12,
