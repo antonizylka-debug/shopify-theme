@@ -59,7 +59,9 @@
                   endcomment
                   assign link_is_current = false
 
-                  if menu_link.url == collection.url
+                  if menu_link.active or menu_link.child_active
+                    assign link_is_current = true
+                  elsif menu_link.url == collection.url
                     assign link_is_current = true
                   elsif menu_link.url contains '/collections/'
                     assign link_handle = menu_link.url | split: '/collections/' | last | split: '?' | first | split: '/' | first
@@ -107,11 +109,26 @@
                 endfor
               -%}
               <label for="SortBy" class="hidden-label">{{ 'collections.sorting.title' | t }}</label>
-              <span class="sort-box__label" aria-hidden="true">
+              {%- comment -%}
+                Wlasna lista sortowania jak u Oliver & Blake (przycisk + panel z
+                ptaszkiem przy wybranej opcji). Prawdziwy select #SortBy zostaje
+                ukryty - motyw nasluchuje jego zmiany i przeladowuje produkty.
+              {%- endcomment -%}
+              <button type="button" class="sort-box__label" data-sort-toggle aria-haspopup="listbox" aria-expanded="false">
                 <span class="sort-box__prefix">{{ 'collections.sorting.title' | t }}:</span>
                 <span class="sort-box__value" data-sort-current>{{ sort_name }}</span>
-                <svg class="sort-box__chevron" focusable="false" viewBox="0 0 12 8" width="11" height="7"><path d="m1 1.5 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
-              </span>
+                <svg class="sort-box__chevron" aria-hidden="true" focusable="false" viewBox="0 0 12 8" width="11" height="7"><path d="m1 1.5 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+              </button>
+              <ul class="sort-menu" role="listbox" data-sort-menu hidden>
+                {%- for option in collection.sort_options -%}
+                  <li role="option" aria-selected="{% if option.value == sort_by %}true{% else %}false{% endif %}">
+                    <button type="button" class="sort-menu__item{% if option.value == sort_by %} is-current{% endif %}" data-sort-value="{{ option.value }}">
+                      <span>{{ option.name }}</span>
+                      <svg class="sort-menu__check" aria-hidden="true" focusable="false" viewBox="0 0 14 10" width="13" height="9"><path d="m1 5 4 4 8-8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
               <select name="SortBy" id="SortBy" data-default-sortby="{{ collection.default_sort_by }}">
                 {%- for option in collection.sort_options -%}
                   <option value="{{ option.value }}"{% if option.value == sort_by %} selected="selected"{% endif %}>{{ option.name }}</option>

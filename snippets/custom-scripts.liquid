@@ -177,13 +177,51 @@
 </script>
 
 <script>
-  // ramka sortowania na telefonie: od razu pokazujemy wybrana opcje
-  document.addEventListener('change', function (event) {
-    if (!event.target.matches('#SortBy')) return;
-    var select = event.target;
-    var label = document.querySelector('[data-sort-current]');
-    if (label && select.selectedIndex > -1) {
-      label.textContent = select.options[select.selectedIndex].text;
+  // lista sortowania: przycisk "SORT: X" otwiera panel, klikniecie opcji
+  // ustawia ukryty #SortBy i wysyla change - motyw przeladowuje produkty
+  (function () {
+    function closeAll(except) {
+      document.querySelectorAll('[data-sort-menu]').forEach(function (menu) {
+        if (menu === except) return;
+        menu.hidden = true;
+        var toggle = menu.parentNode.querySelector('[data-sort-toggle]');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      });
     }
-  });
+
+    document.addEventListener('click', function (event) {
+      var toggle = event.target.closest('[data-sort-toggle]');
+      if (toggle) {
+        var menu = toggle.parentNode.querySelector('[data-sort-menu]');
+        var open = menu.hidden;
+        closeAll(menu);
+        menu.hidden = !open;
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        return;
+      }
+
+      var item = event.target.closest('[data-sort-value]');
+      if (item) {
+        var wrap = item.closest('.collection-links-row__sort');
+        var select = wrap && wrap.querySelector('#SortBy');
+        if (select) {
+          select.value = item.getAttribute('data-sort-value');
+          var label = wrap.querySelector('[data-sort-current]');
+          if (label) label.textContent = item.textContent.trim();
+          wrap.querySelectorAll('[data-sort-value]').forEach(function (btn) {
+            btn.classList.toggle('is-current', btn === item);
+          });
+          closeAll();
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        return;
+      }
+
+      if (!event.target.closest('[data-sort-menu]')) closeAll();
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeAll();
+    });
+  })();
 </script>
