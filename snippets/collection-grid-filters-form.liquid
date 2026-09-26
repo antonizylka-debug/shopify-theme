@@ -137,17 +137,8 @@
                     {%- endfor -%}
                   </ul>
                   {%- if filter.values.size > 10 -%}
-                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Show less">
-                      {%- liquid
-      assign filter_word = filter.label | downcase | split: ':' | last | strip
-      assign last_char = filter_word | slice: -1
-      if last_char == 'y'
-        assign filter_word = filter_word | remove_last: 'y' | append: 'ies'
-      elsif last_char != 's'
-        assign filter_word = filter_word | append: 's'
-      endif
-    -%}
-    Show all {{ filter.values.size }} {{ filter_word }}
+                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Vis færre">
+                      Vis alle {{ filter.values.size }}
                     </button>
                   {%- endif -%}
 
@@ -228,17 +219,8 @@
                     {%- endfor -%}
                   </ul>
                   {%- if filter.values.size > 10 -%}
-                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Show less">
-                      {%- liquid
-      assign filter_word = filter.label | downcase | split: ':' | last | strip
-      assign last_char = filter_word | slice: -1
-      if last_char == 'y'
-        assign filter_word = filter_word | remove_last: 'y' | append: 'ies'
-      elsif last_char != 's'
-        assign filter_word = filter_word | append: 's'
-      endif
-    -%}
-    Show all {{ filter.values.size }} {{ filter_word }}
+                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Vis færre">
+                      Vis alle {{ filter.values.size }}
                     </button>
                   {%- endif -%}
                   {%- endif -%}
@@ -278,17 +260,8 @@
                       {%- endfor -%}
                     </ul>
                     {%- if filter.values.size > 10 -%}
-                      <button type="button" class="filter-toggle" data-filter-toggle data-less="Show less">
-                        {%- liquid
-      assign filter_word = filter.label | downcase | split: ':' | last | strip
-      assign last_char = filter_word | slice: -1
-      if last_char == 'y'
-        assign filter_word = filter_word | remove_last: 'y' | append: 'ies'
-      elsif last_char != 's'
-        assign filter_word = filter_word | append: 's'
-      endif
-    -%}
-    Show all {{ filter.values.size }} {{ filter_word }}
+                      <button type="button" class="filter-toggle" data-filter-toggle data-less="Vis færre">
+                        Vis alle {{ filter.values.size }}
                       </button>
                     {%- endif -%}
                   </div>
@@ -320,17 +293,8 @@
                     {%- endfor -%}
                   </ul>
                   {%- if filter.values.size > 10 -%}
-                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Show less">
-                      {%- liquid
-      assign filter_word = filter.label | downcase | split: ':' | last | strip
-      assign last_char = filter_word | slice: -1
-      if last_char == 'y'
-        assign filter_word = filter_word | remove_last: 'y' | append: 'ies'
-      elsif last_char != 's'
-        assign filter_word = filter_word | append: 's'
-      endif
-    -%}
-    Show all {{ filter.values.size }} {{ filter_word }}
+                    <button type="button" class="filter-toggle" data-filter-toggle data-less="Vis færre">
+                      Vis alle {{ filter.values.size }}
                     </button>
                   {%- endif -%}
 

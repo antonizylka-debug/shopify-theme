@@ -1,5 +1,5 @@
 {% comment %}
-  Pasek aktywnych filtrow nad siatka: "Colour: Beige x", "+2 more", "Clear all".
+  Pasek aktywnych filtrow nad siatka: "Colour: Beige x", "+2 flere", "Ryd alle".
 
   Dla filtrow grupowanych (kolor, rozmiar) chip odpowiada KAFLOWI w sidebarze,
   a nie pojedynczej wartosci z Shopify - jeden zaznaczony kolor to jeden chip,
@@ -55,11 +55,11 @@
 
     {%- if chip_count > visible_count -%}
       {%- assign hidden_count = chip_count | minus: visible_count -%}
-      <button type="button" class="active-filters__more" data-active-filters-more data-less="Show less">
-        +{{ hidden_count }} more
+      <button type="button" class="active-filters__more" data-active-filters-more data-less="Vis færre">
+        +{{ hidden_count }} flere
       </button>
     {%- endif -%}
 
-    <a href="{{ collection.url }}" class="active-filters__clear">Clear all</a>
+    <a href="{{ collection.url }}" class="active-filters__clear">Ryd alle</a>
   </div>
 {%- endif -%}

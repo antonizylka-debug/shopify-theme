@@ -1,5 +1,5 @@
 {% comment %}
-  Zwijanie dlugich list filtrow: pokazuje 10 wartosci + przycisk "Show all X".
+  Zwijanie dlugich list filtrow: pokazuje 10 wartosci + przycisk "Vis alle X".
   Wczytywane raz z layout/theme.liquid.
 {% endcomment %}
 
@@ -23,7 +23,7 @@
         if (!button.dataset.more) {
           button.dataset.more = button.textContent.trim();
         }
-        button.textContent = button.dataset.less || 'Show less';
+        button.textContent = button.dataset.less || 'Vis færre';
       } else {
         button.textContent = button.dataset.more || button.textContent;
       }
@@ -111,7 +111,7 @@
 
     markExtraChips();
     document.addEventListener('collection:reloaded', markExtraChips);
-    // pasek aktywnych filtrow: +N more / Show less
+    // pasek aktywnych filtrow: +N flere / Vis færre
     document.addEventListener('click', function (event) {
       var more = event.target.closest('[data-active-filters-more]');
       if (!more) return;
@@ -127,7 +127,7 @@
         if (!more.dataset.more) {
           more.dataset.more = more.textContent.trim();
         }
-        more.textContent = more.dataset.less || 'Show less';
+        more.textContent = more.dataset.less || 'Vis færre';
       } else {
         more.textContent = more.dataset.more || more.textContent;
       }
