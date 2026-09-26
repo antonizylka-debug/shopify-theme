@@ -34,6 +34,7 @@
   logo_alignment: logo_alignment
 -%}
 {%- render 'cart-drawer' -%}
+{%- render 'menu-highlight-styles', section: section -%}
 
 <style>
   .site-nav__link,
@@ -823,6 +824,110 @@
       "id": "megamenu_viewall_size",
       "label": "View all link size",
       "min": 9, "max": 18, "step": 1, "unit": "px", "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Mega menu highlights"
+    },
+    {
+      "type": "paragraph",
+      "content": "Highlight chosen menu links (e.g. Udsalg, Nyheder, Vores favoritter). Enter link titles or collection handles, separated by commas. Works in every mega menu column and in the mobile menu."
+    },
+    {
+      "type": "text",
+      "id": "mm_hl1_items",
+      "label": "Highlight 1: links",
+      "info": "Titles or handles, comma separated",
+      "default": "Udsalg"
+    },
+    {
+      "type": "color",
+      "id": "mm_hl1_color",
+      "label": "Highlight 1: text colour",
+      "default": "#c8102e"
+    },
+    {
+      "type": "checkbox",
+      "id": "mm_hl1_bold",
+      "label": "Highlight 1: bold",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "mm_hl1_badge",
+      "label": "Highlight 1: badge text",
+      "info": "Optional, e.g. NYT, -50%, ★"
+      
+    },
+    {
+      "type": "color",
+      "id": "mm_hl1_badge_bg",
+      "label": "Highlight 1: badge colour",
+      "default": "#c8102e"
+    },
+    {
+      "type": "text",
+      "id": "mm_hl2_items",
+      "label": "Highlight 2: links",
+      "info": "Titles or handles, comma separated",
+      "default": "Nyheder"
+    },
+    {
+      "type": "color",
+      "id": "mm_hl2_color",
+      "label": "Highlight 2: text colour"
+      
+    },
+    {
+      "type": "checkbox",
+      "id": "mm_hl2_bold",
+      "label": "Highlight 2: bold",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "mm_hl2_badge",
+      "label": "Highlight 2: badge text",
+      "info": "Optional, e.g. NYT, -50%, ★",
+      "default": "NYT"
+    },
+    {
+      "type": "color",
+      "id": "mm_hl2_badge_bg",
+      "label": "Highlight 2: badge colour",
+      "default": "#16150f"
+    },
+    {
+      "type": "text",
+      "id": "mm_hl3_items",
+      "label": "Highlight 3: links",
+      "info": "Titles or handles, comma separated",
+      "default": "Vores favoritter"
+    },
+    {
+      "type": "color",
+      "id": "mm_hl3_color",
+      "label": "Highlight 3: text colour"
+      
+    },
+    {
+      "type": "checkbox",
+      "id": "mm_hl3_bold",
+      "label": "Highlight 3: bold",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "mm_hl3_badge",
+      "label": "Highlight 3: badge text",
+      "info": "Optional, e.g. NYT, -50%, ★"
+      
+    },
+    {
+      "type": "color",
+      "id": "mm_hl3_badge_bg",
+      "label": "Highlight 3: badge colour",
+      "default": "#16150f"
     },
     {
       "type": "select",

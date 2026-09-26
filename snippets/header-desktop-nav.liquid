@@ -181,10 +181,10 @@
 
                   <ul class="megamenu__list">
                     {%- for childlink in link.links -%}
-                      {%- render 'megamenu-link', item: childlink, show_count: mm_counts -%}
+                      {%- render 'megamenu-link', item: childlink, show_count: mm_counts, section: section -%}
 
                       {%- for grandchildlink in childlink.links -%}
-                        {%- render 'megamenu-link', item: grandchildlink, show_count: mm_counts -%}
+                        {%- render 'megamenu-link', item: grandchildlink, show_count: mm_counts, section: section -%}
                       {%- endfor -%}
                     {%- endfor -%}
                   </ul>

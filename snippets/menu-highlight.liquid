@@ -1,0 +1,35 @@
+{% comment %}
+  Sprawdza, czy link z menu jest na liscie wyroznionych (ustawienia naglowka
+  "Mega menu highlights", 3 grupy). Zwraca numer grupy (1-3) albo nic.
+  Dopasowanie po tytule linku albo po uchwycie kolekcji, bez wielkosci liter.
+
+  Parametry:
+   - item (wymagany) - obiekt linku z menu
+{% endcomment %}
+
+{%- liquid
+  assign hl_title = item.title | strip | downcase
+  assign hl_handle = ''
+  if item.url contains '/collections/'
+    assign hl_handle = item.url | split: '/collections/' | last | split: '?' | first | split: '#' | first | split: '/' | first | downcase
+  endif
+
+  assign hl_found = ''
+  for n in (1..3)
+    if hl_found != ''
+      break
+    endif
+    assign hl_key = 'mm_hl' | append: n | append: '_items'
+    assign hl_list = section.settings[hl_key] | downcase | split: ','
+    for hl_entry in hl_list
+      assign hl_clean = hl_entry | strip
+      if hl_clean != blank
+        if hl_clean == hl_title or hl_clean == hl_handle
+          assign hl_found = n
+          break
+        endif
+      endif
+    endfor
+  endfor
+-%}
+{{- hl_found -}}
