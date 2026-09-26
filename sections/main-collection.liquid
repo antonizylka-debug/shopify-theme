@@ -84,12 +84,35 @@
             </nav>
           {%- endif -%}
 
+          {%- if section.settings.enable_sidebar and collection.filters.size > 0 -%}
+            {%- comment -%}
+              Na telefonie: FILTER i SORTÉR obok siebie, po polowie szerokosci,
+              jak u Oliver & Blake. Na desktopie filtry sa w kolumnie, wiec
+              przycisk jest ukryty.
+            {%- endcomment -%}
+            <button type="button" class="collection-toolbar__filter js-drawer-open-collection-filters" aria-controls="FilterDrawer">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 20 14" width="18" height="13"><path d="M1 1h18M4 7h12M7.5 13h5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span>{{ 'collections.filters.title_tags' | t }}{% if current_filter_size > 0 %} ({{ current_filter_size }}){% endif %}</span>
+            </button>
+          {%- endif -%}
           {%- if sort_in_row -%}
             <div class="collection-links-row__sort">
-              {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+              {%- liquid
+                assign sort_by = collection.sort_by | default: collection.default_sort_by
+                assign sort_name = ''
+                for option in collection.sort_options
+                  if option.value == sort_by
+                    assign sort_name = option.name
+                  endif
+                endfor
+              -%}
               <label for="SortBy" class="hidden-label">{{ 'collections.sorting.title' | t }}</label>
+              <span class="sort-box__label" aria-hidden="true">
+                <span class="sort-box__prefix">{{ 'collections.sorting.title' | t }}:</span>
+                <span class="sort-box__value" data-sort-current>{{ sort_name }}</span>
+                <svg class="sort-box__chevron" focusable="false" viewBox="0 0 12 8" width="11" height="7"><path d="m1 1.5 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+              </span>
               <select name="SortBy" id="SortBy" data-default-sortby="{{ collection.default_sort_by }}">
-                <option value="title-ascending"{% if sort_by == collection.default_sort_by %} selected="selected"{% endif %}>{{ 'collections.sorting.title' | t }}</option>
                 {%- for option in collection.sort_options -%}
                   <option value="{{ option.value }}"{% if option.value == sort_by %} selected="selected"{% endif %}>{{ option.name }}</option>
                 {%- endfor -%}

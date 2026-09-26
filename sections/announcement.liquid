@@ -28,6 +28,72 @@
     font-weight: 600;
   }
 
+  /* --- jedna wiadomosc ze strzalkami (uklad "arrows") --- */
+  .announcement-arrows {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 44px;
+  }
+  .announcement-arrows__track {
+    position: relative;
+    flex: 1 1 auto;
+    display: grid;
+  }
+  .announcement-arrows__slide {
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 0;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+  .announcement-arrows__slide.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .announcement-arrows__slide .announcement-link {
+    display: contents;
+    color: inherit;
+    text-decoration: none;
+  }
+  .announcement-arrows__title {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .announcement-arrows__text {
+    margin-left: 8px;
+    font-size: 14px;
+    opacity: 0.85;
+  }
+  .announcement-arrows__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .announcement-arrows__btn--prev { left: 4px; }
+  .announcement-arrows__btn--next { right: 4px; }
+  @media only screen and (max-width: 768px) {
+    /* na telefonie tylko krotka wiadomosc - jak u Oliver & Blake jedna linia */
+    .announcement-arrows__text { display: none; }
+    .announcement-arrows__slide .announcement-arrows__title:only-child,
+    .announcement-arrows__title { font-size: 15px; }
+  }
   {%- if section.settings.announcement_sticky -%}
     /* --- pasek przyklejony do gory, bez animacji --- */
     #shopify-section-{{ section.id }} {
@@ -39,6 +105,47 @@
 </style>
 
 {%- render 'announcement-bar', section: section -%}
+
+{%- if section.settings.announcement_layout == 'arrows' -%}
+  <script>
+    (function () {
+      var bar = document.querySelector('#shopify-section-{{ section.id }} [data-announcement-arrows]');
+      if (!bar) return;
+      var slides = bar.querySelectorAll('[data-announcement-slide]');
+      if (slides.length < 2) return;
+      var current = 0;
+      var delay = (parseInt(bar.getAttribute('data-interval'), 10) || 5) * 1000;
+      var timer = null;
+
+      function show(index) {
+        slides[current].classList.remove('is-active');
+        current = (index + slides.length) % slides.length;
+        slides[current].classList.add('is-active');
+      }
+      function restart() {
+        clearInterval(timer);
+        timer = setInterval(function () { show(current + 1); }, delay);
+      }
+
+      bar.querySelector('[data-announcement-prev]').addEventListener('click', function () { show(current - 1); restart(); });
+      bar.querySelector('[data-announcement-next]').addEventListener('click', function () { show(current + 1); restart(); });
+      bar.addEventListener('mouseenter', function () { clearInterval(timer); });
+      bar.addEventListener('mouseleave', restart);
+
+      // przesuniecie palcem na telefonie
+      var startX = null;
+      bar.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+      bar.addEventListener('touchend', function (e) {
+        if (startX === null) return;
+        var dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 40) { show(current + (dx < 0 ? 1 : -1)); restart(); }
+        startX = null;
+      });
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) restart();
+    })();
+  </script>
+{%- endif -%}
 
 {%- if section.settings.announcement_sticky -%}
   <script>
@@ -82,8 +189,19 @@
       "default": "slider",
       "options": [
         { "value": "slider", "label": "One message at a time" },
+        { "value": "arrows", "label": "One message at a time, with arrows" },
         { "value": "row", "label": "All messages in one row" }
       ]
+    },
+    {
+      "type": "range",
+      "id": "announcement_interval",
+      "label": "Seconds per message (arrows layout)",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 5
     },
     {
       "type": "select",

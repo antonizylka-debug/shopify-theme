@@ -26,7 +26,46 @@
 -%}
 
 {% if show_announcement %}
-  {%- if announcement_row -%}
+  {%- if section.settings.announcement_layout == 'arrows' -%}
+    {%- comment -%}
+      Jedna wiadomosc naraz ze strzalkami po bokach, zmiana co kilka sekund -
+      jak pasek u Oliver & Blake. Strzalki pokazuja sie przy 2+ wiadomosciach.
+    {%- endcomment -%}
+    <div class="announcement-bar announcement-arrows" data-announcement-arrows data-interval="{{ section.settings.announcement_interval | default: 5 }}">
+      {%- if announcement_block_count > 1 -%}
+        <button type="button" class="announcement-arrows__btn announcement-arrows__btn--prev" data-announcement-prev aria-label="Forrige">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 10 16" width="10" height="16"><path d="M8.5 1.5 2 8l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        </button>
+      {%- endif -%}
+      <div class="announcement-arrows__track">
+        {%- assign slide_index = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'announcement' or block.type == '@app' -%}
+            <div class="announcement-arrows__slide{% if slide_index == 0 %} is-active{% endif %}" data-announcement-slide {{ block.shopify_attributes }}>
+              {%- if block.type == '@app' -%}
+                {%- render block -%}
+              {%- else -%}
+                {%- if block.settings.link != blank -%}<a class="announcement-link" href="{{ block.settings.link }}">{%- endif -%}
+                  {%- if block.settings.text != blank -%}
+                    <span class="announcement-arrows__title">{{ block.settings.text }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.link_text != blank -%}
+                    <span class="announcement-arrows__text">{{ block.settings.link_text }}</span>
+                  {%- endif -%}
+                {%- if block.settings.link != blank -%}</a>{%- endif -%}
+              {%- endif -%}
+            </div>
+            {%- assign slide_index = slide_index | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- if announcement_block_count > 1 -%}
+        <button type="button" class="announcement-arrows__btn announcement-arrows__btn--next" data-announcement-next aria-label="Næste">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 10 16" width="10" height="16"><path d="M1.5 1.5 8 8l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        </button>
+      {%- endif -%}
+    </div>
+  {%- elsif announcement_row -%}
     <div class="announcement-bar announcement-bar--row">
       <div class="page-width">
         <div class="announcement-row">
