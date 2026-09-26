@@ -38,6 +38,11 @@
     endif
   endif
 
+  assign keep_small = false
+  if ctx contains 'bottoms' or ctx contains 'accessories'
+    assign keep_small = true
+  endif
+
   assign numeric_rows = ''
   for value in filter.values
     assign raw = value.label | downcase | strip
@@ -47,14 +52,22 @@
         render 'size-canon', label: value.label, uk: size_uk
       endcapture
       if canon != blank and value.count > 0 or canon != blank and value.active
-        assign as_number = canon | split: '-' | first | times: 1.0
-        assign sort_key = as_number | times: 10 | plus: 100000 | round
-        assign row = sort_key | append: ':' | append: canon
-        assign row_lookup = ' ' | append: row | append: ' '
-        assign padded = ' ' | append: numeric_rows
-        unless padded contains row_lookup
-          assign numeric_rows = numeric_rows | append: row | append: ' '
-        endunless
+        # zakres "36-38" trafia do obu chipow, 36 i 38 - bez osobnych kafli z zakresami
+        assign canon_parts = canon | split: '-'
+        for part in canon_parts
+          assign as_number = part | times: 1.0
+          # ponizej 30 to rozmiary US/UK butow i pierscionkow - poza spodniami
+          # i akcesoriami ich nie pokazujemy, zostaja tylko rozmiary EU
+          if keep_small or as_number >= 30
+            assign sort_key = as_number | times: 10 | plus: 100000 | round
+            assign row = sort_key | append: ':' | append: part
+            assign row_lookup = ' ' | append: row | append: ' '
+            assign padded = ' ' | append: numeric_rows
+            unless padded contains row_lookup
+              assign numeric_rows = numeric_rows | append: row | append: ' '
+            endunless
+          endif
+        endfor
       endif
     endunless
   endfor
@@ -104,7 +117,8 @@
         capture value_canon
           render 'size-canon', label: value.label, uk: size_uk
         endcapture
-        if value_canon == row_canon
+        assign value_parts = value_canon | split: '-'
+        if value_parts contains row_canon
           assign size_active = true
           break
         endif
@@ -183,7 +197,8 @@
               endcapture
             endunless
           -%}
-          {%- if value_canon == row_canon -%}
+          {%- assign value_parts = value_canon | split: '-' -%}
+          {%- if value_parts contains row_canon -%}
             {%- if value.count > 0 or value.active -%}
               {%- if value.active -%}{%- assign size_active = true -%}{%- endif -%}
               <input
