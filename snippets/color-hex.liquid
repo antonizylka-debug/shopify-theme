@@ -1,0 +1,38 @@
+{% comment %}
+  Kolor kropki dla nazwy koloru wariantu, np. "Pale Blush Pink" => #e8a8bb.
+  Ta sama mapa rodzin co w filtrze kolorow (filter-color-families), wiec
+  kropka na karcie i w filtrze ma ten sam odcien. Decyduje pierwsze slowo,
+  ktore pasuje do slownika; brak dopasowania => jasnoszary.
+
+  Parametry:
+   - name (wymagany) - nazwa koloru z wariantu
+{% endcomment %}
+
+{%- liquid
+  assign color_map = 'Black|#111111|black;onyx,White|#ffffff|white;ivory;cream,Grey|#8b8b8b|grey;gray;charcoal;silver,Beige|#e8dcc4|beige;nude;apricot;sand;oat,Brown|#6b4a2f|brown;chocolate;coffee;mocha;camel;tan;taupe,Blue|#2b4a7d|blue;denim;navy;azure;indigo;teal;turquoise,Green|#4a7d55|green;olive;mint;sage;emerald,Khaki|#a89f68|khaki,Red|#b3262c|red;scarlet;crimson;cherry,Burgundy|#6b2233|burgundy;wine;maroon;bordeaux,Pink|#e8a8bb|pink;rose;blush;fuchsia;magenta,Purple|#6b4a8f|purple;violet;lilac;lavender;plum,Orange|#d2793a|orange;coral;rust;terracotta;peach,Yellow|#d8c14a|yellow;mustard;lemon;ochre,Gold|#c9a227|gold;bronze;brass' | split: ','
+  assign words = name | downcase | replace: '/', ' ' | replace: '&', ' ' | replace: '-', ' ' | split: ' '
+  assign hex = ''
+  for word in words
+    for family in color_map
+      assign parts = family | split: '|'
+      assign keywords = parts[2] | split: ';'
+      for keyword in keywords
+        assign head = word | slice: 0, keyword.size
+        if head == keyword
+          assign hex = parts[1]
+          break
+        endif
+      endfor
+      if hex != blank
+        break
+      endif
+    endfor
+    if hex != blank
+      break
+    endif
+  endfor
+  if hex == blank
+    assign hex = '#d9d6d0'
+  endif
+-%}
+{{- hex -}}
