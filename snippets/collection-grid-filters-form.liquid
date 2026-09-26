@@ -240,7 +240,7 @@
                             <span>
                                 <span class="tag__text">
                                   {{ filter_value.label }}
-                                </span> <span class="tag__count">({{ filter_value.count }})</span>
+                                </span> <span class="tag__count">{{ filter_value.count }}</span>
                             </span>
                             {%- endif -%}
                         </label>
@@ -314,7 +314,7 @@
                             {% if filter_value.active %}checked{% endif %}>
                             <span class="tag__checkbox"></span>
                             <span>
-                              <span class="tag__text">{{ filter_value.label }}</span> <span class="tag__count">({{ filter_value.count }})</span>
+                              <span class="tag__text">{{ filter_value.label }}</span> <span class="tag__count">{{ filter_value.count }}</span>
                             </span>
 
                         </label>
