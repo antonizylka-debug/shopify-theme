@@ -1,0 +1,119 @@
+{% comment %}
+  Filtr "Product tag" z Search & Discovery rozbity na osobne grupy wedlug
+  prefiksu tagu: "Dress Style: Maxi" i "Dress Length: Midi" daja grupy
+  "Stil" (Maxi, ...) i "Længde" (Midi, ...). Shopify liczy wartosci dla
+  otwartej kolekcji, wiec na "Kjoler" widac tylko cechy sukienek.
+
+  Pomijamy tagi, ktore dubluja kolekcje albo inne filtry (dzial, kategoria,
+  typ produktu, kolor, rozmiar), tagi bez dwukropka i grupy z jedna
+  wartoscia - taki filtr nic nie zaweza.
+
+  Parametry:
+   - filter (wymagany) - filtr z param_name 'filter.p.tag'
+   - filter_index, location, collapsed - jak w collection-grid-filters-form
+{% endcomment %}
+
+{%- liquid
+  assign skip_prefixes = '|department|shopping category|catalog group|product type|colour|color|size|gender|brand|vendor|'
+
+  # unikalne prefiksy w kolejnosci wystapienia
+  assign prefixes = '|'
+  for value in filter.values
+    if value.label contains ':'
+      assign prefix = value.label | split: ':' | first | strip
+      assign prefix_key = prefix | downcase
+      assign lookup = '|' | append: prefix_key | append: '|'
+      unless skip_prefixes contains lookup or prefixes contains lookup
+        assign prefixes = prefixes | append: prefix_key | append: '|'
+      endunless
+    endif
+  endfor
+
+  assign prefix_list = prefixes | remove_first: '|' | split: '|'
+-%}
+
+{%- for prefix_key in prefix_list -%}
+  {%- liquid
+    assign group_values = 0
+    assign group_active = 0
+    assign group_prefix = ''
+
+    for value in filter.values
+      assign value_prefix = value.label | split: ':' | first | strip | downcase
+      if value.label contains ':' and value_prefix == prefix_key
+        assign group_prefix = value.label | split: ':' | first | strip
+        if value.count > 0 or value.active
+          assign group_values = group_values | plus: 1
+        endif
+        if value.active
+          assign group_active = group_active | plus: 1
+        endif
+      endif
+    endfor
+  -%}
+
+  {%- if group_values > 1 or group_active > 0 -%}
+    {%- capture group_name -%}{%- render 'filter-tag-name', prefix: group_prefix -%}{%- endcapture -%}
+    {%- capture group_id -%}filter-tag-{{ prefix_key | handleize }}{%- endcapture -%}
+
+    <div class="collection-sidebar__group--{{ filter_index }}-{{ forloop.index }}">
+      <div class="collection-sidebar__group">
+        <button
+          type="button"
+          class="collapsible-trigger collapsible-trigger-btn collapsible--auto-height{% unless collapsed %} is-open{% endunless %} tag-list__header"
+          aria-controls="{{ location }}-{{ filter_index }}-{{ group_id }}"
+          data-collapsible-id="{{ group_id }}">
+          {{ group_name | escape }}
+          {%- if group_active > 0 -%}
+            <span class="filter-badge">{{ group_active }}</span>
+          {%- endif -%}
+          {%- render 'collapsible-icons' -%}
+        </button>
+        <div
+          id="{{ location }}-{{ filter_index }}-{{ group_id }}"
+          class="collapsible-content collapsible-content--sidebar{% unless collapsed %} is-open{% endunless %}"
+          data-collapsible-id="{{ group_id }}"
+          {% unless collapsed %}style="height: auto;"{% endunless %}>
+          <div class="collapsible-content__inner">
+            <ul class="no-bullets tag-list{% if group_values > 10 %} tag-list--limited{% endif %}">
+              {%- for value in filter.values -%}
+                {%- liquid
+                  assign value_prefix = value.label | split: ':' | first | strip | downcase
+                  assign show_value = false
+                  if value.label contains ':' and value_prefix == prefix_key
+                    if value.count > 0 or value.active
+                      assign show_value = true
+                    endif
+                  endif
+                -%}
+                {%- if show_value -%}
+                  {%- assign value_text = value.label | split: ':' | last | strip -%}
+                  <li class="tag{% if value.active %} tag--active{% endif %}">
+                    <label class="tag__checkbox-wrapper text-label" for="tagInput-{{ location }}-{{ group_id }}-{{ forloop.index }}">
+                      <input
+                        id="tagInput-{{ location }}-{{ group_id }}-{{ forloop.index }}"
+                        type="checkbox"
+                        class="tag__input"
+                        name="{{ value.param_name }}"
+                        value="{{ value.value }}"
+                        {% if value.active %}checked{% endif %}>
+                      <span class="tag__checkbox"></span>
+                      <span>
+                        <span class="tag__text">{{ value_text | escape }}</span> <span class="tag__count">({{ value.count }})</span>
+                      </span>
+                    </label>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+            {%- if group_values > 10 -%}
+              <button type="button" class="filter-toggle" data-filter-toggle data-less="Vis færre">
+                Vis alle {{ group_values }}
+              </button>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+{%- endfor -%}

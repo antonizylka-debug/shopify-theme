@@ -37,9 +37,21 @@
       {%- render 'filter-size-chips', filter: filter, mode: 'chips', filter_name: short_name -%}
     {%- else -%}
       {%- for value in filter.active_values -%}
+        {%- liquid
+          # tag "Dress Style: Maxi" => "Stil: Maxi"
+          assign chip_name = short_name
+          assign chip_value = value.label
+          if filter.param_name == 'filter.p.tag' and value.label contains ':'
+            assign tag_prefix = value.label | split: ':' | first
+            capture chip_name
+              render 'filter-tag-name', prefix: tag_prefix
+            endcapture
+            assign chip_value = value.label | split: ':' | last | strip
+          endif
+        -%}
         <a href="{{ value.url_to_remove }}" class="active-filters__chip">
-          <span class="active-filters__name">{{ short_name | escape }}:</span>
-          <span class="active-filters__value">{{ value.label | escape }}</span>
+          <span class="active-filters__name">{{ chip_name | escape }}:</span>
+          <span class="active-filters__value">{{ chip_value | escape }}</span>
           <svg aria-hidden="true" focusable="false" role="presentation" class="active-filters__x" viewBox="0 0 10 10"><path d="M1 1l8 8M9 1l-8 8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
         </a>
       {%- endfor -%}

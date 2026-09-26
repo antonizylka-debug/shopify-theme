@@ -1,0 +1,40 @@
+{% comment %}
+  Dunska nazwa grupy dla prefiksu tagu, np. "Dress Style" => "Stil",
+  "Sleeve Length" => "Ærmelængde". Najpierw pelny prefiks, potem ostatnie
+  slowo, a jak nic nie pasuje - prefiks bez zmian.
+
+  Parametry:
+   - prefix (wymagany) - czesc tagu przed dwukropkiem
+{% endcomment %}
+
+{%- liquid
+  assign key = prefix | downcase | strip
+  assign full_map = 'sleeve length|Ærmelængde,heel height|Hælhøjde,leg length|Benlængde,toe shape|Snude,neckline|Halsudskæring,neck line|Halsudskæring,waist rise|Talje' | split: ','
+  assign word_map = 'style|Stil,length|Længde,fit|Pasform,sleeve|Ærmer,sleeves|Ærmer,material|Materiale,fabric|Materiale,pattern|Mønster,print|Mønster,occasion|Anledning,rise|Talje,closure|Lukning,heel|Hæl,collar|Krave,season|Sæson,detail|Detaljer,details|Detaljer,silhouette|Silhuet,shape|Form,lining|Foer,type|Type,cut|Snit,wash|Vask,weight|Vægt'
+  assign word_map = word_map | split: ','
+  assign result = ''
+
+  for pair in full_map
+    assign kv = pair | split: '|'
+    if kv[0] == key
+      assign result = kv[1]
+      break
+    endif
+  endfor
+
+  if result == blank
+    assign last_word = key | split: ' ' | last
+    for pair in word_map
+      assign kv = pair | split: '|'
+      if kv[0] == last_word
+        assign result = kv[1]
+        break
+      endif
+    endfor
+  endif
+
+  if result == blank
+    assign result = prefix | strip
+  endif
+-%}
+{{- result -}}
