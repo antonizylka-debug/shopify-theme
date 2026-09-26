@@ -1,5 +1,5 @@
 {% comment %}
-  Filtr rozmiaru jako jedna lista chipow, bez naglowkow:
+  Filtr rozmiaru jako chipy w grupach "Tøj" i "Sko" (jak u Oliver & Blake):
    1. litery w stalej kolejnosci (XXS ... 6XL, One Size), ze scaleniem
       zapisow tego samego rozmiaru (XXL = 2XL, Medium = M),
    2. potem numery EU rosnaco, ze scaleniem zapisow (snippet size-canon):
@@ -319,11 +319,19 @@
     if shoe_ctx
       assign letter_chips = ''
     endif
-    assign all_chips = letter_chips | append: clothes_chips | append: shoe_chips
+    assign clothing_chips = letter_chips | append: clothes_chips
   -%}
 
-  {%- comment -%} jedna lista bez naglowkow: najpierw litery, potem numery EU {%- endcomment -%}
-  {%- if all_chips contains 'data-group-label' -%}
-    <ul class="no-bullets tag-list tag-list--chips">{{ all_chips }}</ul>
+  {%- comment -%}
+    Jak u Oliver & Blake: podtytul grupy ("Tøj" / "Sko"), pod nim chipy -
+    najpierw litery, potem numery EU
+  {%- endcomment -%}
+  {%- if clothing_chips contains 'data-group-label' -%}
+    <p class="size-group__title">Tøj</p>
+    <ul class="no-bullets tag-list tag-list--chips">{{ clothing_chips }}</ul>
+  {%- endif -%}
+  {%- if shoe_chips contains 'data-group-label' -%}
+    <p class="size-group__title">Sko</p>
+    <ul class="no-bullets tag-list tag-list--chips">{{ shoe_chips }}</ul>
   {%- endif -%}
 {%- endif -%}
