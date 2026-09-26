@@ -1,7 +1,7 @@
 {% comment %}
-  Filtr "Product tag" z Search & Discovery pokazany jako jedna lista
-  "Kategori" - podkategorie z tagow "Kategori: Maxikjoler", "Kategori:
-  Bomberjakker" itd. Dziala jak dawne podkolekcje: na "Kjoler" widac
+  Filtr "Product tag" z Search & Discovery pokazany jako listy kategorii
+  podzielone na dzialy - tagi "Herre: Sneakers", "Dame: Maxikjoler" daja
+  grupy "Herre" i "Dame" (8 pozycji + "Vis alle N i Dame"). Dziala jak dawne podkolekcje: na "Kjoler" widac
   Maxikjoler / Midikjoler / Minikjoler, na "Dame" wszystkie kategorie
   damskie. Shopify liczy wartosci dla otwartej kolekcji.
 
@@ -14,20 +14,22 @@
 {% endcomment %}
 
 {%- liquid
-  # tylko te prefiksy tagow staja sie filtrami
-  assign allowed_prefixes = '|kategori|'
+  # tylko te prefiksy tagow staja sie filtrami, w tej kolejnosci:
+  # "Herre: Sneakers" i "Dame: Maxikjoler" to kategorie podzielone na dzialy
+  # (jak "Men's" / "Women's" u Oliver & Blake); "Kategori:" to starszy zapis
+  assign allowed_order = 'herre,dame,kategori' | split: ','
 
   assign prefixes = '|'
-  for value in filter.values
-    if value.label contains ':'
-      assign prefix_key = value.label | split: ':' | first | strip | downcase
-      assign lookup = '|' | append: prefix_key | append: '|'
-      if allowed_prefixes contains lookup
-        unless prefixes contains lookup
+  for allowed in allowed_order
+    for value in filter.values
+      if value.label contains ':'
+        assign prefix_key = value.label | split: ':' | first | strip | downcase
+        if prefix_key == allowed
           assign prefixes = prefixes | append: prefix_key | append: '|'
-        endunless
+          break
+        endif
       endif
-    endif
+    endfor
   endfor
 
   assign prefix_list = prefixes | remove_first: '|' | split: '|'
@@ -76,7 +78,7 @@
           data-collapsible-id="{{ group_id }}"
           {% unless collapsed %}style="height: auto;"{% endunless %}>
           <div class="collapsible-content__inner">
-            <ul class="no-bullets tag-list{% if group_values > 10 %} tag-list--limited{% endif %}">
+            <ul class="no-bullets tag-list{% if group_values > 8 %} tag-list--limited tag-list--limited-8{% endif %}">
               {%- liquid
                 # wartosci alfabetycznie, jak na liscie kategorii u Oliver & Blake
                 assign sorted_texts = ''
@@ -122,9 +124,9 @@
               {%- endfor -%}
               {%- endfor -%}
             </ul>
-            {%- if group_values > 10 -%}
+            {%- if group_values > 8 -%}
               <button type="button" class="filter-toggle" data-filter-toggle data-less="Vis færre">
-                Vis alle {{ group_values }}
+                Vis alle {{ group_values }} i {{ group_name | strip }}
               </button>
             {%- endif -%}
           </div>
