@@ -311,6 +311,12 @@
   {%- endfor -%}
 
   {%- liquid
+    # na butach rozmiary to tylko numery EU - litery (XS, M...) sa bledem w danych
+    # pojedynczych produktow i nie powinny tworzyc osobnej grupy
+    if shoe_ctx
+      assign letter_chips = ''
+    endif
+
     assign group_count = 0
     if letter_chips contains 'data-group-label'
       assign group_count = group_count | plus: 1
