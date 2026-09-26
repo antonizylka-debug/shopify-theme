@@ -83,6 +83,10 @@
     height: 36px;
     background: {{ section.settings.color_line }};
   }
+  /* kreska na koncu zestawu - tylko w petli na telefonie, miedzy zestawami */
+  #shopify-section-{{ section.id }} .ob-usp__divider--end {
+    display: none;
+  }
 
   @media only screen and (max-width: 900px) {
     #shopify-section-{{ section.id }} .ob-usp {
@@ -95,12 +99,15 @@
     }
 
     #shopify-section-{{ section.id }} .ob-usp__track {
-      width: 200%;
+      /* szerokosc tresci (dwa identyczne zestawy): -50% to dokladnie jeden zestaw.
+         Wczesniej zestaw mial sztywne 100% ekranu, tresc byla szersza
+         i kopia nachodzila na oryginal */
+      width: max-content;
       animation: ob-usp-scroll-{{ section.id }} {{ section.settings.scroll_seconds }}s linear infinite;
     }
 
     #shopify-section-{{ section.id }} .ob-usp__set {
-      flex: 0 0 50%;
+      flex: 0 0 auto;
       justify-content: flex-start;
     }
 
@@ -111,6 +118,10 @@
     #shopify-section-{{ section.id }} .ob-usp__item {
       flex: 0 0 auto;
       padding: 0 20px;
+      white-space: nowrap;
+    }
+    #shopify-section-{{ section.id }} .ob-usp__divider--end {
+      display: block;
     }
   }
 
@@ -155,6 +166,7 @@
       </span>
     </div>
   {%- endfor -%}
+  <span class="ob-usp__divider ob-usp__divider--end" aria-hidden="true"></span>
 {%- endcapture -%}
 
 {%- if section.blocks.size > 0 -%}
