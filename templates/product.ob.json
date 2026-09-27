@@ -1,0 +1,99 @@
+{
+  "sections": {
+    "main": {
+      "type": "ob-product",
+      "blocks": {
+        "promise-1": {
+          "type": "promise",
+          "settings": {
+            "icon": "truck",
+            "title": "Gratis fragt",
+            "text": "På alle ordrer"
+          }
+        },
+        "promise-2": {
+          "type": "promise",
+          "settings": {
+            "icon": "return",
+            "title": "30 dages returret",
+            "text": "Uden bøvl"
+          }
+        },
+        "promise-3": {
+          "type": "promise",
+          "settings": {
+            "icon": "lock",
+            "title": "Sikker betaling",
+            "text": "Krypteret"
+          }
+        },
+        "acc-1": {
+          "type": "accordion",
+          "settings": {
+            "title": "Detaljer",
+            "use_description": true,
+            "open_by_default": true
+          }
+        },
+        "acc-2": {
+          "type": "accordion",
+          "settings": {
+            "title": "Fragt og returnering",
+            "use_description": false,
+            "text": "<p><strong>Levering</strong></p><p>Vi pakker og sender inden for 3-4 hverdage. Derefter tager leveringen 3-6 hverdage mere. Fragten er gratis på alle ordrer, og du får et sporingsnummer på mail, så snart pakken er afsendt.</p><p><strong>Returnering</strong></p><p>Du har 30 dage fra levering. Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer, så sender vi returadressen.</p><p><strong>Ændring af ordre</strong></p><p>Skriv til os hurtigst muligt. Når ordren først er afsendt, går det hurtigst at tage imod pakken og sende den tilbage.</p>",
+            "open_by_default": false
+          }
+        },
+        "acc-3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Kundeservice",
+            "use_description": false,
+            "text": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer.</p><p>Mandag til fredag, 9.00-18.00. Vi svarer på alle beskeder, typisk inden for 1-2 hverdage.</p>",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": ["promise-1", "promise-2", "promise-3", "acc-1", "acc-2", "acc-3"],
+      "settings": {
+        "size_guide_page": "/pages/size-guide",
+        "size_guide_label": "Størrelsesguide",
+        "add_label": "Læg i kurv",
+        "save_prefix": "SPAR",
+        "low_stock_text": "Få tilbage på lager",
+        "low_stock_threshold": 10,
+        "show_delivery": true,
+        "delivery_prefix": "Gratis fragt",
+        "delivery_join": "· Leveres",
+        "processing_days": 4,
+        "transit_min": 3,
+        "transit_max": 6,
+        "show_rating": false,
+        "show_payment_icons": true
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {}
+    },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": {}
+    },
+    "collection-return": {
+      "type": "collection-return",
+      "settings": {}
+    },
+    "apps": {
+      "type": "apps",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "product-recommendations",
+    "recently-viewed",
+    "collection-return",
+    "apps"
+  ]
+}

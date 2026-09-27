@@ -1,0 +1,855 @@
+{%- comment -%}
+  Strona produktu odwzorowana z oliverandblake.com.
+
+  Zmierzone na zywo na ich stronie (1280px):
+    siatka        623.75px | 465.23px, gap 48px, kontener 1137px
+    galeria       grid 68px | 540px, gap 16px; miniatury w kolumnie, gap 10px
+    kadr zdjecia  kwadrat 1/1, object-fit cover, przewijanie ze scroll-snap
+    tytul         30px / 36px, waga 600
+    cena          22.4px waga 600; przekreslona 16px waga 400, krycie 65%
+    badge rabatu  14px waga 600, ls 0.35, tlo #e8edf5, tekst #2e4e7e, radius 3px
+    etykieta opcji 14px waga 600, ls 0.35, uppercase, kolor #6e6b65
+    kafel koloru  48x60, ramka 1px #1c1d1d, padding 3px
+    kafel rozmiaru 84x46, ramka 1px #1c1d1d, 15px waga 500, ls 0.9
+    przycisk      wysokosc 64, tlo #1c1d1d, 15px waga 600, ls 0.9, uppercase
+    linia dostawy 12px, krycie 65%, padding 14px 0 0
+    karty obietnic 148x136, ramka 1px #e6e3de, padding 18px 8px
+    akordeon      summary 15px uppercase padding 18px 2px, tresc 14.4px
+    telefon 375px jedna kolumna gap 12px, tytul 26px, galeria na gorze,
+            miniatury poziomo, karty obietnic 108px
+
+  Rzeczy, ktorych NIE przepisuje z ich strony, bo byly zmyslone:
+    - ocena "4.8 Rated Excellent" - u nas wylaczona domyslnie, do podpiecia
+      pod prawdziwa aplikacje z opiniami
+    - "Almost sold out" - u nas liczone z realnego stanu magazynowego
+    - data dostawy - u nas liczona z ustawien, nie zaszyta
+{%- endcomment -%}
+
+{%- liquid
+  assign prod = product
+  assign war = prod.selected_or_first_available_variant
+
+  comment
+    Ktora opcja jest kolorem, a ktora rozmiarem - po nazwie, zeby dzialalo
+    i przy angielskich, i przy dunskich nazwach opcji.
+  endcomment
+  assign poz_koloru = 0
+  assign poz_rozmiaru = 0
+  for opt in prod.options_with_values
+    assign nazwa = opt.name | downcase
+    if nazwa contains 'farve' or nazwa contains 'color' or nazwa contains 'colour' or nazwa contains 'couleur'
+      assign poz_koloru = forloop.index
+    endif
+    if nazwa contains 'størrelse' or nazwa contains 'storrelse' or nazwa contains 'size'
+      assign poz_rozmiaru = forloop.index
+    endif
+  endfor
+
+  assign oszczednosc = 0
+  if war.compare_at_price > war.price
+    assign roznica = war.compare_at_price | minus: war.price | times: 100.0
+    assign oszczednosc = roznica | divided_by: war.compare_at_price | round
+  endif
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .obp {
+    --obp-text: {{ section.settings.color_text }};
+    --obp-muted: {{ section.settings.color_muted }};
+    --obp-line: {{ section.settings.color_line }};
+    --obp-rule: {{ section.settings.color_rule }};
+    --obp-btn: {{ section.settings.color_button }};
+    --obp-btn-text: {{ section.settings.color_button_text }};
+    --obp-save-bg: {{ section.settings.color_save_bg }};
+    --obp-save-text: {{ section.settings.color_save_text }};
+    --obp-low: {{ section.settings.color_low_stock }};
+    color: var(--obp-text);
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  #shopify-section-{{ section.id }} .obp__grid {
+    display: grid;
+    grid-template-columns: minmax(0, {{ section.settings.media_ratio }}fr) minmax(0, {{ section.settings.info_ratio }}fr);
+    gap: {{ section.settings.column_gap }}px;
+    align-items: start;
+  }
+
+  /* ---------- galeria ---------- */
+  #shopify-section-{{ section.id }} .obp__gallery {
+    display: grid;
+    grid-template-columns: {{ section.settings.thumb_size }}px minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  #shopify-section-{{ section.id }} .obp__thumbs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* na duzym ekranie miniatury nie moga rozciagac kolumny */
+    max-height: 100%;
+    overflow: auto;
+    scrollbar-width: none;
+  }
+  #shopify-section-{{ section.id }} .obp__thumbs::-webkit-scrollbar { display: none; }
+
+  #shopify-section-{{ section.id }} .obp__thumb {
+    display: block;
+    width: {{ section.settings.thumb_size }}px;
+    aspect-ratio: 1 / 1;
+    padding: 1px;
+    border: 1px solid transparent;
+    background: none;
+    cursor: pointer;
+    flex: 0 0 auto;
+  }
+  #shopify-section-{{ section.id }} .obp__thumb.is-active { border-color: var(--obp-text); }
+  #shopify-section-{{ section.id }} .obp__thumb img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+
+  #shopify-section-{{ section.id }} .obp__swipe {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  #shopify-section-{{ section.id }} .obp__swipe::-webkit-scrollbar { display: none; }
+
+  #shopify-section-{{ section.id }} .obp__slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    aspect-ratio: 1 / 1;
+  }
+  #shopify-section-{{ section.id }} .obp__slide img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+
+  #shopify-section-{{ section.id }} .obp__dots {
+    display: none;
+    justify-content: center;
+    gap: 6px;
+    padding-top: 12px;
+  }
+  #shopify-section-{{ section.id }} .obp__dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--obp-line); border: 0; padding: 0;
+  }
+  #shopify-section-{{ section.id }} .obp__dot.is-active { background: var(--obp-text); }
+
+  /* ---------- naglowek ---------- */
+  #shopify-section-{{ section.id }} .obp__title {
+    font-size: {{ section.settings.title_size }}px;
+    line-height: 1.2;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+
+  #shopify-section-{{ section.id }} .obp__rating {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  }
+  #shopify-section-{{ section.id }} .obp__stars { display: flex; gap: 2px; }
+  #shopify-section-{{ section.id }} .obp__stars svg { width: 15px; height: 15px; }
+  #shopify-section-{{ section.id }} .obp__rating__num { font-size: 15px; font-weight: 600; }
+  #shopify-section-{{ section.id }} .obp__rating__label { font-size: 14px; color: var(--obp-muted); }
+
+  #shopify-section-{{ section.id }} .obp__price {
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    font-size: 22px; font-weight: 600;
+  }
+  #shopify-section-{{ section.id }} .obp__compare {
+    font-size: 16px; font-weight: 400; opacity: 0.65;
+  }
+  #shopify-section-{{ section.id }} .obp__save {
+    font-size: 14px; font-weight: 600; letter-spacing: 0.035em; text-transform: uppercase;
+    background: var(--obp-save-bg); color: var(--obp-save-text);
+    border-radius: 3px; padding: 4px 8px;
+  }
+
+  #shopify-section-{{ section.id }} .obp__rule {
+    height: 1px; border: 0; background: var(--obp-rule); opacity: 0.35;
+    margin: 18px 0;
+  }
+
+  /* ---------- opcje ---------- */
+  #shopify-section-{{ section.id }} .obp__opt { margin-bottom: 18px; }
+  #shopify-section-{{ section.id }} .obp__opt-head {
+    display: flex; align-items: center; gap: 6px; margin-bottom: 10px;
+  }
+  #shopify-section-{{ section.id }} .obp__label {
+    font-size: 14px; font-weight: 600; letter-spacing: 0.035em;
+    text-transform: uppercase; color: var(--obp-muted);
+  }
+  #shopify-section-{{ section.id }} .obp__val { font-size: 15px; font-weight: 500; }
+  #shopify-section-{{ section.id }} .obp__sglink {
+    margin-left: auto; font-size: 15px; font-weight: 500; letter-spacing: 0.06em;
+    color: var(--obp-text); text-decoration: underline; text-underline-offset: 3px;
+  }
+
+  #shopify-section-{{ section.id }} .obp__swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+  #shopify-section-{{ section.id }} .obp__swatch {
+    width: 48px; height: 60px; padding: 3px;
+    border: 1px solid var(--obp-line); background: none; cursor: pointer;
+  }
+  #shopify-section-{{ section.id }} .obp__swatch.is-active { border-color: var(--obp-text); }
+  #shopify-section-{{ section.id }} .obp__swatch img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #shopify-section-{{ section.id }} .obp__swatch-dot { display: block; width: 100%; height: 100%; }
+
+  #shopify-section-{{ section.id }} .obp__sizes { display: flex; flex-wrap: wrap; gap: 8px; }
+  #shopify-section-{{ section.id }} .obp__size {
+    min-width: 62px; height: 46px; padding: 0 10px;
+    border: 1px solid var(--obp-line); background: #fff; color: var(--obp-text);
+    font-size: 15px; font-weight: 400; letter-spacing: 0.06em; cursor: pointer;
+  }
+  #shopify-section-{{ section.id }} .obp__size.is-selected {
+    border-color: var(--obp-text); font-weight: 500;
+  }
+  #shopify-section-{{ section.id }} .obp__size.is-soldout {
+    color: var(--obp-muted); text-decoration: line-through; opacity: 0.55; cursor: not-allowed;
+  }
+
+  /* ---------- stan, przycisk, dostawa ---------- */
+  #shopify-section-{{ section.id }} .obp__badge {
+    font-size: 14px; font-weight: 500; letter-spacing: 0.035em;
+    color: var(--obp-low); padding: 16px 0;
+  }
+  #shopify-section-{{ section.id }} .obp__atc {
+    display: block; width: 100%; height: 64px; border: 0; cursor: pointer;
+    background: var(--obp-btn); color: var(--obp-btn-text);
+    font-size: 15px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  #shopify-section-{{ section.id }} .obp__atc[disabled] { opacity: 0.45; cursor: not-allowed; }
+  #shopify-section-{{ section.id }} .obp__promo {
+    font-size: 12px; letter-spacing: 0.05em; opacity: 0.65; padding: 14px 0 0;
+  }
+
+  /* ---------- karty obietnic ---------- */
+  #shopify-section-{{ section.id }} .obp__usp {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;
+    margin-top: 20px;
+  }
+  #shopify-section-{{ section.id }} .obp__usp-card {
+    border: 1px solid var(--obp-line); padding: 18px 8px; text-align: center;
+  }
+  #shopify-section-{{ section.id }} .obp__usp-card svg {
+    width: 20px; height: 20px; margin-bottom: 10px;
+  }
+  #shopify-section-{{ section.id }} .obp__usp-l {
+    font-size: 14px; font-weight: 700; letter-spacing: 0.035em;
+    text-transform: uppercase; line-height: 1.35;
+  }
+  #shopify-section-{{ section.id }} .obp__usp-s {
+    font-size: 14px; color: var(--obp-muted); margin-top: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .obp__pay {
+    display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+    padding: 18px 0 0;
+  }
+  #shopify-section-{{ section.id }} .obp__pay svg { height: 30px; width: auto; }
+
+  /* ---------- akordeony ---------- */
+  #shopify-section-{{ section.id }} .obp__accs { margin-top: 10px; }
+  #shopify-section-{{ section.id }} .obp__acc { border-top: 1px solid var(--obp-line); }
+  #shopify-section-{{ section.id }} .obp__acc:last-child { border-bottom: 1px solid var(--obp-line); }
+  #shopify-section-{{ section.id }} .obp__acc summary {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 2px; cursor: pointer; list-style: none;
+    font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  #shopify-section-{{ section.id }} .obp__acc summary::-webkit-details-marker { display: none; }
+  #shopify-section-{{ section.id }} .obp__acc summary::after {
+    content: ''; width: 9px; height: 9px; flex: 0 0 9px;
+    border-right: 1px solid currentColor; border-bottom: 1px solid currentColor;
+    transform: rotate(45deg); transition: transform 0.2s;
+  }
+  #shopify-section-{{ section.id }} .obp__acc[open] summary::after { transform: rotate(-135deg); }
+  #shopify-section-{{ section.id }} .obp__acc-body {
+    padding: 0 2px 18px; font-size: 14.4px; line-height: 1.65;
+  }
+  #shopify-section-{{ section.id }} .obp__acc-body p { margin: 0 0 12px; }
+  #shopify-section-{{ section.id }} .obp__acc-body ul { margin: 0; padding-left: 20px; }
+  #shopify-section-{{ section.id }} .obp__acc-body li { margin-bottom: 4px; }
+
+  /* ---------- telefon ---------- */
+  @media only screen and (max-width: {{ section.settings.breakpoint }}px) {
+    #shopify-section-{{ section.id }} .obp__grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+    }
+    #shopify-section-{{ section.id }} .obp__gallery {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+    }
+    #shopify-section-{{ section.id }} .obp__thumbs {
+      flex-direction: row;
+      overflow-x: auto;
+      order: 2;
+    }
+    #shopify-section-{{ section.id }} .obp__stage { order: 1; }
+    #shopify-section-{{ section.id }} .obp__dots { display: flex; }
+    #shopify-section-{{ section.id }} .obp__title { font-size: {{ section.settings.title_size_mobile }}px; }
+    #shopify-section-{{ section.id }} .obp__usp { gap: 8px; }
+    #shopify-section-{{ section.id }} .obp__usp-card { padding: 14px 4px; }
+    #shopify-section-{{ section.id }} .obp__usp-l { font-size: 12px; }
+    #shopify-section-{{ section.id }} .obp__usp-s { font-size: 12px; }
+  }
+{%- endstyle -%}
+
+<div class="obp">
+  <div class="page-width">
+    <div class="obp__grid">
+
+      {%- comment -%} ---------- lewa kolumna: galeria ---------- {%- endcomment -%}
+      <div class="obp__gallery" data-obp-gallery>
+        {%- if prod.media.size > 1 -%}
+          <div class="obp__thumbs">
+            {%- for media in prod.media -%}
+              {%- comment -%}
+                alt liczymy osobno: "alt: media.alt | default: ..." zastosowaloby
+                filtr default do calego wyniku image_tag, a nie do samego alt.
+              {%- endcomment -%}
+              {%- assign opis_zdjecia = media.alt | default: prod.title -%}
+              <button
+                type="button"
+                class="obp__thumb{% if forloop.first %} is-active{% endif %}"
+                data-obp-thumb="{{ forloop.index0 }}"
+                aria-label="{{ prod.title | escape }} — {{ forloop.index }}">
+                {{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: opis_zdjecia }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <div class="obp__stage">
+          <div class="obp__swipe" data-obp-swipe>
+            {%- if prod.media.size > 0 -%}
+              {%- for media in prod.media -%}
+                {%- assign opis_zdjecia = media.alt | default: prod.title -%}
+                {%- if forloop.first -%}
+                  {%- assign ladowanie = 'eager' -%}
+                {%- else -%}
+                  {%- assign ladowanie = 'lazy' -%}
+                {%- endif -%}
+                <div class="obp__slide" data-obp-slide="{{ forloop.index0 }}">
+                  {{ media.preview_image
+                    | image_url: width: 1200
+                    | image_tag:
+                      loading: ladowanie,
+                      sizes: '(min-width: 769px) 540px, 100vw',
+                      widths: '375, 540, 750, 1080, 1200',
+                      alt: opis_zdjecia }}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <div class="obp__slide">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            {%- endif -%}
+          </div>
+
+          {%- if prod.media.size > 1 -%}
+            <div class="obp__dots">
+              {%- for media in prod.media -%}
+                <button type="button" class="obp__dot{% if forloop.first %} is-active{% endif %}" data-obp-dot="{{ forloop.index0 }}" aria-label="{{ forloop.index }}"></button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- comment -%} ---------- prawa kolumna: informacje ---------- {%- endcomment -%}
+      <div class="obp__info">
+
+        <div class="obp__head">
+          <h1 class="obp__title">{{ prod.title }}</h1>
+
+          {%- if section.settings.show_rating and section.settings.rating_value != blank -%}
+            <div class="obp__rating">
+              <span class="obp__stars" aria-hidden="true">
+                {%- for i in (1..5) -%}
+                  <svg viewBox="0 0 20 20" fill="currentColor" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>
+                {%- endfor -%}
+              </span>
+              <span class="obp__rating__num">{{ section.settings.rating_value }}</span>
+              {%- if section.settings.rating_label != blank -%}
+                <span class="obp__rating__label">{{ section.settings.rating_label }}</span>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          <div class="obp__price" data-obp-price>
+            <span data-obp-price-now>{{ war.price | money }}</span>
+            {%- if war.compare_at_price > war.price -%}
+              <s class="obp__compare" data-obp-price-was>{{ war.compare_at_price | money }}</s>
+              <span class="obp__save" data-obp-save>{{ section.settings.save_prefix }} {{ oszczednosc }}%</span>
+            {%- else -%}
+              <s class="obp__compare" data-obp-price-was hidden></s>
+              <span class="obp__save" data-obp-save hidden></span>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <hr class="obp__rule">
+
+        {%- comment -%}
+          Opcje. Kolor jako kafle ze zdjeciem wariantu, rozmiar jako kafle tekstowe.
+          Reszta opcji (jesli produkt ma trzecia) leci jako kafle tekstowe.
+        {%- endcomment -%}
+        {%- for opt in prod.options_with_values -%}
+          {%- assign i = forloop.index -%}
+          {%- assign wybrana = opt.selected_value -%}
+
+          <div class="obp__opt" data-obp-opt="{{ i }}" data-obp-opt-name="{{ opt.name | escape }}">
+            <div class="obp__opt-head">
+              <span class="obp__label">{{ opt.name }}</span>
+              {%- if i == poz_koloru -%}
+                <span class="obp__label">-</span>
+                <span class="obp__val" data-obp-optval="{{ i }}">{{ wybrana }}</span>
+              {%- endif -%}
+              {%- if i == poz_rozmiaru and section.settings.size_guide_page != blank -%}
+                <a class="obp__sglink" href="{{ section.settings.size_guide_page }}">{{ section.settings.size_guide_label }}</a>
+              {%- endif -%}
+            </div>
+
+            {%- if i == poz_koloru -%}
+              {%- assign idx0 = i | minus: 1 -%}
+              <div class="obp__swatches">
+                {%- for val in opt.values -%}
+                  {%- liquid
+                    comment
+                      forloop.parentloop wskazywaloby tu na petle po wartosciach,
+                      a potrzebny jest numer OPCJI - stad osobne idx0.
+                    endcomment
+                    assign zdjecie = blank
+                    for v in prod.variants
+                      assign v_val = v.options[idx0]
+                      if v_val == val and v.featured_media != blank
+                        assign zdjecie = v.featured_media.preview_image
+                        break
+                      endif
+                    endfor
+                    assign kolor_css = val | downcase | split: ' ' | last
+                  -%}
+                  <button
+                    type="button"
+                    class="obp__swatch{% if val == wybrana %} is-active{% endif %}"
+                    data-obp-value="{{ val | escape }}"
+                    data-obp-position="{{ i }}"
+                    aria-label="{{ opt.name | escape }}: {{ val | escape }}">
+                    {%- if zdjecie != blank -%}
+                      {{ zdjecie | image_url: width: 120 | image_tag: loading: 'lazy', alt: val }}
+                    {%- else -%}
+                      <span class="obp__swatch-dot" style="background: {{ kolor_css }};"></span>
+                    {%- endif -%}
+                  </button>
+                {%- endfor -%}
+              </div>
+            {%- else -%}
+              <div class="obp__sizes">
+                {%- for val in opt.values -%}
+                  <button
+                    type="button"
+                    class="obp__size{% if val == wybrana %} is-selected{% endif %}"
+                    data-obp-value="{{ val | escape }}"
+                    data-obp-position="{{ i }}">{{ val }}</button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+
+        {%- comment -%} niski stan liczony z prawdziwego magazynu, nie zaszyty {%- endcomment -%}
+        {%- liquid
+          comment
+            Liquid nie zna slowa null - pusty inventory_management sprawdzamy blankiem.
+          endcomment
+          assign malo_sztuk = false
+          if war.available and war.inventory_management != blank and war.inventory_quantity > 0 and war.inventory_quantity <= section.settings.low_stock_threshold
+            assign malo_sztuk = true
+          endif
+        -%}
+        <div class="obp__badge" data-obp-lowstock{% unless malo_sztuk %} hidden{% endunless %}>
+          {{ section.settings.low_stock_text }}
+        </div>
+
+        {%- form 'product', prod, class: 'obp__form', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ war.id }}" data-obp-variant-id>
+          <button
+            type="submit"
+            name="add"
+            class="obp__atc"
+            data-obp-atc
+            {% unless war.available %}disabled{% endunless %}>
+            <span data-obp-atc-text>
+              {%- if war.available -%}
+                {{ section.settings.add_label }}
+              {%- else -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+            </span>
+          </button>
+        {%- endform -%}
+
+        {%- if section.settings.show_delivery -%}
+          <div class="obp__promo" data-obp-eta>{{ section.settings.delivery_prefix }}</div>
+        {%- endif -%}
+
+        {%- comment -%} ---------- karty obietnic ---------- {%- endcomment -%}
+        {%- assign karty = section.blocks | where: 'type', 'promise' -%}
+        {%- if karty.size > 0 -%}
+          <div class="obp__usp">
+            {%- for block in karty -%}
+              <div class="obp__usp-card" {{ block.shopify_attributes }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  {%- case block.settings.icon -%}
+                    {%- when 'truck' -%}<path d="M2.5 6h10v10h-10z"/><path d="M12.5 9h4l3.5 3.5V16h-7.5"/><circle cx="6" cy="17.5" r="2"/><circle cx="16.5" cy="17.5" r="2"/>
+                    {%- when 'return' -%}<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>
+                    {%- when 'lock' -%}<rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>
+                    {%- when 'shield' -%}<path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3Z"/><path d="m9 12 2 2 4-4"/>
+                    {%- when 'chat' -%}<path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 9.5h8M8 12.5h5"/>
+                    {%- else -%}<path d="M12 3 20 7.5v9L12 21 4 16.5v-9L12 3Z"/><path d="M4 7.5 12 12l8-4.5"/><path d="M12 12v9"/>
+                  {%- endcase -%}
+                </svg>
+                <div class="obp__usp-l">{{ block.settings.title }}</div>
+                {%- if block.settings.text != blank -%}
+                  <div class="obp__usp-s">{{ block.settings.text }}</div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_payment_icons -%}
+          <div class="obp__pay">
+            {%- for type in shop.enabled_payment_types limit: 6 -%}
+              {{ type | payment_type_svg_tag: class: 'obp__pay-icon' }}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} ---------- akordeony ---------- {%- endcomment -%}
+        {%- assign sekcje = section.blocks | where: 'type', 'accordion' -%}
+        {%- if sekcje.size > 0 -%}
+          <div class="obp__accs">
+            {%- for block in sekcje -%}
+              <details class="obp__acc" {% if block.settings.open_by_default %}open{% endif %} {{ block.shopify_attributes }}>
+                <summary>{{ block.settings.title }}</summary>
+                <div class="obp__acc-body">
+                  {%- if block.settings.use_description -%}
+                    {{ prod.description }}
+                  {%- else -%}
+                    {{ block.settings.text }}
+                  {%- endif -%}
+                </div>
+              </details>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="application/json" data-obp-variants="{{ section.id }}">
+  {{ prod.variants | json }}
+</script>
+
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section.id }}');
+    if (!root) return;
+
+    var dane = root.querySelector('[data-obp-variants]');
+    var warianty = [];
+    try { warianty = JSON.parse(dane.textContent); } catch (e) { return; }
+
+    var opcje = Array.prototype.map.call(root.querySelectorAll('[data-obp-opt]'), function (el) {
+      return { poz: parseInt(el.dataset.obpOpt, 10), el: el };
+    });
+
+    // aktualny wybor czytamy z zaznaczonych kafli, zeby stan zawsze byl
+    // brany z DOM, a nie z osobnej kopii, ktora moze sie rozjechac
+    function wybor() {
+      return opcje.map(function (o) {
+        var akt = o.el.querySelector('.is-active, .is-selected');
+        return akt ? akt.dataset.obpValue : null;
+      });
+    }
+
+    function znajdz(wart) {
+      for (var i = 0; i < warianty.length; i++) {
+        var zgodne = true;
+        for (var k = 0; k < wart.length; k++) {
+          if (wart[k] !== null && warianty[i].options[k] !== wart[k]) { zgodne = false; break; }
+        }
+        if (zgodne) return warianty[i];
+      }
+      return null;
+    }
+
+    var pole = root.querySelector('[data-obp-variant-id]');
+    var atc = root.querySelector('[data-obp-atc]');
+    var atcText = root.querySelector('[data-obp-atc-text]');
+    var teraz = root.querySelector('[data-obp-price-now]');
+    var bylo = root.querySelector('[data-obp-price-was]');
+    var save = root.querySelector('[data-obp-save]');
+    var low = root.querySelector('[data-obp-lowstock]');
+
+    var PROG = {{ section.settings.low_stock_threshold }};
+    var WYPRZEDANE = {{ 'products.product.sold_out' | t | json }};
+    var DODAJ = {{ section.settings.add_label | json }};
+    var OSZCZ = {{ section.settings.save_prefix | json }};
+
+    // formatowanie ceny zostawiamy motywowi - inaczej rozjedzie sie separator
+    // i symbol waluty wzgledem reszty sklepu
+    var FORMAT = {{ shop.money_format | json }};
+    function kwota(grosze) {
+      if (window.theme && window.theme.Currency && window.theme.Currency.formatMoney) {
+        return window.theme.Currency.formatMoney(grosze, FORMAT);
+      }
+      if (window.Shopify && window.Shopify.formatMoney) {
+        return window.Shopify.formatMoney(grosze, FORMAT);
+      }
+      return (grosze / 100).toFixed(2).replace('.', ',') + ' kr';
+    }
+
+    function odswiez() {
+      var w = znajdz(wybor());
+
+      // rozmiary niedostepne w tym kolorze przekreslamy, zamiast ukrywac -
+      // klient widzi wtedy, ze rozmiar istnieje, tylko go nie ma
+      opcje.forEach(function (o) {
+        var inne = wybor();
+        inne[o.poz - 1] = null;
+        Array.prototype.forEach.call(o.el.querySelectorAll('[data-obp-value]'), function (btn) {
+          var proba = inne.slice();
+          proba[o.poz - 1] = btn.dataset.obpValue;
+          var kandydat = znajdz(proba);
+          var dostepny = kandydat && kandydat.available;
+          btn.classList.toggle('is-soldout', !dostepny);
+        });
+      });
+
+      if (!w) {
+        atc.disabled = true;
+        atcText.textContent = WYPRZEDANE;
+        return;
+      }
+
+      if (pole) pole.value = w.id;
+      atc.disabled = !w.available;
+      atcText.textContent = w.available ? DODAJ : WYPRZEDANE;
+
+      if (teraz) teraz.innerHTML = kwota(w.price);
+      if (bylo && save) {
+        if (w.compare_at_price && w.compare_at_price > w.price) {
+          bylo.innerHTML = kwota(w.compare_at_price);
+          bylo.hidden = false;
+          save.textContent = OSZCZ + ' ' + Math.round((w.compare_at_price - w.price) / w.compare_at_price * 100) + '%';
+          save.hidden = false;
+        } else {
+          bylo.hidden = true;
+          save.hidden = true;
+        }
+      }
+
+      if (low) {
+        var maloSztuk = w.available && w.inventory_management && w.inventory_quantity > 0 && w.inventory_quantity <= PROG;
+        low.hidden = !maloSztuk;
+      }
+
+      // adres z wariantem, zeby dalo sie podeslac link do konkretnego koloru
+      if (history.replaceState) {
+        var u = new URL(window.location.href);
+        u.searchParams.set('variant', w.id);
+        history.replaceState({}, '', u.toString());
+      }
+
+      // zdjecie wariantu na wierzch
+      if (w.featured_media && w.featured_media.position) {
+        przewin(w.featured_media.position - 1);
+      }
+    }
+
+    root.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-obp-value]');
+      if (!btn || btn.classList.contains('is-soldout')) return;
+      var grupa = btn.closest('[data-obp-opt]');
+      Array.prototype.forEach.call(grupa.querySelectorAll('[data-obp-value]'), function (b) {
+        b.classList.remove('is-active', 'is-selected');
+      });
+      btn.classList.add(btn.classList.contains('obp__swatch') ? 'is-active' : 'is-selected');
+      var val = grupa.querySelector('[data-obp-optval]');
+      if (val) val.textContent = btn.dataset.obpValue;
+      odswiez();
+    });
+
+    // ---------- galeria ----------
+    var swipe = root.querySelector('[data-obp-swipe]');
+    var thumbs = root.querySelectorAll('[data-obp-thumb]');
+    var dots = root.querySelectorAll('[data-obp-dot]');
+
+    function przewin(i) {
+      if (!swipe) return;
+      var slide = swipe.querySelector('[data-obp-slide="' + i + '"]');
+      if (slide) swipe.scrollTo({ left: slide.offsetLeft - swipe.offsetLeft, behavior: 'smooth' });
+    }
+
+    function zaznacz(i) {
+      Array.prototype.forEach.call(thumbs, function (t) { t.classList.toggle('is-active', parseInt(t.dataset.obpThumb, 10) === i); });
+      Array.prototype.forEach.call(dots, function (d) { d.classList.toggle('is-active', parseInt(d.dataset.obpDot, 10) === i); });
+    }
+
+    Array.prototype.forEach.call(thumbs, function (t) {
+      t.addEventListener('click', function () { przewin(parseInt(t.dataset.obpThumb, 10)); });
+    });
+    Array.prototype.forEach.call(dots, function (d) {
+      d.addEventListener('click', function () { przewin(parseInt(d.dataset.obpDot, 10)); });
+    });
+
+    if (swipe) {
+      var czekaj;
+      swipe.addEventListener('scroll', function () {
+        clearTimeout(czekaj);
+        czekaj = setTimeout(function () {
+          var i = Math.round(swipe.scrollLeft / swipe.clientWidth);
+          zaznacz(i);
+        }, 80);
+      }, { passive: true });
+    }
+
+    {%- if section.settings.show_delivery -%}
+    // ---------- data dostawy ----------
+    // liczona, nie zaszyta: dni roboczych na pakowanie + dni tranzytu
+    (function () {
+      var eta = root.querySelector('[data-obp-eta]');
+      if (!eta) return;
+      var PAKOWANIE = {{ section.settings.processing_days }};
+      var OD = {{ section.settings.transit_min }};
+      var DO = {{ section.settings.transit_max }};
+      var PREFIX = {{ section.settings.delivery_prefix | json }};
+      var LACZNIK = {{ section.settings.delivery_join | json }};
+
+      function dodajRobocze(data, ile) {
+        var d = new Date(data);
+        while (ile > 0) {
+          d.setDate(d.getDate() + 1);
+          var dz = d.getDay();
+          if (dz !== 0 && dz !== 6) ile--;
+        }
+        return d;
+      }
+
+      var dzis = new Date();
+      var a = dodajRobocze(dzis, PAKOWANIE + OD);
+      var b = dodajRobocze(dzis, PAKOWANIE + DO);
+      var fmt = new Intl.DateTimeFormat('da-DK', { day: 'numeric', month: 'short' });
+      eta.textContent = PREFIX + ' ' + LACZNIK + ' ' + fmt.format(a) + ' - ' + fmt.format(b);
+    })();
+    {%- endif -%}
+
+    odswiez();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product page",
+  "tag": "section",
+  "class": "ob-product-section",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "media_ratio", "label": "Image column width", "default": 57, "min": 40, "max": 70, "step": 1 },
+    { "type": "range", "id": "info_ratio", "label": "Info column width", "default": 43, "min": 30, "max": 60, "step": 1 },
+    { "type": "range", "id": "column_gap", "label": "Gap between columns", "default": 48, "min": 16, "max": 96, "step": 2, "unit": "px" },
+    { "type": "range", "id": "thumb_size", "label": "Thumbnail size", "default": 68, "min": 48, "max": 96, "step": 2, "unit": "px" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "default": 32, "min": 0, "max": 100, "step": 2, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "default": 48, "min": 0, "max": 100, "step": 2, "unit": "px" },
+    { "type": "range", "id": "breakpoint", "label": "Switch to one column below", "default": 768, "min": 600, "max": 1000, "step": 8, "unit": "px" },
+
+    { "type": "header", "content": "Text" },
+    { "type": "range", "id": "title_size", "label": "Title size", "default": 30, "min": 20, "max": 44, "step": 1, "unit": "px" },
+    { "type": "range", "id": "title_size_mobile", "label": "Title size (mobile)", "default": 26, "min": 18, "max": 36, "step": 1, "unit": "px" },
+    { "type": "text", "id": "add_label", "label": "Add to cart button", "default": "Læg i kurv" },
+    { "type": "text", "id": "save_prefix", "label": "Discount badge prefix", "default": "SPAR" },
+    { "type": "text", "id": "size_guide_label", "label": "Size guide link", "default": "Størrelsesguide" },
+    { "type": "url", "id": "size_guide_page", "label": "Size guide link target" },
+
+    { "type": "header", "content": "Stock" },
+    { "type": "range", "id": "low_stock_threshold", "label": "Show low stock below", "default": 10, "min": 1, "max": 50, "step": 1 },
+    { "type": "text", "id": "low_stock_text", "label": "Low stock text", "default": "Få tilbage på lager" },
+
+    { "type": "header", "content": "Delivery estimate" },
+    { "type": "paragraph", "content": "The date is calculated from the days below, so it is never out of date." },
+    { "type": "checkbox", "id": "show_delivery", "label": "Show delivery estimate", "default": true },
+    { "type": "text", "id": "delivery_prefix", "label": "Prefix", "default": "Gratis fragt" },
+    { "type": "text", "id": "delivery_join", "label": "Before the dates", "default": "· Leveres" },
+    { "type": "range", "id": "processing_days", "label": "Working days to pack", "default": 4, "min": 0, "max": 10, "step": 1 },
+    { "type": "range", "id": "transit_min", "label": "Transit from", "default": 3, "min": 1, "max": 20, "step": 1 },
+    { "type": "range", "id": "transit_max", "label": "Transit to", "default": 6, "min": 1, "max": 30, "step": 1 },
+
+    { "type": "header", "content": "Rating" },
+    { "type": "paragraph", "content": "Off by default. Only fill this in with a figure from a real review app." },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating", "default": false },
+    { "type": "text", "id": "rating_value", "label": "Score" },
+    { "type": "text", "id": "rating_label", "label": "Label next to the score" },
+
+    { "type": "header", "content": "Payment" },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_text", "label": "Text", "default": "#1c1d1d" },
+    { "type": "color", "id": "color_muted", "label": "Secondary text", "default": "#6e6b65" },
+    { "type": "color", "id": "color_line", "label": "Borders", "default": "#e6e3de" },
+    { "type": "color", "id": "color_rule", "label": "Divider", "default": "#808080" },
+    { "type": "color", "id": "color_button", "label": "Button", "default": "#1c1d1d" },
+    { "type": "color", "id": "color_button_text", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "color_save_bg", "label": "Discount badge background", "default": "#e8edf5" },
+    { "type": "color", "id": "color_save_text", "label": "Discount badge text", "default": "#2e4e7e" },
+    { "type": "color", "id": "color_low_stock", "label": "Low stock text", "default": "#b05f2e" }
+  ],
+  "blocks": [
+    {
+      "type": "promise",
+      "name": "Promise card",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "truck",
+          "options": [
+            { "value": "truck", "label": "Delivery" },
+            { "value": "return", "label": "Return" },
+            { "value": "lock", "label": "Secure" },
+            { "value": "shield", "label": "Guarantee" },
+            { "value": "chat", "label": "Support" },
+            { "value": "box", "label": "Parcel" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Heading", "default": "Gratis fragt" },
+        { "type": "text", "id": "text", "label": "Description", "default": "På alle ordrer" }
+      ]
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading", "default": "Detaljer" },
+        { "type": "checkbox", "id": "use_description", "label": "Use the product description", "default": false },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Skriv teksten her.</p>" },
+        { "type": "checkbox", "id": "open_by_default", "label": "Open by default", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product page",
+      "blocks": [
+        { "type": "promise", "settings": { "icon": "truck", "title": "Gratis fragt", "text": "På alle ordrer" } },
+        { "type": "promise", "settings": { "icon": "return", "title": "30 dages returret", "text": "Uden bøvl" } },
+        { "type": "promise", "settings": { "icon": "lock", "title": "Sikker betaling", "text": "Krypteret" } },
+        { "type": "accordion", "settings": { "title": "Detaljer", "use_description": true, "open_by_default": true } },
+        { "type": "accordion", "settings": { "title": "Fragt og returnering" } },
+        { "type": "accordion", "settings": { "title": "Kundeservice" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
