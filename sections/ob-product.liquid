@@ -361,15 +361,50 @@
         <div class="obp__head">
           <h1 class="obp__title">{{ prod.title }}</h1>
 
-          {%- if section.settings.show_rating and section.settings.rating_value != blank -%}
+          {%- liquid
+            comment
+              Ocena z dwoch zrodel. "app" czyta metapole, ktore zapisuja
+              aplikacje z opiniami (Judge.me, Shopify Product Reviews,
+              Loox, Okendo) - wtedy liczba jest prawdziwa i sama sie
+              aktualizuje. "manual" to wpisana recznie.
+            endcomment
+            assign ocena = blank
+            assign liczba_opinii = 0
+
+            if section.settings.rating_source == 'app'
+              assign meta = prod.metafields.reviews.rating
+              if meta != blank and meta.value != blank
+                assign ocena = meta.value.rating | round: 1
+              endif
+              assign meta_ile = prod.metafields.reviews.rating_count
+              if meta_ile != blank
+                assign liczba_opinii = meta_ile.value | plus: 0
+              endif
+            elsif section.settings.rating_source == 'manual'
+              assign ocena = section.settings.rating_value
+            endif
+
+            assign gwiazdek = 0
+            if ocena != blank
+              assign gwiazdek = ocena | plus: 0.0 | round
+            endif
+          -%}
+
+          {%- if ocena != blank -%}
             <div class="obp__rating">
               <span class="obp__stars" aria-hidden="true">
                 {%- for i in (1..5) -%}
-                  <svg viewBox="0 0 20 20" fill="currentColor" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>
+                  {%- if forloop.index <= gwiazdek -%}
+                    <svg viewBox="0 0 20 20" fill="currentColor" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>
+                  {%- else -%}
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>
+                  {%- endif -%}
                 {%- endfor -%}
               </span>
-              <span class="obp__rating__num">{{ section.settings.rating_value }}</span>
-              {%- if section.settings.rating_label != blank -%}
+              <span class="obp__rating__num">{{ ocena }}</span>
+              {%- if section.settings.rating_source == 'app' and liczba_opinii > 0 -%}
+                <span class="obp__rating__label">{{ section.settings.rating_count_label }} {{ liczba_opinii }}</span>
+              {%- elsif section.settings.rating_label != blank -%}
                 <span class="obp__rating__label">{{ section.settings.rating_label }}</span>
               {%- endif -%}
             </div>
@@ -459,11 +494,25 @@
         {%- comment -%} niski stan liczony z prawdziwego magazynu, nie zaszyty {%- endcomment -%}
         {%- liquid
           comment
-            Liquid nie zna slowa null - pusty inventory_management sprawdzamy blankiem.
+            Dwa zrodla, bo w katalogu Stilhuset Nord zaden wariant nie ma
+            wlaczonego sledzenia stanu - warunek magazynowy nigdy by nie zadzialal.
+
+            'inventory' - z prawdziwego stanu (dziala dopiero po wlaczeniu
+                          sledzenia w Shopify). Liquid nie zna slowa null,
+                          wiec puste inventory_management sprawdzamy blankiem.
+            'tag'        - produkt oznaczony tagiem, ktory sam ustawiasz.
+                           Ty decydujesz, na czym to pokazac.
           endcomment
           assign malo_sztuk = false
-          if war.available and war.inventory_management != blank and war.inventory_quantity > 0 and war.inventory_quantity <= section.settings.low_stock_threshold
-            assign malo_sztuk = true
+
+          if section.settings.low_stock_source == 'inventory'
+            if war.available and war.inventory_management != blank and war.inventory_quantity > 0 and war.inventory_quantity <= section.settings.low_stock_threshold
+              assign malo_sztuk = true
+            endif
+          elsif section.settings.low_stock_source == 'tag'
+            if section.settings.low_stock_tag != blank and prod.tags contains section.settings.low_stock_tag
+              assign malo_sztuk = true
+            endif
           endif
         -%}
         <div class="obp__badge" data-obp-lowstock{% unless malo_sztuk %} hidden{% endunless %}>
@@ -595,6 +644,7 @@
     var low = root.querySelector('[data-obp-lowstock]');
 
     var PROG = {{ section.settings.low_stock_threshold }};
+    var ZRODLO_STANU = {{ section.settings.low_stock_source | json }};
     var WYPRZEDANE = {{ 'products.product.sold_out' | t | json }};
     var DODAJ = {{ section.settings.add_label | json }};
     var OSZCZ = {{ section.settings.save_prefix | json }};
@@ -652,7 +702,9 @@
         }
       }
 
-      if (low) {
+      // w trybie tagu badge dotyczy calego produktu, wiec zmiana wariantu
+      // nie moze go chowac - przeliczamy tylko w trybie magazynowym
+      if (low && ZRODLO_STANU === 'inventory') {
         var maloSztuk = w.available && w.inventory_management && w.inventory_quantity > 0 && w.inventory_quantity <= PROG;
         low.hidden = !maloSztuk;
       }
@@ -774,9 +826,19 @@
     { "type": "text", "id": "size_guide_label", "label": "Size guide link", "default": "Størrelsesguide" },
     { "type": "url", "id": "size_guide_page", "label": "Size guide link target" },
 
-    { "type": "header", "content": "Stock" },
-    { "type": "range", "id": "low_stock_threshold", "label": "Show low stock below", "default": 10, "min": 1, "max": 50, "step": 1 },
-    { "type": "text", "id": "low_stock_text", "label": "Low stock text", "default": "Få tilbage på lager" },
+    { "type": "header", "content": "Low stock badge" },
+    { "type": "paragraph", "content": "Nothing in this catalogue tracks stock right now, so the inventory option will stay hidden until you turn tracking on in Shopify. Use the tag option instead." },
+    {
+      "type": "select", "id": "low_stock_source", "label": "Source", "default": "tag",
+      "options": [
+        { "value": "off", "label": "Off" },
+        { "value": "tag", "label": "Products with a tag" },
+        { "value": "inventory", "label": "Real stock level" }
+      ]
+    },
+    { "type": "text", "id": "low_stock_tag", "label": "Tag that shows the badge", "default": "Få tilbage" },
+    { "type": "range", "id": "low_stock_threshold", "label": "Stock level that counts as low", "default": 10, "min": 1, "max": 50, "step": 1 },
+    { "type": "text", "id": "low_stock_text", "label": "Badge text", "default": "Få tilbage på lager" },
 
     { "type": "header", "content": "Delivery estimate" },
     { "type": "paragraph", "content": "The date is calculated from the days below, so it is never out of date." },
@@ -788,10 +850,18 @@
     { "type": "range", "id": "transit_max", "label": "Transit to", "default": 6, "min": 1, "max": 30, "step": 1 },
 
     { "type": "header", "content": "Rating" },
-    { "type": "paragraph", "content": "Off by default. Only fill this in with a figure from a real review app." },
-    { "type": "checkbox", "id": "show_rating", "label": "Show rating", "default": false },
-    { "type": "text", "id": "rating_value", "label": "Score" },
-    { "type": "text", "id": "rating_label", "label": "Label next to the score" },
+    { "type": "paragraph", "content": "The app option reads the rating a review app writes to the product, so the number stays true and updates itself. Install Judge.me, Loox, Okendo or Shopify Product Reviews first." },
+    {
+      "type": "select", "id": "rating_source", "label": "Source", "default": "off",
+      "options": [
+        { "value": "off", "label": "Off" },
+        { "value": "app", "label": "From a review app" },
+        { "value": "manual", "label": "Typed in by hand" }
+      ]
+    },
+    { "type": "text", "id": "rating_value", "label": "Score (only for typed in by hand)" },
+    { "type": "text", "id": "rating_label", "label": "Label next to the score", "default": "Anmeldelser" },
+    { "type": "text", "id": "rating_count_label", "label": "Before the review count", "default": "Baseret på" },
 
     { "type": "header", "content": "Payment" },
     { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },

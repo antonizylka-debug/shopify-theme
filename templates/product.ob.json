@@ -60,6 +60,8 @@
         "size_guide_label": "Størrelsesguide",
         "add_label": "Læg i kurv",
         "save_prefix": "SPAR",
+        "low_stock_source": "tag",
+        "low_stock_tag": "Få tilbage",
         "low_stock_text": "Få tilbage på lager",
         "low_stock_threshold": 10,
         "show_delivery": true,
@@ -68,7 +70,9 @@
         "processing_days": 4,
         "transit_min": 3,
         "transit_max": 6,
-        "show_rating": false,
+        "rating_source": "off",
+        "rating_label": "Anmeldelser",
+        "rating_count_label": "Baseret på",
         "show_payment_icons": true
       }
     },
