@@ -173,6 +173,14 @@
   #shopify-section-{{ section.id }} .obp__rating {
     display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
   }
+  /* ocena bywa linkiem do sekcji opinii - nie moze wygladac jak link */
+  #shopify-section-{{ section.id }} a.obp__rating {
+    color: inherit; text-decoration: none;
+  }
+  #shopify-section-{{ section.id }} a.obp__rating .obp__rating__num {
+    border-bottom: 1px solid currentColor;
+  }
+  #shopify-section-{{ section.id }} a.obp__rating[hidden] { display: none; }
   #shopify-section-{{ section.id }} .obp__stars { display: flex; gap: 2px; }
   #shopify-section-{{ section.id }} .obp__stars svg { width: 15px; height: 15px; }
   #shopify-section-{{ section.id }} .obp__rating__num { font-size: 15px; font-weight: 600; }
@@ -618,7 +626,7 @@
             assign ocena = blank
             assign liczba_opinii = 0
 
-            if section.settings.rating_source == 'app'
+            if section.settings.rating_source == 'product'
               assign meta = prod.metafields.reviews.rating
               if meta != blank and meta.value != blank
                 assign ocena = meta.value.rating | round: 1
@@ -626,6 +634,14 @@
               assign meta_ile = prod.metafields.reviews.rating_count
               if meta_ile != blank
                 assign liczba_opinii = meta_ile.value | plus: 0
+              endif
+              comment
+                Ten sam prog co w trybie z sekcji opinii: ponizej piecu opinii
+                sama ocena szkodzi bardziej, niz pomaga - klient czyta ja jako
+                wymyslona. Wolimy puste miejsce.
+              endcomment
+              if liczba_opinii > 0 and liczba_opinii < section.settings.rating_min_count
+                assign ocena = blank
               endif
             elsif section.settings.rating_source == 'manual'
               assign ocena = section.settings.rating_value
@@ -637,7 +653,19 @@
             endif
           -%}
 
-          {%- if ocena != blank -%}
+          {%- comment -%}
+            W trybie "z sekcji opinii" nic nie renderujemy z Liquida - blok
+            jest pusty, a wypelnia go skrypt liczbami policzonymi przez
+            sekcje opinii na tej samej stronie. Dzieki temu gora i dol
+            strony nie moga pokazac dwoch roznych ocen.
+          {%- endcomment -%}
+          {%- if section.settings.rating_source == 'section' -%}
+            <a class="obp__rating" href="#{{ section.settings.rating_anchor | default: 'anmeldelser' | handleize }}" data-obp-rating-from-section hidden>
+              <span class="obp__stars" data-obp-rating-stars aria-hidden="true"></span>
+              <span class="obp__rating__num" data-obp-rating-num></span>
+              <span class="obp__rating__label" data-obp-rating-label></span>
+            </a>
+          {%- elsif ocena != blank -%}
             <div class="obp__rating">
               <span class="obp__stars" aria-hidden="true">
                 {%- for i in (1..5) -%}
@@ -649,7 +677,7 @@
                 {%- endfor -%}
               </span>
               <span class="obp__rating__num">{{ ocena }}</span>
-              {%- if section.settings.rating_source == 'app' and liczba_opinii > 0 -%}
+              {%- if section.settings.rating_source == 'product' and liczba_opinii > 0 -%}
                 <span class="obp__rating__label">{{ section.settings.rating_count_label }} {{ liczba_opinii }}</span>
               {%- elsif section.settings.rating_label != blank -%}
                 <span class="obp__rating__label">{{ section.settings.rating_label }}</span>
@@ -1119,6 +1147,38 @@
       odswiez();
     });
 
+    {%- if section.settings.rating_source == 'section' -%}
+    // ---------- ocena z sekcji opinii ----------
+    // Sekcja opinii liczy srednia i liczbe z wpisanych opinii, a my ja tu
+    // tylko przepisujemy. Nie ma wiec jak sie rozjechac z tym, co nizej.
+    (function () {
+      var blok = root.querySelector('[data-obp-rating-from-section]');
+      if (!blok) return;
+      var agg = document.querySelector('[data-obr-agg]');
+      if (!agg) return;
+
+      var srednia = parseFloat(agg.getAttribute('data-obr-avg'));
+      var ile = parseInt(agg.getAttribute('data-obr-count'), 10);
+      if (!(srednia > 0) || !(ile > 0)) return;
+
+      var MIN = {{ section.settings.rating_min_count }};
+      if (ile < MIN) return;   // ponizej progu nic nie pokazujemy
+
+      var pelnych = Math.round(srednia);
+      var gwiazdy = blok.querySelector('[data-obp-rating-stars]');
+      var PELNA = '<svg viewBox="0 0 20 20" fill="currentColor" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>';
+      var PUSTA = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>';
+      var html = '';
+      for (var i = 1; i <= 5; i++) html += (i <= pelnych ? PELNA : PUSTA);
+      gwiazdy.innerHTML = html;
+
+      blok.querySelector('[data-obp-rating-num]').textContent = String(srednia).replace('.', ',');
+      var etykieta = {{ section.settings.rating_count_label | json }};
+      blok.querySelector('[data-obp-rating-label]').textContent = etykieta + ' ' + ile;
+      blok.hidden = false;
+    })();
+    {%- endif -%}
+
     // ---------- pasek przyklejony ----------
     // pokazuje sie dopiero, gdy glowny przycisk zjedzie z ekranu
     if (sticky && atc) {
@@ -1319,16 +1379,21 @@
     { "type": "range", "id": "transit_max", "label": "Transit to", "default": 6, "min": 1, "max": 30, "step": 1 },
 
     { "type": "header", "content": "Rating" },
-    { "type": "paragraph", "content": "The app option reads the rating a review app writes to the product, so the number stays true and updates itself. Install Judge.me, Loox, Okendo or Shopify Product Reviews first." },
+    { "type": "paragraph", "content": "Best option: Reviews section on this page. The score is worked out from the reviews you write there, so the stars at the top and the reviews below can never disagree, and clicking the stars jumps down to them." },
     {
-      "type": "select", "id": "rating_source", "label": "Source", "default": "off",
+      "type": "select", "id": "rating_source", "label": "Source", "default": "section",
       "options": [
         { "value": "off", "label": "Off" },
-        { "value": "app", "label": "From a review app" },
-        { "value": "manual", "label": "Typed in by hand" }
+        { "value": "section", "label": "Reviews section on this page" },
+        { "value": "product", "label": "Per product, from a metafield" },
+        { "value": "manual", "label": "One number for every product" }
       ]
     },
-    { "type": "text", "id": "rating_value", "label": "Score (only for typed in by hand)" },
+    { "type": "text", "id": "rating_anchor", "label": "Anchor of the reviews section", "default": "anmeldelser" },
+    { "type": "paragraph", "content": "Research finding: below five reviews a bare score does more harm than good — shoppers read it as made up. Leave the threshold at 5." },
+    { "type": "range", "id": "rating_min_count", "label": "Hide the score below this many reviews", "default": 5, "min": 1, "max": 20, "step": 1 },
+    { "type": "paragraph", "content": "Per product uses the standard reviews.rating and reviews.rating_count metafields. A review app fills them, or you add the standard definition under Settings → Custom data → Products and type them in per product." },
+    { "type": "text", "id": "rating_value", "label": "Score (only for one number for every product)" },
     { "type": "text", "id": "rating_label", "label": "Label next to the score", "default": "Anmeldelser" },
     { "type": "text", "id": "rating_count_label", "label": "Before the review count", "default": "Baseret på" },
 
