@@ -1,7 +1,51 @@
 {% comment %}
   Zwijanie dlugich list filtrow: pokazuje 10 wartosci + przycisk "Vis alle X".
   Wczytywane raz z layout/theme.liquid.
+
+  Tu siedza tez style wyprzedazy dla kafelkow w kolekcji. Trzymamy je tutaj,
+  a nie w snippets/product-grid-item.liquid, bo tamten nalezy do motywu
+  i przy aktualizacji Impulse zostalby nadpisany.
 {% endcomment %}
+
+{%- assign ob_czerwien = '#d6332e' -%}
+{%- style -%}
+  /* ---------- kafelek w wyprzedazy ---------- */
+  .grid-product__price--sale .grid-product__price-now {
+    color: {{ ob_czerwien }};
+    font-weight: 600;
+  }
+
+  /* cena przed obnizka schodzi pod cene, w osobna linie */
+  .grid-product__price--sale .grid-product__price--original {
+    display: block;
+    font-size: 12px;
+    color: #6e6b65;
+    text-decoration: none;
+    margin-top: 4px;
+  }
+
+  .grid-product__lowest {
+    display: block;
+    font-size: 12px;
+    color: #6e6b65;
+    margin-top: 2px;
+  }
+  .grid-product__lowest b {
+    color: {{ ob_czerwien }};
+    font-weight: 600;
+    margin-left: 4px;
+  }
+
+  /* plakietka wyprzedazy na zdjeciu */
+  .grid-product__tag--sale {
+    background: {{ ob_czerwien }};
+    color: #fff;
+    border-radius: 0;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+{%- endstyle -%}
 
 <script>
   (function () {

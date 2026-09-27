@@ -305,12 +305,14 @@
       "save_html": "Spar {{ saved_amount }}",
       "collection_return": "Tilbage til {{ collection }}",
       "next_product": "Næste: {{ title }}",
-      "sale": "Tilbud",
+      "sale": "Udsalg",
       "sale_price": "Tilbudspris",
       "regular_price": "Normalpris",
       "from_text_html": "fra {{ price }}",
       "recent_products": "Senest set",
-      "reviews": "Anmeldelser"
+      "reviews": "Anmeldelser",
+      "was_price": "Før:",
+      "lowest_30d": "Laveste pris de sidste 30 dage:"
     },
     "product": {
       "description": "Beskrivelse",

@@ -253,17 +253,42 @@ Arguments
           {%- if settings.vendor_enable -%}
             <div class="grid-product__vendor">{{ product.vendor }}</div>
           {%- endif -%}
-          <div class="grid-product__price">
+          <div class="grid-product__price{% if on_sale %} grid-product__price--sale{% endif %}">
+            {%- comment -%}
+              Przy obnizce cena idzie pierwsza i na czerwono, a cena sprzed
+              obnizki schodzi pod nia - tak jak na kafelkach About You.
+            {%- endcomment -%}
+            <span class="grid-product__price-now">
+              {%- if on_sale -%}<span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>{%- endif -%}
+              {%- if product.price_varies -%}
+                {%- assign price = product.price_min | money -%}
+                {{ 'products.general.from_text_html' | t: price: price }}
+              {%- else -%}
+                {{ product.price | money }}
+              {%- endif -%}
+            </span>
             {%- if on_sale -%}
               <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
-              <span class="grid-product__price--original">{{ product.compare_at_price | money }}</span>
-              <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
-            {%- endif -%}
-            {%- if product.price_varies -%}
-              {%- assign price = product.price_min | money -%}
-              {{ 'products.general.from_text_html' | t: price: price }}
-            {%- else -%}
-              {{ product.price | money }}
+              <span class="grid-product__price--original">
+                {{ 'products.general.was_price' | t }} {{ product.compare_at_price | money }}
+              </span>
+
+              {%- comment -%}
+                Najnizsza cena z 30 dni razem z procentem liczonym WZGLEDEM NIEJ,
+                a nie wzgledem ceny pierwotnej - to ten procent ma znaczenie prawne.
+                Wartosc z metapola custom.lowest_price_30d; bez niego linii nie ma.
+              {%- endcomment -%}
+              {%- assign najnizsza = product.metafields.custom.lowest_price_30d -%}
+              {%- if najnizsza != blank and najnizsza.value != blank -%}
+                {%- assign najnizsza_gr = najnizsza.value | times: 100 -%}
+                <span class="grid-product__lowest">
+                  {{ 'products.general.lowest_30d' | t }} {{ najnizsza_gr | money }}
+                  {%- if najnizsza_gr > product.price -%}
+                    {%- assign spadek = najnizsza_gr | minus: product.price | times: 100.0 | divided_by: najnizsza_gr | round -%}
+                    <b>-{{ spadek }}%</b>
+                  {%- endif -%}
+                </span>
+              {%- endif -%}
             {%- endif -%}
             {%- if on_sale -%}
               {%- if settings.product_save_amount -%}
