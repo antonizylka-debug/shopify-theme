@@ -50,6 +50,48 @@
     assign roznica = war.compare_at_price | minus: war.price | times: 100.0
     assign oszczednosc = roznica | divided_by: war.compare_at_price | round
   endif
+
+  comment
+    Niski stan liczymy tu, na gorze, bo korzystaja z tego dwa miejsca:
+    plakietka na zdjeciu (w galerii, wyzej na stronie) i badge pod rozmiarami.
+
+    Dwa zrodla, bo w tym katalogu zaden wariant nie ma wlaczonego sledzenia
+    stanu - warunek magazynowy sam z siebie nigdy by nie zadzialal.
+      'inventory' - z prawdziwego stanu; Liquid nie zna slowa null, wiec
+                    puste inventory_management sprawdzamy blankiem
+      'tag'       - produkt oznaczony tagiem, ktory ustawiasz sam
+  endcomment
+  assign malo_sztuk = false
+
+  if section.settings.low_stock_source == 'all'
+    comment
+      Na wszystkich produktach naraz. Uzywasz tego przy wyprzedazy calkowitej,
+      kiedy stan jest nisko na calym asortymencie.
+    endcomment
+    if war.available
+      assign malo_sztuk = true
+    endif
+  elsif section.settings.low_stock_source == 'inventory'
+    if war.available and war.inventory_management != blank and war.inventory_quantity > 0 and war.inventory_quantity <= section.settings.low_stock_threshold
+      assign malo_sztuk = true
+    endif
+  elsif section.settings.low_stock_source == 'tag'
+    comment
+      "tags contains" wymaga trafienia co do wielkiej litery i spacji.
+      Przy tagu z "a" z kolkiem latwo o literowke, wiec porownujemy
+      po sprowadzeniu obu stron do malych liter i obcieciu spacji.
+    endcomment
+    assign szukany_tag = section.settings.low_stock_tag | downcase | strip
+    if szukany_tag != blank
+      for t in prod.tags
+        assign t_norm = t | downcase | strip
+        if t_norm == szukany_tag
+          assign malo_sztuk = true
+          break
+        endif
+      endfor
+    endif
+  endif
 -%}
 
 {%- style -%}
@@ -131,6 +173,50 @@
   }
   #shopify-section-{{ section.id }} .obp__slide img {
     width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+
+  /* ---------- plakietka na zdjeciu ---------- */
+  #shopify-section-{{ section.id }} .obp__stage { position: relative; }
+  #shopify-section-{{ section.id }} .obp__flag {
+    position: absolute; left: 0; top: {{ section.settings.flag_top }}px; z-index: 2;
+    background: {{ section.settings.flag_bg }};
+    color: {{ section.settings.flag_text }};
+    font-size: 15px; font-weight: 600;
+    padding: 8px 16px;
+    pointer-events: none;
+  }
+
+  /* ---------- pasek odliczania ---------- */
+  #shopify-section-{{ section.id }} .obp__timer {
+    display: none;
+    background: {{ section.settings.timer_bg }};
+    color: {{ section.settings.timer_text }};
+    text-align: center;
+    font-size: 15px; font-weight: 600;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+  }
+  #shopify-section-{{ section.id }} .obp__timer.is-on { display: block; }
+  #shopify-section-{{ section.id }} .obp__timer b { font-variant-numeric: tabular-nums; }
+
+  /* ---------- plakietka i kolor przy cenie ---------- */
+  #shopify-section-{{ section.id }} .obp__tilbud {
+    display: inline-block;
+    background: {{ section.settings.sale_flag_bg }};
+    color: {{ section.settings.sale_flag_text }};
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 3px 8px;
+    margin-bottom: 6px;
+  }
+  #shopify-section-{{ section.id }} .obp__price--sale [data-obp-price-now] {
+    color: {{ section.settings.sale_price_color }};
+  }
+
+  /* cena odniesienia, wymagana przy komunikowaniu obnizki */
+  #shopify-section-{{ section.id }} .obp__omnibus {
+    flex-basis: 100%;
+    font-size: 13px; color: var(--obp-muted);
+    margin-top: 2px;
   }
 
   #shopify-section-{{ section.id }} .obp__dots {
@@ -553,6 +639,15 @@
         {%- endif -%}
 
         <div class="obp__stage">
+          {%- comment -%}
+            Plakietka na zdjeciu. Pokazuje sie z tego samego zrodla co badge
+            pod rozmiarami - czyli z tagu, ktory sam ustawiasz, albo z realnego
+            stanu magazynowego. Nie pojawia sie sama z siebie na wszystkim.
+          {%- endcomment -%}
+          {%- if section.settings.show_flag and malo_sztuk and section.settings.flag_text_value != blank -%}
+            <span class="obp__flag">{{ section.settings.flag_text_value }}</span>
+          {%- endif -%}
+
           <div class="obp__swipe" data-obp-swipe>
             {%- if prod.media.size > 0 -%}
               {%- for media in prod.media -%}
@@ -611,6 +706,17 @@
               {%- endif -%}
             </div>
           {%- endif -%}
+        {%- endif -%}
+
+        {%- comment -%}
+          Pasek odliczania. Liczy do PRAWDZIWEJ daty konca kampanii, ktora
+          ustawiasz raz w ustawieniach sekcji - nie odlicza od wejscia klienta
+          i nie resetuje sie po odswiezeniu. Po dacie chowa sie sam.
+        {%- endcomment -%}
+        {%- if section.settings.show_timer and section.settings.timer_end != blank -%}
+          <div class="obp__timer" data-obp-timer data-obp-timer-end="{{ section.settings.timer_end | escape }}">
+            {{ section.settings.timer_label }} <b data-obp-timer-value></b>
+          </div>
         {%- endif -%}
 
         <div class="obp__head">
@@ -685,7 +791,13 @@
             </div>
           {%- endif -%}
 
-          <div class="obp__price" data-obp-price>
+          {%- if section.settings.show_sale_flag and war.compare_at_price > war.price and section.settings.sale_flag_label != blank -%}
+            <div><span class="obp__tilbud" data-obp-tilbud>{{ section.settings.sale_flag_label }}</span></div>
+          {%- elsif section.settings.show_sale_flag -%}
+            <div><span class="obp__tilbud" data-obp-tilbud hidden>{{ section.settings.sale_flag_label }}</span></div>
+          {%- endif -%}
+
+          <div class="obp__price{% if war.compare_at_price > war.price %} obp__price--sale{% endif %}" data-obp-price>
             <span data-obp-price-now>{{ war.price | money }}</span>
             {%- if war.compare_at_price > war.price -%}
               <s class="obp__compare" data-obp-price-was>{{ war.compare_at_price | money }}</s>
@@ -698,6 +810,22 @@
               <s class="obp__compare" data-obp-price-was hidden></s>
               <span class="obp__save" data-obp-save hidden></span>
               <span class="obp__savings" data-obp-savings hidden></span>
+            {%- endif -%}
+
+            {%- comment -%}
+              Najnizsza cena z ostatnich 30 dni. Przy komunikowaniu obnizki
+              trzeba ja podac - About You ma dokladnie to pod cena
+              ("Ostatnia najnizsza cena"). Shopify tego nie liczy, wiec
+              wartosc bierzemy z metapola produktu; bez metapola linia
+              po prostu sie nie pojawia.
+            {%- endcomment -%}
+            {%- if section.settings.show_omnibus and war.compare_at_price > war.price -%}
+              {%- assign omni = prod.metafields.custom.lowest_price_30d -%}
+              {%- if omni != blank and omni.value != blank -%}
+                <span class="obp__omnibus">
+                  {{ section.settings.omnibus_label }} {{ omni.value | times: 100 | money }}
+                </span>
+              {%- endif -%}
             {%- endif -%}
           </div>
         </div>
@@ -771,42 +899,7 @@
           </div>
         {%- endfor -%}
 
-        {%- comment -%} niski stan liczony z prawdziwego magazynu, nie zaszyty {%- endcomment -%}
-        {%- liquid
-          comment
-            Dwa zrodla, bo w katalogu Stilhuset Nord zaden wariant nie ma
-            wlaczonego sledzenia stanu - warunek magazynowy nigdy by nie zadzialal.
-
-            'inventory' - z prawdziwego stanu (dziala dopiero po wlaczeniu
-                          sledzenia w Shopify). Liquid nie zna slowa null,
-                          wiec puste inventory_management sprawdzamy blankiem.
-            'tag'        - produkt oznaczony tagiem, ktory sam ustawiasz.
-                           Ty decydujesz, na czym to pokazac.
-          endcomment
-          assign malo_sztuk = false
-
-          if section.settings.low_stock_source == 'inventory'
-            if war.available and war.inventory_management != blank and war.inventory_quantity > 0 and war.inventory_quantity <= section.settings.low_stock_threshold
-              assign malo_sztuk = true
-            endif
-          elsif section.settings.low_stock_source == 'tag'
-            comment
-              "tags contains" wymaga trafienia co do wielkiej litery i spacji.
-              Przy tagu z "a" z kolkiem latwo o literowke, wiec porownujemy
-              po sprowadzeniu obu stron do malych liter i obcieciu spacji.
-            endcomment
-            assign szukany_tag = section.settings.low_stock_tag | downcase | strip
-            if szukany_tag != blank
-              for t in prod.tags
-                assign t_norm = t | downcase | strip
-                if t_norm == szukany_tag
-                  assign malo_sztuk = true
-                  break
-                endif
-              endfor
-            endif
-          endif
-        -%}
+        {%- comment -%} malo_sztuk policzone na gorze - korzysta z tego tez plakietka na zdjeciu {%- endcomment -%}
         <div class="obp__badge" data-obp-lowstock{% unless malo_sztuk %} hidden{% endunless %}>
           {{ section.settings.low_stock_text }}
         </div>
@@ -1084,6 +1177,13 @@
 
       var naPrzecenie = w.compare_at_price && w.compare_at_price > w.price;
 
+      // czerwona cena i plakietka "TILBUD" tylko wtedy, gdy ten konkretny
+      // wariant faktycznie jest w obnizce - nie caly produkt
+      var blokCeny = root.querySelector('[data-obp-price]');
+      if (blokCeny) blokCeny.classList.toggle('obp__price--sale', !!naPrzecenie);
+      var tilbud = root.querySelector('[data-obp-tilbud]');
+      if (tilbud) tilbud.hidden = !naPrzecenie;
+
       if (teraz) teraz.innerHTML = kwota(w.price);
       if (bylo && save) {
         if (naPrzecenie) {
@@ -1176,6 +1276,41 @@
       var etykieta = {{ section.settings.rating_count_label | json }};
       blok.querySelector('[data-obp-rating-label]').textContent = etykieta + ' ' + ile;
       blok.hidden = false;
+    })();
+    {%- endif -%}
+
+    {%- if section.settings.show_timer -%}
+    // ---------- odliczanie do konca kampanii ----------
+    // Liczy do daty ustawionej raz w sekcji, czyli do tej samej chwili
+    // dla kazdego klienta. Nie startuje od wejscia i nie resetuje sie
+    // po odswiezeniu. Po dacie pasek znika sam.
+    (function () {
+      var pasek = root.querySelector('[data-obp-timer]');
+      if (!pasek) return;
+      var pole = pasek.querySelector('[data-obp-timer-value]');
+      var koniec = Date.parse(pasek.getAttribute('data-obp-timer-end'));
+      if (!koniec || isNaN(koniec)) return;
+
+      var J = {{ section.settings.timer_units | json }}.split(',');
+      var dni = (J[0] || 'd').trim();
+      var godz = (J[1] || 't').trim();
+      var min = (J[2] || 'm').trim();
+      var sek = (J[3] || 's').trim();
+      var dwa = function (n) { return n < 10 ? '0' + n : String(n); };
+
+      function tyk() {
+        var zostalo = koniec - Date.now();
+        if (zostalo <= 0) { pasek.classList.remove('is-on'); clearInterval(id); return; }
+        var d = Math.floor(zostalo / 86400000);
+        var h = Math.floor(zostalo % 86400000 / 3600000);
+        var m = Math.floor(zostalo % 3600000 / 60000);
+        var s = Math.floor(zostalo % 60000 / 1000);
+        pole.textContent = dwa(d) + dni + ' ' + dwa(h) + godz + ' ' + dwa(m) + min + ' ' + dwa(s) + sek;
+        pasek.classList.add('is-on');
+      }
+
+      tyk();
+      var id = setInterval(tyk, 1000);
     })();
     {%- endif -%}
 
@@ -1361,6 +1496,7 @@
       "type": "select", "id": "low_stock_source", "label": "Source", "default": "tag",
       "options": [
         { "value": "off", "label": "Off" },
+        { "value": "all", "label": "Every product" },
         { "value": "tag", "label": "Products with a tag" },
         { "value": "inventory", "label": "Real stock level" }
       ]
@@ -1396,6 +1532,34 @@
     { "type": "text", "id": "rating_value", "label": "Score (only for one number for every product)" },
     { "type": "text", "id": "rating_label", "label": "Label next to the score", "default": "Anmeldelser" },
     { "type": "text", "id": "rating_count_label", "label": "Before the review count", "default": "Baseret på" },
+
+    { "type": "header", "content": "Sale look" },
+    { "type": "paragraph", "content": "The flag on the photo uses the same source as the low stock badge further down, so it only appears where you said stock is low — not on everything at once." },
+    { "type": "checkbox", "id": "show_flag", "label": "Flag on the photo", "default": false },
+    { "type": "text", "id": "flag_text_value", "label": "Flag text", "default": "Næsten udsolgt" },
+    { "type": "color", "id": "flag_bg", "label": "Flag background", "default": "#f6e58d" },
+    { "type": "color", "id": "flag_text", "label": "Flag text colour", "default": "#1c1d1d" },
+    { "type": "range", "id": "flag_top", "label": "Flag distance from the top", "default": 16, "min": 0, "max": 60, "step": 2, "unit": "px" },
+
+    { "type": "checkbox", "id": "show_sale_flag", "label": "TILBUD tag above the price", "default": true },
+    { "type": "text", "id": "sale_flag_label", "label": "Tag text", "default": "TILBUD" },
+    { "type": "color", "id": "sale_flag_bg", "label": "Tag background", "default": "#d6332e" },
+    { "type": "color", "id": "sale_flag_text", "label": "Tag text colour", "default": "#ffffff" },
+    { "type": "color", "id": "sale_price_color", "label": "Price colour when reduced", "default": "#d6332e" },
+
+    { "type": "header", "content": "Countdown" },
+    { "type": "paragraph", "content": "Counts down to a real end time you set once, the same moment for everybody. It does not start when a shopper arrives and does not reset on refresh. After the end time the bar disappears on its own. Format: 2026-10-15T23:59" },
+    { "type": "checkbox", "id": "show_timer", "label": "Show countdown", "default": false },
+    { "type": "text", "id": "timer_end", "label": "Campaign ends", "info": "2026-10-15T23:59" },
+    { "type": "text", "id": "timer_label", "label": "Text before the numbers", "default": "TILBUDDET SLUTTER OM" },
+    { "type": "text", "id": "timer_units", "label": "Unit letters: days, hours, minutes, seconds", "default": "d,t,m,s" },
+    { "type": "color", "id": "timer_bg", "label": "Bar background", "default": "#d6332e" },
+    { "type": "color", "id": "timer_text", "label": "Bar text", "default": "#ffffff" },
+
+    { "type": "header", "content": "Lowest price in 30 days" },
+    { "type": "paragraph", "content": "Danish law requires this line whenever you advertise a reduction. Shopify does not track it, so it reads the product metafield custom.lowest_price_30d — add that definition under Settings → Custom data → Products. Without the metafield the line simply does not appear." },
+    { "type": "checkbox", "id": "show_omnibus", "label": "Show the line", "default": true },
+    { "type": "text", "id": "omnibus_label", "label": "Text before the amount", "default": "Laveste pris de sidste 30 dage:" },
 
     { "type": "header", "content": "Sale campaign" },
     { "type": "paragraph", "content": "This sits in the section settings, so switching it on shows it on every product using this template — and switching it off removes it everywhere." },
