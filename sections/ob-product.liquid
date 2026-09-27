@@ -431,12 +431,54 @@
     #shopify-section-{{ section.id }} .obp__title { font-size: {{ section.settings.title_size_mobile }}px; }
     #shopify-section-{{ section.id }} .obp__usp { gap: 8px; }
     #shopify-section-{{ section.id }} .obp__usp-card { padding: 14px 4px; }
-    #shopify-section-{{ section.id }} .obp__usp-l { font-size: 12px; }
-    #shopify-section-{{ section.id }} .obp__usp-s { font-size: 12px; }
+    /* Karty obietnic maja na telefonie po 108 px szerokosci - przy 14 px
+       tekst lamal sie na trzy linie. Mniejszy stopien i ciasniejszy padding
+       miesci "30 DAGES RETURRET" w dwoch. */
+    #shopify-section-{{ section.id }} .obp__usp-card { padding: 13px 3px; }
+    #shopify-section-{{ section.id }} .obp__usp-card svg { width: 17px; height: 17px; margin-bottom: 7px; }
+    #shopify-section-{{ section.id }} .obp__usp-l { font-size: 11px; letter-spacing: 0.02em; line-height: 1.3; }
+    #shopify-section-{{ section.id }} .obp__usp-s { font-size: 11px; margin-top: 3px; }
+
     #shopify-section-{{ section.id }} .obp__reassure { font-size: 12px; gap: 4px 10px; }
+
+    /* Osiemnascie rozmiarow po 62 px robilo piec rzedow i spychalo przycisk
+       o 110 px w dol. Wezsze kafle mieszcza szesc w rzedzie zamiast czterech,
+       a 46 px wysokosci zostaje - to minimum dla palca. */
+    #shopify-section-{{ section.id }} .obp__sizes { gap: 6px; }
+    #shopify-section-{{ section.id }} .obp__size { min-width: 48px; padding: 0 7px; font-size: 14px; }
+
+    #shopify-section-{{ section.id }} .obp__swatches { gap: 6px; }
+
+    /* Kropki galerii same w sobie maja 6 px - za malo, zeby w nie trafic.
+       Powiekszamy pole dotyku, nie sama kropke. */
+    #shopify-section-{{ section.id }} .obp__dots { gap: 0; padding-top: 10px; }
+    #shopify-section-{{ section.id }} .obp__dot {
+      width: 26px; height: 26px; border-radius: 0; background: none; position: relative;
+    }
+    #shopify-section-{{ section.id }} .obp__dot::after {
+      content: ''; position: absolute; left: 50%; top: 50%;
+      width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%;
+      background: var(--obp-line);
+    }
+    #shopify-section-{{ section.id }} .obp__dot.is-active::after { background: var(--obp-text); }
+
+    /* miniatury przewijaja sie poziomo - niech zatrzymuja sie na kafelku */
+    #shopify-section-{{ section.id }} .obp__thumbs {
+      scroll-snap-type: x proximity;
+      padding-bottom: 2px;
+    }
+    #shopify-section-{{ section.id }} .obp__thumb { scroll-snap-align: start; }
+
+    #shopify-section-{{ section.id }} .obp__campaign {
+      font-size: 12px; padding: 10px 12px; margin-bottom: 16px;
+    }
+    #shopify-section-{{ section.id }} .obp__campaign small { font-size: 11px; }
+
     #shopify-section-{{ section.id }} .obp__sticky img { display: none; }
     #shopify-section-{{ section.id }} .obp__sticky-btn { padding: 0 20px; height: 46px; }
     #shopify-section-{{ section.id }} .obp__sticky-in { gap: 10px; }
+    #shopify-section-{{ section.id }} .obp__sticky-name { font-size: 13px; }
+    #shopify-section-{{ section.id }} .obp__sticky-price { font-size: 13px; }
   }
 {%- endstyle -%}
 
@@ -1063,11 +1105,26 @@
     // ---------- pasek przyklejony ----------
     // pokazuje sie dopiero, gdy glowny przycisk zjedzie z ekranu
     if (sticky && atc) {
+      // Pasek jest position: fixed, wiec zaslanialby dol strony - dopoki
+      // jest widoczny, dokladamy stronie tyle miejsca, ile sam zajmuje.
+      function kompensuj(widoczny) {
+        document.body.style.paddingBottom = widoczny
+          ? sticky.getBoundingClientRect().height + 'px'
+          : '';
+      }
+
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (wpisy) {
-          sticky.classList.toggle('is-on', !wpisy[0].isIntersecting);
+          var pokaz = !wpisy[0].isIntersecting;
+          sticky.classList.toggle('is-on', pokaz);
+          kompensuj(pokaz);
         }, { rootMargin: '0px 0px -10px 0px' }).observe(atc);
       }
+
+      // po obrocie telefonu wysokosc paska moze sie zmienic
+      window.addEventListener('resize', function () {
+        if (sticky.classList.contains('is-on')) kompensuj(true);
+      }, { passive: true });
       if (stBtn) {
         stBtn.addEventListener('click', function () {
           // klikamy prawdziwy przycisk formularza, zeby przeszly wszystkie
