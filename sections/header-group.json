@@ -26,7 +26,7 @@
           "type": "announcement",
           "settings": {
             "text": "GRATIS FRAGT",
-            "link_text": "Fri fragt, intet minimum",
+            "link_text": "Fri fragt – intet minimumskøb",
             "link": ""
           }
         },
@@ -68,13 +68,13 @@
         "megamenu_promo_women": {
           "type": "megamenu_promo",
           "settings": {
-            "menu_title": "MEN'S",
+            "menu_title": "HERRE",
             "view_all_link": "shopify://collections/mens",
-            "view_all_label": "SHOP ALL",
+            "view_all_label": "SE ALT",
             "image": "shopify://shop_images/navigation_Image_mens.webp",
-            "eyebrow": "NEW SEASON",
-            "heading": "Men's Collection",
-            "button_label": "SHOP MEN'S",
+            "eyebrow": "NY SÆSON",
+            "heading": "Herrekollektion",
+            "button_label": "SHOP HERRE",
             "link": "shopify://collections/mens",
             "overlay_opacity": 5,
             "text_color": "#ffffff",
@@ -84,13 +84,13 @@
         "megamenu_promo_t6GW6h": {
           "type": "megamenu_promo",
           "settings": {
-            "menu_title": "WOMEN",
+            "menu_title": "DAME",
             "view_all_link": "shopify://collections/womens",
-            "view_all_label": "SHOP ALL",
+            "view_all_label": "SE ALT",
             "image": "shopify://shop_images/Navigation_image_womens.webp",
-            "eyebrow": "NEW SEASON",
-            "heading": "Women's Collection",
-            "button_label": "SHOP WOMEN'S",
+            "eyebrow": "NY SÆSON",
+            "heading": "Damekollektion",
+            "button_label": "SHOP DAME",
             "link": "shopify://collections/womens",
             "overlay_opacity": 5,
             "text_color": "#ffffff",
@@ -116,7 +116,7 @@
         "megamenu_narrow_dropdowns": false,
         "megamenu_min_links": 5,
         "megamenu_show_counts": true,
-        "megamenu_view_all_label": "SHOP ALL",
+        "megamenu_view_all_label": "SE ALT",
         "megamenu_heading_size": 12,
         "megamenu_heading_weight": 600,
         "megamenu_heading_spacing": 18,

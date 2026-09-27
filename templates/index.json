@@ -7,14 +7,14 @@
           "type": "image",
           "settings": {
             "top_subheading": "",
-            "title": "UP TO 70% OFF",
+            "title": "OP TIL 70% RABAT",
             "title_size": 80,
-            "subheading": "ENDS SUNDAY - APPLIES AUTOMATICALLY NO CODE NEEDED",
+            "subheading": "SLUTTER SØNDAG – RABATTEN TRÆKKES AUTOMATISK, INGEN KODE NØDVENDIG",
             "subheading_caps": true,
             "title_bold": true,
             "link_arrow": true,
             "link": "/collections/all",
-            "link_text": "SHOP THE SALE",
+            "link_text": "SHOP UDSALGET",
             "link_2": "",
             "link_text_2": "",
             "color_accent": "#ffffff",
@@ -46,9 +46,9 @@
           "settings": {
             "collection": "womens-dresses",
             "eyebrow": "",
-            "heading": "SHOP DRESSES",
-            "text": "Quietly confident design, made to be lived in.",
-            "button_label": "SHOP DRESSES",
+            "heading": "SHOP KJOLER",
+            "text": "Stilsikkert design, skabt til at blive brugt.",
+            "button_label": "SHOP KJOLER",
             "link": "",
             "text_color": "#ffffff"
           }
@@ -58,9 +58,9 @@
           "settings": {
             "collection": "womens-jackets-coats",
             "eyebrow": "",
-            "heading": "SHOP OUTERWEAR",
+            "heading": "SHOP OVERTØJ",
             "text": "Considered essentials for the modern wardrobe.",
-            "button_label": "SHOP OUTERWEAR",
+            "button_label": "SHOP OVERTØJ",
             "link": "",
             "text_color": "#ffffff"
           }
@@ -92,10 +92,10 @@
           "type": "banner",
           "settings": {
             "collection": "",
-            "eyebrow": "BEST SELLER",
+            "eyebrow": "BESTSELLER",
             "heading": "MADE FOR THE LONG WAY AROUND.",
             "text": "Layering pieces, refined for the cooler months.",
-            "button_label": "SHOP NOW",
+            "button_label": "SHOP NU",
             "link": "/collections/all",
             "text_color": "#ffffff"
           }
@@ -166,12 +166,12 @@
         "c4"
       ],
       "settings": {
-        "title": "WOMEN'S POPULAR",
-        "eyebrow": "MOST WANTED",
+        "title": "POPULÆRT TIL DAMER",
+        "eyebrow": "MEST EFTERSPURGTE",
         "heading_size": 34,
         "heading_bold": true,
         "view_all_link": "/collections/all",
-        "view_all_text": "VIEW ALL WOMEN'S",
+        "view_all_text": "SE ALT TIL DAMER",
         "image_crop": true,
         "image_height": 500,
         "image_height_mobile": 200,
@@ -184,12 +184,12 @@
     "featured_picks": {
       "type": "featured-collection",
       "settings": {
-        "title": "WOMEN'S FEATURED",
-        "eyebrow": "OUR FAVOURITE PICKS",
+        "title": "UDVALGT TIL DAMER",
+        "eyebrow": "VORES FAVORITTER",
         "heading_size": 34,
         "heading_bold": true,
         "view_all_plain": true,
-        "view_all_text": "VIEW ALL WOMEN'S",
+        "view_all_text": "SE ALT TIL DAMER",
         "image_crop": true,
         "image_shape": "portrait",
         "image_height": 500,

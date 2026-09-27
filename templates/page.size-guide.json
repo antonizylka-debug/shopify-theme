@@ -20,136 +20,136 @@
         "tops": {
           "type": "table",
           "settings": {
-            "group": "Women's",
-            "pill": "Tops",
-            "title": "Women's tops size guide",
+            "group": "Dame",
+            "pill": "Overdele",
+            "title": "Størrelsesguide – overdele til damer",
             "note": "Between sizes? Size up for a looser fit.",
-            "columns": "Size, Bust, Waist, Sleeve length",
+            "columns": "Størrelse, Bryst, Talje, Ærmelængde",
             "rows": "XS | 82-85 | 63-66 | 58\nS | 86-89 | 67-70 | 59\nM | 90-94 | 71-75 | 60\nL | 95-99 | 76-80 | 61\nXL | 100-105 | 81-86 | 62\n2XL | 106-112 | 87-93 | 63\n3XL | 113-119 | 94-100 | 64\n4XL | 120-126 | 101-107 | 65",
             "convert_units": true,
-            "fit": "True-to-size. A two-piece is sized on the bust, the waist and the hip together, so go by whichever is largest rather than by the bust alone.",
-            "care": "Machine wash cold with similar colours; lay flat or hang to dry. Wash the two pieces together so they age at the same rate.",
-            "measure": "Measure the fullest part of the bust, the natural waistline and the fullest part of the hips, then take the size that fits the largest of the three."
+            "fit": "Svarer til størrelsen. Et sæt måles på bryst, talje og hofte tilsammen, så gå efter det største af målene frem for brystet alene.",
+            "care": "Maskinvask koldt med lignende farver. Tør fladt eller på bøjle. Vask de to dele sammen, så de ældes ens.",
+            "measure": "Mål brystet på det bredeste sted, taljen hvor den er naturligt smallest, og hoften på det bredeste sted. Vælg den størrelse, der passer til det største af de tre mål."
           }
         },
         "bottoms": {
           "type": "table",
           "settings": {
-            "group": "Women's",
-            "pill": "Bottoms",
-            "title": "Women's bottoms size guide",
+            "group": "Dame",
+            "pill": "Underdele",
+            "title": "Størrelsesguide – underdele til damer",
             "note": "Between sizes? Size up for a looser fit.",
-            "columns": "Size, Waist, Hip, Inside leg",
+            "columns": "Størrelse, Talje, Hofte, Indvendig benlængde",
             "rows": "XS | 63-66 | 88-91 | 76\nS | 67-70 | 92-95 | 77\nM | 71-75 | 96-100 | 78\nL | 76-80 | 101-105 | 79\nXL | 81-86 | 106-111 | 80\n2XL | 87-93 | 112-118 | 81\n3XL | 94-100 | 119-125 | 82\n4XL | 101-107 | 126-132 | 83",
             "convert_units": true,
-            "fit": "True to size at the waist. Elasticated styles give roughly 4 cm more.",
-            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
-            "measure": "Measure the waist at its narrowest point, the hip at its fullest, and the inside leg from crotch to ankle."
+            "fit": "Svarer til størrelsen i taljen. Modeller med elastik giver cirka 4 cm mere.",
+            "care": "Vask ved 30°C på skåneprogram, vend print ud, og tør fladt frem for i tørretumbler.",
+            "measure": "Mål taljen hvor den er smallest, hoften på det bredeste sted, og indvendig benlængde fra skridt til ankel."
           }
         },
         "dresses": {
           "type": "table",
           "settings": {
-            "group": "Women's",
-            "pill": "Dresses",
-            "title": "Women's dresses size guide",
+            "group": "Dame",
+            "pill": "Kjoler",
+            "title": "Størrelsesguide – kjoler",
             "note": "Between sizes? Size up for a looser fit.",
-            "columns": "Size, Bust, Waist, Hip",
+            "columns": "Størrelse, Bryst, Talje, Hofte",
             "rows": "XS | 82-85 | 63-66 | 88-91\nS | 86-89 | 67-70 | 92-95\nM | 90-94 | 71-75 | 96-100\nL | 95-99 | 76-80 | 101-105\nXL | 100-105 | 81-86 | 106-111\n2XL | 106-112 | 87-93 | 112-118\n3XL | 113-119 | 94-100 | 119-125\n4XL | 120-126 | 101-107 | 126-132",
             "convert_units": true,
-            "fit": "True-to-size. A two-piece is sized on the bust, the waist and the hip together, so go by whichever is largest rather than by the bust alone.",
-            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
-            "measure": "Bust at the fullest point, waist at the narrowest, hip at the fullest point roughly 20 cm below the waist."
+            "fit": "Svarer til størrelsen. Et sæt måles på bryst, talje og hofte tilsammen, så gå efter det største af målene frem for brystet alene.",
+            "care": "Vask ved 30°C på skåneprogram, vend print ud, og tør fladt frem for i tørretumbler.",
+            "measure": "Bryst på det bredeste sted, talje hvor den er smallest, og hofte på det bredeste sted cirka 20 cm under taljen."
           }
         },
         "sets": {
           "type": "table",
           "settings": {
-            "group": "Women's",
-            "pill": "Sets",
-            "title": "Women's sets size guide",
+            "group": "Dame",
+            "pill": "Sæt",
+            "title": "Størrelsesguide – sæt til damer",
             "note": "Between sizes? Size up for a looser fit.",
-            "columns": "Size, Bust, Waist, Hip",
+            "columns": "Størrelse, Bryst, Talje, Hofte",
             "rows": "XS | 82-85 | 63-66 | 88-91\nS | 86-89 | 67-70 | 92-95\nM | 90-94 | 71-75 | 96-100\nL | 95-99 | 76-80 | 101-105\nXL | 100-105 | 81-86 | 106-111\n2XL | 106-112 | 87-93 | 112-118\n3XL | 113-119 | 94-100 | 119-125",
             "convert_units": true,
             "fit": "Both pieces follow the same size. If your top and bottom sizes differ, choose for the piece that matters most.",
-            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
-            "measure": "Use the same measurements as dresses: bust, waist and hip."
+            "care": "Vask ved 30°C på skåneprogram, vend print ud, og tør fladt frem for i tørretumbler.",
+            "measure": "Brug de samme mål som til kjoler: bryst, talje og hofte."
           }
         },
         "footwear": {
           "type": "table",
           "settings": {
-            "group": "Women's",
-            "pill": "Footwear",
-            "title": "Women's footwear size guide",
-            "note": "Sizes shown as EU, with UK and US equivalents.",
-            "columns": "EU, UK, US, Foot length (cm)",
+            "group": "Dame",
+            "pill": "Sko",
+            "title": "Størrelsesguide – sko til damer",
+            "note": "Størrelser vist i EU med UK og US som omregning.",
+            "columns": "EU, UK, US, Fodlængde (cm)",
             "rows": "36 | 3 | 5 | 22.8\n37 | 4 | 6 | 23.5\n38 | 5 | 7 | 24.1\n39 | 6 | 8 | 24.8\n40 | 6.5 | 9 | 25.4\n41 | 7.5 | 10 | 26.0\n42 | 8 | 11 | 26.7\n43 | 9 | 12 | 27.3",
             "convert_units": false,
-            "fit": "Between sizes, or with a wider foot, take the larger size.",
-            "care": "Wipe clean and let shoes dry at room temperature, away from direct heat.",
-            "measure": "Stand on a sheet of paper in the evening, mark heel and longest toe, and measure the distance. Use the longer foot."
+            "fit": "Er du mellem to størrelser eller har en bred fod, så tag den største.",
+            "care": "Tør dem af, og lad dem tørre ved stuetemperatur væk fra direkte varme.",
+            "measure": "Stil dig på et stykke papir om aftenen, sæt en streg ved hælen og ved den længste tå, og mål afstanden. Brug den længste fod."
           }
         },
         "mens-tops": {
           "type": "table",
           "settings": {
-            "group": "Men's",
-            "pill": "Tops",
-            "title": "Men's tops size guide",
+            "group": "Herre",
+            "pill": "Overdele",
+            "title": "Størrelsesguide – overdele til herrer",
             "note": "Between sizes? Size up for a looser fit.",
-            "columns": "Size, Chest, Waist, Sleeve length",
+            "columns": "Størrelse, Brystvidde, Talje, Ærmelængde",
             "rows": "XS | 86-89 | 71-74 | 60\nS | 90-94 | 75-79 | 61.5\nM | 95-100 | 80-85 | 63\nL | 101-106 | 86-91 | 64.5\nXL | 107-113 | 92-98 | 66\n2XL | 114-120 | 99-105 | 67.5\n3XL | 121-127 | 106-112 | 69\n4XL | 128-134 | 113-119 | 70",
             "convert_units": true,
             "fit": "True to size, regular fit. Size up for a roomier look or easier layering.",
-            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
+            "care": "Vask ved 30°C på skåneprogram, vend print ud, og tør fladt frem for i tørretumbler.",
             "measure": "Measure around the fullest part of the chest, and from the centre back of the neck along the shoulder to the cuff for sleeve length."
           }
         },
         "mens-bottoms": {
           "type": "table",
           "settings": {
-            "group": "Men's",
-            "pill": "Bottoms",
-            "title": "Men's bottoms size guide",
+            "group": "Herre",
+            "pill": "Underdele",
+            "title": "Størrelsesguide – underdele til herrer",
             "note": "Between sizes? Size up for a looser fit.",
-            "columns": "Size, Waist, Hip, Inside leg",
+            "columns": "Størrelse, Talje, Hofte, Indvendig benlængde",
             "rows": "XS | 71-74 | 88-91 | 79\nS | 75-79 | 92-96 | 80\nM | 80-85 | 97-102 | 81\nL | 86-91 | 103-108 | 82\nXL | 92-98 | 109-115 | 83\n2XL | 99-105 | 116-122 | 84\n3XL | 106-112 | 123-129 | 85\n4XL | 113-119 | 130-136 | 86",
             "convert_units": true,
-            "fit": "True to size at the waist. Elasticated and drawstring styles give roughly 4 cm more.",
-            "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in a dryer.",
-            "measure": "Measure the waist where you wear the trousers, the hip at its fullest, and the inside leg from crotch to ankle."
+            "fit": "Svarer til størrelsen i taljen. Modeller med elastik eller bindebånd giver cirka 4 cm mere.",
+            "care": "Vask ved 30°C på skåneprogram, vend print ud, og tør fladt frem for i tørretumbler.",
+            "measure": "Mål taljen der, hvor du har bukserne, hoften på det bredeste sted, og indvendig benlængde fra skridt til ankel."
           }
         },
         "mens-belts": {
           "type": "table",
           "settings": {
-            "group": "Men's",
-            "pill": "Belts",
-            "title": "Men's belts size guide",
-            "note": "Choose by trouser waist, not by clothing size.",
-            "columns": "Size, Waist, Total length",
+            "group": "Herre",
+            "pill": "Bælter",
+            "title": "Størrelsesguide – bælter til herrer",
+            "note": "Vælg efter bukselinningen, ikke efter tøjstørrelse.",
+            "columns": "Størrelse, Talje, Samlet længde",
             "rows": "S | 75-85 | 100\nM | 85-95 | 110\nL | 95-105 | 120\nXL | 105-115 | 130",
             "convert_units": true,
-            "fit": "The middle hole should land on your usual trouser waist.",
-            "care": "Wipe with a dry cloth. Keep leather away from prolonged damp.",
-            "measure": "Measure an existing belt from the buckle fold to the hole you use most."
+            "fit": "Det midterste hul skal ramme din normale bukselinning.",
+            "care": "Tør af med en tør klud. Hold læder væk fra langvarig fugt.",
+            "measure": "Mål et bælte du har, fra foldningen ved spændet til det hul, du bruger mest."
           }
         },
         "mens-footwear": {
           "type": "table",
           "settings": {
-            "group": "Men's",
-            "pill": "Footwear",
-            "title": "Men's footwear size guide",
-            "note": "Sizes shown as EU, with UK and US equivalents.",
-            "columns": "EU, UK, US, Foot length (cm)",
+            "group": "Herre",
+            "pill": "Sko",
+            "title": "Størrelsesguide – sko til herrer",
+            "note": "Størrelser vist i EU med UK og US som omregning.",
+            "columns": "EU, UK, US, Fodlængde (cm)",
             "rows": "40 | 6.5 | 7 | 25.4\n41 | 7.5 | 8 | 26.0\n42 | 8 | 9 | 26.7\n43 | 9 | 10 | 27.3\n44 | 9.5 | 10.5 | 28.0\n45 | 10.5 | 11.5 | 28.6\n46 | 11 | 12 | 29.2\n47 | 12 | 13 | 29.9",
             "convert_units": false,
-            "fit": "Between sizes, or with a wider foot, take the larger size. Dress shoes run slightly narrower than sneakers.",
-            "care": "Wipe clean and let shoes dry at room temperature, away from direct heat.",
-            "measure": "Stand on a sheet of paper in the evening, mark heel and longest toe, and measure the distance. Use the longer foot."
+            "fit": "Er du mellem to størrelser eller har en bred fod, så tag den største. Pæne sko er en smule smallere end sneakers.",
+            "care": "Tør dem af, og lad dem tørre ved stuetemperatur væk fra direkte varme.",
+            "measure": "Stil dig på et stykke papir om aftenen, sæt en streg ved hælen og ved den længste tå, og mål afstanden. Brug den længste fod."
           }
         }
       },
@@ -165,17 +165,17 @@
         "footwear"
       ],
       "settings": {
-        "eyebrow": "Size guide",
-        "title": "Find your fit",
+        "eyebrow": "Størrelsesguide",
+        "title": "Find din størrelse",
         "intro": "Check the key measurements for every category before you order. Switch between inches and centimetres, and find fit, care and measuring notes under each table.",
         "default_unit": "cm",
         "notes": "<p>These are body measurements, not the measurements of the garment itself. Where a product page lists its own measurements, those take priority — cuts vary between ranges.</p><p>Still unsure? Email <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> with the product name and we will check it for you before you order.</p>",
-        "unit_label": "Units",
-        "note_cm": "Measurements shown in centimetres.",
-        "note_in": "Measurements shown in inches.",
-        "fit_label": "Fit",
-        "care_label": "Care",
-        "measure_label": "How to measure",
+        "unit_label": "Enheder",
+        "note_cm": "Mål vist i centimeter.",
+        "note_in": "Mål vist i tommer.",
+        "fit_label": "Pasform",
+        "care_label": "Vask og pleje",
+        "measure_label": "Sådan måler du",
         "color_text": "#1c1d1d",
         "color_muted": "#7b7c7c",
         "color_line": "#e8e8e1",

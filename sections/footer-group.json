@@ -19,7 +19,7 @@
           "settings": {
             "enable_image": true,
             "image_mask": "none",
-            "title": "Gratis Fragt",
+            "title": "Gratis fragt",
             "text": "<p>Vi tilbyder gratis fragt for maksimal bekvemmelighed. Din tilfredshed er vigtig for os, derfor tilbyder vi nem og gratis levering.</p>",
             "button_label": "",
             "button_link": ""
@@ -30,7 +30,7 @@
           "settings": {
             "enable_image": true,
             "image_mask": "none",
-            "title": "30 Dages Returret",
+            "title": "30 dages returret",
             "text": "<p>Din tilfredshed er vores fokus. Vores 30 dages returret giver dig maksimal fleksibilitet og den bedste shoppingoplevelse.</p>",
             "button_label": "",
             "button_link": ""
@@ -41,7 +41,7 @@
           "settings": {
             "enable_image": true,
             "image_mask": "none",
-            "title": "100% Sikker Betaling",
+            "title": "100% sikker betaling",
             "text": "<p>Vi tilbyder flere sikre betalingsmuligheder. Betal nemt og nyd en tryg og sikker shoppingoplevelse.</p>",
             "button_label": "",
             "button_link": ""
@@ -65,32 +65,32 @@
           "type": "item",
           "settings": {
             "icon": "box",
-            "title": "Fast dispatch",
-            "text": "Dispatched in 3 to 4 working days"
+            "title": "Hurtig afsendelse",
+            "text": "Afsendes inden for 3-4 hverdage"
           }
         },
         "returns": {
           "type": "item",
           "settings": {
             "icon": "return",
-            "title": "Easy returns",
-            "text": "Within 30 days of delivery"
+            "title": "Nem returnering",
+            "text": "Inden 30 dage efter levering"
           }
         },
         "tracking": {
           "type": "item",
           "settings": {
             "icon": "truck",
-            "title": "Tracked delivery",
-            "text": "Tracking on every parcel"
+            "title": "Sporbar levering",
+            "text": "Sporing på hver pakke"
           }
         },
         "help": {
           "type": "item",
           "settings": {
             "icon": "chat",
-            "title": "Here to help",
-            "text": "Monday to Friday"
+            "title": "Vi er her for dig",
+            "text": "Mandag til fredag"
           }
         }
       },
@@ -159,10 +159,10 @@
         "contact": {
           "type": "contact",
           "settings": {
-            "title": "Contact",
+            "title": "Kontakt",
             "email": "kontakt@stilhusetnord.dk",
             "phone": "+44 7537 171591",
-            "hours": "Mon to Fri, 9:00 AM to 6:00 PM",
+            "hours": "Man-fre, 9.00-18.00",
             "address": "",
             "container_width": 50
           }
@@ -171,10 +171,10 @@
           "type": "newsletter",
           "settings": {
             "show_footer_title": true,
-            "title": "Newsletter",
+            "title": "Nyhedsbrev",
             "text": "<p>Sign up for new arrivals and updates.</p>",
-            "button_label": "Subscribe",
-            "disclaimer": "<p>By subscribing you agree to our <a href=\"/policies/privacy-policy\">Privacy Policy</a></p>",
+            "button_label": "Tilmeld",
+            "disclaimer": "<p>Ved at tilmelde dig accepterer du vores <a href=\"/policies/privacy-policy\">privatlivspolitik</a></p>",
             "show_social": false,
             "container_width": 50
           }
@@ -202,10 +202,10 @@
         "show_locale_selector": false,
         "show_payment_icons": false,
         "show_copyright": true,
-        "copyright_text": ". All rights reserved.",
+        "copyright_text": ". Alle rettigheder forbeholdes.",
         "hide_powered_by": true,
         "show_back_to_top": true,
-        "back_to_top_label": "Back to top",
+        "back_to_top_label": "Til toppen",
         "divider_color": "#2b2c2c",
         "divider_spacing": 10,
         "padding_top": 60,

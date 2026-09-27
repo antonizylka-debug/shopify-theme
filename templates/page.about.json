@@ -20,7 +20,7 @@
         "intro": {
           "type": "intro",
           "settings": {
-            "eyebrow": "About Stilhuset Nord",
+            "eyebrow": "Om Stilhuset Nord",
             "heading": "Considered pieces for everyday wear.",
             "text": "<p>Stilhuset Nord is a small online shop for women’s clothing, built around one idea: pieces that look like the photos, arrive when we say they will, and still look right after a season of wear.</p><p>We sell across Denmark and the wider Nordics, with prices in Danish kroner and tracking on every parcel we send.</p>"
           }
@@ -28,9 +28,9 @@
         "row-why": {
           "type": "row",
           "settings": {
-            "eyebrow": "Why we started",
-            "heading": "Because online shopping should feel simpler.",
-            "text": "<p>Too much of online fashion is guesswork. Sizes that mean nothing between brands, photos that flatter more than they inform, and a support address that replies three days later with a template.</p><p>We built Stilhuset Nord around the parts we can actually control: measurements you can check before you order, tracking on every parcel, and a person reading your email rather than a script.</p>",
+            "eyebrow": "Derfor startede vi",
+            "heading": "Fordi det skal være nemmere at handle tøj online.",
+            "text": "<p>For meget tøjhandel på nettet er gætteri. Størrelser, der betyder noget forskelligt fra mærke til mærke, billeder der pynter mere end de oplyser, og en kundeservice, der svarer tre dage senere med en standardtekst.</p><p>Vi har bygget Stilhuset Nord op om det, vi selv kan stå for: mål du kan tjekke, før du bestiller, sporing på hver pakke, og et menneske der læser din mail.</p>",
             "image": "shopify://shop_images/about_us_image_2.webp",
             "image_position": "right"
           }
@@ -38,9 +38,9 @@
         "row-how": {
           "type": "row",
           "settings": {
-            "eyebrow": "Our global approach",
-            "heading": "Direct from maker to your door.",
-            "text": "<p>We work directly with the manufacturers who make our pieces and ship from their facilities. Cutting out the traditional retail middleman is what keeps the price where it is, without dropping the quality to get there.</p><p>It also means an order with several items can arrive in more than one parcel, each with its own tracking. Nothing extra to pay — just more than one delivery.</p>",
+            "eyebrow": "Sådan arbejder vi",
+            "heading": "Direkte fra producent til din dør.",
+            "text": "<p>Vi arbejder direkte sammen med de producenter, der syer vores tøj, og sender fra deres lagre. Når mellemhandleren er skåret væk, kan vi holde prisen nede uden at gå på kompromis med kvaliteten.</p><p>Det betyder også, at en ordre med flere varer kan komme i mere end én pakke, hver med sin egen sporing. Du betaler ikke ekstra – du får bare mere end én levering.</p>",
             "image": "shopify://shop_images/about_us_image.webp",
             "image_position": "left"
           }
@@ -48,48 +48,48 @@
         "values-head": {
           "type": "values_head",
           "settings": {
-            "heading": "Our promises to you",
-            "text": "<p>Transparency matters more than slogans. Here is exactly what to expect when you order with us.</p>"
+            "heading": "Det kan du regne med",
+            "text": "<p>Åbenhed er vigtigere end slogans. Her er præcis, hvad du kan forvente, når du handler hos os.</p>"
           }
         },
         "value-1": {
           "type": "value",
           "settings": {
             "icon": "truck",
-            "title": "Tracked delivery",
-            "text": "Every parcel ships with tracking you can follow from dispatch."
+            "title": "Sporbar levering",
+            "text": "Hver pakke sendes med sporing, du kan følge fra afsendelsen."
           }
         },
         "value-2": {
           "type": "value",
           "settings": {
             "icon": "return",
-            "title": "Simple returns",
-            "text": "14 days from delivery to send something back."
+            "title": "Nem returnering",
+            "text": "Du har 30 dage fra levering til at sende noget tilbage."
           }
         },
         "value-3": {
           "type": "value",
           "settings": {
             "icon": "box",
-            "title": "Fast dispatch",
-            "text": "Orders leave us within 1 to 3 working days."
+            "title": "Hurtig afsendelse",
+            "text": "Din ordre forlader os inden for 3-4 hverdage."
           }
         },
         "value-4": {
           "type": "value",
           "settings": {
             "icon": "chat",
-            "title": "Here to help",
-            "text": "A person answers, within 1 to 2 working days."
+            "title": "Vi er her for dig",
+            "text": "Et menneske svarer – typisk inden for 1-2 hverdage."
           }
         },
         "row-support": {
           "type": "row",
           "settings": {
             "eyebrow": "We are here for you",
-            "heading": "A real person, always within reach.",
-            "text": "<p>Whether you have a question about a product, need help tracking a parcel, or just want to say hello, we are always an email away.</p><p><strong>Email:</strong> kontakt@stilhusetnord.dk<br/><strong>Phone:</strong> +44 7537 171591<br/><strong>Support hours:</strong> Monday to Friday, 9:00 AM to 6:00 PM</p><p>We aim to respond to every email and inquiry within 1 to 2 business days.</p>",
+            "heading": "Du kan altid få fat i et menneske.",
+            "text": "<p>Har du et spørgsmål om en vare, brug for hjælp til at spore en pakke, eller vil du bare sige hej, er vi kun en mail væk.</p><p><strong>E-mail:</strong> kontakt@stilhusetnord.dk<br/><strong>Telefon:</strong> +44 7537 171591<br/><strong>Åbningstider:</strong> mandag til fredag, 9.00-18.00</p><p>Vi svarer på alle mails, typisk inden for 1-2 hverdage.</p>",
             "image": "shopify://shop_images/about_us_image_1.webp",
             "image_position": "right"
           }
@@ -97,9 +97,9 @@
         "cta": {
           "type": "cta",
           "settings": {
-            "heading": "Start with the new season.",
+            "heading": "Start med den nye sæson.",
             "text": "<p>Browse the full collection and find the pieces you will actually reach for.</p>",
-            "button_label": "Shop the collection",
+            "button_label": "Se kollektionen",
             "button_link": "/collections/all"
           }
         }
