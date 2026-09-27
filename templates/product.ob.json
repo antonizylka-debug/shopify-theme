@@ -56,6 +56,8 @@
       },
       "block_order": ["promise-1", "promise-2", "promise-3", "acc-1", "acc-2", "acc-3"],
       "settings": {
+        "show_breadcrumbs": true,
+        "title_uppercase": false,
         "size_guide_page": "/pages/size-guide",
         "size_guide_label": "Størrelsesguide",
         "add_label": "Læg i kurv",

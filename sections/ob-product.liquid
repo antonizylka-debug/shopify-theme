@@ -79,15 +79,24 @@
     display: grid;
     grid-template-columns: {{ section.settings.thumb_size }}px minmax(0, 1fr);
     gap: 16px;
+    align-items: stretch;
+  }
+
+  /* Kolumna miniatur nie moze byc wyzsza od zdjecia. Samo max-height: 100%
+     nic nie daje, bo wiersz siatki rosnie razem z trescia - dlatego opakowanie
+     rozciaga sie na wysokosc zdjecia, a lista lezy w nim absolutnie i scrolluje. */
+  #shopify-section-{{ section.id }} .obp__thumbs-wrap {
+    position: relative;
+    min-height: 0;
   }
 
   #shopify-section-{{ section.id }} .obp__thumbs {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* na duzym ekranie miniatury nie moga rozciagac kolumny */
-    max-height: 100%;
-    overflow: auto;
+    overflow-y: auto;
     scrollbar-width: none;
   }
   #shopify-section-{{ section.id }} .obp__thumbs::-webkit-scrollbar { display: none; }
@@ -142,7 +151,24 @@
     line-height: 1.2;
     font-weight: 600;
     margin: 0 0 10px;
+    /* motyw ma globalne wersaliki na naglowkach - tutaj je zdejmujemy,
+       bo dlugi tytul produktu kapitalikami jest ciezki do czytania */
+    text-transform: {% if section.settings.title_uppercase %}uppercase{% else %}none{% endif %};
+    letter-spacing: {% if section.settings.title_uppercase %}0.02em{% else %}normal{% endif %};
   }
+
+  /* ---------- okruszki ---------- */
+  #shopify-section-{{ section.id }} .obp__crumbs {
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--obp-muted);
+    padding-bottom: 20px;
+  }
+  #shopify-section-{{ section.id }} .obp__crumbs a { color: inherit; text-decoration: none; }
+  #shopify-section-{{ section.id }} .obp__crumbs a:hover { text-decoration: underline; }
+  #shopify-section-{{ section.id }} .obp__crumbs span { color: var(--obp-text); }
+  #shopify-section-{{ section.id }} .obp__crumbs em { font-style: normal; padding: 0 6px; }
 
   #shopify-section-{{ section.id }} .obp__rating {
     display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
@@ -219,8 +245,12 @@
   }
   #shopify-section-{{ section.id }} .obp__atc[disabled] { opacity: 0.45; cursor: not-allowed; }
   #shopify-section-{{ section.id }} .obp__promo {
-    font-size: 12px; letter-spacing: 0.05em; opacity: 0.65; padding: 14px 0 0;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    font-size: 12px; letter-spacing: 0.05em; opacity: 0.75; padding: 14px 0 0;
   }
+  #shopify-section-{{ section.id }} .obp__promo svg { width: 15px; height: 15px; flex: 0 0 15px; }
+  #shopify-section-{{ section.id }} .obp__promo strong { font-weight: 600; }
+  #shopify-section-{{ section.id }} .obp__promo em { font-style: normal; opacity: 0.5; padding: 0 3px; }
 
   /* ---------- karty obietnic ---------- */
   #shopify-section-{{ section.id }} .obp__usp {
@@ -280,12 +310,26 @@
       grid-template-columns: minmax(0, 1fr);
       gap: 10px;
     }
-    #shopify-section-{{ section.id }} .obp__thumbs {
-      flex-direction: row;
-      overflow-x: auto;
+    /* na telefonie miniatury wracaja do normalnego przeplywu i ida poziomo */
+    #shopify-section-{{ section.id }} .obp__thumbs-wrap {
+      position: static;
       order: 2;
     }
+    #shopify-section-{{ section.id }} .obp__thumbs {
+      position: static;
+      inset: auto;
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
     #shopify-section-{{ section.id }} .obp__stage { order: 1; }
+    #shopify-section-{{ section.id }} .obp__crumbs {
+      font-size: 11px;
+      padding-bottom: 14px;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
     #shopify-section-{{ section.id }} .obp__dots { display: flex; }
     #shopify-section-{{ section.id }} .obp__title { font-size: {{ section.settings.title_size_mobile }}px; }
     #shopify-section-{{ section.id }} .obp__usp { gap: 8px; }
@@ -297,11 +341,30 @@
 
 <div class="obp">
   <div class="page-width">
+
+    {%- if section.settings.show_breadcrumbs -%}
+      {%- liquid
+        comment
+          Srodkowy okruszek bierzemy z kolekcji, z ktorej klient wszedl
+          (collection jest ustawione tylko na sciezce /collections/.../products/...).
+        endcomment
+        assign kolekcja = collection
+      -%}
+      <nav class="obp__crumbs" aria-label="{{ 'general.breadcrumbs.home_link_title' | t }}">
+        <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
+        {%- if kolekcja != blank and kolekcja.handle != blank -%}
+          <em>/</em><a href="{{ kolekcja.url }}">{{ kolekcja.title }}</a>
+        {%- endif -%}
+        <em>/</em><span>{{ prod.title }}</span>
+      </nav>
+    {%- endif -%}
+
     <div class="obp__grid">
 
       {%- comment -%} ---------- lewa kolumna: galeria ---------- {%- endcomment -%}
       <div class="obp__gallery" data-obp-gallery>
         {%- if prod.media.size > 1 -%}
+          <div class="obp__thumbs-wrap">
           <div class="obp__thumbs">
             {%- for media in prod.media -%}
               {%- comment -%}
@@ -317,6 +380,7 @@
                 {{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: opis_zdjecia }}
               </button>
             {%- endfor -%}
+          </div>
           </div>
         {%- endif -%}
 
@@ -538,7 +602,14 @@
         {%- endform -%}
 
         {%- if section.settings.show_delivery -%}
-          <div class="obp__promo" data-obp-eta>{{ section.settings.delivery_prefix }}</div>
+          <div class="obp__promo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M2.5 6h10v10h-10z"/><path d="M12.5 9h4l3.5 3.5V16h-7.5"/><circle cx="6" cy="17.5" r="2"/><circle cx="16.5" cy="17.5" r="2"/>
+            </svg>
+            <strong>{{ section.settings.delivery_prefix }}</strong>
+            <em>|</em>
+            <span data-obp-eta>{{ section.settings.delivery_join }}</span>
+          </div>
         {%- endif -%}
 
         {%- comment -%} ---------- karty obietnic ---------- {%- endcomment -%}
@@ -778,7 +849,6 @@
       var PAKOWANIE = {{ section.settings.processing_days }};
       var OD = {{ section.settings.transit_min }};
       var DO = {{ section.settings.transit_max }};
-      var PREFIX = {{ section.settings.delivery_prefix | json }};
       var LACZNIK = {{ section.settings.delivery_join | json }};
 
       function dodajRobocze(data, ile) {
@@ -795,7 +865,12 @@
       var a = dodajRobocze(dzis, PAKOWANIE + OD);
       var b = dodajRobocze(dzis, PAKOWANIE + DO);
       var fmt = new Intl.DateTimeFormat('da-DK', { day: 'numeric', month: 'short' });
-      eta.textContent = PREFIX + ' ' + LACZNIK + ' ' + fmt.format(a) + ' - ' + fmt.format(b);
+
+      // same daty pogrubione, tak jak we wzorcu - prefiks siedzi juz w HTML
+      var zakres = document.createElement('strong');
+      zakres.textContent = fmt.format(a) + ' - ' + fmt.format(b);
+      eta.textContent = LACZNIK + ' ';
+      eta.appendChild(zakres);
     })();
     {%- endif -%}
 
@@ -819,8 +894,10 @@
     { "type": "range", "id": "breakpoint", "label": "Switch to one column below", "default": 768, "min": 600, "max": 1000, "step": 8, "unit": "px" },
 
     { "type": "header", "content": "Text" },
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true },
     { "type": "range", "id": "title_size", "label": "Title size", "default": 30, "min": 20, "max": 44, "step": 1, "unit": "px" },
     { "type": "range", "id": "title_size_mobile", "label": "Title size (mobile)", "default": 26, "min": 18, "max": 36, "step": 1, "unit": "px" },
+    { "type": "checkbox", "id": "title_uppercase", "label": "Title in capitals", "default": false },
     { "type": "text", "id": "add_label", "label": "Add to cart button", "default": "Læg i kurv" },
     { "type": "text", "id": "save_prefix", "label": "Discount badge prefix", "default": "SPAR" },
     { "type": "text", "id": "size_guide_label", "label": "Size guide link", "default": "Størrelsesguide" },
