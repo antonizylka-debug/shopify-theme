@@ -68,7 +68,7 @@
         "low_stock_threshold": 10,
         "show_delivery": true,
         "delivery_prefix": "Gratis fragt",
-        "delivery_join": "· Leveres",
+        "delivery_join": "Leveres",
         "processing_days": 4,
         "transit_min": 3,
         "transit_max": 6,
