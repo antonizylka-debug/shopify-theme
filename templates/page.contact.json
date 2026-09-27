@@ -28,9 +28,9 @@
         "support_DemmGD": {
           "type": "support",
           "settings": {
-            "icon": "phone",
-            "label": "Telefon",
-            "value": "+44 7537 171591"
+            "icon": "clock",
+            "label": "Svartid",
+            "value": "1-2 hverdage"
           }
         },
         "support_KQYaGF": {
