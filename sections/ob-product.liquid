@@ -451,8 +451,14 @@
 
     /* Kropki galerii same w sobie maja 6 px - za malo, zeby w nie trafic.
        Powiekszamy pole dotyku, nie sama kropke. */
-    #shopify-section-{{ section.id }} .obp__dots { gap: 0; padding-top: 10px; }
+    #shopify-section-{{ section.id }} .obp__dots {
+      /* przy kilkunastu zdjeciach rzad kropek nie zmiesci sie w szerokosc */
+      gap: 0; padding-top: 10px; flex-wrap: wrap; max-width: 100%;
+    }
     #shopify-section-{{ section.id }} .obp__dot {
+      /* flex sciskal pole dotyku do 11 px przy wiekszej liczbie zdjec -
+         flex: 0 0 trzyma pelne 26 px niezaleznie od tego, ile ich jest */
+      flex: 0 0 26px;
       width: 26px; height: 26px; border-radius: 0; background: none; position: relative;
     }
     #shopify-section-{{ section.id }} .obp__dot::after {
