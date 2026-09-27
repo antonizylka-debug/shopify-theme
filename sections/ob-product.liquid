@@ -191,6 +191,72 @@
     border-radius: 3px; padding: 4px 8px;
   }
 
+  /* Kwota oszczednosci obok procentu. Ludzie czuja "1.100 kr" mocniej
+     niz "50%", a obie liczby wynikaja z tych samych dwoch cen. */
+  #shopify-section-{{ section.id }} .obp__savings {
+    flex-basis: 100%;
+    font-size: 14px; font-weight: 500;
+    color: var(--obp-low);
+    margin-top: 2px;
+  }
+
+  /* Linia zaufania tuz pod przyciskiem - w miejscu, gdzie klient
+     podejmuje decyzje, a nie 300 px nizej */
+  #shopify-section-{{ section.id }} .obp__reassure {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 6px 14px; padding: 12px 0 0;
+    font-size: 13px; color: var(--obp-muted);
+  }
+  #shopify-section-{{ section.id }} .obp__reassure span {
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  #shopify-section-{{ section.id }} .obp__reassure svg {
+    width: 13px; height: 13px; flex: 0 0 13px;
+  }
+
+  /* Termin pakowania liczony na zywo z godziny granicznej */
+  #shopify-section-{{ section.id }} .obp__cutoff {
+    display: none;
+    align-items: center; justify-content: center; gap: 6px;
+    padding: 10px 0 0; font-size: 13px; font-weight: 500;
+    color: var(--obp-low);
+  }
+  #shopify-section-{{ section.id }} .obp__cutoff.is-on { display: flex; }
+  #shopify-section-{{ section.id }} .obp__cutoff svg { width: 14px; height: 14px; flex: 0 0 14px; }
+
+  /* ---------- pasek przyklejony ---------- */
+  #shopify-section-{{ section.id }} .obp__sticky {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    background: #fff;
+    border-top: 1px solid var(--obp-line);
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.07);
+    transform: translateY(102%);
+    transition: transform 0.25s ease;
+    padding: 10px 0;
+  }
+  #shopify-section-{{ section.id }} .obp__sticky.is-on { transform: translateY(0); }
+  #shopify-section-{{ section.id }} .obp__sticky-in {
+    display: flex; align-items: center; gap: 14px;
+  }
+  #shopify-section-{{ section.id }} .obp__sticky img {
+    width: 46px; height: 46px; object-fit: cover; flex: 0 0 46px;
+  }
+  #shopify-section-{{ section.id }} .obp__sticky-txt { min-width: 0; flex: 1 1 auto; }
+  #shopify-section-{{ section.id }} .obp__sticky-name {
+    font-size: 14px; font-weight: 500;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  #shopify-section-{{ section.id }} .obp__sticky-price {
+    font-size: 14px; color: var(--obp-muted); display: flex; gap: 7px; align-items: baseline;
+  }
+  #shopify-section-{{ section.id }} .obp__sticky-price s { opacity: 0.7; }
+  #shopify-section-{{ section.id }} .obp__sticky-btn {
+    flex: 0 0 auto; height: 48px; padding: 0 30px; border: 0; cursor: pointer;
+    background: var(--obp-btn); color: var(--obp-btn-text);
+    font-size: 14px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  #shopify-section-{{ section.id }} .obp__sticky-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+
   #shopify-section-{{ section.id }} .obp__rule {
     height: 1px; border: 0; background: var(--obp-rule); opacity: 0.35;
     margin: 18px 0;
@@ -336,6 +402,10 @@
     #shopify-section-{{ section.id }} .obp__usp-card { padding: 14px 4px; }
     #shopify-section-{{ section.id }} .obp__usp-l { font-size: 12px; }
     #shopify-section-{{ section.id }} .obp__usp-s { font-size: 12px; }
+    #shopify-section-{{ section.id }} .obp__reassure { font-size: 12px; gap: 4px 10px; }
+    #shopify-section-{{ section.id }} .obp__sticky img { display: none; }
+    #shopify-section-{{ section.id }} .obp__sticky-btn { padding: 0 20px; height: 46px; }
+    #shopify-section-{{ section.id }} .obp__sticky-in { gap: 10px; }
   }
 {%- endstyle -%}
 
@@ -479,9 +549,14 @@
             {%- if war.compare_at_price > war.price -%}
               <s class="obp__compare" data-obp-price-was>{{ war.compare_at_price | money }}</s>
               <span class="obp__save" data-obp-save>{{ section.settings.save_prefix }} {{ oszczednosc }}%</span>
+              {%- if section.settings.show_savings_amount -%}
+                {%- assign kwota_oszcz = war.compare_at_price | minus: war.price -%}
+                <span class="obp__savings" data-obp-savings>{{ section.settings.savings_prefix }} {{ kwota_oszcz | money }}</span>
+              {%- endif -%}
             {%- else -%}
               <s class="obp__compare" data-obp-price-was hidden></s>
               <span class="obp__save" data-obp-save hidden></span>
+              <span class="obp__savings" data-obp-savings hidden></span>
             {%- endif -%}
           </div>
         </div>
@@ -613,6 +688,33 @@
           </button>
         {%- endform -%}
 
+        {%- comment -%}
+          Linia zaufania tuz pod przyciskiem. Kazdy z tych trzech punktow
+          zdejmuje inna obawe: co jesli nie pasuje, ile zaplace za wysylke,
+          czy platnosc jest bezpieczna.
+        {%- endcomment -%}
+        {%- if section.settings.show_reassure -%}
+          <div class="obp__reassure">
+            {%- assign punkty = section.settings.reassure_items | split: '|' -%}
+            {%- for punkt in punkty -%}
+              {%- assign tekst = punkt | strip -%}
+              {%- if tekst != blank -%}
+                <span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12 5 5L19 7"/></svg>
+                  {{ tekst }}
+                </span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_cutoff -%}
+          <div class="obp__cutoff" data-obp-cutoff hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <span data-obp-cutoff-text></span>
+          </div>
+        {%- endif -%}
+
         {%- if section.settings.show_delivery -%}
           <div class="obp__promo">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -679,6 +781,39 @@
       </div>
     </div>
   </div>
+
+  {%- comment -%}
+    Pasek przyklejony pokazuje sie dopiero, gdy glowny przycisk zjedzie
+    z ekranu. Na telefonie klient czyta opis i akordeony daleko pod
+    przyciskiem - bez tego musialby przewijac z powrotem.
+  {%- endcomment -%}
+  {%- if section.settings.show_sticky -%}
+    <div class="obp__sticky" data-obp-sticky>
+      <div class="page-width">
+        <div class="obp__sticky-in">
+          {%- if prod.featured_media != blank -%}
+            {{ prod.featured_media.preview_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: prod.title }}
+          {%- endif -%}
+          <div class="obp__sticky-txt">
+            <div class="obp__sticky-name">{{ prod.title }}</div>
+            <div class="obp__sticky-price">
+              <span data-obp-sticky-now>{{ war.price | money }}</span>
+              {%- if war.compare_at_price > war.price -%}
+                <s data-obp-sticky-was>{{ war.compare_at_price | money }}</s>
+              {%- else -%}
+                <s data-obp-sticky-was hidden></s>
+              {%- endif -%}
+            </div>
+          </div>
+          <button type="button" class="obp__sticky-btn" data-obp-sticky-btn {% unless war.available %}disabled{% endunless %}>
+            <span data-obp-sticky-label>
+              {%- if war.available -%}{{ section.settings.add_label }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
 </div>
 
 <script type="application/json" data-obp-variants="{{ section.id }}">
@@ -725,12 +860,19 @@
     var bylo = root.querySelector('[data-obp-price-was]');
     var save = root.querySelector('[data-obp-save]');
     var low = root.querySelector('[data-obp-lowstock]');
+    var oszcz = root.querySelector('[data-obp-savings]');
+    var sticky = root.querySelector('[data-obp-sticky]');
+    var stTeraz = root.querySelector('[data-obp-sticky-now]');
+    var stBylo = root.querySelector('[data-obp-sticky-was]');
+    var stBtn = root.querySelector('[data-obp-sticky-btn]');
+    var stLabel = root.querySelector('[data-obp-sticky-label]');
 
     var PROG = {{ section.settings.low_stock_threshold }};
     var ZRODLO_STANU = {{ section.settings.low_stock_source | json }};
     var WYPRZEDANE = {{ 'products.product.sold_out' | t | json }};
     var DODAJ = {{ section.settings.add_label | json }};
     var OSZCZ = {{ section.settings.save_prefix | json }};
+    var OSZCZ_KWOTA = {{ section.settings.savings_prefix | json }};
 
     // formatowanie ceny zostawiamy motywowi - inaczej rozjedzie sie separator
     // i symbol waluty wzgledem reszty sklepu
@@ -772,9 +914,11 @@
       atc.disabled = !w.available;
       atcText.textContent = w.available ? DODAJ : WYPRZEDANE;
 
+      var naPrzecenie = w.compare_at_price && w.compare_at_price > w.price;
+
       if (teraz) teraz.innerHTML = kwota(w.price);
       if (bylo && save) {
-        if (w.compare_at_price && w.compare_at_price > w.price) {
+        if (naPrzecenie) {
           bylo.innerHTML = kwota(w.compare_at_price);
           bylo.hidden = false;
           save.textContent = OSZCZ + ' ' + Math.round((w.compare_at_price - w.price) / w.compare_at_price * 100) + '%';
@@ -784,6 +928,23 @@
           save.hidden = true;
         }
       }
+      if (oszcz) {
+        if (naPrzecenie) {
+          oszcz.innerHTML = OSZCZ_KWOTA + ' ' + kwota(w.compare_at_price - w.price);
+          oszcz.hidden = false;
+        } else {
+          oszcz.hidden = true;
+        }
+      }
+
+      // pasek przyklejony pokazuje te same liczby co kolumna obok
+      if (stTeraz) stTeraz.innerHTML = kwota(w.price);
+      if (stBylo) {
+        if (naPrzecenie) { stBylo.innerHTML = kwota(w.compare_at_price); stBylo.hidden = false; }
+        else { stBylo.hidden = true; }
+      }
+      if (stBtn) stBtn.disabled = !w.available;
+      if (stLabel) stLabel.textContent = w.available ? DODAJ : WYPRZEDANE;
 
       // w trybie tagu badge dotyczy calego produktu, wiec zmiana wariantu
       // nie moze go chowac - przeliczamy tylko w trybie magazynowym
@@ -817,6 +978,58 @@
       if (val) val.textContent = btn.dataset.obpValue;
       odswiez();
     });
+
+    // ---------- pasek przyklejony ----------
+    // pokazuje sie dopiero, gdy glowny przycisk zjedzie z ekranu
+    if (sticky && atc) {
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (wpisy) {
+          sticky.classList.toggle('is-on', !wpisy[0].isIntersecting);
+        }, { rootMargin: '0px 0px -10px 0px' }).observe(atc);
+      }
+      if (stBtn) {
+        stBtn.addEventListener('click', function () {
+          // klikamy prawdziwy przycisk formularza, zeby przeszly wszystkie
+          // integracje motywu i aplikacji podpiete pod submit
+          atc.click();
+        });
+      }
+    }
+
+    {%- if section.settings.show_cutoff -%}
+    // ---------- godzina graniczna pakowania ----------
+    // liczona na zywo z zegara klienta wzgledem ustawionej godziny.
+    // Nic tu nie miga i nic sie nie resetuje - po prostu ile zostalo dzisiaj.
+    (function () {
+      var box = root.querySelector('[data-obp-cutoff]');
+      var txt = root.querySelector('[data-obp-cutoff-text]');
+      if (!box || !txt) return;
+      var GODZINA = {{ section.settings.cutoff_hour }};
+      var SZABLON = {{ section.settings.cutoff_text | json }};
+
+      function odswiezCutoff() {
+        var teraz = new Date();
+        var dzien = teraz.getDay();
+        // w weekend nie pakujemy, wiec nie ma czego odliczac
+        if (dzien === 0 || dzien === 6) { box.hidden = true; box.classList.remove('is-on'); return; }
+
+        var granica = new Date(teraz);
+        granica.setHours(GODZINA, 0, 0, 0);
+        var zostalo = granica - teraz;
+        if (zostalo <= 0) { box.hidden = true; box.classList.remove('is-on'); return; }
+
+        var godz = Math.floor(zostalo / 3600000);
+        var min = Math.floor((zostalo % 3600000) / 60000);
+        var ile = godz > 0 ? godz + ' t. ' + min + ' min.' : min + ' min.';
+        txt.textContent = SZABLON.replace('{tid}', ile);
+        box.hidden = false;
+        box.classList.add('is-on');
+      }
+
+      odswiezCutoff();
+      setInterval(odswiezCutoff, 60000);
+    })();
+    {%- endif -%}
 
     // ---------- galeria ----------
     var swipe = root.querySelector('[data-obp-swipe]');
@@ -912,6 +1125,17 @@
     { "type": "checkbox", "id": "title_uppercase", "label": "Title in capitals", "default": false },
     { "type": "text", "id": "add_label", "label": "Add to cart button", "default": "Læg i kurv" },
     { "type": "text", "id": "save_prefix", "label": "Discount badge prefix", "default": "SPAR" },
+
+    { "type": "header", "content": "Nudges" },
+    { "type": "paragraph", "content": "All of these read real data. Nothing here invents a number." },
+    { "type": "checkbox", "id": "show_savings_amount", "label": "Show the saving in kroner, not just a percentage", "default": true },
+    { "type": "text", "id": "savings_prefix", "label": "Before the amount saved", "default": "Du sparer" },
+    { "type": "checkbox", "id": "show_reassure", "label": "Show the reassurance line under the button", "default": true },
+    { "type": "text", "id": "reassure_items", "label": "Reassurance line, separated by |", "default": "30 dages returret|Gratis fragt|Sikker betaling" },
+    { "type": "checkbox", "id": "show_sticky", "label": "Sticky bar once the button scrolls away", "default": true },
+    { "type": "checkbox", "id": "show_cutoff", "label": "Show time left to today's dispatch", "default": false },
+    { "type": "range", "id": "cutoff_hour", "label": "We pack orders placed before", "default": 14, "min": 8, "max": 20, "step": 1 },
+    { "type": "text", "id": "cutoff_text", "label": "Cutoff text, {tid} is the time left", "default": "Bestil inden for {tid}, så pakker vi i dag" },
     { "type": "text", "id": "size_guide_label", "label": "Size guide link", "default": "Størrelsesguide" },
     { "type": "url", "id": "size_guide_page", "label": "Size guide link target" },
 

@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
@@ -41,7 +32,6 @@
           "settings": {
             "title": "Detaljer",
             "use_description": true,
-            "text": "<p>Skriv teksten her.</p>",
             "open_by_default": true
           }
         },
@@ -73,25 +63,16 @@
         "acc-3"
       ],
       "settings": {
-        "media_ratio": 57,
-        "info_ratio": 43,
-        "column_gap": 48,
-        "thumb_size": 68,
-        "padding_top": 32,
-        "padding_bottom": 48,
-        "breakpoint": 1000,
         "show_breadcrumbs": true,
-        "title_size": 30,
-        "title_size_mobile": 26,
         "title_uppercase": false,
+        "size_guide_page": "/pages/size-guide",
+        "size_guide_label": "Størrelsesguide",
         "add_label": "Læg i kurv",
         "save_prefix": "SPAR",
-        "size_guide_label": "Størrelsesguide",
-        "size_guide_page": "/pages/size-guide",
         "low_stock_source": "tag",
         "low_stock_tag": "Få tilbage",
-        "low_stock_threshold": 6,
         "low_stock_text": "Få tilbage på lager",
+        "low_stock_threshold": 6,
         "show_delivery": true,
         "delivery_prefix": "Gratis fragt",
         "delivery_join": "Leveres",
@@ -99,34 +80,45 @@
         "transit_min": 3,
         "transit_max": 6,
         "rating_source": "manual",
-        "rating_value": "4.8",
         "rating_label": "Bedømt som fremragende",
         "rating_count_label": "Baseret på",
         "show_payment_icons": true,
-        "color_text": "#1c1d1d",
-        "color_muted": "#6e6b65",
-        "color_line": "#e6e3de",
-        "color_rule": "#808080",
+        "show_savings_amount": true,
+        "savings_prefix": "Du sparer",
+        "show_reassure": true,
+        "reassure_items": "30 dages returret|Gratis fragt|Sikker betaling",
+        "show_sticky": true,
+        "show_cutoff": false,
+        "cutoff_hour": 14,
+        "cutoff_text": "Bestil inden for {tid}, så pakker vi i dag",
+        "rating_value": "4.8",
+        "breakpoint": 1000,
         "color_button": "#1c1d1d",
         "color_button_text": "#ffffff",
+        "color_line": "#e6e3de",
+        "color_low_stock": "#b05f2e",
+        "color_muted": "#6e6b65",
+        "color_rule": "#808080",
         "color_save_bg": "#e8edf5",
         "color_save_text": "#2e4e7e",
-        "color_low_stock": "#b05f2e"
+        "color_text": "#1c1d1d",
+        "column_gap": 48,
+        "info_ratio": 43,
+        "media_ratio": 57,
+        "padding_bottom": 48,
+        "padding_top": 32,
+        "thumb_size": 68,
+        "title_size": 30,
+        "title_size_mobile": 26
       }
     },
     "product-recommendations": {
       "type": "product-recommendations",
-      "settings": {
-        "product_recommendations_heading": "Måske kan du også lide",
-        "related_count": 5,
-        "products_per_row": 5
-      }
+      "settings": {}
     },
     "recently-viewed": {
       "type": "recently-viewed",
-      "settings": {
-        "recent_count": 5
-      }
+      "settings": {}
     },
     "collection-return": {
       "type": "collection-return",
@@ -134,14 +126,91 @@
     },
     "apps": {
       "type": "apps",
+      "settings": {}
+    },
+    "faq": {
+      "type": "ob-faq",
+      "blocks": {
+        "q-1": {
+          "type": "question",
+          "settings": {
+            "question": "Hvor lang tid tager leveringen?",
+            "answer": "<p>Vi pakker og sender ordrer inden for 3-4 hverdage. Derefter tager leveringen 3-6 hverdage mere.</p><p>Bestiller du i weekenden eller på en helligdag, starter vi på ordren den første hverdag efter.</p>",
+            "open_by_default": true
+          }
+        },
+        "q-2": {
+          "type": "question",
+          "settings": {
+            "question": "Hvordan finder jeg min størrelse?",
+            "answer": "<p>Størrelserne varierer fra serie til serie, så gå efter målene på varesiden frem for den størrelse, du plejer at tage.</p><p>Den nemmeste kontrol: mål et stykke tøj, du selv har og synes sidder godt, mens det ligger fladt, og sammenlign.</p>",
+            "open_by_default": false
+          }
+        },
+        "q-3": {
+          "type": "question",
+          "settings": {
+            "question": "Hvordan starter jeg en returnering?",
+            "answer": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer og den vare, du vil sende tilbage, inden 30 dage efter du har modtaget den. Vi svarer med returadressen og en kort vejledning.</p><p>Vent på vores svar, før du sender noget af sted – pakker, der sendes tilbage på egen hånd, ender ofte på et lager, der ikke kan behandle dem.</p>",
+            "open_by_default": false
+          }
+        },
+        "q-4": {
+          "type": "question",
+          "settings": {
+            "question": "Den passer ikke. Kan jeg bytte størrelse?",
+            "answer": "<p>Vi bytter ikke størrelser direkte. Send varen tilbage og få pengene retur, og læg en ny ordre i den størrelse, du vil have – så bliver størrelsen ikke solgt til en anden, mens din pakke er undervejs.</p>",
+            "open_by_default": false
+          }
+        },
+        "q-5": {
+          "type": "question",
+          "settings": {
+            "question": "Hvem betaler returfragten?",
+            "answer": "<p>Det gør du selv – medmindre varen var defekt, beskadiget eller ikke den, du bestilte. Så betaler vi.</p><p>Brug en sporbar forsendelse. Indtil pakken er hos os, er den dit ansvar.</p>",
+            "open_by_default": false
+          }
+        },
+        "q-6": {
+          "type": "question",
+          "settings": {
+            "question": "Hvor leverer I til, og skal jeg betale told?",
+            "answer": "<p>Vi leverer til Danmark og til resten af Europa, blandt andet:</p><ul><li><strong>Norden:</strong> Danmark, Sverige, Norge, Finland.</li><li><strong>Resten af Europa:</strong> Tyskland, Holland, Belgien, Frankrig, Østrig, Italien, Spanien, Portugal, Irland, Grækenland og Storbritannien.</li></ul><p>Vi betaler told, importafgifter og gebyrer, så der kommer intet oveni. Vi leverer til private adresser, virksomheder og pakkeshops.</p>",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "q-1",
+        "q-2",
+        "q-3",
+        "q-4",
+        "q-5",
+        "q-6"
+      ],
       "settings": {
-        "full_width": false,
-        "space_around": true
+        "eyebrow": "SPØRGSMÅL OG SVAR",
+        "title": "Ofte stillede spørgsmål",
+        "subtitle": "Det, folk oftest spørger om, inden de bestiller.",
+        "more_label": "Se alle spørgsmål og svar",
+        "more_link": "/pages/faq",
+        "max_width": 760,
+        "title_size": 19,
+        "title_size_mobile": 17,
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6e6b65",
+        "color_line": "#e6e3de"
       }
     }
   },
   "order": [
     "main",
+    "faq",
     "product-recommendations",
     "recently-viewed",
     "collection-return",
