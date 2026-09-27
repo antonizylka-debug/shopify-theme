@@ -59,7 +59,7 @@
           "type": "faq",
           "settings": {
             "question": "Hvor er min ordre?",
-            "answer": "<p>Your tracking number is emailed as soon as the parcel is dispatched, and you can follow it on our <a href=\"/pages/track-order\">Track my order</a> page. If nothing has moved for 7 days, get in touch.</p>"
+            "answer": "<p>Dit sporingsnummer kommer på mail, så snart pakken er afsendt, og du kan følge den på siden <a href=\"/pages/track-order\">Spor min ordre</a>. Er der ikke sket noget i 7 dage, så skriv til os.</p>"
           }
         },
         "faq-4": {

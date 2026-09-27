@@ -28,27 +28,27 @@
           "type": "question",
           "settings": {
             "title": "Hvordan starter jeg en returnering?",
-            "text": "<p>Email us at <a href=\"mailto:support@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number and the item you want to send back, within 30 days of receiving it. We reply with the return address and short instructions.</p><p>Please wait for that reply before posting anything — parcels sent back on their own often reach a warehouse that cannot process them.</p>"
+            "text": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer og den vare, du vil sende tilbage, inden 30 dage efter du har modtaget den. Vi svarer med returadressen og en kort vejledning.</p><p>Vent på vores svar, før du sender noget af sted – pakker, der sendes tilbage på egen hånd, ender ofte på et lager, der ikke kan behandle dem.</p>"
           }
         },
         "q-3": {
           "type": "question",
           "settings": {
             "title": "Hvad kan jeg returnere?",
-            "text": "<p>Anything unworn and unwashed, in original condition with the tags still attached, within 30 days of delivery.</p><p>For hygiene reasons we cannot take back pierced jewellery once the seal is broken. Faulty items are handled separately, see below.</p>"
+            "text": "<p>Alt, der er ubrugt og uvasket, i original stand og med mærkerne stadig på, inden 30 dage efter levering.</p><p>Af hygiejniske grunde kan vi ikke tage smykker til piercing retur, når forseglingen er brudt. Defekte varer håndterer vi for sig – se nedenfor.</p>"
           }
         },
         "q-4": {
           "type": "question",
           "settings": {
             "title": "Den passer ikke. Kan jeg bytte størrelse?",
-            "text": "<p>We do not swap sizes directly. Send the item back for a refund and place a new order in the size you want, so the size is not sold to someone else while your parcel is in transit.</p>"
+            "text": "<p>Vi bytter ikke størrelser direkte. Send varen tilbage og få pengene retur, og læg en ny ordre i den størrelse, du vil have – så bliver størrelsen ikke solgt til en anden, mens din pakke er undervejs.</p>"
           }
         },
         "q-5": {
           "type": "question",
           "settings": {
-            "title": "Who pays for return postage?",
+            "title": "Hvem betaler returfragten?",
             "text": "<p>Det gør du selv – medmindre varen var defekt, beskadiget eller ikke den, du bestilte. Så betaler vi.</p><p>Brug en sporbar forsendelse. Indtil pakken er hos os, er den dit ansvar.</p>"
           }
         },
@@ -84,7 +84,7 @@
           "type": "question",
           "settings": {
             "title": "Får jeg pengene tilbage?",
-            "text": "<p>Yes — to the original payment method, for the full price of the returned items. If you return a complete order, the standard delivery charge you paid is refunded too.</p>"
+            "text": "<p>Ja – til den betalingsmetode, du brugte, og for den fulde pris på de returnerede varer. Returnerer du en hel ordre, får du også den almindelige fragt tilbage.</p>"
           }
         },
         "group-11": {
@@ -112,14 +112,14 @@
           "type": "question",
           "settings": {
             "title": "Min ordre er forsinket. Hvad gør jeg?",
-            "text": "<p>Tracking sometimes goes quiet for a few days while a parcel moves between carriers. On its own, that does not mean it is lost.</p><p>If nothing has moved for 7 days, or the estimated date has passed, email <a href=\"mailto:support@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number and we will chase it.</p>"
+            "text": "<p>Sporingen kan være stille i et par dage, mens pakken flytter sig mellem fragtfirmaer. Det betyder ikke i sig selv, at den er væk.</p><p>Er der ikke sket noget i 7 dage, eller er den forventede dato passeret, så skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer, så rykker vi for den.</p>"
           }
         },
         "q-15": {
           "type": "question",
           "settings": {
             "title": "Jeg har kun fået en del af min ordre. Hvorfor?",
-            "text": "<p>Items are not always stored in the same place, so an order can leave in several parcels with separate tracking numbers. The rest is on its way and you are not charged extra for it.</p><p>If the remaining parcel has not arrived within a week of the first one, contact us.</p>"
+            "text": "<p>Varerne ligger ikke altid samme sted, så en ordre kan blive sendt i flere pakker med hvert sit sporingsnummer. Resten er på vej, og du betaler ikke ekstra for det.</p><p>Er den sidste pakke ikke kommet inden for en uge efter den første, så skriv til os.</p>"
           }
         },
         "q-16": {
@@ -210,13 +210,13 @@
           "type": "question",
           "settings": {
             "title": "Hvor finder jeg de præcise mål?",
-            "text": "<p>In the product description, under the images. If the measurement you need is not listed, email <a href=\"mailto:support@stilhusetnord.dk\">support@stilhusetnord.dk</a> with the product name and we will get it for you before you order.</p>"
+            "text": "<p>I varebeskrivelsen, under billederne. Står det mål, du mangler, ikke der, så skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med varens navn, så finder vi det, før du bestiller.</p>"
           }
         },
         "q-29": {
           "type": "question",
           "settings": {
-            "title": "How do I care for my item?",
+            "title": "Hvordan vasker og plejer jeg varen?",
             "text": "<p>Følg vaskemærket i tøjet – det går forud for alle generelle råd.</p><p>Som tommelfingerregel: vask ved 30°C på skåneprogram, vend print og mørke farver ud, lad tørretumbleren stå, og tør strik fladt frem for på en bøjle.</p>"
           }
         }

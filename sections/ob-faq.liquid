@@ -1,0 +1,159 @@
+{%- comment -%}
+  Blok FAQ pod strone produktu.
+
+  Typografia zmierzona na stronie wzorcowej:
+    nadtytul    14px waga 500, ls 0.35, wersaliki, #6e6e6e
+    naglowek    19px waga 600, ls 0.475, wersaliki, #1c1d1d
+    podtytul    15px waga 400, ls 0.736, #6f6f6f
+    pytanie     14.72px waga 400
+    odpowiedz   14.72px waga 400
+
+  Tresc pytan bierzemy z wlasnej strony /pages/faq, zeby na sklepie nie
+  powstaly dwie rozne wersje tej samej informacji. Przy zmianie warunkow
+  trzeba poprawic w obu miejscach.
+{%- endcomment -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .obf {
+    --obf-text: {{ section.settings.color_text }};
+    --obf-muted: {{ section.settings.color_muted }};
+    --obf-line: {{ section.settings.color_line }};
+    background: {{ section.settings.color_bg }};
+    color: var(--obf-text);
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+
+  #shopify-section-{{ section.id }} .obf__inner {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .obf__eyebrow {
+    font-size: 14px; font-weight: 500; letter-spacing: 0.025em;
+    text-transform: uppercase; color: var(--obf-muted);
+    margin: 0 0 10px;
+  }
+
+  #shopify-section-{{ section.id }} .obf__title {
+    font-size: {{ section.settings.title_size }}px; font-weight: 600;
+    letter-spacing: 0.025em; text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+
+  #shopify-section-{{ section.id }} .obf__sub {
+    font-size: 15px; color: var(--obf-muted); margin: 0 0 24px;
+  }
+
+  #shopify-section-{{ section.id }} .obf__item { border-top: 1px solid var(--obf-line); }
+  #shopify-section-{{ section.id }} .obf__item:last-child { border-bottom: 1px solid var(--obf-line); }
+
+  #shopify-section-{{ section.id }} .obf__item summary {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 18px 2px; cursor: pointer; list-style: none;
+    font-size: 15px; font-weight: 500;
+  }
+  #shopify-section-{{ section.id }} .obf__item summary::-webkit-details-marker { display: none; }
+  #shopify-section-{{ section.id }} .obf__item summary::after {
+    content: ''; width: 9px; height: 9px; flex: 0 0 9px;
+    border-right: 1px solid currentColor; border-bottom: 1px solid currentColor;
+    transform: rotate(45deg); transition: transform 0.2s;
+  }
+  #shopify-section-{{ section.id }} .obf__item[open] summary::after { transform: rotate(-135deg); }
+
+  #shopify-section-{{ section.id }} .obf__body {
+    padding: 0 2px 20px; font-size: 14.7px; line-height: 1.65; color: var(--obf-text);
+  }
+  #shopify-section-{{ section.id }} .obf__body p { margin: 0 0 12px; }
+  #shopify-section-{{ section.id }} .obf__body p:last-child { margin-bottom: 0; }
+  #shopify-section-{{ section.id }} .obf__body a { color: inherit; text-underline-offset: 3px; }
+
+  #shopify-section-{{ section.id }} .obf__more {
+    display: inline-block; margin-top: 22px;
+    font-size: 15px; font-weight: 500; letter-spacing: 0.06em;
+    color: var(--obf-text); text-decoration: underline; text-underline-offset: 3px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .obf {
+      padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
+    }
+    #shopify-section-{{ section.id }} .obf__title { font-size: {{ section.settings.title_size_mobile }}px; }
+    #shopify-section-{{ section.id }} .obf__item summary { font-size: 14px; padding: 16px 2px; }
+  }
+{%- endstyle -%}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="obf">
+    <div class="page-width">
+      <div class="obf__inner">
+
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="obf__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="obf__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.subtitle != blank -%}
+          <p class="obf__sub">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+
+        {%- for block in section.blocks -%}
+          <details class="obf__item" {% if block.settings.open_by_default %}open{% endif %} {{ block.shopify_attributes }}>
+            <summary>{{ block.settings.question }}</summary>
+            <div class="obf__body">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+
+        {%- if section.settings.more_label != blank and section.settings.more_link != blank -%}
+          <a class="obf__more" href="{{ section.settings.more_link }}">{{ section.settings.more_label }}</a>
+        {%- endif -%}
+
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product FAQ",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small heading above", "default": "SPØRGSMÅL OG SVAR" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Ofte stillede spørgsmål" },
+    { "type": "text", "id": "subtitle", "label": "Text under the heading", "default": "Det, folk oftest spørger om, inden de bestiller." },
+    { "type": "text", "id": "more_label", "label": "Link to the full FAQ", "default": "Se alle spørgsmål og svar" },
+    { "type": "url", "id": "more_link", "label": "Link target" },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "max_width", "label": "Max width", "default": 760, "min": 520, "max": 1100, "step": 20, "unit": "px" },
+    { "type": "range", "id": "title_size", "label": "Heading size", "default": 19, "min": 14, "max": 34, "step": 1, "unit": "px" },
+    { "type": "range", "id": "title_size_mobile", "label": "Heading size (mobile)", "default": 17, "min": 12, "max": 28, "step": 1, "unit": "px" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "default": 56, "min": 0, "max": 120, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "default": 56, "min": 0, "max": 120, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_top_mobile", "label": "Padding top (mobile)", "default": 36, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Padding bottom (mobile)", "default": 36, "min": 0, "max": 100, "step": 4, "unit": "px" },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "color_text", "label": "Text", "default": "#1c1d1d" },
+    { "type": "color", "id": "color_muted", "label": "Secondary text", "default": "#6e6b65" },
+    { "type": "color", "id": "color_line", "label": "Lines", "default": "#e6e3de" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Skriv spørgsmålet her" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Skriv svaret her.</p>" },
+        { "type": "checkbox", "id": "open_by_default", "label": "Open by default", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Product FAQ", "blocks": [{ "type": "question" }, { "type": "question" }, { "type": "question" }] }
+  ]
+}
+{% endschema %}
