@@ -449,6 +449,17 @@
 
     #shopify-section-{{ section.id }} .obp__swatches { gap: 6px; }
 
+    /* Link do rozmiarowki mial 21 px na dotyk. Ujemny margines trzyma
+       go w tej samej linii, a padding daje palcowi w co trafic. */
+    #shopify-section-{{ section.id }} .obp__sglink {
+      padding: 11px 0 11px 12px;
+      margin: -11px 0;
+    }
+
+    /* Przy kilkunastu zdjeciach kropki robily trzy rzedy i 88 px wysokosci.
+       Pasek miniatur i tak sluzy do nawigacji, wiec kropki znikaja. */
+    #shopify-section-{{ section.id }} .obp__dots[data-obp-many] { display: none; }
+
     /* Kropki galerii same w sobie maja 6 px - za malo, zeby w nie trafic.
        Powiekszamy pole dotyku, nie sama kropke. */
     #shopify-section-{{ section.id }} .obp__dots {
@@ -559,7 +570,7 @@
           </div>
 
           {%- if prod.media.size > 1 -%}
-            <div class="obp__dots">
+            <div class="obp__dots"{% if prod.media.size > 12 %} data-obp-many{% endif %}>
               {%- for media in prod.media -%}
                 <button type="button" class="obp__dot{% if forloop.first %} is-active{% endif %}" data-obp-dot="{{ forloop.index0 }}" aria-label="{{ forloop.index }}"></button>
               {%- endfor -%}
