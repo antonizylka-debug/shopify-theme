@@ -574,8 +574,20 @@
               assign malo_sztuk = true
             endif
           elsif section.settings.low_stock_source == 'tag'
-            if section.settings.low_stock_tag != blank and prod.tags contains section.settings.low_stock_tag
-              assign malo_sztuk = true
+            comment
+              "tags contains" wymaga trafienia co do wielkiej litery i spacji.
+              Przy tagu z "a" z kolkiem latwo o literowke, wiec porownujemy
+              po sprowadzeniu obu stron do malych liter i obcieciu spacji.
+            endcomment
+            assign szukany_tag = section.settings.low_stock_tag | downcase | strip
+            if szukany_tag != blank
+              for t in prod.tags
+                assign t_norm = t | downcase | strip
+                if t_norm == szukany_tag
+                  assign malo_sztuk = true
+                  break
+                endif
+              endfor
             endif
           endif
         -%}
