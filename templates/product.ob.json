@@ -96,7 +96,7 @@
         "cutoff_text": "Bestil inden for {tid}, så pakker vi i dag",
         "size_guide_label": "Størrelsesguide",
         "size_guide_page": "/pages/size-guide",
-        "low_stock_source": "tag",
+        "low_stock_source": "inventory",
         "low_stock_tag": "Få tilbage",
         "low_stock_threshold": 6,
         "low_stock_text": "Få tilbage på lager",
