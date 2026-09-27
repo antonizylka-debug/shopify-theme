@@ -338,10 +338,41 @@
   }
 
   #shopify-section-{{ section.id }} .obp__pay {
-    display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+    display: flex; flex-wrap: wrap; align-items: center;
+    justify-content: {{ section.settings.pay_align }};
+    gap: {{ section.settings.pay_gap }}px;
     padding: 18px 0 0;
   }
-  #shopify-section-{{ section.id }} .obp__pay svg { height: 30px; width: auto; }
+  #shopify-section-{{ section.id }} .obp__pay svg,
+  #shopify-section-{{ section.id }} .obp__pay img {
+    height: {{ section.settings.pay_size }}px;
+    width: auto;
+    display: block;
+  }
+
+  /* ---------- pasek kampanii ---------- */
+  #shopify-section-{{ section.id }} .obp__campaign {
+    display: block;
+    background: {{ section.settings.campaign_bg }};
+    color: {{ section.settings.campaign_text_color }};
+    text-align: center;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 11px 14px;
+    margin-bottom: 20px;
+  }
+  #shopify-section-{{ section.id }} .obp__campaign small {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    text-transform: none;
+    opacity: 0.85;
+    margin-top: 3px;
+  }
 
   /* ---------- akordeony ---------- */
   #shopify-section-{{ section.id }} .obp__accs { margin-top: 10px; }
@@ -491,6 +522,29 @@
 
       {%- comment -%} ---------- prawa kolumna: informacje ---------- {%- endcomment -%}
       <div class="obp__info">
+
+        {%- comment -%}
+          Pasek kampanii. Siedzi w ustawieniach SEKCJI, a nie przy produkcie,
+          wiec wlaczasz go raz i jest na wszystkich produktach z tym szablonem.
+          Wylaczasz tak samo - jednym przelacznikiem po wyprzedazy.
+        {%- endcomment -%}
+        {%- if section.settings.show_campaign and section.settings.campaign_title != blank -%}
+          {%- if section.settings.campaign_link != blank -%}
+            <a class="obp__campaign" href="{{ section.settings.campaign_link }}">
+              {{ section.settings.campaign_title }}
+              {%- if section.settings.campaign_sub != blank -%}
+                <small>{{ section.settings.campaign_sub }}</small>
+              {%- endif -%}
+            </a>
+          {%- else -%}
+            <div class="obp__campaign">
+              {{ section.settings.campaign_title }}
+              {%- if section.settings.campaign_sub != blank -%}
+                <small>{{ section.settings.campaign_sub }}</small>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
 
         <div class="obp__head">
           <h1 class="obp__title">{{ prod.title }}</h1>
@@ -752,9 +806,36 @@
         {%- endif -%}
 
         {%- if section.settings.show_payment_icons -%}
+          {%- liquid
+            comment
+              'auto' bierze dokladnie to, co masz wlaczone w Shopify - nigdy
+              nie pokaze metody, ktorej klient nie zobaczy w kasie.
+              'lista' pozwala ustawic kolejnosc i wybrac tylko czesc.
+              Ikony pochodza z zasobow Shopify (payment_type_svg_tag).
+            endcomment
+            if section.settings.pay_source == 'list'
+              assign typy = section.settings.pay_list | split: ','
+            else
+              assign typy = shop.enabled_payment_types
+            endif
+            assign limit_ikon = section.settings.pay_limit
+          -%}
           <div class="obp__pay">
-            {%- for type in shop.enabled_payment_types limit: 6 -%}
-              {{ type | payment_type_svg_tag: class: 'obp__pay-icon' }}
+            {%- for type in typy limit: limit_ikon -%}
+              {%- assign kod = type | strip | downcase -%}
+              {{ kod | payment_type_svg_tag: class: 'obp__pay-icon' }}
+            {%- endfor -%}
+
+            {%- comment -%}
+              Metody, ktorych Shopify nie rysuje (np. MobilePay), dodajesz
+              jako wlasny obrazek - blok "Payment logo".
+            {%- endcomment -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'payment_logo' and block.settings.image != blank -%}
+                {{ block.settings.image
+                  | image_url: height: 80
+                  | image_tag: loading: 'lazy', alt: block.settings.name, class: 'obp__pay-icon' }}
+              {%- endif -%}
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -1131,7 +1212,8 @@
     { "type": "checkbox", "id": "show_savings_amount", "label": "Show the saving in kroner, not just a percentage", "default": true },
     { "type": "text", "id": "savings_prefix", "label": "Before the amount saved", "default": "Du sparer" },
     { "type": "checkbox", "id": "show_reassure", "label": "Show the reassurance line under the button", "default": true },
-    { "type": "text", "id": "reassure_items", "label": "Reassurance line, separated by |", "default": "30 dages returret|Gratis fragt|Sikker betaling" },
+    { "type": "paragraph", "content": "Keep these different from the three promise cards below. Saying the same thing twice weakens both." },
+    { "type": "text", "id": "reassure_items", "label": "Reassurance line, separated by |", "default": "Ingen told eller gebyrer|Sporing på hver pakke|Dansk kundeservice" },
     { "type": "checkbox", "id": "show_sticky", "label": "Sticky bar once the button scrolls away", "default": true },
     { "type": "checkbox", "id": "show_cutoff", "label": "Show time left to today's dispatch", "default": false },
     { "type": "range", "id": "cutoff_hour", "label": "We pack orders placed before", "default": 14, "min": 8, "max": 20, "step": 1 },
@@ -1176,8 +1258,37 @@
     { "type": "text", "id": "rating_label", "label": "Label next to the score", "default": "Anmeldelser" },
     { "type": "text", "id": "rating_count_label", "label": "Before the review count", "default": "Baseret på" },
 
+    { "type": "header", "content": "Sale campaign" },
+    { "type": "paragraph", "content": "This sits in the section settings, so switching it on shows it on every product using this template — and switching it off removes it everywhere." },
+    { "type": "checkbox", "id": "show_campaign", "label": "Show campaign bar", "default": false },
+    { "type": "text", "id": "campaign_title", "label": "Heading", "default": "SÆSONUDSALG · OP TIL 50%" },
+    { "type": "text", "id": "campaign_sub", "label": "Line underneath", "default": "Rabatten er allerede trukket fra" },
+    { "type": "url", "id": "campaign_link", "label": "Link (optional)" },
+    { "type": "color", "id": "campaign_bg", "label": "Background", "default": "#1c1d1d" },
+    { "type": "color", "id": "campaign_text_color", "label": "Text", "default": "#ffffff" },
+
     { "type": "header", "content": "Payment" },
     { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },
+    {
+      "type": "select", "id": "pay_source", "label": "Which methods", "default": "auto",
+      "options": [
+        { "value": "auto", "label": "Everything enabled in Shopify" },
+        { "value": "list", "label": "Only the ones I list" }
+      ]
+    },
+    { "type": "text", "id": "pay_list", "label": "My list, separated by commas", "default": "dankort, visa, master, apple_pay, google_pay, shopify_pay, paypal, klarna" },
+    { "type": "paragraph", "content": "Codes Shopify draws: dankort, forbrugsforeningen, visa, master, american_express, maestro, paypal, apple_pay, google_pay, shopify_pay, klarna, ideal, bancontact. For anything Shopify has no icon for — MobilePay, ViaBill — add a Payment logo block and upload the image." },
+    { "type": "range", "id": "pay_limit", "label": "How many to show", "default": 8, "min": 2, "max": 14, "step": 1 },
+    { "type": "range", "id": "pay_size", "label": "Icon height", "default": 26, "min": 14, "max": 48, "step": 1, "unit": "px" },
+    { "type": "range", "id": "pay_gap", "label": "Gap between icons", "default": 8, "min": 2, "max": 24, "step": 1, "unit": "px" },
+    {
+      "type": "select", "id": "pay_align", "label": "Alignment", "default": "center",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "space-between", "label": "Spread out" }
+      ]
+    },
 
     { "type": "header", "content": "Colours" },
     { "type": "color", "id": "color_text", "label": "Text", "default": "#1c1d1d" },
@@ -1208,6 +1319,15 @@
         },
         { "type": "text", "id": "title", "label": "Heading", "default": "Gratis fragt" },
         { "type": "text", "id": "text", "label": "Description", "default": "På alle ordrer" }
+      ]
+    },
+    {
+      "type": "payment_logo",
+      "name": "Payment logo",
+      "settings": [
+        { "type": "paragraph", "content": "For methods Shopify draws no icon for, such as MobilePay. Upload the logo you are entitled to use — your payment provider supplies one in their brand pack." },
+        { "type": "image_picker", "id": "image", "label": "Logo" },
+        { "type": "text", "id": "name", "label": "Name, for screen readers", "default": "MobilePay" }
       ]
     },
     {

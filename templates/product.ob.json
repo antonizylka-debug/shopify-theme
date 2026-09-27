@@ -86,7 +86,7 @@
         "show_savings_amount": true,
         "savings_prefix": "Du sparer",
         "show_reassure": true,
-        "reassure_items": "30 dages returret|Gratis fragt|Sikker betaling",
+        "reassure_items": "Ingen told eller gebyrer|Sporing på hver pakke|Dansk kundeservice",
         "show_sticky": true,
         "show_cutoff": false,
         "cutoff_hour": 14,
@@ -109,7 +109,18 @@
         "padding_top": 32,
         "thumb_size": 68,
         "title_size": 30,
-        "title_size_mobile": 26
+        "title_size_mobile": 26,
+        "pay_source": "auto",
+        "pay_list": "dankort, visa, master, apple_pay, google_pay, shopify_pay, paypal, klarna",
+        "pay_limit": 8,
+        "pay_size": 26,
+        "pay_gap": 8,
+        "pay_align": "center",
+        "show_campaign": false,
+        "campaign_title": "SÆSONUDSALG · OP TIL 50%",
+        "campaign_sub": "Rabatten er allerede trukket fra",
+        "campaign_bg": "#1c1d1d",
+        "campaign_text_color": "#ffffff"
       }
     },
     "product-recommendations": {
