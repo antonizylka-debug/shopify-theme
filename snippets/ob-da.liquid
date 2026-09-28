@@ -1,0 +1,28 @@
+{%- comment -%}
+  Podmienia tekst na duński odpowiednik ze słownika. Jeśli nie znajdzie,
+  zwraca tekst bez zmian — więc brak wpisu niczego nie psuje.
+
+  Służy wyłącznie do WYŚWIETLANIA. Dane produktów zostają angielskie,
+  dzięki czemu filtry w kolekcjach dopasowujące się do angielskich
+  wartości działają dalej.
+
+  @param {string} mapa - mapa w postaci [klucz]=wartość; zbudowana w sekcji
+  @param {string} tekst - tekst do podmiany
+
+  @example
+    {%- assign nazwa = opt.name -%}
+    {% render 'ob-da', mapa: mapa, tekst: nazwa %}
+{%- endcomment -%}
+
+{%- liquid
+  assign wynik = tekst
+  assign szukany = tekst | strip | downcase
+  assign klucz = '[' | append: szukany | append: ']='
+
+  if mapa contains klucz
+    assign ogon = mapa | split: klucz
+    assign wynik = ogon[1] | split: ';' | first
+  endif
+
+  echo wynik
+-%}

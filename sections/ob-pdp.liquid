@@ -31,6 +31,25 @@
     endif
   endfor
 
+  comment
+    Slownik wyswietlania. Dane produktow zostaja angielskie - podmieniamy
+    wylacznie to, co widzi klient. Dzieki temu filtry w kolekcjach, ktore
+    dopasowuja sie do angielskich wartosci, dzialaja dalej.
+
+    Budujemy z ustawienia mape postaci [angielskie]=dunskie; a potem
+    wyszukujemy w niej przez split - Liquid nie ma funkcji ani slownikow.
+  endcomment
+  assign mapa = ''
+  assign pary = section.settings.dictionary | split: ','
+  for para in pary
+    assign kv = para | split: '='
+    if kv.size == 2
+      assign k = kv[0] | strip | downcase
+      assign v = kv[1] | strip
+      assign mapa = mapa | append: '[' | append: k | append: ']=' | append: v | append: ';'
+    endif
+  endfor
+
   assign na_przecenie = false
   assign rabat = 0
   if war.compare_at_price > war.price
@@ -333,7 +352,8 @@
 
         <h1 class="pdp__title">{{ product.title }}</h1>
         {%- if product.type != blank -%}
-          <p class="pdp__sub">{{ product.type }}</p>
+          {%- assign typ_produktu = product.type -%}
+          <p class="pdp__sub">{% render 'ob-da', mapa: mapa, tekst: typ_produktu %}</p>
         {%- endif -%}
 
         {%- comment -%}
@@ -352,7 +372,9 @@
         {%- for opt in product.options_with_values -%}
           {%- if forloop.index == poz_koloru -%}
             {%- assign idx0 = forloop.index | minus: 1 -%}
-            <div class="pdp__optlabel">{{ opt.name }}: <span data-pdp-optval>{{ opt.selected_value }}</span></div>
+            {%- assign nazwa_opcji = opt.name -%}
+            {%- assign wybrana_wartosc = opt.selected_value -%}
+            <div class="pdp__optlabel">{% render 'ob-da', mapa: mapa, tekst: nazwa_opcji %}: <span data-pdp-optval>{% render 'ob-da', mapa: mapa, tekst: wybrana_wartosc %}</span></div>
             <div class="pdp__swatches" data-pdp-opt="{{ forloop.index }}">
               {%- for val in opt.values -%}
                 {%- liquid
@@ -365,8 +387,14 @@
                   endfor
                   assign kolor = val | downcase | split: ' ' | last
                 -%}
+                {%- comment -%}
+                  Dunska etykieta doklejona do kafla, zeby skrypt przy zmianie
+                  koloru nie wstawial z powrotem angielskiej wartosci.
+                {%- endcomment -%}
+                {%- capture val_da -%}{% render 'ob-da', mapa: mapa, tekst: val %}{%- endcapture -%}
                 <button type="button" class="pdp__swatch{% if val == opt.selected_value %} is-on{% endif %}"
-                        data-pdp-val="{{ val | escape }}" aria-label="{{ opt.name | escape }}: {{ val | escape }}">
+                        data-pdp-val="{{ val | escape }}" data-pdp-label="{{ val_da | strip | escape }}"
+                        aria-label="{{ val_da | strip | escape }}">
                   {%- if zdj != blank -%}
                     {{ zdj | image_url: width: 120 | image_tag: loading: 'lazy', alt: val }}
                   {%- else -%}
@@ -429,7 +457,8 @@
           {%- unless forloop.index == poz_koloru -%}
             <div data-pdp-opt="{{ forloop.index }}">
               <div class="pdp__sizehead">
-                <span class="pdp__optlabel" style="margin:0;">{{ opt.name }}</span>
+                {%- assign nazwa_tej_opcji = opt.name -%}
+                <span class="pdp__optlabel" style="margin:0;">{% render 'ob-da', mapa: mapa, tekst: nazwa_tej_opcji %}</span>
                 {%- if malo and section.settings.last_label != blank -%}
                   <span class="pdp__last">{{ section.settings.last_label }}</span>
                 {%- endif -%}
@@ -587,8 +616,11 @@
       var g = b.closest('[data-pdp-opt]');
       Array.prototype.forEach.call(g.querySelectorAll('[data-pdp-val]'), function (x) { x.classList.remove('is-on'); });
       b.classList.add('is-on');
+      // wstawiamy dunska etykiete doklejona do kafla, nie surowa wartosc wariantu
       var etykieta = root.querySelector('[data-pdp-optval]');
-      if (etykieta && g.querySelector('.pdp__swatch')) etykieta.textContent = b.dataset.pdpVal;
+      if (etykieta && g.querySelector('.pdp__swatch')) {
+        etykieta.textContent = b.dataset.pdpLabel || b.dataset.pdpVal;
+      }
       odswiez();
     });
 
@@ -622,6 +654,10 @@
   "name": "Product page v2",
   "tag": "section",
   "settings": [
+    { "type": "header", "content": "Danish wording" },
+    { "type": "paragraph", "content": "Your product data is English — option names, colours and product types. This only changes what the shopper sees; the data stays as it is, so the collection filters keep matching. Pairs english=dansk, separated by commas. Anything not listed shows unchanged." },
+    { "type": "textarea", "id": "dictionary", "label": "Dictionary", "default": "Color=Farve, Colour=Farve, Size=Størrelse, Black=Sort, White=Hvid, Grey=Grå, Gray=Grå, Brown=Brun, Blue=Blå, Navy=Marineblå, Green=Grøn, Red=Rød, Pink=Rosa, Purple=Lilla, Yellow=Gul, Orange=Orange, Beige=Beige, Khaki=Khaki, Gold=Guld, Multi=Flerfarvet, Burgundy=Bordeaux, Cream=Creme, Ivory=Elfenben, Dresses=Kjoler, Jackets=Jakker, Coats=Frakker, Sweaters=Sweatre, Cardigans=Cardigans, Pants=Bukser, Jeans=Jeans, Shorts=Shorts, Skirts=Nederdele, Shirts=Skjorter, Blouses=Bluser, Polo Shirts=Poloshirts, T-Shirts & Tops=T-shirts og toppe, Hoodies & Sweatshirts=Hættetrøjer, Vests=Veste, Blazers=Blazere, Jumpsuits=Buksedragter, Matching Sets=Sæt, Sneakers=Sneakers, Loafers=Loafers, Boots=Støvler, Dress Shoes=Pæne sko, Sandals=Sandaler, Heels=Hæle, Belts=Bælter, Jewelry=Smykker, Sunglasses=Solbriller, Underwear=Undertøj, Bags=Tasker" },
+
     { "type": "header", "content": "Layout" },
     { "type": "checkbox", "id": "show_crumbs", "label": "Breadcrumbs", "default": true },
     { "type": "range", "id": "media_w", "label": "Photo column", "default": 58, "min": 40, "max": 70, "step": 1 },

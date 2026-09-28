@@ -90,7 +90,7 @@
         "photo_limit": 8,
         "photo_gap": 6,
         "photo_ratio": "3 / 4",
-        "model_note": "",
+        "model_note": "Vores model er 186 cm og har str. M på",
         "title_size": 26,
         "title_size_m": 22,
         "price_size": 28,
@@ -122,7 +122,8 @@
         "c_soft": "#f4f3f1",
         "c_sale": "#d6332e",
         "c_low": "#b05f2e",
-        "c_button": "#23213a"
+        "c_button": "#23213a",
+        "dictionary": "Color=Farve, Colour=Farve, Size=Størrelse, Black=Sort, White=Hvid, Grey=Grå, Gray=Grå, Brown=Brun, Blue=Blå, Navy=Marineblå, Green=Grøn, Red=Rød, Pink=Rosa, Purple=Lilla, Yellow=Gul, Orange=Orange, Beige=Beige, Khaki=Khaki, Gold=Guld, Multi=Flerfarvet, Burgundy=Bordeaux, Cream=Creme, Ivory=Elfenben, Dresses=Kjoler, Jackets=Jakker, Coats=Frakker, Sweaters=Sweatre, Cardigans=Cardigans, Pants=Bukser, Jeans=Jeans, Shorts=Shorts, Skirts=Nederdele, Shirts=Skjorter, Blouses=Bluser, Polo Shirts=Poloshirts, T-Shirts & Tops=T-shirts og toppe, Hoodies & Sweatshirts=Hættetrøjer, Vests=Veste, Blazers=Blazere, Jumpsuits=Buksedragter, Matching Sets=Sæt, Sneakers=Sneakers, Loafers=Loafers, Boots=Støvler, Dress Shoes=Pæne sko, Sandals=Sandaler, Heels=Hæle, Belts=Bælter, Jewelry=Smykker, Sunglasses=Solbriller, Underwear=Undertøj, Bags=Tasker"
       }
     },
     "reviews": {
