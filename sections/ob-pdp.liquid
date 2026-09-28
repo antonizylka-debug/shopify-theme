@@ -105,20 +105,45 @@
 
   /* ---------- siatka zdjec ---------- */
   #shopify-section-{{ section.id }} .pdp__media { position: relative; }
+  {%- comment -%}
+    Podstawa ma 6 kolumn, bo to najmniejsza liczba dzielaca sie i przez 2,
+    i przez 3. Duze zdjecie zajmuje 3 z 6 (dwa w rzedzie), male 2 z 6 (trzy
+    w rzedzie) - dokladnie jak na wzorcu.
+
+    Wczesniej bylo 3 kolumny i duze na span 2: drugie duze nie miescilo sie
+    obok pierwszego, spadalo do nowego wiersza i zostawialo pusta kolumne.
+    Stad dziury w ukladzie.
+  {%- endcomment -%}
   #shopify-section-{{ section.id }} .pdp__photos {
     display: grid;
-    grid-template-columns: repeat({{ section.settings.photo_cols }}, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: {{ section.settings.photo_gap }}px;
   }
   #shopify-section-{{ section.id }} .pdp__photo {
-    display: block; margin: 0; aspect-ratio: {{ section.settings.photo_ratio }};
+    display: block; margin: 0;
+    aspect-ratio: {{ section.settings.photo_ratio }};
     background: var(--pdp-soft);
+    grid-column: span {{ 6 | divided_by: section.settings.small_per_row }};
   }
   #shopify-section-{{ section.id }} .pdp__photo img {
     width: 100%; height: 100%; object-fit: cover; display: block;
   }
-  /* pierwsze dwa zdjecia sa duze, reszta mniejsza - jak na wzorcu */
-  #shopify-section-{{ section.id }} .pdp__photo--big { grid-column: span {{ section.settings.big_span }}; }
+  #shopify-section-{{ section.id }} .pdp__photo--big {
+    grid-column: span {{ 6 | divided_by: section.settings.big_per_row }};
+  }
+
+  /* zdjecia ponad limitem chowamy do klikniecia w przycisk */
+  #shopify-section-{{ section.id }} .pdp__photo--more { display: none; }
+  #shopify-section-{{ section.id }} .pdp__photos.is-open .pdp__photo--more { display: block; }
+
+  #shopify-section-{{ section.id }} .pdp__more {
+    display: block; margin: 14px auto 0;
+    background: none; cursor: pointer;
+    border: 1px solid var(--pdp-line);
+    border-radius: {{ section.settings.radius }}px;
+    padding: 11px 22px;
+    font-size: 13.5px; color: var(--pdp-text);
+  }
 
   #shopify-section-{{ section.id }} .pdp__flag {
     position: absolute; left: 0; top: 0; z-index: 2;
@@ -273,8 +298,10 @@
 
   @media only screen and (max-width: {{ section.settings.breakpoint }}px) {
     #shopify-section-{{ section.id }} .pdp__grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
-    #shopify-section-{{ section.id }} .pdp__photos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
-    #shopify-section-{{ section.id }} .pdp__photo--big { grid-column: span 2; }
+    /* zostajemy na podstawie 6 kolumn: duze na cala szerokosc, male po dwa */
+    #shopify-section-{{ section.id }} .pdp__photos { gap: 4px; }
+    #shopify-section-{{ section.id }} .pdp__photo--big { grid-column: span 6; }
+    #shopify-section-{{ section.id }} .pdp__photo { grid-column: span 3; }
     #shopify-section-{{ section.id }} .pdp__title { font-size: {{ section.settings.title_size_m }}px; }
     #shopify-section-{{ section.id }} .pdp__price { font-size: {{ section.settings.price_size_m }}px; }
     #shopify-section-{{ section.id }} .pdp__sizes { grid-template-columns: repeat({{ section.settings.size_cols_m }}, minmax(0, 1fr)); }
@@ -306,20 +333,27 @@
           <span class="pdp__flag">{{ section.settings.flag_label }}</span>
         {%- endif -%}
 
-        <div class="pdp__photos">
+        <div class="pdp__photos" data-pdp-photos>
           {%- if product.media.size > 0 -%}
-            {%- for media in product.media limit: section.settings.photo_limit -%}
+            {%- for media in product.media -%}
               {%- liquid
                 assign alt = media.alt | default: product.title
+
+                comment
+                  Pierwsze N duzych, reszta mala. Zdjecia ponad limitem
+                  widocznych chowamy - pokazuje je przycisk pod siatka.
+                endcomment
+                assign klasa = 'pdp__photo'
                 if forloop.index <= section.settings.big_count
                   assign klasa = 'pdp__photo pdp__photo--big'
-                else
-                  assign klasa = 'pdp__photo'
                 endif
+                if forloop.index > section.settings.photo_visible
+                  assign klasa = klasa | append: ' pdp__photo--more'
+                endif
+
+                assign lad = 'lazy'
                 if forloop.first
                   assign lad = 'eager'
-                else
-                  assign lad = 'lazy'
                 endif
               -%}
               <figure class="{{ klasa }}">
@@ -332,6 +366,13 @@
             <figure class="pdp__photo pdp__photo--big">{{ 'product-1' | placeholder_svg_tag }}</figure>
           {%- endif -%}
         </div>
+
+        {%- if product.media.size > section.settings.photo_visible and section.settings.more_label != blank -%}
+          {%- assign ukrytych = product.media.size | minus: section.settings.photo_visible -%}
+          <button type="button" class="pdp__more" data-pdp-more data-pdp-hidden="{{ ukrytych }}">
+            {{ section.settings.more_label }}
+          </button>
+        {%- endif -%}
 
         {%- liquid
           assign model_meta = product.metafields.custom.model_size
@@ -624,6 +665,17 @@
       odswiez();
     });
 
+    // ---------- pokaz wiecej zdjec ----------
+    (function () {
+      var btn = root.querySelector('[data-pdp-more]');
+      var siatka = root.querySelector('[data-pdp-photos]');
+      if (!btn || !siatka) return;
+      btn.addEventListener('click', function () {
+        siatka.classList.add('is-open');
+        btn.remove();
+      });
+    })();
+
     {%- if section.settings.show_rating -%}
     // ocena przepisana z sekcji opinii - nigdy nie wpisywana recznie
     (function () {
@@ -667,10 +719,26 @@
     { "type": "range", "id": "radius", "label": "Corner rounding", "default": 4, "min": 0, "max": 16, "step": 1, "unit": "px" },
 
     { "type": "header", "content": "Photos" },
-    { "type": "range", "id": "photo_cols", "label": "Columns", "default": 3, "min": 2, "max": 4, "step": 1 },
-    { "type": "range", "id": "big_count", "label": "How many large photos first", "default": 2, "min": 0, "max": 4, "step": 1 },
-    { "type": "range", "id": "big_span", "label": "Width of a large photo", "default": 2, "min": 1, "max": 3, "step": 1 },
-    { "type": "range", "id": "photo_limit", "label": "Photos shown", "default": 8, "min": 2, "max": 20, "step": 1 },
+    { "type": "paragraph", "content": "The grid is built on six columns, so both two and three photos per row come out even with no gaps." },
+    { "type": "range", "id": "big_count", "label": "How many large photos first", "default": 2, "min": 0, "max": 6, "step": 1 },
+    {
+      "type": "select", "id": "big_per_row", "label": "Large photos per row", "default": "2",
+      "options": [
+        { "value": "1", "label": "1 — full width" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ]
+    },
+    {
+      "type": "select", "id": "small_per_row", "label": "Small photos per row", "default": "3",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "6", "label": "6" }
+      ]
+    },
+    { "type": "range", "id": "photo_visible", "label": "Photos shown before the button", "default": 5, "min": 2, "max": 20, "step": 1 },
+    { "type": "text", "id": "more_label", "label": "Show more button", "default": "Vis flere billeder" },
     { "type": "range", "id": "photo_gap", "label": "Gap between photos", "default": 6, "min": 0, "max": 20, "step": 1, "unit": "px" },
     { "type": "text", "id": "photo_ratio", "label": "Photo shape", "default": "3 / 4" },
     { "type": "text", "id": "model_note", "label": "Model note under the photos" },
