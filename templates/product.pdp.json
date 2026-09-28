@@ -1,0 +1,148 @@
+{
+  "sections": {
+    "main": {
+      "type": "ob-pdp",
+      "blocks": {
+        "row-1": {
+          "type": "row",
+          "settings": {
+            "icon": "truck",
+            "text": "Gratis fragt på alle ordrer"
+          }
+        },
+        "row-2": {
+          "type": "row",
+          "settings": {
+            "icon": "clock",
+            "text": "Afsendes inden for 3-4 hverdage"
+          }
+        },
+        "row-3": {
+          "type": "row",
+          "settings": {
+            "icon": "return",
+            "text": "30 dages returret"
+          }
+        },
+        "row-4": {
+          "type": "row",
+          "settings": {
+            "icon": "lock",
+            "text": "Sikker, krypteret betaling"
+          }
+        },
+        "acc-1": {
+          "type": "acc",
+          "settings": {
+            "title": "Produktinformation",
+            "use_desc": true,
+            "open": true
+          }
+        },
+        "acc-2": {
+          "type": "acc",
+          "settings": {
+            "title": "Fragt og returnering",
+            "use_desc": false,
+            "text": "<p><strong>Levering</strong></p><p>Vi pakker og sender inden for 3-4 hverdage. Derefter tager leveringen 3-6 hverdage mere. Fragten er gratis på alle ordrer, og du får et sporingsnummer på mail, så snart pakken er afsendt.</p><p><strong>Returnering</strong></p><p>Du har 30 dage fra levering. Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer, så sender vi returadressen.</p>",
+            "open": false
+          }
+        },
+        "acc-3": {
+          "type": "acc",
+          "settings": {
+            "title": "Kundeservice",
+            "use_desc": false,
+            "text": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer.</p><p>Mandag til fredag, 9.00-18.00. Vi svarer typisk inden for 1-2 hverdage.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": ["row-1", "row-2", "row-3", "row-4", "acc-1", "acc-2", "acc-3"],
+      "settings": {
+        "show_crumbs": true,
+        "media_w": 58,
+        "info_w": 42,
+        "gap": 40,
+        "breakpoint": 900,
+        "radius": 4,
+        "photo_cols": 3,
+        "big_count": 2,
+        "big_span": 2,
+        "photo_limit": 8,
+        "photo_gap": 6,
+        "photo_ratio": "3 / 4",
+        "model_note": "",
+        "title_size": 26,
+        "title_size_m": 22,
+        "price_size": 28,
+        "price_size_m": 24,
+        "atc_label": "Læg i kurv",
+        "vat_note": "inkl. moms",
+        "label_normal": "Normalpris:",
+        "label_omnibus": "Laveste pris 30 dage før nedsættelsen:",
+        "show_omnibus": true,
+        "size_cols": 5,
+        "size_cols_m": 4,
+        "guide_label": "Størrelsesguide",
+        "guide_link": "/pages/size-guide",
+        "help_text": "Ikke sikker på størrelsen? Gå efter målene frem for den størrelse, du plejer at tage.",
+        "help_link_label": "Se målene",
+        "help_link": "/pages/size-guide",
+        "low_stock": "all",
+        "low_stock_tag": "Få tilbage",
+        "show_flag": true,
+        "flag_label": "Udsalg",
+        "last_label": "Sidste stykker",
+        "show_rating": true,
+        "rating_min": 5,
+        "rating_anchor": "anmeldelser",
+        "rating_link_label": "Se anmeldelser",
+        "c_text": "#1c1d1d",
+        "c_muted": "#6e6b65",
+        "c_line": "#d9d6d1",
+        "c_soft": "#f4f3f1",
+        "c_sale": "#d6332e",
+        "c_low": "#b05f2e",
+        "c_button": "#23213a"
+      }
+    },
+    "reviews": {
+      "type": "ob-reviews",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "eyebrow": "ANMELDELSER",
+        "title": "Det siger vores kunder",
+        "anchor": "anmeldelser",
+        "count_label": "Baseret på",
+        "star_word": "stjerner",
+        "verified_label": "Verificeret køb",
+        "empty_text": "Der er endnu ingen anmeldelser.",
+        "show_distribution": true,
+        "columns": 3,
+        "title_size": 19,
+        "title_size_mobile": 17,
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6e6b65",
+        "color_line": "#e6e3de",
+        "color_star": "#1c1d1d",
+        "color_bar": "#1c1d1d"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {}
+    },
+    "apps": {
+      "type": "apps",
+      "settings": {}
+    }
+  },
+  "order": ["main", "reviews", "product-recommendations", "apps"]
+}
