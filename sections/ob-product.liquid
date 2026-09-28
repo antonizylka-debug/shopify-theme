@@ -313,6 +313,7 @@
     color: var(--obp-low);
     margin-top: 2px;
   }
+  #shopify-section-{{ section.id }} .obp__savings b { font-weight: 600; }
 
   /* Linia zaufania tuz pod przyciskiem - w miejscu, gdzie klient
      podejmuje decyzje, a nie 300 px nizej */
@@ -832,10 +833,18 @@
               <span class="obp__before" data-obp-price-was>
                 {{ section.settings.before_label }} {{ war.compare_at_price | money }}
               </span>
+              {%- comment -%}
+                Kwota i procent w JEDNEJ linii. Wczesniej byly trzy osobne
+                elementy mowiace o tej samej obnizce - plakietka TILBUD,
+                plakietka SPAR 50% i "Du sparer 1.100 kr" - w trzech roznych
+                kolorach. Zostaje plakietka nad cena i jedna linia pod nia.
+              {%- endcomment -%}
               <span class="obp__save" data-obp-save hidden>{{ section.settings.save_prefix }} {{ oszczednosc }}%</span>
               {%- if section.settings.show_savings_amount -%}
                 {%- assign kwota_oszcz = war.compare_at_price | minus: war.price -%}
-                <span class="obp__savings" data-obp-savings>{{ section.settings.savings_prefix }} {{ kwota_oszcz | money }}</span>
+                <span class="obp__savings" data-obp-savings>
+                  {{ section.settings.savings_prefix }} {{ kwota_oszcz | money }} <b>({{ oszczednosc }}%)</b>
+                </span>
               {%- endif -%}
             {%- else -%}
               <span class="obp__before" data-obp-price-was hidden></span>
@@ -1238,7 +1247,8 @@
       }
       if (oszcz) {
         if (naPrzecenie) {
-          oszcz.innerHTML = OSZCZ_KWOTA + ' ' + kwota(w.compare_at_price - w.price);
+          var proc = Math.round((w.compare_at_price - w.price) / w.compare_at_price * 100);
+          oszcz.innerHTML = OSZCZ_KWOTA + ' ' + kwota(w.compare_at_price - w.price) + ' <b>(' + proc + '%)</b>';
           oszcz.hidden = false;
         } else {
           oszcz.hidden = true;
