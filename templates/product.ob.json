@@ -151,7 +151,7 @@
         "tiers_headline": "KØB FLERE — SPAR MERE",
         "tiers_note": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens.",
         "tiers_list": "2:10, 3:15, 4:20",
-        "tiers_qty_word": "{n} stk.",
+        "tiers_qty_word": "# stk.",
         "tiers_bg": "#d6332e",
         "tiers_text": "#ffffff",
         "tiers_body_bg": "#f4f3f1",

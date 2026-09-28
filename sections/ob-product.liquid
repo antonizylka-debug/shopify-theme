@@ -975,8 +975,14 @@
                     {%- assign ilosc = czesci[0] | strip -%}
                     {%- assign procent = czesci[1] | strip -%}
                     {%- if ilosc != blank and procent != blank -%}
+                      {%- comment -%}
+                        Podmiana idzie przez assign, a znacznik miejsca to '#',
+                        nie '{n}'. Klamra w argumencie filtra rozwala parser
+                        Liquida - szuka konca tagu przez /\}\}/ i gubi sie na niej.
+                      {%- endcomment -%}
+                      {%- assign etykieta_ilosci = section.settings.tiers_qty_word | replace: '#', ilosc -%}
                       <li class="obp__tier">
-                        <span>{{ section.settings.tiers_qty_word | replace: '{n}', ilosc }}</span>
+                        <span>{{ etykieta_ilosci }}</span>
                         <b>-{{ procent }}%</b>
                       </li>
                     {%- endif -%}
@@ -1708,7 +1714,7 @@
     { "type": "text", "id": "tiers_headline", "label": "Red bar text", "default": "KØB FLERE — SPAR MERE" },
     { "type": "textarea", "id": "tiers_note", "label": "Explanation", "default": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens." },
     { "type": "text", "id": "tiers_list", "label": "Tiers, as quantity:percent", "default": "2:10, 3:15, 4:20" },
-    { "type": "text", "id": "tiers_qty_word", "label": "Wording, {n} is the quantity", "default": "{n} stk." },
+    { "type": "text", "id": "tiers_qty_word", "label": "Wording, # is the quantity", "default": "# stk." },
     { "type": "color", "id": "tiers_bg", "label": "Bar background", "default": "#d6332e" },
     { "type": "color", "id": "tiers_text", "label": "Bar text", "default": "#ffffff" },
     { "type": "color", "id": "tiers_body_bg", "label": "Box background", "default": "#f4f3f1" },
