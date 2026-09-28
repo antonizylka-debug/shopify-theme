@@ -88,7 +88,7 @@
         "gap": 40,
         "breakpoint": 900,
         "radius": 4,
-        "big_count": 2,
+        "big_count": 0,
         "photo_gap": 6,
         "photo_ratio": "3 / 4",
         "title_size": 26,
@@ -125,11 +125,15 @@
         "c_button": "#23213a",
         "dictionary": "Color=Farve, Colour=Farve, Size=Størrelse, Black=Sort, White=Hvid, Grey=Grå, Gray=Grå, Brown=Brun, Blue=Blå, Navy=Marineblå, Green=Grøn, Red=Rød, Pink=Rosa, Purple=Lilla, Yellow=Gul, Orange=Orange, Beige=Beige, Khaki=Khaki, Gold=Guld, Multi=Flerfarvet, Burgundy=Bordeaux, Cream=Creme, Ivory=Elfenben, Dresses=Kjoler, Jackets=Jakker, Coats=Frakker, Sweaters=Sweatre, Cardigans=Cardigans, Pants=Bukser, Jeans=Jeans, Shorts=Shorts, Skirts=Nederdele, Shirts=Skjorter, Blouses=Bluser, Polo Shirts=Poloshirts, T-Shirts & Tops=T-shirts og toppe, Hoodies & Sweatshirts=Hættetrøjer, Vests=Veste, Blazers=Blazere, Jumpsuits=Buksedragter, Matching Sets=Sæt, Sneakers=Sneakers, Loafers=Loafers, Boots=Støvler, Dress Shoes=Pæne sko, Sandals=Sandaler, Heels=Hæle, Belts=Bælter, Jewelry=Smykker, Sunglasses=Solbriller, Underwear=Undertøj, Bags=Tasker",
         "big_per_row": "2",
-        "small_per_row": "3",
+        "small_per_row": "2",
         "photo_visible": 5,
         "more_label": "Vis flere billeder",
         "model_note_women": "",
-        "model_note_men": ""
+        "model_note_men": "",
+        "note_label": "",
+        "note_bg": "#f4f3f1",
+        "note_text": "#1c1d1d",
+        "show_fab": true
       }
     },
     "reviews": {

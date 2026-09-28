@@ -149,12 +149,47 @@
     font-size: 13.5px; color: var(--pdp-text);
   }
 
+  {%- comment -%}
+    Plakietki siedza w warstwie o zerowej wysokosci, przyklejonej do gory
+    ekranu. Dzieki temu nie ruszaja sie z miejsca, kiedy przewijasz zdjecia,
+    a jednoczesnie nie zajmuja miejsca w ukladzie.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp__overlay {
+    position: sticky;
+    top: {{ section.settings.flag_top }}px;
+    height: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+  #shopify-section-{{ section.id }} .pdp__flags {
+    position: absolute; left: {{ section.settings.flag_left }}px; top: 0;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  }
   #shopify-section-{{ section.id }} .pdp__flag {
-    position: absolute; left: 0; top: 0; z-index: 2;
     background: var(--pdp-sale); color: #fff;
     font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
     padding: 6px 12px;
+    border-radius: {{ section.settings.radius }}px;
   }
+  /* plakietka wpisywana recznie - jasne tlo, jak na wzorcu */
+  #shopify-section-{{ section.id }} .pdp__flag--note {
+    background: {{ section.settings.note_bg }};
+    color: {{ section.settings.note_text }};
+    font-weight: 500; text-transform: none; letter-spacing: 0;
+  }
+
+  /* ---------- plywajacy przycisk koszyka (telefon) ---------- */
+  #shopify-section-{{ section.id }} .pdp__fab {
+    display: none;
+    position: absolute; right: 14px; bottom: 14px; z-index: 4;
+    width: 52px; height: 52px; border: 0; border-radius: 50%;
+    background: var(--pdp-btn); color: #fff;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  }
+  #shopify-section-{{ section.id }} .pdp__fab svg { width: 21px; height: 21px; }
+  #shopify-section-{{ section.id }} .pdp__fab[disabled] { opacity: 0.45; cursor: not-allowed; }
   #shopify-section-{{ section.id }} .pdp__model {
     font-size: 12.5px; color: var(--pdp-muted); margin: 12px 0 0;
   }
@@ -377,6 +412,19 @@
     #shopify-section-{{ section.id }} .pdp__photo--more { display: block; }
     #shopify-section-{{ section.id }} .pdp__more { display: none; }
 
+    {%- comment -%}
+      Na telefonie plakietka siada na dole zdjecia, a nie na gorze - tak jak
+      na wzorcu. Przyklejanie nie jest tu potrzebne, bo karuzela ma wysokosc
+      jednego zdjecia i plakietka i tak nie ucieka.
+    {%- endcomment -%}
+    #shopify-section-{{ section.id }} .pdp__overlay {
+      position: absolute; top: auto; bottom: 44px; left: 0; right: 0;
+    }
+    #shopify-section-{{ section.id }} .pdp__flags { top: auto; bottom: 0; }
+    #shopify-section-{{ section.id }} .pdp__fab {
+      display: flex; bottom: 52px;
+    }
+
     #shopify-section-{{ section.id }} .pdp__dots {
       display: flex; justify-content: center; flex-wrap: wrap;
       gap: 0; padding-top: 10px;
@@ -420,8 +468,38 @@
 
       {%- comment -%} ---------- zdjecia ---------- {%- endcomment -%}
       <div class="pdp__media">
-        {%- if section.settings.show_flag and malo and section.settings.flag_label != blank -%}
-          <span class="pdp__flag">{{ section.settings.flag_label }}</span>
+        {%- liquid
+          comment
+            Druga plakietka bierze sie z tekstu, ktory wpisujesz sam - albo
+            dla calego sklepu, albo per produkt przez metapole custom.stock_note.
+            Nie liczymy jej ze stanu magazynowego, bo zaden wariant w tym
+            katalogu nie ma wlaczonego sledzenia.
+          endcomment
+          assign notka = ''
+          assign notka_meta = product.metafields.custom.stock_note
+          if notka_meta != blank and notka_meta.value != blank
+            assign notka = notka_meta.value
+          elsif section.settings.note_label != blank and malo
+            assign notka = section.settings.note_label
+          endif
+
+          assign jest_plakietka = false
+          if section.settings.show_flag and malo and section.settings.flag_label != blank
+            assign jest_plakietka = true
+          endif
+        -%}
+
+        {%- if jest_plakietka or notka != blank -%}
+          <div class="pdp__overlay">
+            <div class="pdp__flags">
+              {%- if jest_plakietka -%}
+                <span class="pdp__flag">{{ section.settings.flag_label }}</span>
+              {%- endif -%}
+              {%- if notka != blank -%}
+                <span class="pdp__flag pdp__flag--note">{{ notka }}</span>
+              {%- endif -%}
+            </div>
+          </div>
         {%- endif -%}
 
         <div class="pdp__photos" data-pdp-photos>
@@ -457,6 +535,20 @@
             <figure class="pdp__photo pdp__photo--big">{{ 'product-1' | placeholder_svg_tag }}</figure>
           {%- endif -%}
         </div>
+
+        {%- comment -%}
+          Maly przycisk koszyka na zdjeciu, tylko na telefonie. Klika ten sam
+          formularz co glowny przycisk, wiec przechodza wszystkie integracje.
+        {%- endcomment -%}
+        {%- if section.settings.show_fab -%}
+          <button type="button" class="pdp__fab" data-pdp-fab aria-label="{{ section.settings.atc_label | escape }}"
+                  {% unless war.available %}disabled{% endunless %}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8Z"/>
+              <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+            </svg>
+          </button>
+        {%- endif -%}
 
         {%- if product.media.size > 1 -%}
           <div class="pdp__dots" data-pdp-dots>
@@ -791,6 +883,8 @@
 
       if (pole) pole.value = w.id;
       atc.disabled = !w.available;
+      var fab = root.querySelector('[data-pdp-fab]');
+      if (fab) fab.disabled = !w.available;
       atcTxt.textContent = w.available ? DODAJ : BRAK;
 
       var przecena = w.compare_at_price && w.compare_at_price > w.price;
@@ -837,6 +931,14 @@
         siatka.classList.add('is-open');
         btn.remove();
       });
+    })();
+
+    // ---------- plywajacy przycisk koszyka ----------
+    (function () {
+      var fab = root.querySelector('[data-pdp-fab]');
+      if (!fab || !atc) return;
+      // klikamy prawdziwy przycisk formularza, zeby przeszly integracje motywu
+      fab.addEventListener('click', function () { atc.click(); });
     })();
 
     // ---------- kropki karuzeli (telefon) ----------
@@ -1026,6 +1128,11 @@
     { "type": "checkbox", "id": "show_flag", "label": "Flag on the photos", "default": true },
     { "type": "text", "id": "flag_label", "label": "Flag text", "default": "Udsalg" },
     { "type": "text", "id": "last_label", "label": "Next to the size heading", "default": "Sidste stykker" },
+    { "type": "paragraph", "content": "Second badge on the photo, the one you write yourself — nothing reads it from stock levels. A product's own custom.stock_note metafield wins over this." },
+    { "type": "text", "id": "note_label", "label": "Badge you write yourself", "default": "Kun 3 stk. tilbage" },
+    { "type": "color", "id": "note_bg", "label": "Its background", "default": "#f4f3f1" },
+    { "type": "color", "id": "note_text", "label": "Its text", "default": "#1c1d1d" },
+    { "type": "checkbox", "id": "show_fab", "label": "Small cart button on the photo (mobile)", "default": true },
 
     { "type": "header", "content": "Rating" },
     { "type": "paragraph", "content": "Taken from the Reviews section on the same page, never typed in. Hidden below the threshold." },
