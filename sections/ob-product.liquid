@@ -175,14 +175,33 @@
     width: 100%; height: 100%; object-fit: cover; display: block;
   }
 
+  /* ---------- linie pod cena ---------- */
+  #shopify-section-{{ section.id }} .obp__vat {
+    font-size: 13px; font-weight: 400; color: var(--obp-muted);
+    align-self: center;
+  }
+  /* cena sprzed obnizki jako osobna linia z etykieta, nie przekreslenie */
+  #shopify-section-{{ section.id }} .obp__before {
+    flex-basis: 100%;
+    font-size: 13px; font-weight: 400; color: var(--obp-muted);
+    margin-top: 4px;
+  }
+  #shopify-section-{{ section.id }} .obp__omnibus s { text-decoration: line-through; }
+  #shopify-section-{{ section.id }} .obp__omnibus b {
+    color: {{ section.settings.sale_price_color }};
+    font-weight: 600;
+    margin-left: 5px;
+  }
+
   /* ---------- plakietka na zdjeciu ---------- */
   #shopify-section-{{ section.id }} .obp__stage { position: relative; }
   #shopify-section-{{ section.id }} .obp__flag {
-    position: absolute; left: 0; top: {{ section.settings.flag_top }}px; z-index: 2;
+    position: absolute; left: {{ section.settings.flag_left }}px; top: {{ section.settings.flag_top }}px; z-index: 2;
     background: {{ section.settings.flag_bg }};
     color: {{ section.settings.flag_text }};
     font-size: 15px; font-weight: 600;
     padding: 8px 16px;
+    border-radius: {{ section.settings.badge_radius }}px;
     pointer-events: none;
   }
 
@@ -205,7 +224,8 @@
     background: {{ section.settings.sale_flag_bg }};
     color: {{ section.settings.sale_flag_text }};
     font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 3px 8px;
+    padding: 4px 9px;
+    border-radius: {{ section.settings.badge_radius }}px;
     margin-bottom: 6px;
   }
   #shopify-section-{{ section.id }} .obp__price--sale [data-obp-price-now] {
@@ -799,15 +819,26 @@
 
           <div class="obp__price{% if war.compare_at_price > war.price %} obp__price--sale{% endif %}" data-obp-price>
             <span data-obp-price-now>{{ war.price | money }}</span>
+            {%- if section.settings.vat_note != blank -%}
+              <span class="obp__vat">{{ section.settings.vat_note }}</span>
+            {%- endif -%}
+
+            {%- comment -%}
+              Cena sprzed obnizki idzie w OSOBNA linie z etykieta, a nie
+              przekreslona obok ceny - tak jak na wzorcu ("Pierwotnie: 139,00").
+              Przekreslenie zostaje dopiero przy najnizszej cenie z 30 dni.
+            {%- endcomment -%}
             {%- if war.compare_at_price > war.price -%}
-              <s class="obp__compare" data-obp-price-was>{{ war.compare_at_price | money }}</s>
-              <span class="obp__save" data-obp-save>{{ section.settings.save_prefix }} {{ oszczednosc }}%</span>
+              <span class="obp__before" data-obp-price-was>
+                {{ section.settings.before_label }} {{ war.compare_at_price | money }}
+              </span>
+              <span class="obp__save" data-obp-save hidden>{{ section.settings.save_prefix }} {{ oszczednosc }}%</span>
               {%- if section.settings.show_savings_amount -%}
                 {%- assign kwota_oszcz = war.compare_at_price | minus: war.price -%}
                 <span class="obp__savings" data-obp-savings>{{ section.settings.savings_prefix }} {{ kwota_oszcz | money }}</span>
               {%- endif -%}
             {%- else -%}
-              <s class="obp__compare" data-obp-price-was hidden></s>
+              <span class="obp__before" data-obp-price-was hidden></span>
               <span class="obp__save" data-obp-save hidden></span>
               <span class="obp__savings" data-obp-savings hidden></span>
             {%- endif -%}
@@ -822,8 +853,15 @@
             {%- if section.settings.show_omnibus and war.compare_at_price > war.price -%}
               {%- assign omni = prod.metafields.custom.lowest_price_30d -%}
               {%- if omni != blank and omni.value != blank -%}
+                {%- assign omni_gr = omni.value | times: 100 -%}
                 <span class="obp__omnibus">
-                  {{ section.settings.omnibus_label }} {{ omni.value | times: 100 | money }}
+                  {{ section.settings.omnibus_label }}
+                  {%- if omni_gr > war.price -%}
+                    {%- assign spadek = omni_gr | minus: war.price | times: 100.0 | divided_by: omni_gr | round -%}
+                    <s>{{ omni_gr | money }}</s><b>-{{ spadek }}%</b>
+                  {%- else -%}
+                    {{ omni_gr | money }}
+                  {%- endif -%}
                 </span>
               {%- endif -%}
             {%- endif -%}
@@ -1134,6 +1172,7 @@
     var DODAJ = {{ section.settings.add_label | json }};
     var OSZCZ = {{ section.settings.save_prefix | json }};
     var OSZCZ_KWOTA = {{ section.settings.savings_prefix | json }};
+    var PRZED_ETYKIETA = {{ section.settings.before_label | json }};
 
     // formatowanie ceny zostawiamy motywowi - inaczej rozjedzie sie separator
     // i symbol waluty wzgledem reszty sklepu
@@ -1187,7 +1226,8 @@
       if (teraz) teraz.innerHTML = kwota(w.price);
       if (bylo && save) {
         if (naPrzecenie) {
-          bylo.innerHTML = kwota(w.compare_at_price);
+          // linia ma etykiete, wiec sklejamy ja z kwota
+          bylo.innerHTML = PRZED_ETYKIETA + ' ' + kwota(w.compare_at_price);
           bylo.hidden = false;
           save.textContent = OSZCZ + ' ' + Math.round((w.compare_at_price - w.price) / w.compare_at_price * 100) + '%';
           save.hidden = false;
@@ -1541,7 +1581,12 @@
     { "type": "color", "id": "flag_text", "label": "Flag text colour", "default": "#1c1d1d" },
     { "type": "range", "id": "flag_top", "label": "Flag distance from the top", "default": 16, "min": 0, "max": 60, "step": 2, "unit": "px" },
 
+    { "type": "range", "id": "flag_left", "label": "Flag distance from the left", "default": 0, "min": 0, "max": 40, "step": 2, "unit": "px" },
+    { "type": "range", "id": "badge_radius", "label": "Corner rounding on the tags", "default": 4, "min": 0, "max": 20, "step": 1, "unit": "px" },
+
     { "type": "checkbox", "id": "show_sale_flag", "label": "TILBUD tag above the price", "default": true },
+    { "type": "text", "id": "vat_note", "label": "Note next to the price", "default": "inkl. moms" },
+    { "type": "text", "id": "before_label", "label": "Before the old price", "default": "Før:" },
     { "type": "text", "id": "sale_flag_label", "label": "Tag text", "default": "TILBUD" },
     { "type": "color", "id": "sale_flag_bg", "label": "Tag background", "default": "#d6332e" },
     { "type": "color", "id": "sale_flag_text", "label": "Tag text colour", "default": "#ffffff" },

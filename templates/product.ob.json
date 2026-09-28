@@ -142,7 +142,11 @@
         "timer_bg": "#d6332e",
         "timer_text": "#ffffff",
         "show_omnibus": true,
-        "omnibus_label": "Laveste pris de sidste 30 dage:"
+        "omnibus_label": "Laveste pris de sidste 30 dage:",
+        "badge_radius": 4,
+        "flag_left": 0,
+        "vat_note": "inkl. moms",
+        "before_label": "Før:"
       }
     },
     "faq": {

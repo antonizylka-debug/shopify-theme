@@ -36,15 +36,18 @@
     margin-left: 4px;
   }
 
-  /* plakietka wyprzedazy na zdjeciu */
+  /* plakietka wyprzedazy na zdjeciu - lekko zaokraglona, jak na wzorcu */
   .grid-product__tag--sale {
     background: {{ ob_czerwien }};
     color: #fff;
-    border-radius: 0;
+    border-radius: 4px;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
+
+  /* przekreslona najnizsza cena i czerwony procent obok niej */
+  .grid-product__lowest s { text-decoration: line-through; }
 {%- endstyle -%}
 
 <script>
