@@ -175,22 +175,80 @@
     width: 100%; height: 100%; object-fit: cover; display: block;
   }
 
+  /* wymiary modelki pod zdjeciami */
+  #shopify-section-{{ section.id }} .obp__model {
+    font-size: 13px;
+    color: var(--obp-muted);
+    margin: 12px 0 0;
+  }
+
+  /* ---------- marka i podtytul nad nazwa ---------- */
+  #shopify-section-{{ section.id }} .obp__brand {
+    font-size: {{ section.settings.brand_size }}px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0 0 4px;
+  }
+  #shopify-section-{{ section.id }} .obp__subtitle {
+    font-size: 15px;
+    color: var(--obp-muted);
+    margin: 0 0 14px;
+  }
+
+  /* ---------- progi ilosciowe ---------- */
+  #shopify-section-{{ section.id }} .obp__tiers { margin: 18px 0 0; }
+  #shopify-section-{{ section.id }} .obp__tiers-head {
+    background: {{ section.settings.tiers_bg }};
+    color: {{ section.settings.tiers_text }};
+    text-align: center;
+    font-size: 14px; font-weight: 600;
+    padding: 9px 14px;
+  }
+  #shopify-section-{{ section.id }} .obp__tiers-body {
+    background: {{ section.settings.tiers_body_bg }};
+    padding: 14px 16px;
+  }
+  #shopify-section-{{ section.id }} .obp__tiers-note {
+    font-size: 13.5px; line-height: 1.55; margin: 0 0 10px;
+  }
+  #shopify-section-{{ section.id }} .obp__tiers-list {
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none;
+  }
+  #shopify-section-{{ section.id }} .obp__tier {
+    display: flex; align-items: baseline; gap: 6px;
+    background: #fff;
+    border: 1px solid var(--obp-line);
+    border-radius: {{ section.settings.badge_radius }}px;
+    padding: 7px 11px;
+    font-size: 13.5px;
+  }
+  #shopify-section-{{ section.id }} .obp__tier b {
+    font-weight: 700;
+    color: {{ section.settings.sale_price_color }};
+  }
+
   /* ---------- linie pod cena ---------- */
   #shopify-section-{{ section.id }} .obp__vat {
     font-size: 13px; font-weight: 400; color: var(--obp-muted);
     align-self: center;
   }
-  /* cena sprzed obnizki jako osobna linia z etykieta, nie przekreslenie */
-  #shopify-section-{{ section.id }} .obp__before {
+  /* Dwie linie odniesienia pod cena, jedna nad druga. Kazda ma przekreslona
+     kwote i swoj procent - pierwsza wzgledem ceny normalnej, druga wzgledem
+     najnizszej z 30 dni. */
+  #shopify-section-{{ section.id }} .obp__ref {
     flex-basis: 100%;
     font-size: 13px; font-weight: 400; color: var(--obp-muted);
     margin-top: 4px;
   }
-  #shopify-section-{{ section.id }} .obp__omnibus s { text-decoration: line-through; }
-  #shopify-section-{{ section.id }} .obp__omnibus b {
+  #shopify-section-{{ section.id }} .obp__ref + .obp__ref { margin-top: 2px; }
+  #shopify-section-{{ section.id }} .obp__ref s {
+    text-decoration: line-through;
+    margin-left: 4px;
+  }
+  #shopify-section-{{ section.id }} .obp__ref b {
     color: {{ section.settings.sale_price_color }};
     font-weight: 600;
-    margin-left: 5px;
+    margin-left: 6px;
   }
 
   /* ---------- plakietka na zdjeciu ---------- */
@@ -693,6 +751,25 @@
             {%- endif -%}
           </div>
 
+          {%- comment -%}
+            Wymiary modelki pod zdjeciami. Najpierw metapole per produkt,
+            a jak go nie ma - jedno zdanie z ustawien dla calego sklepu.
+            Wg badan Baymarda to jedna z rzeczy, ktore najmocniej zdejmuja
+            niepewnosc rozmiaru, a zaden z czterech dunskich sklepow jej nie ma.
+          {%- endcomment -%}
+          {%- liquid
+            assign model_meta = prod.metafields.custom.model_size
+            assign model_tekst = ''
+            if model_meta != blank and model_meta.value != blank
+              assign model_tekst = model_meta.value
+            elsif section.settings.model_note != blank
+              assign model_tekst = section.settings.model_note
+            endif
+          -%}
+          {%- if model_tekst != blank -%}
+            <p class="obp__model">{{ model_tekst }}</p>
+          {%- endif -%}
+
           {%- if prod.media.size > 1 -%}
             <div class="obp__dots"{% if prod.media.size > 12 %} data-obp-many{% endif %}>
               {%- for media in prod.media -%}
@@ -825,29 +902,23 @@
             {%- endif -%}
 
             {%- comment -%}
-              Cena sprzed obnizki idzie w OSOBNA linie z etykieta, a nie
-              przekreslona obok ceny - tak jak na wzorcu ("Pierwotnie: 139,00").
-              Przekreslenie zostaje dopiero przy najnizszej cenie z 30 dni.
+              Dwie linie odniesienia, kazda z wlasnym przekresleniem i wlasnym
+              procentem - dokladnie jak na wzorcu:
+                Normalpris: 2.199 kr  -50%
+                Laveste pris 30 dage:  1.399 kr  -21%
+              Pierwsza mowi, ile kosztowal normalnie. Druga, ile kosztowal
+              najtaniej w ostatnich 30 dniach - i to ten drugi procent jest
+              tym, ktorego wymaga prawo przy komunikowaniu obnizki.
             {%- endcomment -%}
             {%- if war.compare_at_price > war.price -%}
-              <span class="obp__before" data-obp-price-was>
-                {{ section.settings.before_label }} {{ war.compare_at_price | money }}
+              <span class="obp__ref" data-obp-price-was>
+                {{ section.settings.before_label }}
+                <s>{{ war.compare_at_price | money }}</s><b>-{{ oszczednosc }}%</b>
               </span>
-              {%- comment -%}
-                Kwota i procent w JEDNEJ linii. Wczesniej byly trzy osobne
-                elementy mowiace o tej samej obnizce - plakietka TILBUD,
-                plakietka SPAR 50% i "Du sparer 1.100 kr" - w trzech roznych
-                kolorach. Zostaje plakietka nad cena i jedna linia pod nia.
-              {%- endcomment -%}
               <span class="obp__save" data-obp-save hidden>{{ section.settings.save_prefix }} {{ oszczednosc }}%</span>
-              {%- if section.settings.show_savings_amount -%}
-                {%- assign kwota_oszcz = war.compare_at_price | minus: war.price -%}
-                <span class="obp__savings" data-obp-savings>
-                  {{ section.settings.savings_prefix }} {{ kwota_oszcz | money }} <b>({{ oszczednosc }}%)</b>
-                </span>
-              {%- endif -%}
+              <span class="obp__savings" data-obp-savings hidden></span>
             {%- else -%}
-              <span class="obp__before" data-obp-price-was hidden></span>
+              <span class="obp__ref" data-obp-price-was hidden></span>
               <span class="obp__save" data-obp-save hidden></span>
               <span class="obp__savings" data-obp-savings hidden></span>
             {%- endif -%}
@@ -863,7 +934,7 @@
               {%- assign omni = prod.metafields.custom.lowest_price_30d -%}
               {%- if omni != blank and omni.value != blank -%}
                 {%- assign omni_gr = omni.value | times: 100 -%}
-                <span class="obp__omnibus">
+                <span class="obp__ref obp__omnibus">
                   {{ section.settings.omnibus_label }}
                   {%- if omni_gr > war.price -%}
                     {%- assign spadek = omni_gr | minus: war.price | times: 100.0 | divided_by: omni_gr | round -%}
@@ -876,6 +947,45 @@
             {%- endif -%}
           </div>
         </div>
+
+        {%- comment -%}
+          Progi ilosciowe. Sama sekcja tylko JE POKAZUJE - rabat musi byc
+          ustawiony po stronie Shopify, bo motyw nie liczy cen w koszyku.
+          Natywne rabaty automatyczne maja warunek minimalnej ilosci, ale
+          tylko jeden rabat produktowy dziala naraz, wiec progi 2/3/4 wymagaja
+          aplikacji albo Shopify Function. Wlaczaj dopiero, gdy rabat naprawde
+          nalicza sie w kasie.
+
+          Format: "ilosc:procent" po przecinku, np. "2:10, 3:15, 4:20".
+        {%- endcomment -%}
+        {%- if section.settings.show_tiers and section.settings.tiers_list != blank -%}
+          {%- assign progi = section.settings.tiers_list | split: ',' -%}
+          {%- if progi.size > 0 -%}
+            <div class="obp__tiers">
+              {%- if section.settings.tiers_headline != blank -%}
+                <div class="obp__tiers-head">{{ section.settings.tiers_headline }}</div>
+              {%- endif -%}
+              <div class="obp__tiers-body">
+                {%- if section.settings.tiers_note != blank -%}
+                  <p class="obp__tiers-note">{{ section.settings.tiers_note }}</p>
+                {%- endif -%}
+                <ul class="obp__tiers-list">
+                  {%- for prog in progi -%}
+                    {%- assign czesci = prog | split: ':' -%}
+                    {%- assign ilosc = czesci[0] | strip -%}
+                    {%- assign procent = czesci[1] | strip -%}
+                    {%- if ilosc != blank and procent != blank -%}
+                      <li class="obp__tier">
+                        <span>{{ section.settings.tiers_qty_word | replace: '{n}', ilosc }}</span>
+                        <b>-{{ procent }}%</b>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
 
         <hr class="obp__rule">
 
@@ -1235,8 +1345,9 @@
       if (teraz) teraz.innerHTML = kwota(w.price);
       if (bylo && save) {
         if (naPrzecenie) {
-          // linia ma etykiete, wiec sklejamy ja z kwota
-          bylo.innerHTML = PRZED_ETYKIETA + ' ' + kwota(w.compare_at_price);
+          // etykieta + przekreslona kwota + procent, jak na wzorcu
+          var procRef = Math.round((w.compare_at_price - w.price) / w.compare_at_price * 100);
+          bylo.innerHTML = PRZED_ETYKIETA + '<s>' + kwota(w.compare_at_price) + '</s><b>-' + procRef + '%</b>';
           bylo.hidden = false;
           save.textContent = OSZCZ + ' ' + Math.round((w.compare_at_price - w.price) / w.compare_at_price * 100) + '%';
           save.hidden = false;
@@ -1590,6 +1701,22 @@
     { "type": "color", "id": "flag_bg", "label": "Flag background", "default": "#f6e58d" },
     { "type": "color", "id": "flag_text", "label": "Flag text colour", "default": "#1c1d1d" },
     { "type": "range", "id": "flag_top", "label": "Flag distance from the top", "default": 16, "min": 0, "max": 60, "step": 2, "unit": "px" },
+
+    { "type": "header", "content": "Volume discount" },
+    { "type": "paragraph", "content": "This only DISPLAYS the tiers. The discount itself has to exist in Shopify, because a theme cannot change cart prices. Native automatic discounts take a minimum quantity, but only one product discount applies at a time, so 2/3/4 tiers need a volume-discount app or a Shopify Function. Switch this on once the discount really comes off in the checkout." },
+    { "type": "checkbox", "id": "show_tiers", "label": "Show the tiers", "default": false },
+    { "type": "text", "id": "tiers_headline", "label": "Red bar text", "default": "KØB FLERE — SPAR MERE" },
+    { "type": "textarea", "id": "tiers_note", "label": "Explanation", "default": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens." },
+    { "type": "text", "id": "tiers_list", "label": "Tiers, as quantity:percent", "default": "2:10, 3:15, 4:20" },
+    { "type": "text", "id": "tiers_qty_word", "label": "Wording, {n} is the quantity", "default": "{n} stk." },
+    { "type": "color", "id": "tiers_bg", "label": "Bar background", "default": "#d6332e" },
+    { "type": "color", "id": "tiers_text", "label": "Bar text", "default": "#ffffff" },
+    { "type": "color", "id": "tiers_body_bg", "label": "Box background", "default": "#f4f3f1" },
+
+    { "type": "header", "content": "Model" },
+    { "type": "paragraph", "content": "Shown under the photos. A per-product value in the custom.model_size metafield wins over this one." },
+    { "type": "text", "id": "model_note", "label": "Model note", "default": "" },
+    { "type": "range", "id": "brand_size", "label": "Brand name size", "default": 26, "min": 14, "max": 40, "step": 1, "unit": "px" },
 
     { "type": "range", "id": "flag_left", "label": "Flag distance from the left", "default": 0, "min": 0, "max": 40, "step": 2, "unit": "px" },
     { "type": "range", "id": "badge_radius", "label": "Corner rounding on the tags", "default": 4, "min": 0, "max": 20, "step": 1, "unit": "px" },

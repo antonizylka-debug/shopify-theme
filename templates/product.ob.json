@@ -77,7 +77,7 @@
         "title_uppercase": false,
         "add_label": "Læg i kurv",
         "save_prefix": "SPAR",
-        "show_savings_amount": true,
+        "show_savings_amount": false,
         "savings_prefix": "Du sparer",
         "show_reassure": false,
         "reassure_items": "Ingen told eller gebyrer|Sporing på hver pakke|Dansk kundeservice",
@@ -142,11 +142,21 @@
         "timer_bg": "#d6332e",
         "timer_text": "#ffffff",
         "show_omnibus": true,
-        "omnibus_label": "Laveste pris de sidste 30 dage:",
+        "omnibus_label": "Laveste pris 30 dage før nedsættelsen:",
         "badge_radius": 4,
         "flag_left": 0,
         "vat_note": "inkl. moms",
-        "before_label": "Før:"
+        "before_label": "Normalpris:",
+        "show_tiers": false,
+        "tiers_headline": "KØB FLERE — SPAR MERE",
+        "tiers_note": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens.",
+        "tiers_list": "2:10, 3:15, 4:20",
+        "tiers_qty_word": "{n} stk.",
+        "tiers_bg": "#d6332e",
+        "tiers_text": "#ffffff",
+        "tiers_body_bg": "#f4f3f1",
+        "model_note": "",
+        "brand_size": 26
       }
     },
     "faq": {
