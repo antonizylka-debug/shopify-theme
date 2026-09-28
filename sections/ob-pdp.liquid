@@ -127,10 +127,14 @@
   }
   #shopify-section-{{ section.id }} .pdp__photo img {
     width: 100%; height: 100%; object-fit: cover; display: block;
+    cursor: zoom-in;
   }
   #shopify-section-{{ section.id }} .pdp__photo--big {
     grid-column: span {{ 6 | divided_by: section.settings.big_per_row }};
   }
+
+  /* kropki tylko pod karuzela na telefonie */
+  #shopify-section-{{ section.id }} .pdp__dots { display: none; }
 
   /* zdjecia ponad limitem chowamy do klikniecia w przycisk */
   #shopify-section-{{ section.id }} .pdp__photo--more { display: none; }
@@ -253,12 +257,6 @@
     width: 5px; height: 5px; border-radius: 50%; background: {{ section.settings.c_low }};
   }
 
-  #shopify-section-{{ section.id }} .pdp__guide {
-    display: inline-block; margin: 12px 0 18px;
-    font-size: 13.5px; color: var(--pdp-text);
-    text-decoration: underline; text-underline-offset: 3px;
-  }
-
   /* ---------- przycisk ---------- */
   #shopify-section-{{ section.id }} .pdp__atc {
     display: block; width: 100%; height: 52px; border: 0; cursor: pointer;
@@ -268,14 +266,38 @@
   }
   #shopify-section-{{ section.id }} .pdp__atc[disabled] { opacity: 0.45; cursor: not-allowed; }
 
-  /* ---------- wiersze dostawy ---------- */
-  #shopify-section-{{ section.id }} .pdp__rows { margin: 20px 0 0; }
-  #shopify-section-{{ section.id }} .pdp__row {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 13.5px; padding: 6px 0;
+  /* ---------- wiersze dostawy ----------
+     Zamiast luznej listy - jeden panel z ramka i cienkimi przegrodami.
+     Ikona siedzi w jasnym kolku, tekst ma naglowek i opis pod spodem. */
+  #shopify-section-{{ section.id }} .pdp__rows {
+    margin: 20px 0 0;
+    border: 1px solid var(--pdp-line);
+    border-radius: {{ section.settings.radius }}px;
+    overflow: hidden;
   }
-  #shopify-section-{{ section.id }} .pdp__row svg { width: 17px; height: 17px; flex: 0 0 17px; margin-top: 1px; color: var(--pdp-muted); }
-  #shopify-section-{{ section.id }} .pdp__row b { font-weight: 600; }
+  #shopify-section-{{ section.id }} .pdp__row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 15px;
+  }
+  #shopify-section-{{ section.id }} .pdp__row + .pdp__row {
+    border-top: 1px solid var(--pdp-line);
+  }
+  #shopify-section-{{ section.id }} .pdp__row-ico {
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 32px; width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--pdp-soft);
+  }
+  #shopify-section-{{ section.id }} .pdp__row-ico svg {
+    width: 16px; height: 16px; color: var(--pdp-text);
+  }
+  #shopify-section-{{ section.id }} .pdp__row-txt { min-width: 0; }
+  #shopify-section-{{ section.id }} .pdp__row-title {
+    font-size: 13.5px; font-weight: 600; line-height: 1.35;
+  }
+  #shopify-section-{{ section.id }} .pdp__row-sub {
+    font-size: 12.5px; color: var(--pdp-muted); margin-top: 1px;
+  }
 
   /* ---------- akordeony ---------- */
   #shopify-section-{{ section.id }} .pdp__accs { margin-top: 22px; }
@@ -296,12 +318,81 @@
     padding: 0 2px 16px; font-size: 14px; line-height: 1.6;
   }
 
+  /* ---------- powiekszenie ---------- */
+  #shopify-section-{{ section.id }} .pdp__zoom {
+    position: fixed; inset: 0; z-index: 90;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.92);
+  }
+  #shopify-section-{{ section.id }} .pdp__zoom.is-on { display: flex; }
+  #shopify-section-{{ section.id }} .pdp__zoom img {
+    max-width: 94vw; max-height: 88vh;
+    object-fit: contain; display: block;
+  }
+  #shopify-section-{{ section.id }} .pdp__zoom-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 46px; height: 46px; border: 0; cursor: pointer;
+    background: rgba(255, 255, 255, 0.92); color: #1c1d1d;
+    border-radius: 50%; font-size: 20px; line-height: 1;
+  }
+  #shopify-section-{{ section.id }} .pdp__zoom-prev { left: 14px; }
+  #shopify-section-{{ section.id }} .pdp__zoom-next { right: 14px; }
+  #shopify-section-{{ section.id }} .pdp__zoom-close {
+    position: absolute; top: 14px; right: 14px;
+    width: 42px; height: 42px; border: 0; cursor: pointer;
+    background: rgba(255, 255, 255, 0.92); color: #1c1d1d;
+    border-radius: 50%; font-size: 20px; line-height: 1;
+  }
+  #shopify-section-{{ section.id }} .pdp__zoom-count {
+    position: absolute; bottom: 18px; left: 0; right: 0;
+    text-align: center; color: #fff; font-size: 13px;
+    font-variant-numeric: tabular-nums;
+  }
+
   @media only screen and (max-width: {{ section.settings.breakpoint }}px) {
     #shopify-section-{{ section.id }} .pdp__grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
-    /* zostajemy na podstawie 6 kolumn: duze na cala szerokosc, male po dwa */
-    #shopify-section-{{ section.id }} .pdp__photos { gap: 4px; }
-    #shopify-section-{{ section.id }} .pdp__photo--big { grid-column: span 6; }
-    #shopify-section-{{ section.id }} .pdp__photo { grid-column: span 3; }
+
+    {%- comment -%}
+      Na telefonie siatka spychala cene daleko pod ekran - przy kilkunastu
+      zdjeciach trzeba bylo dlugo przewijac, zanim w ogole widac bylo cene.
+      Dlatego zamiast siatki jedna karuzela przesuwana palcem: zajmuje
+      wysokosc jednego zdjecia niezaleznie od tego, ile ich jest.
+    {%- endcomment -%}
+    #shopify-section-{{ section.id }} .pdp__photos {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    #shopify-section-{{ section.id }} .pdp__photos::-webkit-scrollbar { display: none; }
+    #shopify-section-{{ section.id }} .pdp__photo,
+    #shopify-section-{{ section.id }} .pdp__photo--big {
+      flex: 0 0 100%;
+      grid-column: auto;
+      scroll-snap-align: start;
+    }
+    /* na telefonie pokazujemy wszystkie - przewijanie w bok nic nie kosztuje */
+    #shopify-section-{{ section.id }} .pdp__photo--more { display: block; }
+    #shopify-section-{{ section.id }} .pdp__more { display: none; }
+
+    #shopify-section-{{ section.id }} .pdp__dots {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 0; padding-top: 10px;
+    }
+    #shopify-section-{{ section.id }} .pdp__dot {
+      flex: 0 0 22px; width: 22px; height: 22px;
+      border: 0; background: none; padding: 0; cursor: pointer;
+      position: relative;
+    }
+    #shopify-section-{{ section.id }} .pdp__dot::after {
+      content: ''; position: absolute; left: 50%; top: 50%;
+      width: 6px; height: 6px; margin: -3px 0 0 -3px;
+      border-radius: 50%; background: var(--pdp-line);
+    }
+    #shopify-section-{{ section.id }} .pdp__dot.is-on::after { background: var(--pdp-text); }
+
     #shopify-section-{{ section.id }} .pdp__title { font-size: {{ section.settings.title_size_m }}px; }
     #shopify-section-{{ section.id }} .pdp__price { font-size: {{ section.settings.price_size_m }}px; }
     #shopify-section-{{ section.id }} .pdp__sizes { grid-template-columns: repeat({{ section.settings.size_cols_m }}, minmax(0, 1fr)); }
@@ -366,6 +457,15 @@
             <figure class="pdp__photo pdp__photo--big">{{ 'product-1' | placeholder_svg_tag }}</figure>
           {%- endif -%}
         </div>
+
+        {%- if product.media.size > 1 -%}
+          <div class="pdp__dots" data-pdp-dots>
+            {%- for media in product.media -%}
+              <button type="button" class="pdp__dot{% if forloop.first %} is-on{% endif %}"
+                      data-pdp-dot="{{ forloop.index0 }}" aria-label="{{ forloop.index }}"></button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
 
         {%- if product.media.size > section.settings.photo_visible and section.settings.more_label != blank -%}
           {%- assign ukrytych = product.media.size | minus: section.settings.photo_visible -%}
@@ -541,9 +641,11 @@
           {%- endunless -%}
         {%- endfor -%}
 
-        {%- if section.settings.guide_link != blank -%}
-          <a class="pdp__guide" href="{{ section.settings.guide_link }}">{{ section.settings.guide_label }}</a>
-        {%- endif -%}
+        {%- comment -%}
+          Osobnego linku "Storrelsesguide" tu nie ma - prowadzilby tam samo,
+          co link w szarej ramce nad rozmiarami. Dwa odnosniki do tej samej
+          strony obok siebie tylko rozpraszaja.
+        {%- endcomment -%}
 
         {%- form 'product', product, novalidate: 'novalidate' -%}
           <input type="hidden" name="id" value="{{ war.id }}" data-pdp-id>
@@ -559,16 +661,25 @@
           <div class="pdp__rows">
             {%- for block in wiersze -%}
               <div class="pdp__row" {{ block.shopify_attributes }}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                  {%- case block.settings.icon -%}
-                    {%- when 'return' -%}<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>
-                    {%- when 'clock' -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
-                    {%- when 'lock' -%}<rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>
-                    {%- when 'pin' -%}<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>
-                    {%- else -%}<path d="M2.5 6h10v10h-10z"/><path d="M12.5 9h4l3.5 3.5V16h-7.5"/><circle cx="6" cy="17.5" r="2"/><circle cx="16.5" cy="17.5" r="2"/>
-                  {%- endcase -%}
-                </svg>
-                <span>{{ block.settings.text }}</span>
+                <span class="pdp__row-ico">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    {%- case block.settings.icon -%}
+                      {%- when 'return' -%}<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>
+                      {%- when 'clock' -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+                      {%- when 'lock' -%}<rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>
+                      {%- when 'pin' -%}<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>
+                      {%- when 'card' -%}<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/>
+                      {%- when 'chat' -%}<path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 9.5h8M8 12.5h5"/>
+                      {%- else -%}<path d="M2.5 6h10v10h-10z"/><path d="M12.5 9h4l3.5 3.5V16h-7.5"/><circle cx="6" cy="17.5" r="2"/><circle cx="16.5" cy="17.5" r="2"/>
+                    {%- endcase -%}
+                  </svg>
+                </span>
+                <span class="pdp__row-txt">
+                  <span class="pdp__row-title">{{ block.settings.text }}</span>
+                  {%- if block.settings.sub != blank -%}
+                    <span class="pdp__row-sub">{{ block.settings.sub }}</span>
+                  {%- endif -%}
+                </span>
               </div>
             {%- endfor -%}
           </div>
@@ -591,9 +702,34 @@
       </div>
     </div>
   </div>
+
+  {%- comment -%}
+    Powiekszenie. Obrazki wczytujemy dopiero przy otwarciu - w znaczniku
+    siedzi sam adres, zeby 31 zdjec w duzej rozdzielczosci nie ciagnelo sie
+    razem ze strona.
+  {%- endcomment -%}
+  <div class="pdp__zoom" data-pdp-zoom hidden>
+    <button type="button" class="pdp__zoom-close" data-pdp-zoom-close aria-label="{{ 'general.accessibility.close' | t }}">&times;</button>
+    <button type="button" class="pdp__zoom-btn pdp__zoom-prev" data-pdp-zoom-prev aria-label="{{ 'general.pagination.previous' | t }}">&#8249;</button>
+    {%- comment -%}
+      width/height sa wymagane przez walidacje - tutaj to tylko proporcja
+      wyjsciowa, bo o rzeczywistym rozmiarze i tak decyduje max-width/height.
+    {%- endcomment -%}
+    <img data-pdp-zoom-img src="" width="1600" height="2133" alt="{{ product.title | escape }}">
+    <button type="button" class="pdp__zoom-btn pdp__zoom-next" data-pdp-zoom-next aria-label="{{ 'general.pagination.next' | t }}">&#8250;</button>
+    <div class="pdp__zoom-count" data-pdp-zoom-count></div>
+  </div>
 </div>
 
 <script type="application/json" data-pdp-variants>{{ product.variants | json }}</script>
+<script type="application/json" data-pdp-media>
+  {%- capture lista -%}
+    [{%- for media in product.media -%}
+      {{ media.preview_image | image_url: width: 1600 | json }}{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}]
+  {%- endcapture -%}
+  {{ lista }}
+</script>
 
 <script>
   (function () {
@@ -703,6 +839,93 @@
       });
     })();
 
+    // ---------- kropki karuzeli (telefon) ----------
+    (function () {
+      var siatka = root.querySelector('[data-pdp-photos]');
+      var kropki = [].slice.call(root.querySelectorAll('[data-pdp-dot]'));
+      if (!siatka || !kropki.length) return;
+
+      function zaznacz(i) {
+        kropki.forEach(function (d) {
+          d.classList.toggle('is-on', parseInt(d.dataset.pdpDot, 10) === i);
+        });
+      }
+
+      kropki.forEach(function (d) {
+        d.addEventListener('click', function () {
+          var i = parseInt(d.dataset.pdpDot, 10);
+          var zdj = siatka.children[i];
+          if (zdj) siatka.scrollTo({ left: zdj.offsetLeft - siatka.offsetLeft, behavior: 'smooth' });
+        });
+      });
+
+      var czekaj;
+      siatka.addEventListener('scroll', function () {
+        clearTimeout(czekaj);
+        czekaj = setTimeout(function () {
+          if (!siatka.clientWidth) return;
+          zaznacz(Math.round(siatka.scrollLeft / siatka.clientWidth));
+        }, 80);
+      }, { passive: true });
+    })();
+
+    // ---------- powiekszenie ----------
+    (function () {
+      var warstwa = root.querySelector('[data-pdp-zoom]');
+      var siatka = root.querySelector('[data-pdp-photos]');
+      if (!warstwa || !siatka) return;
+
+      var zrodla = [];
+      try { zrodla = JSON.parse(root.querySelector('[data-pdp-media]').textContent); } catch (e) { return; }
+      if (!zrodla.length) return;
+
+      var obraz = warstwa.querySelector('[data-pdp-zoom-img]');
+      var licznik = warstwa.querySelector('[data-pdp-zoom-count]');
+      var teraz = 0;
+
+      function pokaz(i) {
+        teraz = (i + zrodla.length) % zrodla.length;
+        obraz.src = zrodla[teraz];
+        licznik.textContent = (teraz + 1) + ' / ' + zrodla.length;
+      }
+
+      function otworz(i) {
+        pokaz(i);
+        warstwa.hidden = false;
+        warstwa.classList.add('is-on');
+        // blokujemy przewijanie strony pod spodem
+        document.body.style.overflow = 'hidden';
+      }
+
+      function zamknij() {
+        warstwa.classList.remove('is-on');
+        warstwa.hidden = true;
+        document.body.style.overflow = '';
+      }
+
+      siatka.addEventListener('click', function (e) {
+        var fig = e.target.closest('.pdp__photo');
+        if (!fig) return;
+        otworz([].indexOf.call(siatka.children, fig));
+      });
+
+      warstwa.querySelector('[data-pdp-zoom-close]').addEventListener('click', zamknij);
+      warstwa.querySelector('[data-pdp-zoom-prev]').addEventListener('click', function () { pokaz(teraz - 1); });
+      warstwa.querySelector('[data-pdp-zoom-next]').addEventListener('click', function () { pokaz(teraz + 1); });
+
+      // klikniecie w tlo zamyka, klikniecie w zdjecie lub przyciski nie
+      warstwa.addEventListener('click', function (e) {
+        if (e.target === warstwa) zamknij();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (warstwa.hidden) return;
+        if (e.key === 'Escape') zamknij();
+        if (e.key === 'ArrowLeft') pokaz(teraz - 1);
+        if (e.key === 'ArrowRight') pokaz(teraz + 1);
+      });
+    })();
+
     {%- if section.settings.show_rating -%}
     // ocena przepisana z sekcji opinii - nigdy nie wpisywana recznie
     (function () {
@@ -786,8 +1009,6 @@
     { "type": "header", "content": "Sizes" },
     { "type": "range", "id": "size_cols", "label": "Size tiles per row", "default": 5, "min": 3, "max": 8, "step": 1 },
     { "type": "range", "id": "size_cols_m", "label": "Per row (mobile)", "default": 4, "min": 2, "max": 6, "step": 1 },
-    { "type": "text", "id": "guide_label", "label": "Size guide link", "default": "Størrelsesguide" },
-    { "type": "url", "id": "guide_link", "label": "Size guide target" },
     { "type": "textarea", "id": "help_text", "label": "Size help box", "default": "Ikke sikker på størrelsen? Gå efter målene frem for den størrelse, du plejer at tage." },
     { "type": "text", "id": "help_link_label", "label": "Link in the help box", "default": "Se målene" },
     { "type": "url", "id": "help_link", "label": "Help box target" },
@@ -834,10 +1055,13 @@
             { "value": "return", "label": "Return" },
             { "value": "clock", "label": "Time" },
             { "value": "lock", "label": "Secure" },
-            { "value": "pin", "label": "Pickup point" }
+            { "value": "pin", "label": "Pickup point" },
+            { "value": "card", "label": "Payment" },
+            { "value": "chat", "label": "Support" }
           ]
         },
-        { "type": "text", "id": "text", "label": "Text", "default": "Gratis fragt på alle ordrer" }
+        { "type": "text", "id": "text", "label": "Heading", "default": "Gratis fragt på alle ordrer" },
+        { "type": "text", "id": "sub", "label": "Line underneath" }
       ]
     },
     {

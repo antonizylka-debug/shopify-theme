@@ -16,28 +16,32 @@
           "type": "row",
           "settings": {
             "icon": "truck",
-            "text": "Gratis fragt på alle ordrer"
+            "text": "Gratis fragt",
+            "sub": "På alle ordrer, ingen minimumskøb"
           }
         },
         "row-2": {
           "type": "row",
           "settings": {
             "icon": "clock",
-            "text": "Afsendes inden for 3-4 hverdage"
+            "text": "Afsendes inden for 3-4 hverdage",
+            "sub": "Derefter 3-6 hverdage med levering"
           }
         },
         "row-3": {
           "type": "row",
           "settings": {
             "icon": "return",
-            "text": "30 dages returret"
+            "text": "30 dages returret",
+            "sub": "Fra den dag du modtager pakken"
           }
         },
         "row-4": {
           "type": "row",
           "settings": {
             "icon": "lock",
-            "text": "Sikker, krypteret betaling"
+            "text": "Sikker betaling",
+            "sub": "Krypteret og uden gebyrer"
           }
         },
         "acc-1": {
