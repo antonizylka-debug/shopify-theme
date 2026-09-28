@@ -375,12 +375,39 @@
         {%- endif -%}
 
         {%- liquid
-          assign model_meta = product.metafields.custom.model_size
+          comment
+            Wymiary modelki. Trzy poziomy, od najbardziej szczegolowego:
+
+            1. metapole custom.model_size - konkretny produkt, wygrywa zawsze.
+               Tu tez wpisujesz puste, jesli dany produkt nie ma zdjecia
+               z modelem i linia ma sie nie pokazac.
+            2. ustawienie dla dzialu - osobne dla damskiego i meskiego,
+               bo modelki i modele maja rozny wzrost i rozmiar.
+            3. brak - linia sie nie pojawia.
+
+            Dzial czytamy z tagu "Department: ...", tego samego, na ktorym
+            opieraja sie kolekcje.
+          endcomment
           assign model_txt = ''
+          assign model_meta = product.metafields.custom.model_size
+
           if model_meta != blank and model_meta.value != blank
             assign model_txt = model_meta.value
-          elsif section.settings.model_note != blank
-            assign model_txt = section.settings.model_note
+          else
+            assign dzial = ''
+            for t in product.tags
+              assign tl = t | downcase | strip
+              if tl contains 'department:'
+                assign dzial = tl | split: ':' | last | strip
+                break
+              endif
+            endfor
+
+            if dzial contains 'women' or dzial contains 'dame'
+              assign model_txt = section.settings.model_note_women
+            elsif dzial contains 'men' or dzial contains 'herre'
+              assign model_txt = section.settings.model_note_men
+            endif
           endif
         -%}
         {%- if model_txt != blank -%}
@@ -741,7 +768,9 @@
     { "type": "text", "id": "more_label", "label": "Show more button", "default": "Vis flere billeder" },
     { "type": "range", "id": "photo_gap", "label": "Gap between photos", "default": 6, "min": 0, "max": 20, "step": 1, "unit": "px" },
     { "type": "text", "id": "photo_ratio", "label": "Photo shape", "default": "3 / 4" },
-    { "type": "text", "id": "model_note", "label": "Model note under the photos" },
+    { "type": "paragraph", "content": "Model note under the photos, split by department because the models differ in height and size. A product's own custom.model_size metafield wins over both — that is also where you clear it for a product photographed without a model. Leave a field empty and nothing shows." },
+    { "type": "text", "id": "model_note_women", "label": "Model note — women" },
+    { "type": "text", "id": "model_note_men", "label": "Model note — men" },
 
     { "type": "header", "content": "Text" },
     { "type": "range", "id": "title_size", "label": "Title", "default": 26, "min": 18, "max": 40, "step": 1, "unit": "px" },
