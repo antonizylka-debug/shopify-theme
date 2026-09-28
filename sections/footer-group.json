@@ -120,8 +120,8 @@
           "type": "logo_social",
           "settings": {
             "logo": "shopify://shop_images/white_logo.png",
-            "desktop_logo_height": 34,
-            "text": "<p>Premium fashion and homewares. Considered design for the modern wardrobe and home.</p>",
+            "desktop_logo_height": 75,
+            "text": "<p>Modetøj og boligartikler i premium-klassen. Gennemtænkt design til den moderne garderobe og bolig.</p>",
             "show_social": true,
             "container_width": 25
           }

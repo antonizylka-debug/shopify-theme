@@ -1,4 +1,12 @@
-/* Strona produktu v2. Ponowne wyslanie 2026-09-28 19:41. */
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -37,6 +45,7 @@
           "settings": {
             "title": "Produktinformation",
             "use_desc": true,
+            "text": "<p>Skriv teksten her.</p>",
             "open": true
           }
         },
@@ -59,10 +68,18 @@
           }
         }
       },
-      "block_order": ["row-1", "row-2", "row-3", "row-4", "acc-1", "acc-2", "acc-3"],
+      "block_order": [
+        "row-1",
+        "row-2",
+        "row-3",
+        "row-4",
+        "acc-1",
+        "acc-2",
+        "acc-3"
+      ],
       "settings": {
         "show_crumbs": true,
-        "media_w": 58,
+        "media_w": 54,
         "info_w": 42,
         "gap": 40,
         "breakpoint": 900,
@@ -110,8 +127,6 @@
     },
     "reviews": {
       "type": "ob-reviews",
-      "blocks": {},
-      "block_order": [],
       "settings": {
         "eyebrow": "ANMELDELSER",
         "title": "Det siger vores kunder",
@@ -138,12 +153,24 @@
     },
     "product-recommendations": {
       "type": "product-recommendations",
-      "settings": {}
+      "settings": {
+        "product_recommendations_heading": "Måske kan du også lide",
+        "related_count": 6,
+        "products_per_row": 3
+      }
     },
     "apps": {
       "type": "apps",
-      "settings": {}
+      "settings": {
+        "full_width": false,
+        "space_around": true
+      }
     }
   },
-  "order": ["main", "reviews", "product-recommendations", "apps"]
+  "order": [
+    "main",
+    "reviews",
+    "product-recommendations",
+    "apps"
+  ]
 }

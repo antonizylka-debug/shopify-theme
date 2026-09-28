@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -98,9 +107,43 @@
         "transit_min": 3,
         "transit_max": 6,
         "rating_source": "section",
+        "rating_anchor": "anmeldelser",
+        "rating_min_count": 5,
         "rating_value": "4.8",
         "rating_label": "Bedømt som fremragende",
         "rating_count_label": "Baseret på",
+        "show_flag": true,
+        "flag_text_value": "Næsten udsolgt",
+        "flag_bg": "#f6e58d",
+        "flag_text": "#1c1d1d",
+        "flag_top": 16,
+        "show_tiers": false,
+        "tiers_headline": "KØB FLERE — SPAR MERE",
+        "tiers_note": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens.",
+        "tiers_list": "2:10, 3:15, 4:20",
+        "tiers_qty_word": "# stk.",
+        "tiers_bg": "#d6332e",
+        "tiers_text": "#ffffff",
+        "tiers_body_bg": "#f4f3f1",
+        "model_note": "",
+        "brand_size": 26,
+        "flag_left": 0,
+        "badge_radius": 4,
+        "show_sale_flag": true,
+        "vat_note": "inkl. moms",
+        "before_label": "Normalpris:",
+        "sale_flag_label": "UDSALG",
+        "sale_flag_bg": "#d6332e",
+        "sale_flag_text": "#ffffff",
+        "sale_price_color": "#d6332e",
+        "show_timer": false,
+        "timer_end": "",
+        "timer_label": "TILBUDDET SLUTTER OM",
+        "timer_units": "d,t,m,s",
+        "timer_bg": "#d6332e",
+        "timer_text": "#ffffff",
+        "show_omnibus": true,
+        "omnibus_label": "Laveste pris 30 dage før nedsættelsen:",
         "show_campaign": true,
         "campaign_title": "SÆSONUDSALG · OP TIL 50%",
         "campaign_sub": "Rabatten er allerede trukket fra",
@@ -122,41 +165,7 @@
         "color_button_text": "#ffffff",
         "color_save_bg": "#e8edf5",
         "color_save_text": "#2e4e7e",
-        "color_low_stock": "#b05f2e",
-        "rating_anchor": "anmeldelser",
-        "rating_min_count": 5,
-        "show_flag": true,
-        "flag_text_value": "Næsten udsolgt",
-        "flag_bg": "#f6e58d",
-        "flag_text": "#1c1d1d",
-        "flag_top": 16,
-        "show_sale_flag": true,
-        "sale_flag_label": "UDSALG",
-        "sale_flag_bg": "#d6332e",
-        "sale_flag_text": "#ffffff",
-        "sale_price_color": "#d6332e",
-        "show_timer": false,
-        "timer_end": "",
-        "timer_label": "TILBUDDET SLUTTER OM",
-        "timer_units": "d,t,m,s",
-        "timer_bg": "#d6332e",
-        "timer_text": "#ffffff",
-        "show_omnibus": true,
-        "omnibus_label": "Laveste pris 30 dage før nedsættelsen:",
-        "badge_radius": 4,
-        "flag_left": 0,
-        "vat_note": "inkl. moms",
-        "before_label": "Normalpris:",
-        "show_tiers": false,
-        "tiers_headline": "KØB FLERE — SPAR MERE",
-        "tiers_note": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens.",
-        "tiers_list": "2:10, 3:15, 4:20",
-        "tiers_qty_word": "# stk.",
-        "tiers_bg": "#d6332e",
-        "tiers_text": "#ffffff",
-        "tiers_body_bg": "#f4f3f1",
-        "model_note": "",
-        "brand_size": 26
+        "color_low_stock": "#b05f2e"
       }
     },
     "faq": {
@@ -265,8 +274,6 @@
     },
     "reviews": {
       "type": "ob-reviews",
-      "blocks": {},
-      "block_order": [],
       "settings": {
         "eyebrow": "ANMELDELSER",
         "title": "Det siger vores kunder",
