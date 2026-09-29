@@ -368,8 +368,17 @@
       if (!lista.length) return;
 
       var i = ((nowy % lista.length) + lista.length) % lista.length;
-      var k = nav.closest(KAFEL);
-      var img = k && k.querySelector('.grid-product__image');
+      /* Motyw nie nadaje zdjeciu klasy grid-product__image - obrazek
+         ma tylko image-element. Bierzemy wiec pierwszy widoczny obrazek
+         z maski, w ktorej siedzi ta nawigacja. */
+      var maska = nav.closest('.grid-product__image-mask');
+      if (!maska) return;
+      var img = null;
+      var kandydaci = maska.querySelectorAll('img');
+      for (var q = 0; q < kandydaci.length; q++) {
+        if (kandydaci[q].getBoundingClientRect().width > 0) { img = kandydaci[q]; break; }
+      }
+      if (!img) img = kandydaci[0];
       if (!img) return;
 
       img.removeAttribute('srcset');

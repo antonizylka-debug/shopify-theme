@@ -1545,6 +1545,11 @@
       background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      /* wlosowa kreska po bokach i na dole - zeby bylo widac, ze ta
+         rozsunieta czesc nalezy do tego kafla, a nie do rzedu nizej */
+      border-left: 1px solid rgba(28, 29, 29, 0.12);
+      border-right: 1px solid rgba(28, 29, 29, 0.12);
+      border-bottom: 1px solid rgba(28, 29, 29, 0.12);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.18s ease;
