@@ -401,11 +401,16 @@ Arguments
           {%- endif -%}
         </div>
       </a>
-
-      {%- if type == blank -%}
-        {%- render 'tile-hover', product: product -%}
-      {%- endif -%}
     </div>
+
+    {%- comment -%}
+      Panel musi byc poza .grid__item-image-wrapper - ten ma
+      position: relative, wiec panel odliczalby "top: 100%" od dolu
+      zdjecia zamiast od dolu calego kafla.
+    {%- endcomment -%}
+    {%- if type == blank -%}
+      {%- render 'tile-hover', product: product -%}
+    {%- endif -%}
   </div>
 
   {%- if quick_shop_enable and type == blank -%}

@@ -1381,16 +1381,22 @@
   }
 
   /* ==========================================================================
-     Kafel w kolekcji: przegladanie zdjec i panel po najechaniu
+     Kafel w kolekcji 1:1 jak About You
 
-     Panel wysuwa sie POD kaflem i zaslania rzad nizej, wiec siatka
-     nie przeskakuje. Bialy prostokat z cieniem rysuje ::before kafla,
-     rozciagniety w dol o wysokosc panelu, ktora podaje skrypt - dzieki
-     temu cien obejmuje kafel i panel jako jedna calosc, bez szwu.
+     W spoczynku:   zdjecie / marka / nazwa / cena / pierwotnie / cena 30 dni
+     Po najechaniu miedzy cene a "pierwotnie" wchodzi:  kolory / rozmiary / przycisk
 
-     Wszystko tylko tam, gdzie jest prawdziwy kursor. Na dotyku
-     ":hover" zostaje wlaczony po tapnieciu i panel zaslanialby
-     sasiedni kafel.
+     Kolejnosc w kodzie motywu jest inna (tytul, kolory, marka, a wszystkie
+     ceny razem w jednym pudelku), wiec kontenery posrednie dostaja
+     display: contents. Ich pudelka znikaja, dzieci staja sie bezposrednimi
+     elementami jednej kolumny flex i dopiero tam ustawiamy kolejnosc.
+
+     Karta po najechaniu przechodzi w position: absolute, zeby rosla w dol
+     i zaslaniala rzad nizej zamiast rozpychac siatke. Kafel trzyma wtedy
+     swoja wysokosc z min-height, ktore wpisuje skrypt.
+
+     Wszystko tylko przy prawdziwym kursorze. Na dotyku ":hover" zostaje
+     wlaczony po tapnieciu i karta zaslanialaby sasiedni kafel.
      ========================================================================== */
   .tile-hover { display: none; }
   .tile-nav { display: none; }
@@ -1399,17 +1405,63 @@
     .grid-product { position: relative; }
     .grid-product:hover { z-index: 6; }
 
-    .grid-product:hover::before {
-      content: "";
-      position: absolute;
-      left: -10px;
-      right: -10px;
-      top: -10px;
-      bottom: calc(-10px - var(--tile-panel-h, 0px));
+    .grid-product .grid-product__content {
+      display: flex;
+      flex-direction: column;
       background: #fff;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.13);
-      z-index: -1;
+      text-align: center;
     }
+    .grid-product .grid__item-image-wrapper,
+    .grid-product .grid-product__link,
+    .grid-product .grid-product__meta,
+    .grid-product .grid-product__price { display: contents; }
+
+    .grid-product .grid-product__image-mask { order: 1; margin-bottom: 11px; }
+    .grid-product .grid-product__vendor { order: 2; }
+    .grid-product .grid-product__title { order: 3; }
+    .grid-product .grid-product__price-now { order: 4; }
+    .grid-product .grid-product__colors { order: 5; }
+    .grid-product .tile-hover { order: 6; }
+    .grid-product .grid-product__price--original { order: 7; }
+    .grid-product .grid-product__lowest { order: 8; }
+    .grid-product .grid-product__price--savings,
+    .grid-product .product__unit-price { order: 9; }
+
+    .grid-product .grid-product__vendor {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; margin-bottom: 3px;
+    }
+    .grid-product .grid-product__title {
+      font-size: 13px; line-height: 1.35;
+      color: var(--colorTextBody, #6e6b65);
+      margin-bottom: 6px;
+    }
+    .grid-product .grid-product__price-now { font-size: 15px; font-weight: 600; }
+    .grid-product .grid-product__price--original,
+    .grid-product .grid-product__lowest {
+      display: block;
+      font-size: 11.5px; line-height: 1.5;
+      color: var(--colorTextBody, #6e6b65);
+      margin-top: 3px;
+    }
+
+    /* kolory i panel dopiero po najechaniu - tak jak na wzorcu */
+    .grid-product .grid-product__colors { display: none; }
+    .grid-product:hover .grid-product__colors {
+      display: flex; justify-content: center; gap: 5px;
+      margin: 8px 0 2px;
+    }
+    .grid-product:hover .tile-hover { display: block; }
+
+    /* karta rosnie w dol nad rzedem nizej */
+    .grid-product:hover .grid-product__content {
+      position: absolute;
+      left: -10px; right: -10px; top: -10px;
+      padding: 10px 10px 12px;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.14);
+      z-index: 6;
+    }
+    .grid-product:hover .grid-product__tag { opacity: 0; }
 
     /* ---------- strzalki i kropki na zdjeciu ---------- */
     .grid-product__image-mask { position: relative; }
@@ -1452,27 +1504,13 @@
     }
     .tile-nav__dot.is-on { background: #1c1d1d; }
 
-    /* ---------- panel pod kaflem ---------- */
-    .tile-hover {
-      display: block;
-      position: absolute;
-      left: 0; right: 0; top: 100%;
-      padding: 4px 0 2px;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.12s ease, visibility 0.12s ease;
-    }
-    .grid-product:hover .tile-hover { opacity: 1; visibility: visible; }
-
+    /* ---------- rozmiary i przycisk ---------- */
     .tile-hover__sizes {
-      font-size: 12.5px;
+      font-size: 11.5px;
       line-height: 1.4;
       color: var(--colorTextBody, #6e6b65);
-      margin-bottom: 8px;
-      text-align: center;
+      margin: 6px 0 8px;
     }
-    .tile-hover__sizes span { color: inherit; }
-
     .tile-hover__btn {
       display: block;
       width: 100%;
@@ -1491,16 +1529,13 @@
 
     .tile-hover__pick { margin-top: 8px; }
     .tile-hover__pick-label {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--colorTextBody, #6e6b65);
       margin-bottom: 6px;
-      text-align: center;
     }
-    .tile-hover__chips {
-      display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;
-    }
+    .tile-hover__chips { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
     .tile-hover__chip {
-      min-width: 38px;
+      min-width: 36px;
       padding: 7px 9px;
       border: 1px solid #d9d6d1;
       background: #fff;
@@ -1516,5 +1551,4 @@
       text-decoration: line-through;
     }
   }
-
 </style>

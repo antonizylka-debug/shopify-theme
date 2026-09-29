@@ -288,14 +288,42 @@
       return el.closest ? el.closest(KAFEL) : null;
     }
 
-    /* ---------- wysokosc panelu pod bialy prostokat z cieniem ---------- */
-    document.addEventListener('mouseover', function (e) {
-      var k = kafel(e.target);
-      if (!k) return;
-      var panel = k.querySelector('[data-tile-hover]');
-      if (!panel) return;
-      k.style.setProperty('--tile-panel-h', panel.offsetHeight + 'px');
-    });
+    /* ---------- rezerwacja wysokosci kafla ----------
+       Po najechaniu karta przechodzi w position: absolute i wypada
+       z ukladu, wiec kafel bez tego zapadlby sie do zera, a caly rzad
+       podskoczylby w gore. Wpisujemy kazdemu kaflowi jego wlasna
+       wysokosc; mierzymy tylko te, na ktorych nie ma kursora. */
+    function zmierz(k) {
+      if (k.matches(':hover')) return;
+      var tresc = k.querySelector('.grid-product__content');
+      if (!tresc) return;
+      k.style.minHeight = '';
+      k.style.minHeight = tresc.offsetHeight + 'px';
+    }
+
+    var czeka = null;
+    function odswiez() {
+      if (czeka) return;
+      czeka = requestAnimationFrame(function () {
+        czeka = null;
+        var kafle = document.querySelectorAll(KAFEL);
+        for (var i = 0; i < kafle.length; i++) zmierz(kafle[i]);
+      });
+    }
+
+    odswiez();
+    window.addEventListener('load', odswiez);
+    window.addEventListener('resize', odswiez);
+    document.addEventListener('shopify:section:load', odswiez);
+
+    // zdjecia dochodza leniwie, a kafle przy filtrowaniu i kolejnej stronie
+    document.addEventListener('load', function (e) {
+      if (e.target && e.target.tagName === 'IMG' && kafel(e.target)) odswiez();
+    }, true);
+
+    if (window.MutationObserver) {
+      new MutationObserver(odswiez).observe(document.body, { childList: true, subtree: true });
+    }
 
     /* ---------- strzalki i kropki ---------- */
     function pokaz(nav, nowy) {
