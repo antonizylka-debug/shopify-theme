@@ -1457,7 +1457,7 @@
         sie to na oczach. Krzywa wyhamowuje na koncu, wiec ruch nie urywa
         sie w pol drogi.
       {%- endcomment -%}
-      transition: margin-bottom 0.4s cubic-bezier(0.25, 0.8, 0.3, 1);
+      transition: margin-bottom 0.65s cubic-bezier(0.25, 0.8, 0.3, 1);
     }
     {%- comment -%}
       Po najechaniu caly opis podjezdza o 22 px w gore, na dol zdjecia -
@@ -1511,9 +1511,9 @@
       overflow: hidden;
       margin: 0;
       transition:
-        max-height 0.4s cubic-bezier(0.25, 0.8, 0.3, 1),
-        margin 0.4s cubic-bezier(0.25, 0.8, 0.3, 1),
-        opacity 0.26s ease 0.08s;
+        max-height 0.65s cubic-bezier(0.25, 0.8, 0.3, 1),
+        margin 0.65s cubic-bezier(0.25, 0.8, 0.3, 1),
+        opacity 0.34s ease 0.14s;
     }
     .grid-product .grid-product__colors { display: flex; justify-content: center; gap: 5px; }
     {%- comment -%}
@@ -1588,7 +1588,7 @@
       border-bottom: 1px solid rgba(28, 29, 29, 0.12);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.32s ease;
+      transition: opacity 0.5s ease;
       z-index: 2;
     }
     .grid-product:hover .grid-product__content::before { opacity: 1; }
@@ -1617,7 +1617,7 @@
       position: absolute;
       left: 0; right: 0; top: 0; bottom: 0;
       opacity: 0;
-      transition: opacity 0.26s ease 0.08s;
+      transition: opacity 0.34s ease 0.14s;
       pointer-events: none;
     }
     .grid-product:hover .tile-nav { opacity: 1; }
@@ -1676,6 +1676,8 @@
       line-height: 1.4;
       color: var(--colorTextBody, #6e6b65);
       margin: 6px 0 8px;
+      /* ten sam luz co przycisk, inaczej wielokropek siedzi na kresce */
+      padding: 0 12px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
