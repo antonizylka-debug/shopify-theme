@@ -321,8 +321,20 @@
       if (e.target && e.target.tagName === 'IMG' && kafel(e.target)) odswiez();
     }, true);
 
-    if (window.MutationObserver) {
+    /* Skrypt siedzi w <head>, wiec przy pierwszym przejsciu document.body
+       jeszcze nie istnieje. Bez tego MutationObserver rzucal wyjatkiem
+       i zabijal cala reszte pliku - strzalki i dodawanie do koszyka
+       nigdy sie nie podpinaly. */
+    function pilnujSiatki() {
+      if (!window.MutationObserver || !document.body) return;
       new MutationObserver(odswiez).observe(document.body, { childList: true, subtree: true });
+      odswiez();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', pilnujSiatki);
+    } else {
+      pilnujSiatki();
     }
 
     /* ---------- strzalki i kropki ---------- */
