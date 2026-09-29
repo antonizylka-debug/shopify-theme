@@ -14,6 +14,14 @@
     "announcement": {
       "type": "announcement",
       "blocks": {
+        "announcement_7wKWky": {
+          "type": "announcement",
+          "settings": {
+            "text": "Nem returnering",
+            "link_text": "30 dages returret på alle ordrer",
+            "link": ""
+          }
+        },
         "announcement_KLL7pz": {
           "type": "announcement",
           "settings": {
@@ -24,14 +32,15 @@
         }
       },
       "block_order": [
+        "announcement_7wKWky",
         "announcement_KLL7pz"
       ],
       "settings": {
         "announcement_compact": true,
         "announcement_sticky": true,
-        "announcement_layout": "arrows",
+        "announcement_layout": "slider",
         "announcement_interval": 5,
-        "announcement_separator": "dot",
+        "announcement_separator": "dash",
         "announcement_gap": 18
       }
     },
@@ -122,7 +131,7 @@
         "mm_hl3_color": "",
         "mm_hl3_bold": false,
         "mm_hl3_badge": "★",
-        "mm_hl3_badge_bg": "#A8842C",
+        "mm_hl3_badge_bg": "#a8842c",
         "main_menu_alignment": "center-split",
         "header_style": "sticky",
         "sticky_index": false,
@@ -137,11 +146,39 @@
     "infobar": {
       "type": "sn-infobar",
       "blocks": {
-        "i-1": { "type": "item", "settings": { "icon": "cart", "text": "Gratis fragt på alle ordrer" } },
-        "i-2": { "type": "item", "settings": { "icon": "lock", "text": "Sikker betaling" } },
-        "i-3": { "type": "item", "settings": { "icon": "swap", "text": "30 dages returret" } }
+        "i-1": {
+          "type": "item",
+          "settings": {
+            "icon": "cart",
+            "text": "Gratis fragt på alle ordrer",
+            "color": "",
+            "link": ""
+          }
+        },
+        "i-2": {
+          "type": "item",
+          "settings": {
+            "icon": "lock",
+            "text": "Sikker betaling",
+            "color": "",
+            "link": ""
+          }
+        },
+        "i-3": {
+          "type": "item",
+          "settings": {
+            "icon": "swap",
+            "text": "30 dages returret",
+            "color": "",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["i-1", "i-2", "i-3"],
+      "block_order": [
+        "i-1",
+        "i-2",
+        "i-3"
+      ],
       "settings": {
         "bg": "#000000",
         "fg": "#ffffff",
