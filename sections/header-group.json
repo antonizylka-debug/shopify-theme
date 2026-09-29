@@ -17,32 +17,14 @@
         "announcement_KLL7pz": {
           "type": "announcement",
           "settings": {
-            "text": "STORE BESPARELSER",
+            "text": "Sæsonudsalg",
             "link_text": "Op til 70% rabat, i en begrænset periode",
-            "link": ""
-          }
-        },
-        "announcement_74VRyz": {
-          "type": "announcement",
-          "settings": {
-            "text": "GRATIS FRAGT",
-            "link_text": "Fri fragt – intet minimumskøb",
-            "link": ""
-          }
-        },
-        "announcement_tH4RpX": {
-          "type": "announcement",
-          "settings": {
-            "text": "NEM RETUR",
-            "link_text": "30 dages returret på alle ordrer",
             "link": ""
           }
         }
       },
       "block_order": [
-        "announcement_KLL7pz",
-        "announcement_74VRyz",
-        "announcement_tH4RpX"
+        "announcement_KLL7pz"
       ],
       "settings": {
         "announcement_compact": true,
@@ -156,7 +138,7 @@
       "type": "sn-infobar",
       "blocks": {
         "i-1": { "type": "item", "settings": { "icon": "cart", "text": "Gratis fragt på alle ordrer" } },
-        "i-2": { "type": "item", "settings": { "icon": "tag", "text": "Store besparelser" } },
+        "i-2": { "type": "item", "settings": { "icon": "lock", "text": "Sikker betaling" } },
         "i-3": { "type": "item", "settings": { "icon": "swap", "text": "30 dages returret" } }
       },
       "block_order": ["i-1", "i-2", "i-3"],
