@@ -17,6 +17,7 @@
           "settings": {
             "icon": "truck",
             "text": "Gratis fragt",
+            "hi": "",
             "sub": "På alle ordrer, ingen minimumskøb"
           }
         },
@@ -25,6 +26,7 @@
           "settings": {
             "icon": "clock",
             "text": "Afsendes inden for 3-4 hverdage",
+            "hi": "",
             "sub": "Derefter 3-6 hverdage med levering"
           }
         },
@@ -33,6 +35,7 @@
           "settings": {
             "icon": "return",
             "text": "30 dages returret",
+            "hi": "",
             "sub": "Fra den dag du modtager pakken"
           }
         },
@@ -41,6 +44,7 @@
           "settings": {
             "icon": "lock",
             "text": "Sikker betaling",
+            "hi": "",
             "sub": "Krypteret og uden gebyrer"
           }
         },
@@ -138,7 +142,7 @@
         "row_accent": "#d6332e",
         "row_hi": "#1f7a3d",
         "show_rating": true,
-        "rating_min": 5,
+        "rating_min": 4,
         "rating_anchor": "anmeldelser",
         "rating_link_label": "Se anmeldelser",
         "c_text": "#1c1d1d",
@@ -152,6 +156,22 @@
     },
     "reviews": {
       "type": "ob-reviews",
+      "blocks": {
+        "review_b7mDM3": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Czesc to moja opinia",
+            "text": "polecam super",
+            "author": "Ewwelina lisowska",
+            "date": "29.09.2026",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "review_b7mDM3"
+      ],
       "settings": {
         "eyebrow": "ANMELDELSER",
         "title": "Det siger vores kunder",
