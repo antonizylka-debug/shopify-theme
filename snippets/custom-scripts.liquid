@@ -487,9 +487,18 @@
         return;
       }
 
-      // produkt ma rozmiary - najpierw trzeba wybrac ktory
-      var wybor = btn.closest('[data-tile-hover]').querySelector('[data-tile-pick]');
-      if (wybor) wybor.hidden = !wybor.hidden;
+      /* Produkt ma rozmiary - najpierw trzeba wybrac ktory. Przycisk
+         moze byc tez okraglym przyciskiem ze zdjecia, ktory stoi poza
+         panelem, wiec panelu szukamy w calym kaflu. */
+      var kafelek = btn.closest(KAFEL);
+      var panelEl = btn.closest('[data-tile-hover]') || (kafelek && kafelek.querySelector('[data-tile-hover]'));
+      if (!panelEl) return;
+      var wybor = panelEl.querySelector('[data-tile-pick]');
+      if (wybor) wybor.hidden = false;
+      if (kafelek && btn.classList.contains('tile-fab')) {
+        kafelek.classList.toggle('is-open');
+        if (!kafelek.classList.contains('is-open') && wybor) wybor.hidden = true;
+      }
     });
   })();
 </script>

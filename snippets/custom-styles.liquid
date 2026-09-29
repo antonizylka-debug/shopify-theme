@@ -1405,6 +1405,46 @@
      zdjecie stoi nieruchomo i zmienia je dopiero strzalka. */
   .grid-product .grid-product__secondary-image { display: none !important; }
 
+  .tile-fab { display: none; }
+
+  {%- comment -%}
+    Telefon: tekst wysrodkowany jak na wzorcu, a zamiast najezdzania -
+    okragly przycisk koszyka przy dolnej krawedzi zdjecia. Produkt
+    z rozmiarami rozwija pod kaflem kafelki rozmiarow, bo bez wyboru
+    rozmiaru nie ma czego dodac.
+  {%- endcomment -%}
+  @media screen and (max-width: 768px) {
+    .grid-product .grid-product__content { text-align: center; }
+    .grid-product .grid-product__image-mask { position: relative; }
+
+    .tile-fab {
+      display: flex;
+      position: absolute;
+      right: 8px; bottom: 8px;
+      width: 34px; height: 34px;
+      align-items: center; justify-content: center;
+      padding: 0; border: 0;
+      border-radius: 50%;
+      background: #ffffff;
+      color: #16150f;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.18);
+      cursor: pointer;
+      z-index: 2;
+    }
+    .tile-fab svg { width: 17px; height: 17px; display: block; }
+    .tile-fab.is-done { background: #2f6b42; color: #fff; }
+
+    .grid-product.is-open .tile-hover {
+      display: block;
+      max-height: none;
+      opacity: 1;
+      margin: 8px 0 0;
+      padding: 0 12px;
+    }
+    .grid-product.is-open .tile-hover .tile-hover__btn { display: none; }
+    .grid-product.is-open .tile-hover .tile-hover__pick { margin-top: 0; }
+  }
+
   /* Plakietka na zdjeciu - zmierzona u nich: przylega do lewej krawedzi,
      zaokraglona tylko z prawej, wiekszy oddech od strony przyleglej. */
   .grid-product .grid-product__tag {
