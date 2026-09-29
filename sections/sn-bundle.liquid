@@ -89,7 +89,7 @@
     #shopify-section-{{ section.id }} .snb__wrap { position: relative; }
     #shopify-section-{{ section.id }} .snb__strzalka {
       position: absolute;
-      top: calc({{ section.settings.card_width }}px * 2 / 3);
+      top: var(--snb-mid, 120px);
       transform: translateY(-50%);
       width: 36px; height: 36px;
       display: flex; align-items: center; justify-content: center;
@@ -113,7 +113,7 @@
       flex-wrap: nowrap;
       gap: {{ section.settings.gap }}px;
       overflow-x: auto;
-      scroll-snap-type: x proximity;
+      scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       padding-bottom: 4px;
@@ -124,9 +124,15 @@
       Kafel z kolekcji ma wlasne klasy szerokosci pod siatke - w pasku
       musimy je przykryc, bo szerokosc ustala flex, nie siatka.
     {%- endcomment -%}
+    {%- comment -%}
+      Szerokosc kafla wynika z szerokosci paska podzielonej przez liczbe
+      kafli na ekran - dzieki temu nigdy nie zostaje polowka kafla przy
+      krawedzi. Przy stalej szerokosci w pikselach ostatni kafel prawie
+      zawsze wypadal uciety, bo szerokosc strony nie jest jej wielokrotnoscia.
+    {%- endcomment -%}
     #shopify-section-{{ section.id }} .snb__track > .grid__item {
-      flex: 0 0 {{ section.settings.card_width }}px;
-      max-width: {{ section.settings.card_width }}px;
+      flex: 0 0 calc((100% - {{ section.settings.per_view | minus: 1 | times: section.settings.gap }}px) / {{ section.settings.per_view }});
+      max-width: calc((100% - {{ section.settings.per_view | minus: 1 | times: section.settings.gap }}px) / {{ section.settings.per_view }});
       width: auto;
       padding-left: 0;
       scroll-snap-align: start;
@@ -153,8 +159,8 @@
       #shopify-section-{{ section.id }} .snb__title { font-size: {{ section.settings.title_size_mobile }}px; }
       #shopify-section-{{ section.id }} .snb__track { margin: 0 -16px; padding: 0 16px 4px; }
       #shopify-section-{{ section.id }} .snb__track > .grid__item {
-        flex-basis: {{ section.settings.card_width_mobile }}px;
-        max-width: {{ section.settings.card_width_mobile }}px;
+        flex-basis: calc((100% - {{ section.settings.per_view_mobile | minus: 1 | times: 12 }}px) / {{ section.settings.per_view_mobile }});
+        max-width: calc((100% - {{ section.settings.per_view_mobile | minus: 1 | times: 12 }}px) / {{ section.settings.per_view_mobile }});
       }
     }
   {%- endstyle -%}
@@ -364,11 +370,21 @@
         var dalej = sekcja.querySelector('[data-snb-dalej]');
         if (!wstecz || !dalej) return;
 
+        /* Przewijamy o pelna szerokosc paska, czyli o caly komplet
+           widocznych kafli - wtedy po klikniecu znow widac same cale
+           kafle, a nie polowki. */
         function krok() {
-          var kafel = pasek.querySelector('.grid__item');
-          if (!kafel) return pasek.clientWidth * 0.8;
           var st = getComputedStyle(pasek);
-          return kafel.getBoundingClientRect().width + (parseFloat(st.columnGap || st.gap) || 0);
+          return pasek.clientWidth + (parseFloat(st.columnGap || st.gap) || 0);
+        }
+
+        /* Strzalki na wysokosci srodka zdjecia; zdjecie ma proporcje 3:4,
+           a szerokosc kafla zalezy teraz od szerokosci strony. */
+        function wysokosc() {
+          var kafel = pasek.querySelector('.grid__item');
+          if (!kafel) return;
+          var szer = kafel.getBoundingClientRect().width;
+          sekcja.style.setProperty('--snb-mid', Math.round(szer * 2 / 3) + 'px');
         }
 
         function stan() {
@@ -378,15 +394,17 @@
         }
 
         wstecz.addEventListener('click', function () {
-          pasek.scrollBy({ left: -krok() * 2, behavior: 'smooth' });
+          pasek.scrollBy({ left: -krok(), behavior: 'smooth' });
         });
         dalej.addEventListener('click', function () {
-          pasek.scrollBy({ left: krok() * 2, behavior: 'smooth' });
+          pasek.scrollBy({ left: krok(), behavior: 'smooth' });
         });
 
         pasek.addEventListener('scroll', stan, { passive: true });
-        window.addEventListener('resize', stan);
+        window.addEventListener('resize', function () { stan(); wysokosc(); });
+        window.addEventListener('load', wysokosc);
         stan();
+        wysokosc();
       })();
 
       pasek.addEventListener('mouseover', function (e) {
@@ -425,8 +443,8 @@
     { "type": "text", "id": "label_max", "label": "Top step reached", "default": "Du har den største rabat: %." },
 
     { "type": "header", "content": "Size" },
-    { "type": "range", "id": "card_width", "label": "Card width", "default": 240, "min": 140, "max": 340, "step": 10, "unit": "px" },
-    { "type": "range", "id": "card_width_mobile", "label": "Card width (phone)", "default": 170, "min": 110, "max": 260, "step": 10, "unit": "px" },
+    { "type": "range", "id": "per_view", "label": "Cards on screen", "info": "The width follows from this, so no card is ever cut in half.", "default": 5, "min": 3, "max": 7, "step": 1 },
+    { "type": "range", "id": "per_view_mobile", "label": "Cards on screen (phone)", "default": 2, "min": 1, "max": 3, "step": 1 },
     { "type": "range", "id": "gap", "label": "Gap between cards", "default": 16, "min": 6, "max": 40, "step": 2, "unit": "px" },
     { "type": "range", "id": "title_size", "label": "Heading", "default": 26, "min": 16, "max": 40, "step": 1, "unit": "px" },
     { "type": "range", "id": "title_size_mobile", "label": "Heading (phone)", "default": 19, "min": 14, "max": 30, "step": 1, "unit": "px" },
