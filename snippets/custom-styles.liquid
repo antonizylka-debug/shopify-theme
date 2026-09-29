@@ -745,7 +745,11 @@
       top: calc(var(--announcement-h, 0px) + var(--header-h, 0px) + 24px);
       max-height: calc(100vh - var(--announcement-h, 0px) - var(--header-h, 0px) - 48px);
       overflow-y: auto;
-      overflow-x: visible;
+      /* Nie "visible": gdy jedna os ma auto, druga ustawiona na visible
+         i tak liczy sie jak auto - stad poziomy pasek przewijania pod
+         filtrami. Na zapas obwodki zaznaczonego krazka starcza padding
+         nizej, wiec mozna bezpiecznie przyciac. */
+      overflow-x: hidden;
       scrollbar-width: thin;
       /* zapas na obwodke zaznaczonego krazka, inaczej scrollowanie ja przycina */
       padding: 2px 8px 2px 6px;
