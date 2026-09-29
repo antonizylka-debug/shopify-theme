@@ -1443,6 +1443,13 @@
     .grid-product .grid-product__price { display: contents; }
 
     .grid-product .grid-product__image-mask { order: 1; margin-bottom: 11px; }
+    {%- comment -%}
+      Po najechaniu caly opis podjezdza o 22 px w gore, na dol zdjecia -
+      dlatego marka, nazwa i cena ida do gory, a ceny historyczne w dol.
+      Karta rosnie wiec w obie strony, a nie tylko w dol. Samo zdjecie
+      stoi w miejscu: przesuwa sie to, co pod nim.
+    {%- endcomment -%}
+    .grid-product:hover .grid-product__image-mask { margin-bottom: -11px; }
     .grid-product .grid-product__vendor { order: 2; }
     .grid-product .grid-product__title { order: 3; }
     .grid-product .grid-product__price-now { order: 4; }
@@ -1511,7 +1518,7 @@
       content: "";
       position: absolute;
       left: 0; right: 0; bottom: 0;
-      top: calc(var(--tile-img-h, 100%) - 10px);
+      top: calc(var(--tile-img-h, 100%) - 22px);
       background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -1572,7 +1579,7 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      bottom: 16px;
+      bottom: 28px;
       display: flex; align-items: center; justify-content: center; gap: 5px;
       height: 14px;
       padding: 0 8px;
