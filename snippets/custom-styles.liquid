@@ -1453,7 +1453,7 @@
       Karta rosnie wiec w obie strony, a nie tylko w dol. Samo zdjecie
       stoi w miejscu: przesuwa sie to, co pod nim.
     {%- endcomment -%}
-    .grid-product.is-measured:hover .grid-product__image-mask { margin-bottom: -11px; }
+    .grid-product.is-measured:hover .grid-product__image-mask { margin-bottom: -33px; }
     .grid-product .grid-product__vendor { order: 2; }
     .grid-product .grid-product__title { order: 3; }
     .grid-product .grid-product__price-now { order: 4; }
@@ -1553,7 +1553,7 @@
       content: "";
       position: absolute;
       left: 0; right: 0; bottom: 0;
-      top: calc(var(--tile-img-h, 100%) - 22px);
+      top: calc(var(--tile-img-h, 100%) - 44px);
       background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -1581,7 +1581,10 @@
       z-index: 2;
     }
     .grid-product:hover .tile-nav { z-index: 2; }
-    .grid-product:hover .grid-product__tag { opacity: 0; }
+    {%- comment -%}
+      Plakietka nie znika - zostaje pod mgielka i rozmywa sie razem
+      ze zdjeciem. O to chodzilo: karta ma na nia nachodzic.
+    {%- endcomment -%}
 
     /* ---------- strzalki i kropki na zdjeciu ---------- */
     .grid-product__image-mask { position: relative; }
@@ -1623,7 +1626,7 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      bottom: 28px;
+      bottom: 50px;
       display: flex; align-items: center; justify-content: center; gap: 5px;
       height: 14px;
       padding: 0 8px;
