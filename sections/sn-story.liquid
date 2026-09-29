@@ -1,0 +1,172 @@
+{%- comment -%}
+  Blok tekstowy pod karta produktu: naglowek, tresc i opcjonalna lista
+  punktow, ze zdjeciem obok albo bez niego.
+
+  Jedna sekcja obsluguje oba uklady ze wzorca - gwarancje zwrotu pieniedzy
+  (sam tekst) i blok wydarzenia (zdjecie z lewej, progi rabatu z prawej).
+  Dwie osobne sekcje roznilyby sie tylko obecnoscia zdjecia, a kazda
+  kolejna sekcja to kolejny plik do utrzymania.
+{%- endcomment -%}
+
+{%- liquid
+  assign ma_zdjecie = false
+  if section.settings.image != blank and section.settings.layout != 'text'
+    assign ma_zdjecie = true
+  endif
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .sns {
+    background: {{ section.settings.color_bg }};
+    color: {{ section.settings.color_text }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    --sns-muted: {{ section.settings.color_muted }};
+  }
+  #shopify-section-{{ section.id }} .sns__in {
+    display: grid;
+    gap: {{ section.settings.gap }}px;
+    align-items: center;
+    {%- if ma_zdjecie -%}
+      grid-template-columns: {{ section.settings.image_width }}fr {{ 100 | minus: section.settings.image_width }}fr;
+    {%- else -%}
+      grid-template-columns: minmax(0, 1fr);
+      max-width: {{ section.settings.max_width }}px;
+    {%- endif -%}
+  }
+  {%- if section.settings.layout == 'right' -%}
+    #shopify-section-{{ section.id }} .sns__media { order: 2; }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} .sns__media { min-width: 0; }
+  #shopify-section-{{ section.id }} .sns__media img {
+    width: 100%; height: auto; display: block;
+  }
+
+  #shopify-section-{{ section.id }} .sns__body { min-width: 0; }
+  #shopify-section-{{ section.id }} .sns__title {
+    margin: 0 0 12px;
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 700; line-height: 1.15; letter-spacing: -0.01em;
+  }
+  #shopify-section-{{ section.id }} .sns__text {
+    font-size: 14.5px; line-height: 1.65; color: var(--sns-muted);
+  }
+  #shopify-section-{{ section.id }} .sns__text p { margin: 0 0 12px; }
+  #shopify-section-{{ section.id }} .sns__text p:last-child { margin-bottom: 0; }
+  #shopify-section-{{ section.id }} .sns__text strong { color: {{ section.settings.color_text }}; }
+
+  {%- comment -%}
+    Progi rabatu jako osobna lista, a nie w tresci - dzieki temu maja
+    swoj rytm i nie gina miedzy akapitami.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .sns__list {
+    margin: 16px 0 0; padding: 0; list-style: none;
+    display: grid; gap: 6px;
+    font-size: 14.5px; line-height: 1.5;
+  }
+  #shopify-section-{{ section.id }} .sns__list b {
+    font-weight: 700; color: {{ section.settings.color_accent }};
+  }
+  #shopify-section-{{ section.id }} .sns__note {
+    margin: 16px 0 0; font-size: 14.5px; font-weight: 700;
+    color: {{ section.settings.color_accent }};
+  }
+
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .sns {
+      padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
+    }
+    #shopify-section-{{ section.id }} .sns__in {
+      grid-template-columns: minmax(0, 1fr);
+      gap: {{ section.settings.gap_mobile }}px;
+    }
+    #shopify-section-{{ section.id }} .sns__media { order: 0; }
+    #shopify-section-{{ section.id }} .sns__title { font-size: {{ section.settings.title_size_mobile }}px; }
+  }
+{%- endstyle -%}
+
+<div class="sns">
+  <div class="page-width">
+    <div class="sns__in">
+      {%- if ma_zdjecie -%}
+        <div class="sns__media">
+          {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: section.settings.title }}
+        </div>
+      {%- endif -%}
+
+      <div class="sns__body">
+        {%- if section.settings.title != blank -%}
+          <h2 class="sns__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="sns__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.list != blank -%}
+          <ul class="sns__list">
+            {%- assign wiersze = section.settings.list | newline_to_br | split: '<br />' -%}
+            {%- for w in wiersze -%}
+              {%- assign wiersz = w | strip -%}
+              {%- if wiersz != blank -%}
+                {%- assign czesci = wiersz | split: '|' -%}
+                <li>
+                  {{ czesci[0] | strip }}
+                  {%- if czesci.size > 1 -%}
+                    <b>{{ czesci[1] | strip }}</b>
+                  {%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.note != blank -%}
+          <p class="sns__note">{{ section.settings.note }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Text block",
+  "tag": "section",
+  "class": "sn-story",
+  "settings": [
+    { "type": "paragraph", "content": "A heading with text, optionally with a photo beside it. The list below takes one line per row, split with a vertical bar: text | the part in colour." },
+    {
+      "type": "select", "id": "layout", "label": "Photo", "default": "left",
+      "options": [
+        { "value": "text", "label": "No photo" },
+        { "value": "left", "label": "On the left" },
+        { "value": "right", "label": "On the right" }
+      ]
+    },
+    { "type": "image_picker", "id": "image", "label": "Photo" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "30 dages pengene-tilbage-garanti" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Vi står inde for kvaliteten af vores tøj. Derfor er hver ordre dækket af 30 dages returret uden bøvl.</p><p>Passer varen ikke, sender du den tilbage inden for 30 dage og får pengene retur.</p>" },
+    { "type": "textarea", "id": "list", "label": "List", "info": "One row per line. Køb 2 varer → | Spar 10%" },
+    { "type": "text", "id": "note", "label": "Line at the bottom" },
+
+    { "type": "header", "content": "Size" },
+    { "type": "range", "id": "image_width", "label": "Photo share of the width", "default": 50, "min": 20, "max": 70, "step": 5, "unit": "%" },
+    { "type": "range", "id": "max_width", "label": "Text width without a photo", "default": 900, "min": 500, "max": 1400, "step": 20, "unit": "px" },
+    { "type": "range", "id": "gap", "label": "Gap", "default": 48, "min": 12, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "gap_mobile", "label": "Gap (phone)", "default": 20, "min": 8, "max": 60, "step": 4, "unit": "px" },
+    { "type": "range", "id": "title_size", "label": "Heading", "default": 28, "min": 16, "max": 44, "step": 1, "unit": "px" },
+    { "type": "range", "id": "title_size_mobile", "label": "Heading (phone)", "default": 21, "min": 14, "max": 32, "step": 1, "unit": "px" },
+    { "type": "range", "id": "padding_top", "label": "Space above", "default": 48, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "default": 48, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_top_mobile", "label": "Space above (phone)", "default": 32, "min": 0, "max": 80, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Space below (phone)", "default": 32, "min": 0, "max": 80, "step": 4, "unit": "px" },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "color_text", "label": "Heading", "default": "#1c1d1d" },
+    { "type": "color", "id": "color_muted", "label": "Text", "default": "#56524c" },
+    { "type": "color", "id": "color_accent", "label": "Highlighted part", "default": "#d6332e" }
+  ],
+  "presets": [{ "name": "Text block" }]
+}
+{% endschema %}
