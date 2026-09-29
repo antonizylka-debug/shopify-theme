@@ -200,6 +200,7 @@
         "max_width": 1500,
         "show_mobile": true,
         "stack_m": false,
+        "sticky": true,
         "breakpoint": 750,
         "size_m": 9,
         "tracking_m": 0.4,

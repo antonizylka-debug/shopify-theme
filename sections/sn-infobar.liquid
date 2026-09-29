@@ -14,6 +14,19 @@
 
 {%- if ile > 0 -%}
   <style>
+    {%- if section.settings.sticky -%}
+      {%- comment -%}
+        Pasek przykleja sie pod tym, co juz jest przyklejone wyzej -
+        pod belka ogloszen i naglowkiem. Odsuniecie od gory liczy
+        skrypt, bo obie te wysokosci zmieniaja sie z szerokoscia
+        ekranu, a naglowek dodatkowo kurczy sie przy przewijaniu.
+      {%- endcomment -%}
+      #shopify-section-{{ section.id }} {
+        position: sticky;
+        top: 0;
+        z-index: 19;
+      }
+    {%- endif -%}
     #shopify-section-{{ section.id }} .ub {
       background: {{ section.settings.bg }};
       color: {{ section.settings.fg }};
@@ -124,6 +137,43 @@
       {%- endfor -%}
     </div>
   </div>
+
+  {%- if section.settings.sticky -%}
+    <script>
+      (function () {
+        var pasek = document.getElementById('shopify-section-{{ section.id }}');
+        if (!pasek) return;
+
+        function przyklejone() {
+          var lista = [];
+          var el = pasek.previousElementSibling;
+          while (el) {
+            if (getComputedStyle(el).position === 'sticky') lista.push(el);
+            el = el.previousElementSibling;
+          }
+          return lista;
+        }
+
+        function ustaw() {
+          var suma = 0;
+          var lista = przyklejone();
+          for (var i = 0; i < lista.length; i++) suma += lista[i].offsetHeight;
+          pasek.style.top = suma + 'px';
+        }
+
+        ustaw();
+        window.addEventListener('resize', ustaw);
+        document.addEventListener('shopify:section:load', ustaw);
+
+        // naglowek kurczy sie po przewinieciu, wiec pilnujemy jego wysokosci
+        if (window.ResizeObserver) {
+          var obs = new ResizeObserver(ustaw);
+          var lista = przyklejone();
+          for (var j = 0; j < lista.length; j++) obs.observe(lista[j]);
+        }
+      })();
+    </script>
+  {%- endif -%}
 {%- endif -%}
 
 {% schema %}
@@ -143,6 +193,8 @@
     { "type": "range", "id": "weight", "label": "Weight", "default": 600, "min": 400, "max": 800, "step": 100 },
     { "type": "range", "id": "tracking", "label": "Letter spacing", "default": 0.7, "min": 0, "max": 3, "step": 0.1, "unit": "px" },
     { "type": "checkbox", "id": "caps", "label": "Capital letters", "default": true },
+
+    { "type": "checkbox", "id": "sticky", "label": "Stick to the top when scrolling", "info": "Sits under the announcement bar and the header, if those stick too.", "default": false },
 
     { "type": "header", "content": "Size" },
     { "type": "range", "id": "pad", "label": "Height", "default": 13, "min": 4, "max": 30, "step": 1, "unit": "px" },
