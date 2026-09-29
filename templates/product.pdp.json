@@ -161,6 +161,7 @@
     "bundle": {
       "type": "sn-bundle",
       "settings": {
+        "collection": "",
         "title": "Sæt flere sammen og få op til 25% ekstra rabat",
         "all_label": "Se alle",
         "count": 10,
@@ -319,6 +320,7 @@
     },
     "product-recommendations": {
       "type": "product-recommendations",
+      "disabled": true,
       "settings": {
         "product_recommendations_heading": "ANBEFALET TIL DIG",
         "related_count": 6,
