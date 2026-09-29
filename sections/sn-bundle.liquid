@@ -9,6 +9,14 @@
 
 {%- liquid
   assign kolekcja = collections[section.settings.collection]
+
+  # Bez wybranej kolekcji bierzemy te, w ktorej stoi ogladany produkt.
+  # Inaczej przy karcie meskiej kurtki leciałby rzad damskich sukienek,
+  # bo sklep nie ma jednej kolekcji zbiorczej.
+  if kolekcja == blank or kolekcja.products.size == 0
+    assign kolekcja = product.collections.first
+  endif
+
   assign lista = kolekcja.products
   assign ile = section.settings.count
 -%}
