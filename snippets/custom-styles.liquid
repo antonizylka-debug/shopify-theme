@@ -1442,7 +1442,11 @@
     .grid-product .grid-product__meta,
     .grid-product .grid-product__price { display: contents; }
 
-    .grid-product .grid-product__image-mask { order: 1; margin-bottom: 11px; }
+    .grid-product .grid-product__image-mask {
+      order: 1;
+      margin-bottom: 11px;
+      transition: margin-bottom 0.22s ease;
+    }
     {%- comment -%}
       Po najechaniu caly opis podjezdza o 22 px w gore, na dol zdjecia -
       dlatego marka, nazwa i cena ida do gory, a ceny historyczne w dol.
@@ -1478,13 +1482,32 @@
       margin-top: 3px;
     }
 
-    /* kolory i panel dopiero po najechaniu - tak jak na wzorcu */
-    .grid-product .grid-product__colors { display: none; }
+    {%- comment -%}
+      Kolory, rozmiary i przycisk wchodza pomiedzy cene a ceny
+      historyczne. display nie da sie animowac, wiec zamiast chowac
+      je zupelnie, zwijamy je do zerowej wysokosci - wtedy reszta
+      rozsuwa sie plynnie zamiast przeskakiwac.
+    {%- endcomment -%}
+    .grid-product .grid-product__colors,
+    .grid-product .tile-hover {
+      display: block;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      margin: 0;
+      transition: max-height 0.22s ease, opacity 0.16s ease, margin 0.22s ease;
+    }
+    .grid-product .grid-product__colors { display: flex; justify-content: center; gap: 5px; }
     .grid-product:hover .grid-product__colors {
-      display: flex; justify-content: center; gap: 5px;
+      max-height: 40px;
+      opacity: 1;
       margin: 8px 0 2px;
     }
-    .grid-product:hover .tile-hover { display: block; }
+    .grid-product:hover .tile-hover {
+      max-height: 220px;
+      opacity: 1;
+      margin: 0;
+    }
 
     /* Karta rosnie TYLKO w dol. Zadnego powiekszania na boki i do gory
        ani cienia - zmierzone u nich: ta sama gorna krawedz, biale tlo,
@@ -1514,7 +1537,7 @@
 
       Zmierzone u nich: rgba(255,255,255,0.7) i blur(10px).
     {%- endcomment -%}
-    .grid-product:hover .grid-product__content::before {
+    .grid-product .grid-product__content::before {
       content: "";
       position: absolute;
       left: 0; right: 0; bottom: 0;
@@ -1522,8 +1545,12 @@
       background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease;
       z-index: 1;
     }
+    .grid-product:hover .grid-product__content::before { opacity: 1; }
     /* tekst i panel nad mgielka, strzalki i kropki tez */
     .grid-product:hover .grid-product__vendor,
     .grid-product:hover .grid-product__title,
