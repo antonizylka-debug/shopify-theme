@@ -1405,8 +1405,6 @@
      zdjecie stoi nieruchomo i zmienia je dopiero strzalka. */
   .grid-product .grid-product__secondary-image { display: none !important; }
 
-  .tile-fab { display: none; }
-
   {%- comment -%}
     Telefon: tekst wysrodkowany jak na wzorcu, a zamiast najezdzania -
     okragly przycisk koszyka przy dolnej krawedzi zdjecia. Produkt
@@ -1417,82 +1415,15 @@
     .grid-product .grid-product__content { text-align: center; }
     .grid-product .grid-product__image-mask { position: relative; }
 
-    .tile-fab {
-      display: flex;
-      position: absolute;
-      right: 8px; bottom: 8px;
-      width: 34px; height: 34px;
-      align-items: center; justify-content: center;
-      padding: 0; border: 0;
-      border-radius: 50%;
-      background: #ffffff;
-      color: #16150f;
-      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.18);
-      cursor: pointer;
-      z-index: 2;
-    }
-    .tile-fab svg { width: 17px; height: 17px; display: block; }
-    .tile-fab.is-done { background: #2f6b42; color: #fff; }
-
     {%- comment -%}
-      Panel z rozmiarami NIE rozwija sie w kaflu - buty maja po
-      pietnascie polowek rozmiaru i kafel rozdymalo na cala strone.
-      Rozmiary wybiera sie w plachcie wysuwanej od dolu ekranu.
-      Kolka z kolorami tez znikaja - na wzorcu nie ma ich w kaflu.
+      Na telefonie kafel jest tylko do ogladania: bez panelu z rozmiarami
+      i bez kolek z kolorami. Rozmiar wybiera sie na karcie produktu -
+      przy butach to pietnascie polowek i w kaflu to sie nie miesci.
     {%- endcomment -%}
     .grid-product .grid-product__colors { display: none; }
   }
 
-  /* ---------- plachta z rozmiarami (telefon) ---------- */
-  .tile-sheet {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    display: flex;
-    align-items: flex-end;
-  }
-  .tile-sheet[hidden] { display: none; }
-  .tile-sheet__bg {
-    position: absolute; inset: 0;
-    background: rgba(22, 21, 15, 0.42);
-  }
-  .tile-sheet__panel {
-    position: relative;
-    width: 100%;
-    max-height: 72vh;
-    overflow-y: auto;
-    background: #fff;
-    border-radius: 12px 12px 0 0;
-    padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px));
-  }
-  .tile-sheet__head {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 12px; margin-bottom: 12px;
-  }
-  .tile-sheet__title { font-size: 14px; font-weight: 600; }
-  .tile-sheet__x {
-    border: 0; background: none; padding: 4px 6px;
-    font-size: 20px; line-height: 1; color: #56524c; cursor: pointer;
-  }
-  .tile-sheet__chips {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
-    gap: 8px;
-  }
-  .tile-sheet__chips .tile-hover__chip {
-    min-width: 0;
-    padding: 13px 8px;
-    border: 1px solid #d9d6d1;
-    border-radius: 3px;
-    background: #fff;
-    font-size: 13.5px;
-    line-height: 1;
-    cursor: pointer;
-  }
-  .tile-sheet__chips .tile-hover__chip[disabled] {
-    color: #b7b3ac; border-color: #ebe8e3;
-    text-decoration: line-through; cursor: default;
-  }
+
 
   /* Plakietka na zdjeciu - zmierzona u nich: przylega do lewej krawedzi,
      zaokraglona tylko z prawej, wiekszy oddech od strony przyleglej. */
