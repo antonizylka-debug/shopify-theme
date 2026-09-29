@@ -163,7 +163,8 @@
   }
   #shopify-section-{{ section.id }} .pdp__flags {
     position: absolute; left: {{ section.settings.flag_left }}px; top: 0;
-    display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: {{ section.settings.flag_gap }}px;
   }
   {%- comment -%}
     Plakietka: ostre rogi, tekst zdaniowy, oddech po bokach wiekszy niz
@@ -177,6 +178,7 @@
     font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
     line-height: 1;
     padding: 9px 14px;
+    border-radius: {{ section.settings.flag_radius }}px;
   }
   /* plakietka wpisywana recznie - jasna, bez wersalikow, jak na wzorcu */
   #shopify-section-{{ section.id }} .pdp__flag--note {
@@ -184,7 +186,8 @@
     color: {{ section.settings.note_text }};
     font-size: 13px; font-weight: 400;
     letter-spacing: 0; text-transform: none;
-    padding: 10px 16px;
+    padding: 9px 15px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
   }
 
   /* ---------- plywajacy przycisk koszyka (telefon) ---------- */
@@ -300,6 +303,9 @@
   #shopify-section-{{ section.id }} .pdp__size-dot {
     width: 5px; height: 5px; border-radius: 50%; background: {{ section.settings.c_low }};
   }
+
+  /* rozmiary sklejaly sie z przyciskiem - potrzebny oddech miedzy wyborem a akcja */
+  #shopify-section-{{ section.id }} .pdp__sizes { margin-bottom: 20px; }
 
   /* ---------- przycisk ---------- */
   #shopify-section-{{ section.id }} .pdp__atc {
@@ -1153,7 +1159,9 @@
     { "type": "checkbox", "id": "show_flag", "label": "Flag on the photos", "default": true },
     { "type": "text", "id": "flag_label", "label": "Flag text", "default": "Udsalg" },
     { "type": "range", "id": "flag_top", "label": "Badge distance from the top while scrolling", "default": 90, "min": 0, "max": 200, "step": 5, "unit": "px" },
-    { "type": "range", "id": "flag_left", "label": "Badge distance from the left", "default": 0, "min": 0, "max": 40, "step": 2, "unit": "px" },
+    { "type": "range", "id": "flag_left", "label": "Badge distance from the left", "default": 12, "min": 0, "max": 40, "step": 2, "unit": "px" },
+    { "type": "range", "id": "flag_radius", "label": "Badge corner rounding", "default": 3, "min": 0, "max": 20, "step": 1, "unit": "px" },
+    { "type": "range", "id": "flag_gap", "label": "Gap between the two badges", "default": 7, "min": 0, "max": 20, "step": 1, "unit": "px" },
     { "type": "text", "id": "last_label", "label": "Next to the size heading", "default": "Sidste stykker" },
     { "type": "paragraph", "content": "Second badge on the photo, the one you write yourself — nothing reads it from stock levels. A product's own custom.stock_note metafield wins over this." },
     { "type": "text", "id": "note_label", "label": "Badge you write yourself", "default": "Kun 3 stk. tilbage" },

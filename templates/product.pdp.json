@@ -135,7 +135,9 @@
         "note_text": "#1c1d1d",
         "show_fab": true,
         "flag_top": 90,
-        "flag_left": 0
+        "flag_left": 12,
+        "flag_radius": 3,
+        "flag_gap": 7
       }
     },
     "reviews": {
