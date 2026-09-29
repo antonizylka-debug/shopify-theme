@@ -221,16 +221,26 @@
     font-size: 14px; color: var(--pdp-muted); margin: 0 0 12px;
   }
 
+  {%- comment -%}
+    Ocena stoi NAD tytulem i jest jednym wierszem: liczba, gwiazdka,
+    liczba opinii w nawiasie. Piec gwiazdek zabieralo caly wiersz
+    i przy jednej liczbie nic nie wnosilo.
+  {%- endcomment -%}
   #shopify-section-{{ section.id }} .pdp__rating {
-    display: inline-flex; align-items: center; gap: 7px;
-    margin-bottom: 16px; color: inherit; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    margin: 0 0 7px; color: inherit; text-decoration: none;
   }
   #shopify-section-{{ section.id }} .pdp__rating[hidden] { display: none; }
-  #shopify-section-{{ section.id }} .pdp__stars { display: flex; gap: 1px; }
-  #shopify-section-{{ section.id }} .pdp__stars svg { width: 14px; height: 14px; }
-  #shopify-section-{{ section.id }} .pdp__rating-num { font-size: 13px; font-weight: 600; }
+  #shopify-section-{{ section.id }} .pdp__rating-num {
+    font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  #shopify-section-{{ section.id }} .pdp__stars { display: flex; }
+  #shopify-section-{{ section.id }} .pdp__stars svg { width: 13px; height: 13px; }
   #shopify-section-{{ section.id }} .pdp__rating-link {
-    font-size: 13px; color: var(--pdp-muted); text-decoration: underline; text-underline-offset: 2px;
+    font-size: 13.5px; color: var(--pdp-muted); text-decoration: none;
+  }
+  #shopify-section-{{ section.id }} .pdp__rating:hover .pdp__rating-link {
+    text-decoration: underline; text-underline-offset: 2px;
   }
 
   #shopify-section-{{ section.id }} .pdp__optlabel {
@@ -427,22 +437,39 @@
   }
 
   /* ---------- akordeony ---------- */
-  #shopify-section-{{ section.id }} .pdp__accs { margin-top: 22px; }
+  {%- comment -%}
+    Akordeon jak na wzorcu: naglowek grubszy i wiekszy, po prawej plus
+    zamieniajacy sie w minus, wlosowe kreski miedzy pozycjami. Zamiast
+    strzalki, bo plus i minus mowia wprost "rozwin" i "zwin", a strzalka
+    przy naglowku czytana jest czasem jako przejscie dalej.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp__accs { margin-top: 26px; }
   #shopify-section-{{ section.id }} .pdp__acc { border-top: 1px solid var(--pdp-line); }
   #shopify-section-{{ section.id }} .pdp__acc:last-child { border-bottom: 1px solid var(--pdp-line); }
   #shopify-section-{{ section.id }} .pdp__acc summary {
     display: flex; align-items: center; justify-content: space-between; gap: 14px;
-    padding: 16px 2px; cursor: pointer; list-style: none; font-size: 14px;
+    padding: 18px 2px; cursor: pointer; list-style: none;
+    font-size: 15px; font-weight: 600; letter-spacing: -0.005em;
   }
   #shopify-section-{{ section.id }} .pdp__acc summary::-webkit-details-marker { display: none; }
   #shopify-section-{{ section.id }} .pdp__acc summary::after {
-    content: ''; width: 8px; height: 8px; flex: 0 0 8px;
-    border-right: 1.5px solid var(--pdp-muted); border-bottom: 1.5px solid var(--pdp-muted);
-    transform: rotate(-45deg); transition: transform 0.2s;
+    content: '+';
+    flex: 0 0 auto;
+    font-size: 19px; font-weight: 400; line-height: 1;
+    color: var(--pdp-text);
   }
-  #shopify-section-{{ section.id }} .pdp__acc[open] summary::after { transform: rotate(45deg); }
+  #shopify-section-{{ section.id }} .pdp__acc[open] summary::after { content: '\2212'; }
   #shopify-section-{{ section.id }} .pdp__acc-body {
-    padding: 0 2px 16px; font-size: 14px; line-height: 1.6;
+    padding: 0 2px 20px; font-size: 14px; line-height: 1.65;
+    color: var(--pdp-muted);
+  }
+  #shopify-section-{{ section.id }} .pdp__acc-body p { margin: 0 0 12px; }
+  #shopify-section-{{ section.id }} .pdp__acc-body p:last-child { margin-bottom: 0; }
+  #shopify-section-{{ section.id }} .pdp__acc-body strong { color: var(--pdp-text); }
+  #shopify-section-{{ section.id }} .pdp__acc-body ul { margin: 0 0 12px; padding-left: 18px; }
+  #shopify-section-{{ section.id }} .pdp__acc-body li { margin-bottom: 5px; }
+  #shopify-section-{{ section.id }} .pdp__acc-body a {
+    color: var(--pdp-text); text-decoration: underline; text-underline-offset: 2px;
   }
 
   /* ---------- powiekszenie ---------- */
@@ -704,22 +731,22 @@
       {%- comment -%} ---------- informacje ---------- {%- endcomment -%}
       <div class="pdp__info">
 
-        <h1 class="pdp__title">{{ product.title }}</h1>
-        {%- if product.type != blank -%}
-          {%- assign typ_produktu = product.type -%}
-          <p class="pdp__sub">{% render 'ob-da', mapa: mapa, tekst: typ_produktu %}</p>
-        {%- endif -%}
-
         {%- comment -%}
           Ocena wypelniana przez skrypt z sekcji opinii na tej samej stronie -
           zeby gora i dol nie mogly pokazac dwoch roznych liczb.
         {%- endcomment -%}
         {%- if section.settings.show_rating -%}
           <a class="pdp__rating" href="#{{ section.settings.rating_anchor | default: 'anmeldelser' | handleize }}" data-pdp-rating hidden>
-            <span class="pdp__stars" data-pdp-stars aria-hidden="true"></span>
             <span class="pdp__rating-num" data-pdp-score></span>
+            <span class="pdp__stars" data-pdp-stars aria-hidden="true"></span>
             <span class="pdp__rating-link" data-pdp-count></span>
           </a>
+        {%- endif -%}
+
+        <h1 class="pdp__title">{{ product.title }}</h1>
+        {%- if product.type != blank -%}
+          {%- assign typ_produktu = product.type -%}
+          <p class="pdp__sub">{% render 'ob-da', mapa: mapa, tekst: typ_produktu %}</p>
         {%- endif -%}
 
         {%- comment -%} ---------- kolor ---------- {%- endcomment -%}
@@ -1182,13 +1209,10 @@
       var ile = parseInt(agg.getAttribute('data-obr-count'), 10);
       if (!(srednia > 0) || !(ile >= {{ section.settings.rating_min }})) return;
 
-      var pelna = {{ gwiazdka | json }};
-      var pusta = {{ gwiazdka_pusta | json }};
-      var n = Math.round(srednia), html = '';
-      for (var i = 1; i <= 5; i++) html += (i <= n ? pelna : pusta);
-      blok.querySelector('[data-pdp-stars]').innerHTML = html;
+      blok.querySelector('[data-pdp-stars]').innerHTML = {{ gwiazdka | json }};
       blok.querySelector('[data-pdp-score]').textContent = String(srednia).replace('.', ',');
-      blok.querySelector('[data-pdp-count]').textContent = {{ section.settings.rating_link_label | json }} + ' (' + ile + ')';
+      blok.querySelector('[data-pdp-count]').textContent =
+        '(' + ile + ' ' + {{ section.settings.rating_link_label | json }} + ')';
       blok.hidden = false;
     })();
     {%- endif -%}

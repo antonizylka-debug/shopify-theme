@@ -144,7 +144,7 @@
         "show_rating": true,
         "rating_min": 4,
         "rating_anchor": "anmeldelser",
-        "rating_link_label": "Se anmeldelser",
+        "rating_link_label": "anmeldelser",
         "c_text": "#1c1d1d",
         "c_muted": "#6e6b65",
         "c_line": "#d9d6d1",
