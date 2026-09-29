@@ -47,22 +47,30 @@
   #shopify-section-{{ section.id }} .obf__item { border-top: 1px solid var(--obf-line); }
   #shopify-section-{{ section.id }} .obf__item:last-child { border-bottom: 1px solid var(--obf-line); }
 
+  {%- comment -%}
+    Ten sam znak co w akordeonie na karcie produktu: plus zamieniajacy
+    sie w minus. Strzalka przy naglowku bywa czytana jako przejscie
+    dalej, a tu nic nie prowadzi poza strone.
+  {%- endcomment -%}
   #shopify-section-{{ section.id }} .obf__item summary {
     display: flex; align-items: center; justify-content: space-between; gap: 16px;
     padding: 18px 2px; cursor: pointer; list-style: none;
-    font-size: 15px; font-weight: 500;
+    font-size: 15px; font-weight: 600; letter-spacing: -0.005em;
   }
   #shopify-section-{{ section.id }} .obf__item summary::-webkit-details-marker { display: none; }
   #shopify-section-{{ section.id }} .obf__item summary::after {
-    content: ''; width: 9px; height: 9px; flex: 0 0 9px;
-    border-right: 1px solid currentColor; border-bottom: 1px solid currentColor;
-    transform: rotate(45deg); transition: transform 0.2s;
+    content: '+';
+    flex: 0 0 auto;
+    font-size: 19px; font-weight: 400; line-height: 1;
   }
-  #shopify-section-{{ section.id }} .obf__item[open] summary::after { transform: rotate(-135deg); }
+  #shopify-section-{{ section.id }} .obf__item[open] summary::after { content: '\2212'; }
 
   #shopify-section-{{ section.id }} .obf__body {
-    padding: 0 2px 20px; font-size: 14.7px; line-height: 1.65; color: var(--obf-text);
+    padding: 0 2px 20px; font-size: 14px; line-height: 1.65; color: var(--obf-muted);
   }
+  #shopify-section-{{ section.id }} .obf__body strong { color: var(--obf-text); }
+  #shopify-section-{{ section.id }} .obf__body ul { margin: 0 0 12px; padding-left: 18px; }
+  #shopify-section-{{ section.id }} .obf__body li { margin-bottom: 5px; }
   #shopify-section-{{ section.id }} .obf__body p { margin: 0 0 12px; }
   #shopify-section-{{ section.id }} .obf__body p:last-child { margin-bottom: 0; }
   #shopify-section-{{ section.id }} .obf__body a { color: inherit; text-underline-offset: 3px; }

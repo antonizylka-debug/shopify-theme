@@ -203,6 +203,85 @@
         "color_bar": "#1c1d1d"
       }
     },
+    "faq": {
+      "type": "ob-faq",
+      "blocks": {
+        "q-1": {
+          "type": "question",
+          "settings": {
+            "question": "Hvor lang tid tager leveringen?",
+            "answer": "<p>Vi pakker og sender ordrer inden for 3-4 hverdage. Derefter tager leveringen 3-6 hverdage mere.<\/p><p>Bestiller du i weekenden eller på en helligdag, starter vi på ordren den første hverdag efter.<\/p>",
+            "open_by_default": true
+          }
+        },
+        "q-2": {
+          "type": "question",
+          "settings": {
+            "question": "Hvordan finder jeg min størrelse?",
+            "answer": "<p>Størrelserne varierer fra serie til serie, så gå efter målene på varesiden frem for den størrelse, du plejer at tage.<\/p><p>Den nemmeste kontrol: mål et stykke tøj, du selv har og synes sidder godt, mens det ligger fladt, og sammenlign.<\/p>",
+            "open_by_default": false
+          }
+        },
+        "q-3": {
+          "type": "question",
+          "settings": {
+            "question": "Hvordan starter jeg en returnering?",
+            "answer": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk<\/a> med dit ordrenummer og den vare, du vil sende tilbage, inden 30 dage efter du har modtaget den. Vi svarer med returadressen og en kort vejledning.<\/p><p>Vent på vores svar, før du sender noget af sted – pakker, der sendes tilbage på egen hånd, ender ofte på et lager, der ikke kan behandle dem.<\/p>",
+            "open_by_default": false
+          }
+        },
+        "q-4": {
+          "type": "question",
+          "settings": {
+            "question": "Den passer ikke. Kan jeg bytte størrelse?",
+            "answer": "<p>Vi bytter ikke størrelser direkte. Send varen tilbage og få pengene retur, og læg en ny ordre i den størrelse, du vil have – så bliver størrelsen ikke solgt til en anden, mens din pakke er undervejs.<\/p>",
+            "open_by_default": false
+          }
+        },
+        "q-5": {
+          "type": "question",
+          "settings": {
+            "question": "Hvem betaler returfragten?",
+            "answer": "<p>Det gør du selv – medmindre varen var defekt, beskadiget eller ikke den, du bestilte. Så betaler vi.<\/p><p>Brug en sporbar forsendelse. Indtil pakken er hos os, er den dit ansvar.<\/p>",
+            "open_by_default": false
+          }
+        },
+        "q-6": {
+          "type": "question",
+          "settings": {
+            "question": "Hvor leverer I til, og skal jeg betale told?",
+            "answer": "<p>Vi leverer til Danmark og til resten af Europa, blandt andet:<\/p><ul><li><strong>Norden:<\/strong> Danmark, Sverige, Norge, Finland.<\/li><li><strong>Resten af Europa:<\/strong> Tyskland, Holland, Belgien, Frankrig, Østrig, Italien, Spanien, Portugal, Irland, Grækenland og Storbritannien.<\/li><\/ul><p>Vi betaler told, importafgifter og gebyrer, så der kommer intet oveni. Vi leverer til private adresser, virksomheder og pakkeshops.<\/p>",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "q-1",
+        "q-2",
+        "q-3",
+        "q-4",
+        "q-5",
+        "q-6"
+      ],
+      "settings": {
+        "eyebrow": "SPØRGSMÅL OG SVAR",
+        "title": "Ofte stillede spørgsmål",
+        "subtitle": "Det, folk oftest spørger om, inden de bestiller.",
+        "more_label": "Se alle spørgsmål og svar",
+        "more_link": "\/pages\/faq",
+        "max_width": 760,
+        "title_size": 19,
+        "title_size_mobile": 17,
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6e6b65",
+        "color_line": "#e6e3de"
+      }
+    },
     "product-recommendations": {
       "type": "product-recommendations",
       "settings": {
@@ -222,6 +301,7 @@
   "order": [
     "main",
     "reviews",
+    "faq",
     "product-recommendations",
     "apps"
   ]
