@@ -102,6 +102,27 @@
   .announcement-arrows__btn--prev { left: 0; }
   .announcement-arrows__btn--next { right: 0; }
   .announcement-arrows__btn svg { width: 8px; height: 13px; }
+  {%- comment -%}
+    Na szerokim ekranie strzalki przyklejone do krawedzi stoja
+    kilkaset pikselow od wiadomosci i nie czytaja sie jako jej
+    sterowanie. Dlatego powyzej telefonu przestaja byc pozycjonowane
+    absolutnie i ida w ten sam rzad co tresc, ktory jest wysrodkowany.
+    Szerokosc sciezki bierze sie z najszerszej wiadomosci, wiec
+    strzalki nie skacza przy zmianie komunikatu.
+  {%- endcomment -%}
+  @media only screen and (min-width: 769px) {
+    .announcement-arrows {
+      justify-content: center;
+      padding: 0 12px;
+    }
+    .announcement-arrows__track { flex: 0 1 auto; }
+    .announcement-arrows__btn {
+      position: static;
+      align-self: stretch;
+      width: auto;
+      padding: 0 {{ section.settings.arrow_gap }}px;
+    }
+  }
   @media only screen and (max-width: 768px) {
     /* na telefonie tylko naglowek wiadomosci - jedna linia, bez lamania */
     .announcement-arrows__text { display: none; }
@@ -256,6 +277,17 @@
       "step": 1,
       "unit": "px",
       "default": 12
+    },
+    {
+      "type": "range",
+      "id": "arrow_gap",
+      "label": "Space between an arrow and the message",
+      "info": "Only on screens wider than a phone. On a phone the arrows stay at the edges.",
+      "min": 4,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 14
     },
     {
       "type": "range",

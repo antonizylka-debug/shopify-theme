@@ -42,6 +42,7 @@
         "announcement_interval": 5,
         "bar_height": 34,
         "bar_size": 12,
+        "arrow_gap": 14,
         "bar_height_m": 30,
         "bar_size_m": 11,
         "announcement_separator": "dash",
