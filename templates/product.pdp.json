@@ -206,9 +206,9 @@
     "product-recommendations": {
       "type": "product-recommendations",
       "settings": {
-        "product_recommendations_heading": "Måske kan du også lide",
-        "related_count": 6,
-        "products_per_row": 3
+        "product_recommendations_heading": "DU KAN OGSÅ LIDE",
+        "related_count": 8,
+        "products_per_row": 4
       }
     },
     "apps": {

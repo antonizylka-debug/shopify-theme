@@ -1750,4 +1750,61 @@
       text-decoration: line-through;
     }
   }
+
+  /* ==========================================================================
+     Polecane produkty pod karta produktu
+
+     Naglowek w tej samej konwencji co reszta strony: wlosowa kreska nad
+     nim, maly napis wersalikami, bez ozdobnikow. Na telefonie zamiast
+     ciasnej siatki dwoch kolumn - pasek przesuwany palcem, w ktorym
+     kafel ma stala szerokosc i widac kawalek nastepnego, wiec od razu
+     wiadomo, ze da sie przewijac.
+     ========================================================================== */
+  .product-recommendations-placeholder .section-header,
+  #shopify-section-product-recommendations .section-header,
+  .index-section .section-header {
+    margin-bottom: 18px;
+  }
+
+  #shopify-section-product-recommendations .section-header__title,
+  .product-recommendations ~ .section-header__title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: left;
+    margin: 0;
+    padding-top: 26px;
+    border-top: 1px solid #e6e3de;
+  }
+
+  @media only screen and (max-width: 768px) {
+    #shopify-section-product-recommendations .grid,
+    .product-recommendations .grid {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 12px;
+      margin: 0 -16px;
+      padding: 0 16px 4px;
+      scroll-snap-type: x proximity;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    #shopify-section-product-recommendations .grid::-webkit-scrollbar,
+    .product-recommendations .grid::-webkit-scrollbar { display: none; }
+
+    #shopify-section-product-recommendations .grid > .grid__item,
+    .product-recommendations .grid > .grid__item {
+      flex: 0 0 62%;
+      max-width: 62%;
+      width: auto;
+      padding-left: 0;
+      scroll-snap-align: start;
+    }
+
+    #shopify-section-product-recommendations .section-header__title {
+      padding-top: 22px;
+    }
+  }
 </style>
