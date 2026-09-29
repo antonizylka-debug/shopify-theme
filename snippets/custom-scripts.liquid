@@ -299,6 +299,10 @@
       if (!tresc) return;
       k.style.minHeight = '';
       k.style.minHeight = tresc.offsetHeight + 'px';
+
+      // wysokosc zdjecia - od niej liczy sie gorna krawedz mgielki
+      var maska = k.querySelector('.grid-product__image-mask');
+      if (maska) k.style.setProperty('--tile-img-h', maska.offsetHeight + 'px');
     }
 
     var czeka = null;

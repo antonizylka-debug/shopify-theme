@@ -1482,17 +1482,44 @@
     /* Karta rosnie TYLKO w dol. Zadnego powiekszania na boki i do gory
        ani cienia - zmierzone u nich: ta sama gorna krawedz, biale tlo,
        box-shadow: none, wieksza jedynie wysokosc. */
-    /* Zmierzone u nich: rgba(255,255,255,0.7) i blur(10px). Stad ta
-       rozmyta smuga tam, gdzie karta nachodzi na zdjecie sasiada. */
     .grid-product:hover .grid-product__content {
       position: absolute;
       left: 0; right: 0; top: 0;
       padding-bottom: 12px;
+      background: transparent;
+      z-index: 6;
+    }
+    {%- comment -%}
+      Blok z opisem wchodzi NA dol zdjecia - tak jak u nich. Rysuje go
+      ::before, bo samo tlo karty objelo by tez zdjecie i przykrylo je
+      biala mgielka. Gorna krawedz liczy sie od wysokosci zdjecia,
+      ktora podaje skrypt, minus zachodzenie.
+
+      Zmierzone u nich: rgba(255,255,255,0.7) i blur(10px).
+    {%- endcomment -%}
+    .grid-product:hover .grid-product__content::before {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      top: calc(var(--tile-img-h, 100%) - 22px);
       background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      z-index: 6;
+      z-index: 1;
     }
+    /* tekst i panel nad mgielka, strzalki i kropki tez */
+    .grid-product:hover .grid-product__vendor,
+    .grid-product:hover .grid-product__title,
+    .grid-product:hover .grid-product__price-now,
+    .grid-product:hover .grid-product__colors,
+    .grid-product:hover .tile-hover,
+    .grid-product:hover .grid-product__price--original,
+    .grid-product:hover .grid-product__lowest,
+    .grid-product:hover .grid-product__price--savings {
+      position: relative;
+      z-index: 2;
+    }
+    .grid-product:hover .tile-nav { z-index: 2; }
     .grid-product:hover .grid-product__tag { opacity: 0; }
 
     /* ---------- strzalki i kropki na zdjeciu ---------- */
