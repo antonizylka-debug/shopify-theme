@@ -303,6 +303,12 @@
       // wysokosc zdjecia - od niej liczy sie gorna krawedz mgielki
       var maska = k.querySelector('.grid-product__image-mask');
       if (maska) k.style.setProperty('--tile-img-h', maska.offsetHeight + 'px');
+
+      // wciecie kafla - karta ustawiona absolutnie musi je uszanowac,
+      // inaczej rozszerza sie o nie i wyglada, jakby zdjecie roslo
+      var st = getComputedStyle(k);
+      k.style.setProperty('--tile-pad-l', st.paddingLeft);
+      k.style.setProperty('--tile-pad-r', st.paddingRight);
     }
 
     /* requestAnimationFrame nie chodzi, kiedy karta jest w tle albo

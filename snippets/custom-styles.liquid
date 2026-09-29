@@ -1482,9 +1482,19 @@
     /* Karta rosnie TYLKO w dol. Zadnego powiekszania na boki i do gory
        ani cienia - zmierzone u nich: ta sama gorna krawedz, biale tlo,
        box-shadow: none, wieksza jedynie wysokosc. */
+    {%- comment -%}
+      Kafel ma wlasne wciecie na odstep w siatce (u nas 22 px z lewej).
+      Element ustawiony absolutnie liczy sie od KRAWEDZI WEWNETRZNEJ
+      obramowania, czyli razem z tym wcieciem - przez co karta robila
+      sie o te 22 px szersza i wychodzila w lewo, a zdjecie wygladalo,
+      jakby sie powiekszalo. Dlatego left i right biora wciecie kafla,
+      ktore podaje skrypt.
+    {%- endcomment -%}
     .grid-product:hover .grid-product__content {
       position: absolute;
-      left: 0; right: 0; top: 0;
+      left: var(--tile-pad-l, 0px);
+      right: var(--tile-pad-r, 0px);
+      top: 0;
       padding-bottom: 12px;
       background: transparent;
       z-index: 6;
@@ -1501,7 +1511,7 @@
       content: "";
       position: absolute;
       left: 0; right: 0; bottom: 0;
-      top: calc(var(--tile-img-h, 100%) - 22px);
+      top: calc(var(--tile-img-h, 100%) - 10px);
       background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -1562,7 +1572,7 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      bottom: 10px;
+      bottom: 16px;
       display: flex; align-items: center; justify-content: center; gap: 5px;
       height: 14px;
       padding: 0 8px;
