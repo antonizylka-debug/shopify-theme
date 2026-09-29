@@ -1401,6 +1401,10 @@
   .tile-hover { display: none; }
   .tile-nav { display: none; }
 
+  /* Motyw sam podmienia zdjecie na drugie po najechaniu. U nich
+     zdjecie stoi nieruchomo i zmienia je dopiero strzalka. */
+  .grid-product .grid-product__secondary-image { display: none !important; }
+
   /* Plakietka na zdjeciu - zmierzona u nich: przylega do lewej krawedzi,
      zaokraglona tylko z prawej, wiekszy oddech od strony przyleglej. */
   .grid-product .grid-product__tag {
@@ -1478,10 +1482,15 @@
     /* Karta rosnie TYLKO w dol. Zadnego powiekszania na boki i do gory
        ani cienia - zmierzone u nich: ta sama gorna krawedz, biale tlo,
        box-shadow: none, wieksza jedynie wysokosc. */
+    /* Zmierzone u nich: rgba(255,255,255,0.7) i blur(10px). Stad ta
+       rozmyta smuga tam, gdzie karta nachodzi na zdjecie sasiada. */
     .grid-product:hover .grid-product__content {
       position: absolute;
       left: 0; right: 0; top: 0;
       padding-bottom: 12px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       z-index: 6;
     }
     .grid-product:hover .grid-product__tag { opacity: 0; }
@@ -1497,35 +1506,51 @@
       pointer-events: none;
     }
     .grid-product:hover .tile-nav { opacity: 1; }
+    /* Zmierzone u nich: 35 x 41 px, tlo rgba(255,255,255,0.7),
+       blur(10px), bez cienia, przylegle do krawedzi i zaokraglone
+       tylko od strony zdjecia. */
     .tile-nav__btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 30px; height: 30px;
+      width: 35px; height: 41px;
       display: flex; align-items: center; justify-content: center;
       padding: 0; border: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       color: #1c1d1d;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
+      box-shadow: none;
       cursor: pointer;
       pointer-events: auto;
     }
-    .tile-nav__btn--prev { left: 8px; }
-    .tile-nav__btn--next { right: 8px; }
+    .tile-nav__btn--prev { left: 0; border-radius: 0 20px 20px 0; }
+    .tile-nav__btn--next { right: 0; border-radius: 20px 0 0 20px; }
+    /* na pierwszym zdjeciu nie ma po co cofac, na ostatnim - isc dalej */
+    .tile-nav__btn.is-off { display: none; }
     .tile-nav__btn svg { width: 7px; height: 12px; display: block; }
+    /* Kropki siedza na rozmytej pigulce - inaczej znikaja na jasnym
+       zdjeciu. U nich blur(6px) i ledwie widoczne tlo. */
     .tile-nav__dots {
       position: absolute;
-      left: 0; right: 0; bottom: 9px;
-      display: flex; justify-content: center; gap: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      height: 14px;
+      padding: 0 8px;
+      border-radius: 7px;
+      background: rgba(242, 242, 242, 0.1);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
     .tile-nav__dot {
       width: 5px; height: 5px;
       border-radius: 50%;
-      background: rgba(28, 29, 29, 0.28);
+      background: rgba(255, 255, 255, 0.85);
       transition: background 0.12s ease;
     }
-    .tile-nav__dot.is-on { background: #1c1d1d; }
+    .tile-nav__dot.is-on { background: #16150f; }
 
     /* ---------- rozmiary i przycisk ---------- */
     /* Jedna linia, reszta w wielokropek. Buty maja po pietnascie

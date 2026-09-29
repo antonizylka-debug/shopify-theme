@@ -327,8 +327,10 @@
        nigdy sie nie podpinaly. */
     function pilnujSiatki() {
       if (!window.MutationObserver || !document.body) return;
-      new MutationObserver(odswiez).observe(document.body, { childList: true, subtree: true });
+      new MutationObserver(function () { odswiez(); ustawStrzalki(); })
+        .observe(document.body, { childList: true, subtree: true });
       odswiez();
+      ustawStrzalki();
     }
 
     if (document.readyState === 'loading') {
@@ -360,6 +362,26 @@
       var kropki = nav.querySelectorAll('.tile-nav__dot');
       for (var j = 0; j < kropki.length; j++) {
         kropki[j].classList.toggle('is-on', j === i);
+      }
+
+      // na pierwszym zdjeciu chowamy strzalke wstecz, na ostatnim - dalej
+      var wstecz = nav.querySelector('[data-tile-prev]');
+      var dalej = nav.querySelector('[data-tile-next]');
+      if (wstecz) wstecz.classList.toggle('is-off', i === 0);
+      if (dalej) dalej.classList.toggle('is-off', i === lista.length - 1);
+    }
+
+    /* ustawienie poczatkowe - bez tego na pierwszym zdjeciu widac obie */
+    function ustawStrzalki() {
+      var nawigacje = document.querySelectorAll('[data-tile-nav]');
+      for (var i = 0; i < nawigacje.length; i++) {
+        var nav = nawigacje[i];
+        var ile = nav.querySelectorAll('.tile-nav__dot').length;
+        var teraz = parseInt(nav.getAttribute('data-tile-index') || '0', 10);
+        var wstecz = nav.querySelector('[data-tile-prev]');
+        var dalej = nav.querySelector('[data-tile-next]');
+        if (wstecz) wstecz.classList.toggle('is-off', teraz === 0);
+        if (dalej) dalej.classList.toggle('is-off', teraz === ile - 1);
       }
     }
 
