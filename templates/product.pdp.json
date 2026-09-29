@@ -164,6 +164,13 @@
         "title": "Køb flere og spar op til 25%",
         "all_label": "Se alle",
         "count": 10,
+        "show_progress": true,
+        "tiers": "2:10, 3:20, 4:25",
+        "label_items": "varer",
+        "label_start": "Læg # i kurven og spar %.",
+        "label_have": "Du har # — % rabat.",
+        "label_more": "Læg # mere i kurven og få %.",
+        "label_max": "Du har den største rabat: %.",
         "card_width": 240,
         "card_width_mobile": 170,
         "gap": 16,
@@ -174,7 +181,11 @@
         "padding_top_mobile": 32,
         "padding_bottom_mobile": 32,
         "color_bg": "#ffffff",
-        "color_text": "#1c1d1d"
+        "color_text": "#1c1d1d",
+        "color_muted": "#6e6b65",
+        "color_accent": "#d6332e",
+        "color_track": "#eee9e2",
+        "color_fill": "#16150f"
       }
     },
     "reviews": {
@@ -309,9 +320,15 @@
     "product-recommendations": {
       "type": "product-recommendations",
       "settings": {
-        "product_recommendations_heading": "DU KAN OGSÅ LIDE",
+        "product_recommendations_heading": "ANBEFALET TIL DIG",
         "related_count": 6,
         "products_per_row": 3
+      }
+    },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": {
+        "recent_count": 5
       }
     },
     "apps": {
@@ -328,6 +345,7 @@
     "reviews",
     "faq",
     "product-recommendations",
+    "recently-viewed",
     "apps"
   ]
 }

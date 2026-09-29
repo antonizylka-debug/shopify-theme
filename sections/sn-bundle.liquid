@@ -52,7 +52,36 @@
     }
     #shopify-section-{{ section.id }} .snb__all:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-    #shopify-section-{{ section.id }} .snb__track {
+    {%- comment -%}
+      Pasek postepu do progu rabatu. Liczba rzeczy w koszyku pochodzi
+      z /cart.js, a nie z niczego wpisanego - inaczej pokazywalby stan
+      sprzed dodania i klient widzialby nieprawde.
+    {%- endcomment -%}
+    #shopify-section-{{ section.id }} .snb__postep { margin-bottom: 18px; }
+    #shopify-section-{{ section.id }} .snb__postep-txt {
+      font-size: 13.5px; line-height: 1.5; margin-bottom: 9px;
+    }
+    #shopify-section-{{ section.id }} .snb__postep-txt b {
+      font-weight: 700; color: {{ section.settings.color_accent }};
+    }
+    #shopify-section-{{ section.id }} .snb__tor {
+      height: 6px; background: {{ section.settings.color_track }};
+      overflow: hidden;
+    }
+    #shopify-section-{{ section.id }} .snb__wyp {
+      height: 100%; width: 0;
+      background: {{ section.settings.color_fill }};
+      transition: width 0.5s cubic-bezier(0.25, 0.8, 0.3, 1);
+    }
+    #shopify-section-{{ section.id }} .snb__znaczniki {
+      display: flex; justify-content: space-between;
+      margin-top: 7px; font-size: 11px; color: {{ section.settings.color_muted }};
+    }
+    #shopify-section-{{ section.id }} .snb__znacznik.is-on {
+      color: {{ section.settings.color_accent }}; font-weight: 700;
+    }
+
+    #shopify-section-{{ section.id }} .snb__track { /*ROW*/
       display: flex;
       flex-wrap: nowrap;
       gap: {{ section.settings.gap }}px;
@@ -112,6 +141,32 @@
         {%- endif -%}
       </div>
 
+      {%- if section.settings.show_progress and section.settings.tiers != blank -%}
+        {%- assign progi = section.settings.tiers | split: ',' -%}
+        <div class="snb__postep" data-snb-postep
+             data-tiers="{{ section.settings.tiers | escape }}"
+             data-have="{{ section.settings.label_have | escape }}"
+             data-items="{{ section.settings.label_items | escape }}"
+             data-more="{{ section.settings.label_more | escape }}"
+             data-max="{{ section.settings.label_max | escape }}"
+             data-start="{{ section.settings.label_start | escape }}">
+          <div class="snb__postep-txt" data-snb-txt></div>
+          <div class="snb__tor"><div class="snb__wyp" data-snb-wyp></div></div>
+          <div class="snb__znaczniki">
+            {%- for prog in progi -%}
+              {%- liquid
+                assign para = prog | strip | split: ':'
+                assign szt = para[0] | strip
+                assign proc = para[1] | strip
+              -%}
+              {%- if szt != blank and proc != blank -%}
+                <span class="snb__znacznik" data-snb-prog="{{ szt }}">{{ szt }} {{ section.settings.label_items }} · {{ proc }}%</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
       <div class="snb__track grid grid--uniform" data-snb-track>
         {%- for produkt in lista limit: ile -%}
           {%- render 'product-grid-item',
@@ -129,6 +184,72 @@
     (function () {
       var sekcja = document.getElementById('shopify-section-{{ section.id }}');
       if (!sekcja) return;
+
+      /* ---------- pasek postepu ---------- */
+      var postep = sekcja.querySelector('[data-snb-postep]');
+      if (postep) {
+        var progi = (postep.getAttribute('data-tiers') || '').split(',')
+          .map(function (t) {
+            var cz = t.split(':');
+            return { szt: parseInt(cz[0], 10), proc: parseInt(cz[1], 10) };
+          })
+          .filter(function (x) { return x.szt > 0 && x.proc > 0; })
+          .sort(function (a, b) { return a.szt - b.szt; });
+
+        var txt = postep.querySelector('[data-snb-txt]');
+        var wyp = postep.querySelector('[data-snb-wyp]');
+        var slowoSzt = postep.getAttribute('data-items') || '';
+
+        function opisz(ile) {
+          var osiagniety = null, nastepny = null;
+          for (var i = 0; i < progi.length; i++) {
+            if (ile >= progi[i].szt) osiagniety = progi[i];
+            else if (!nastepny) nastepny = progi[i];
+          }
+
+          var maks = progi.length ? progi[progi.length - 1].szt : 1;
+          wyp.style.width = Math.min(100, Math.round((ile / maks) * 100)) + '%';
+
+          var znaczniki = postep.querySelectorAll('[data-snb-prog]');
+          for (var j = 0; j < znaczniki.length; j++) {
+            var szt = parseInt(znaczniki[j].getAttribute('data-snb-prog'), 10);
+            znaczniki[j].classList.toggle('is-on', ile >= szt);
+          }
+
+          if (!osiagniety && nastepny) {
+            txt.innerHTML = postep.getAttribute('data-start')
+              .replace('#', '<b>' + nastepny.szt + ' ' + slowoSzt + '</b>')
+              .replace('%', '<b>' + nastepny.proc + '%</b>');
+            return;
+          }
+          if (osiagniety && !nastepny) {
+            txt.innerHTML = postep.getAttribute('data-max')
+              .replace('%', '<b>' + osiagniety.proc + '%</b>');
+            return;
+          }
+          var brakuje = nastepny.szt - ile;
+          txt.innerHTML =
+            postep.getAttribute('data-have')
+              .replace('#', '<b>' + ile + ' ' + slowoSzt + '</b>')
+              .replace('%', '<b>' + osiagniety.proc + '%</b>') +
+            ' ' +
+            postep.getAttribute('data-more')
+              .replace('#', '<b>' + brakuje + ' ' + slowoSzt + '</b>')
+              .replace('%', '<b>' + nastepny.proc + '%</b>');
+        }
+
+        function policz() {
+          fetch('/cart.js', { headers: { Accept: 'application/json' } })
+            .then(function (r) { return r.json(); })
+            .then(function (k) { opisz(k.item_count || 0); })
+            .catch(function () { opisz(0); });
+        }
+
+        policz();
+        document.addEventListener('ajaxProduct:added', policz);
+        document.addEventListener('cart:build', policz);
+      }
+
       var pasek = sekcja.querySelector('[data-snb-track]');
       if (!pasek) return;
 
@@ -199,6 +320,16 @@
     { "type": "text", "id": "all_label", "label": "Link on the right", "default": "Se alle" },
     { "type": "range", "id": "count", "label": "Products", "default": 10, "min": 4, "max": 20, "step": 1 },
 
+    { "type": "header", "content": "Progress towards the discount" },
+    { "type": "paragraph", "content": "The number of items comes from the cart itself, never typed. Use # for the number of items and % for the percentage." },
+    { "type": "checkbox", "id": "show_progress", "label": "Show the bar", "default": true },
+    { "type": "text", "id": "tiers", "label": "Steps", "info": "quantity:percent, separated by commas", "default": "2:10, 3:20, 4:25" },
+    { "type": "text", "id": "label_items", "label": "Word for items", "default": "varer" },
+    { "type": "text", "id": "label_start", "label": "Empty cart", "default": "Læg # i kurven og spar %." },
+    { "type": "text", "id": "label_have", "label": "A step reached", "default": "Du har # — % rabat." },
+    { "type": "text", "id": "label_more", "label": "Towards the next step", "default": "Læg # mere i kurven og få %." },
+    { "type": "text", "id": "label_max", "label": "Top step reached", "default": "Du har den største rabat: %." },
+
     { "type": "header", "content": "Size" },
     { "type": "range", "id": "card_width", "label": "Card width", "default": 240, "min": 140, "max": 340, "step": 10, "unit": "px" },
     { "type": "range", "id": "card_width_mobile", "label": "Card width (phone)", "default": 170, "min": 110, "max": 260, "step": 10, "unit": "px" },
@@ -212,7 +343,11 @@
 
     { "type": "header", "content": "Colours" },
     { "type": "color", "id": "color_bg", "label": "Background", "default": "#ffffff" },
-    { "type": "color", "id": "color_text", "label": "Heading", "default": "#1c1d1d" }
+    { "type": "color", "id": "color_text", "label": "Heading", "default": "#1c1d1d" },
+    { "type": "color", "id": "color_muted", "label": "Under the bar", "default": "#6e6b65" },
+    { "type": "color", "id": "color_accent", "label": "Highlighted numbers", "default": "#d6332e" },
+    { "type": "color", "id": "color_track", "label": "Bar background", "default": "#eee9e2" },
+    { "type": "color", "id": "color_fill", "label": "Bar fill", "default": "#16150f" }
   ],
   "presets": [{ "name": "Bundle row" }]
 }
