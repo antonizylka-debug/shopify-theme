@@ -58,7 +58,7 @@
     "product_grid_image_size": "portrait",
     "product_grid_image_fill": true,
     "product_hover_image": true,
-    "enable_swatches": false,
+    "enable_swatches": true,
     "collection_grid_style": "below",
     "collection_grid_size": "portrait",
     "collection_grid_image": "product",
