@@ -1451,7 +1451,13 @@
     .grid-product .grid-product__image-mask {
       order: 1;
       margin-bottom: 11px;
-      transition: margin-bottom 0.22s ease;
+      {%- comment -%}
+        Ta sama krzywa i czas dla wszystkiego, co sie rozsuwa - zdjecia
+        odjezdzajacego w gore i paneli rosnacych w dol. Inaczej rozjezdza
+        sie to na oczach. Krzywa wyhamowuje na koncu, wiec ruch nie urywa
+        sie w pol drogi.
+      {%- endcomment -%}
+      transition: margin-bottom 0.4s cubic-bezier(0.25, 0.8, 0.3, 1);
     }
     {%- comment -%}
       Po najechaniu caly opis podjezdza o 22 px w gore, na dol zdjecia -
@@ -1504,7 +1510,10 @@
       opacity: 0;
       overflow: hidden;
       margin: 0;
-      transition: max-height 0.22s ease, opacity 0.16s ease, margin 0.22s ease;
+      transition:
+        max-height 0.4s cubic-bezier(0.25, 0.8, 0.3, 1),
+        margin 0.4s cubic-bezier(0.25, 0.8, 0.3, 1),
+        opacity 0.26s ease 0.08s;
     }
     .grid-product .grid-product__colors { display: flex; justify-content: center; gap: 5px; }
     .grid-product.is-measured:hover .grid-product__colors {
@@ -1573,7 +1582,7 @@
       border-bottom: 1px solid rgba(28, 29, 29, 0.12);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.18s ease;
+      transition: opacity 0.32s ease;
       z-index: 2;
     }
     .grid-product:hover .grid-product__content::before { opacity: 1; }
@@ -1602,7 +1611,7 @@
       position: absolute;
       left: 0; right: 0; top: 0; bottom: 0;
       opacity: 0;
-      transition: opacity 0.12s ease;
+      transition: opacity 0.26s ease 0.08s;
       pointer-events: none;
     }
     .grid-product:hover .tile-nav { opacity: 1; }
