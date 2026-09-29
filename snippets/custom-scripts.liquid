@@ -305,14 +305,22 @@
       if (maska) k.style.setProperty('--tile-img-h', maska.offsetHeight + 'px');
     }
 
-    var czeka = null;
+    /* requestAnimationFrame nie chodzi, kiedy karta jest w tle albo
+       strona nie maluje - a wtedy kafle zostalyby bez zarezerwowanej
+       wysokosci. Stad drugie wyjscie na zwyklym timerze; ktore pierwsze
+       zdazy, to liczy, drugie sie wycofuje. */
+    var czeka = false;
+    function przelicz() {
+      if (!czeka) return;
+      czeka = false;
+      var kafle = document.querySelectorAll(KAFEL);
+      for (var i = 0; i < kafle.length; i++) zmierz(kafle[i]);
+    }
     function odswiez() {
       if (czeka) return;
-      czeka = requestAnimationFrame(function () {
-        czeka = null;
-        var kafle = document.querySelectorAll(KAFEL);
-        for (var i = 0; i < kafle.length; i++) zmierz(kafle[i]);
-      });
+      czeka = true;
+      requestAnimationFrame(przelicz);
+      setTimeout(przelicz, 250);
     }
 
     odswiez();
