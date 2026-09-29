@@ -151,6 +151,7 @@
           "settings": {
             "icon": "cart",
             "text": "Gratis fragt på alle ordrer",
+            "text_m": "Gratis fragt",
             "color": "",
             "link": ""
           }
@@ -160,6 +161,7 @@
           "settings": {
             "icon": "lock",
             "text": "Sikker betaling",
+            "text_m": "Sikker betaling",
             "color": "",
             "link": ""
           }
@@ -169,6 +171,7 @@
           "settings": {
             "icon": "swap",
             "text": "30 dages returret",
+            "text_m": "30 dages retur",
             "color": "",
             "link": ""
           }
@@ -195,7 +198,7 @@
         "size_m": 9,
         "tracking_m": 0.4,
         "icon_size_m": 16,
-        "pad_m": 10
+        "pad_m": 9
       }
     }
   },
