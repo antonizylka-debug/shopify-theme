@@ -310,6 +310,13 @@
       k.style.setProperty('--tile-pad-l', st.paddingLeft);
       k.style.setProperty('--tile-pad-r', st.paddingRight);
 
+      /* wysokosci paneli w stanie zwinietym - scrollHeight podaje
+         wysokosc tresci mimo max-height: 0 i overflow: hidden */
+      var panel = k.querySelector('[data-tile-hover]');
+      if (panel) k.style.setProperty('--tile-panel-h', (panel.scrollHeight + 2) + 'px');
+      var kolory = k.querySelector('.grid-product__colors');
+      if (kolory) k.style.setProperty('--tile-colors-h', (kolory.scrollHeight + 2) + 'px');
+
       // dopiero teraz karta moze wyjsc z ukladu - wysokosc jest zmierzona
       k.classList.add('is-measured');
     }

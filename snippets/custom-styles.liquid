@@ -1516,13 +1516,19 @@
         opacity 0.26s ease 0.08s;
     }
     .grid-product .grid-product__colors { display: flex; justify-content: center; gap: 5px; }
+    {%- comment -%}
+      Docelowa wysokosc bierze sie z pomiaru, a nie z zapasu "na oko".
+      Przy sztywnym max-height 220 px, gdy tresc ma 90, rozsuwanie
+      konczylo sie po pierwszej trzeciej czasu, a przez reszte animowala
+      sie pusta przestrzen - wygladalo to na szarpniecie bez animacji.
+    {%- endcomment -%}
     .grid-product.is-measured:hover .grid-product__colors {
-      max-height: 40px;
+      max-height: var(--tile-colors-h, 40px);
       opacity: 1;
       margin: 8px 0 2px;
     }
     .grid-product.is-measured:hover .tile-hover {
-      max-height: 220px;
+      max-height: var(--tile-panel-h, 220px);
       opacity: 1;
       margin: 0;
     }
