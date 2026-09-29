@@ -116,7 +116,9 @@
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       padding-bottom: 4px;
+      cursor: grab;
     }
+    #shopify-section-{{ section.id }} .snb__track.is-drag { cursor: grabbing; }
     #shopify-section-{{ section.id }} .snb__track::-webkit-scrollbar { display: none; }
 
     {%- comment -%}
@@ -335,6 +337,96 @@
       var pasek = sekcja.querySelector('[data-snb-track]');
       if (!pasek) return;
 
+      /* ---------- przewijanie: strzalki i przeciaganie myszka ----------
+         Poza bramka najezdzania, bo przewijanie ma dzialac wszedzie,
+         nie tylko tam, gdzie jest kursor. Wczesniej siedzialo pod nia
+         i na czesci urzadzen strzalki w ogole sie nie podpinaly. */
+      (function () {
+        var wstecz = sekcja.querySelector('[data-snb-wstecz]');
+        var dalej = sekcja.querySelector('[data-snb-dalej]');
+
+        /* Przewijamy o pelna szerokosc paska, czyli o caly komplet
+           widocznych kafli - wtedy po klikniecu znow widac same cale
+           kafle, a nie polowki. */
+        function krok() {
+          var st = getComputedStyle(pasek);
+          return pasek.clientWidth + (parseFloat(st.columnGap || st.gap) || 0);
+        }
+
+        /* Strzalki w naglowku gasna, gdy nie ma dokad przewijac. */
+        function stan() {
+          if (!wstecz || !dalej) return;
+          var maks = pasek.scrollWidth - pasek.clientWidth;
+          wstecz.disabled = pasek.scrollLeft < 4;
+          dalej.disabled = pasek.scrollLeft > maks - 4;
+        }
+
+        if (wstecz) wstecz.addEventListener('click', function () {
+          pasek.scrollBy({ left: -krok(), behavior: 'smooth' });
+        });
+        if (dalej) dalej.addEventListener('click', function () {
+          pasek.scrollBy({ left: krok(), behavior: 'smooth' });
+        });
+
+        /* ---------- przeciaganie myszka ----------
+           Dotyk ma wlasne przewijanie przegladarki, wiec go nie ruszamy.
+           Przyciaganie do kafla wylaczamy na czas ciagniecia, bo inaczej
+           pasek szarpie sie przy kazdym ruchu. */
+        var ciagnie = false, startX = 0, startScroll = 0, droga = 0;
+
+        pasek.addEventListener('pointerdown', function (e) {
+          if (e.pointerType === 'touch' || e.button !== 0) return;
+          ciagnie = true;
+          droga = 0;
+          startX = e.clientX;
+          startScroll = pasek.scrollLeft;
+          pasek.classList.add('is-drag');
+          pasek.style.scrollSnapType = 'none';
+        });
+
+        pasek.addEventListener('pointermove', function (e) {
+          if (!ciagnie) return;
+          var d = e.clientX - startX;
+          if (Math.abs(d) > droga) droga = Math.abs(d);
+          if (droga > 4) {
+            e.preventDefault();
+            pasek.setPointerCapture(e.pointerId);
+          }
+          pasek.scrollLeft = startScroll - d;
+        });
+
+        function koniec() {
+          if (!ciagnie) return;
+          ciagnie = false;
+          pasek.classList.remove('is-drag');
+          pasek.style.scrollSnapType = '';
+          stan();
+        }
+        pasek.addEventListener('pointerup', koniec);
+        pasek.addEventListener('pointercancel', koniec);
+        pasek.addEventListener('pointerleave', koniec);
+
+        /* Po przeciagnieciu nie otwieramy produktu, w ktory akurat
+           trafil kursor - inaczej kazde przesuniecie konczyloby sie
+           wejsciem na karte produktu. */
+        pasek.addEventListener('click', function (e) {
+          if (droga > 6) { e.preventDefault(); e.stopPropagation(); droga = 0; }
+        }, true);
+
+        pasek.addEventListener('scroll', stan, { passive: true });
+        window.addEventListener('resize', function () { stan(); wysokosc(); });
+        window.addEventListener('load', wysokosc);
+
+        function wysokosc() {
+          var kafel = pasek.querySelector('.grid__item');
+          if (!kafel) return;
+          sekcja.style.setProperty('--snb-mid', Math.round(kafel.getBoundingClientRect().width * 2 / 3) + 'px');
+        }
+
+        stan();
+        wysokosc();
+      })();
+
       /* Tylko tam, gdzie jest prawdziwy kursor. Na dotyku ":hover"
          zostaje wlaczony po tapnieciu i karta wisialaby nad trescia. */
       if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
@@ -377,48 +469,7 @@
         aktywny = null;
       }
 
-      /* ---------- przewijanie strzalkami ---------- */
-      (function () {
-        var wstecz = sekcja.querySelector('[data-snb-wstecz]');
-        var dalej = sekcja.querySelector('[data-snb-dalej]');
-        if (!wstecz || !dalej) return;
 
-        /* Przewijamy o pelna szerokosc paska, czyli o caly komplet
-           widocznych kafli - wtedy po klikniecu znow widac same cale
-           kafle, a nie polowki. */
-        function krok() {
-          var st = getComputedStyle(pasek);
-          return pasek.clientWidth + (parseFloat(st.columnGap || st.gap) || 0);
-        }
-
-        /* Strzalki na wysokosci srodka zdjecia; zdjecie ma proporcje 3:4,
-           a szerokosc kafla zalezy teraz od szerokosci strony. */
-        function wysokosc() {
-          var kafel = pasek.querySelector('.grid__item');
-          if (!kafel) return;
-          var szer = kafel.getBoundingClientRect().width;
-          sekcja.style.setProperty('--snb-mid', Math.round(szer * 2 / 3) + 'px');
-        }
-
-        function stan() {
-          var maks = pasek.scrollWidth - pasek.clientWidth;
-          wstecz.disabled = pasek.scrollLeft < 4;
-          dalej.disabled = pasek.scrollLeft > maks - 4;
-        }
-
-        wstecz.addEventListener('click', function () {
-          pasek.scrollBy({ left: -krok(), behavior: 'smooth' });
-        });
-        dalej.addEventListener('click', function () {
-          pasek.scrollBy({ left: krok(), behavior: 'smooth' });
-        });
-
-        pasek.addEventListener('scroll', stan, { passive: true });
-        window.addEventListener('resize', function () { stan(); wysokosc(); });
-        window.addEventListener('load', wysokosc);
-        stan();
-        wysokosc();
-      })();
 
       pasek.addEventListener('mouseover', function (e) {
         var kafel = e.target.closest('.grid-product');
