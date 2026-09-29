@@ -464,15 +464,71 @@
         });
     }
 
+    /* ---------- plachta z rozmiarami na telefonie ----------
+       W kaflu rozmiary sie nie miescily: buty maja po pietnascie
+       polowek i kafel rosl na cala strone. Kafelki klonujemy
+       z ukrytego panelu kafla, wiec dostepnosc i identyfikatory
+       wariantow maja jedno zrodlo. */
+    var plachta = null;
+
+    function zbudujPlachte() {
+      if (plachta) return plachta;
+      plachta = document.createElement('div');
+      plachta.className = 'tile-sheet';
+      plachta.hidden = true;
+      plachta.innerHTML =
+        '<div class="tile-sheet__bg" data-sheet-close></div>' +
+        '<div class="tile-sheet__panel">' +
+        '<div class="tile-sheet__head"><span class="tile-sheet__title"></span>' +
+        '<button type="button" class="tile-sheet__x" data-sheet-close>&times;</button></div>' +
+        '<div class="tile-sheet__chips"></div></div>';
+      document.body.appendChild(plachta);
+
+      plachta.addEventListener('click', function (ev) {
+        if (ev.target.closest('[data-sheet-close]')) zamknijPlachte();
+      });
+      return plachta;
+    }
+
+    function otworzPlachte(panelEl) {
+      var zrodlo = panelEl.querySelector('.tile-hover__chips');
+      if (!zrodlo) return;
+      var pl = zbudujPlachte();
+      var etykieta = panelEl.querySelector('.tile-hover__pick-label');
+      pl.querySelector('.tile-sheet__title').textContent = etykieta ? etykieta.textContent : '';
+      var cel = pl.querySelector('.tile-sheet__chips');
+      cel.innerHTML = '';
+      var kafelki = zrodlo.querySelectorAll('.tile-hover__chip');
+      for (var i = 0; i < kafelki.length; i++) cel.appendChild(kafelki[i].cloneNode(true));
+      pl.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+    }
+
+    function zamknijPlachte() {
+      if (!plachta) return;
+      plachta.hidden = true;
+      document.documentElement.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape') zamknijPlachte();
+    });
+
     document.addEventListener('click', function (e) {
       var chip = e.target.closest('.tile-hover__chip');
       if (chip && !chip.disabled) {
         e.preventDefault();
         e.stopPropagation();
         var panel = chip.closest('[data-tile-hover]');
-        dodaj(chip.getAttribute('data-variant'), panel.querySelector('[data-tile-add]'));
-        var pick = panel.querySelector('[data-tile-pick]');
-        if (pick) pick.hidden = true;
+        if (panel) {
+          dodaj(chip.getAttribute('data-variant'), panel.querySelector('[data-tile-add]'));
+          var pick = panel.querySelector('[data-tile-pick]');
+          if (pick) pick.hidden = true;
+        } else {
+          // kafelek sklonowany do plachty - nie ma wlasnego panelu
+          dodaj(chip.getAttribute('data-variant'), chip);
+          zamknijPlachte();
+        }
         return;
       }
 
@@ -493,12 +549,14 @@
       var kafelek = btn.closest(KAFEL);
       var panelEl = btn.closest('[data-tile-hover]') || (kafelek && kafelek.querySelector('[data-tile-hover]'));
       if (!panelEl) return;
-      var wybor = panelEl.querySelector('[data-tile-pick]');
-      if (wybor) wybor.hidden = false;
-      if (kafelek && btn.classList.contains('tile-fab')) {
-        kafelek.classList.toggle('is-open');
-        if (!kafelek.classList.contains('is-open') && wybor) wybor.hidden = true;
+
+      if (btn.classList.contains('tile-fab')) {
+        otworzPlachte(panelEl);
+        return;
       }
+
+      var wybor = panelEl.querySelector('[data-tile-pick]');
+      if (wybor) wybor.hidden = !wybor.hidden;
     });
   })();
 </script>
