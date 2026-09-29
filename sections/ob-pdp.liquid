@@ -286,30 +286,43 @@
     w tonacji strony i kreska w kolorze akcentu przy lewej krawedzi.
     Cena jest juz czerwona, wiec trzeci jaskrawy kolor bylby o jeden za duzo.
   {%- endcomment -%}
+  {%- comment -%}
+    Pole z rabatem za komplet: zamkniete pudelko z obwodka, tresc
+    wysrodkowana, naglowek z zegarkiem, pod kreska same progi.
+    Wczesniej byl to pasek z kreska z boku i kafelkami - czytalo sie
+    jak przypis, a nie jak oferta.
+  {%- endcomment -%}
   #shopify-section-{{ section.id }} .pdp__promo {
-    margin: 14px 0 0;
+    margin: 16px 0 0;
     background: {{ section.settings.promo_bg }};
-    border-left: 3px solid {{ section.settings.promo_accent }};
-    border-radius: 0 {{ section.settings.radius }}px {{ section.settings.radius }}px 0;
-    padding: 13px 15px;
+    border: 1px solid {{ section.settings.promo_border }};
+    border-radius: {{ section.settings.radius }}px;
+    padding: 17px 18px 16px;
+    text-align: center;
   }
   #shopify-section-{{ section.id }} .pdp__promo-t {
-    font-size: 13px; font-weight: 700; line-height: 1.35;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    font-size: 12.5px; font-weight: 700; line-height: 1.3;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: {{ section.settings.promo_accent }};
   }
+  #shopify-section-{{ section.id }} .pdp__promo-t svg { width: 15px; height: 15px; flex: 0 0 15px; }
   #shopify-section-{{ section.id }} .pdp__promo-s {
-    font-size: 12.5px; color: var(--pdp-muted); line-height: 1.45; margin-top: 3px;
+    font-size: 12.5px; color: var(--pdp-muted); line-height: 1.5; margin-top: 8px;
+  }
+  #shopify-section-{{ section.id }} .pdp__promo-hr {
+    height: 1px; background: {{ section.settings.promo_border }};
+    margin: 14px 0 12px;
+  }
+  #shopify-section-{{ section.id }} .pdp__promo-h2 {
+    font-size: 13.5px; font-weight: 700; margin-bottom: 8px;
   }
   #shopify-section-{{ section.id }} .pdp__tiers {
-    display: flex; flex-wrap: wrap; gap: 6px;
-    margin: 10px 0 0; padding: 0; list-style: none;
+    display: grid; gap: 5px;
+    margin: 0; padding: 0; list-style: none;
   }
   #shopify-section-{{ section.id }} .pdp__tier {
-    display: flex; align-items: baseline; gap: 5px;
-    background: #fff;
-    border: 1px solid var(--pdp-line);
-    border-radius: {{ section.settings.radius }}px;
-    padding: 6px 10px;
-    font-size: 12.5px;
+    font-size: 13.5px; line-height: 1.4;
   }
   #shopify-section-{{ section.id }} .pdp__tier b {
     font-weight: 700; color: {{ section.settings.promo_accent }};
@@ -846,10 +859,17 @@
         {%- if section.settings.show_promo and section.settings.promo_tiers != blank -%}
           <div class="pdp__promo">
             {%- if section.settings.promo_title != blank -%}
-              <div class="pdp__promo-t">{{ section.settings.promo_title }}</div>
+              <div class="pdp__promo-t">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                {{ section.settings.promo_title }}
+              </div>
             {%- endif -%}
             {%- if section.settings.promo_sub != blank -%}
               <div class="pdp__promo-s">{{ section.settings.promo_sub }}</div>
+            {%- endif -%}
+            <div class="pdp__promo-hr"></div>
+            {%- if section.settings.promo_head2 != blank -%}
+              <div class="pdp__promo-h2">{{ section.settings.promo_head2 }}</div>
             {%- endif -%}
             <ul class="pdp__tiers">
               {%- assign progi = section.settings.promo_tiers | split: ',' -%}
@@ -861,8 +881,9 @@
                 -%}
                 {%- if ile != blank and proc != blank -%}
                   <li class="pdp__tier">
-                    <span>{{ ile }} {{ section.settings.promo_qty_word }}</span>
-                    <b>-{{ proc }}%</b>
+                    {{ section.settings.promo_buy_word }} {{ ile }} {{ section.settings.promo_qty_word }}
+                    <span aria-hidden="true">&rarr;</span>
+                    <b>{{ proc }}% {{ section.settings.promo_off_word }}</b>
                   </li>
                 {%- endif -%}
               {%- endfor -%}
@@ -1286,6 +1307,10 @@
     { "type": "textarea", "id": "promo_sub", "label": "Line below", "default": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens." },
     { "type": "text", "id": "promo_tiers", "label": "Steps", "info": "quantity:percent, separated by commas", "default": "2:10, 3:20, 4:25" },
     { "type": "text", "id": "promo_qty_word", "label": "Word after the quantity", "default": "stk." },
+    { "type": "text", "id": "promo_head2", "label": "Heading above the steps", "default": "Rabat for flere varer" },
+    { "type": "text", "id": "promo_buy_word", "label": "Before the quantity", "default": "Køb" },
+    { "type": "text", "id": "promo_off_word", "label": "After the percentage", "default": "rabat" },
+    { "type": "color", "id": "promo_border", "label": "Border", "default": "#e8d9d6" },
     { "type": "color", "id": "promo_bg", "label": "Background", "default": "#f4f3f1" },
     { "type": "color", "id": "promo_accent", "label": "Accent", "default": "#23213a" },
 
