@@ -245,9 +245,34 @@
             .catch(function () { opisz(0); });
         }
 
+        /* Motyw ma kilka drog dodania do koszyka i nie kazda konczy sie
+           zdarzeniem, ktore tu dolatuje - formularz na karcie produktu
+           rozglasza je na sobie, a szuflada koszyka na dokumencie.
+           Zamiast zgadywac ktora droga poszlo, przeliczamy po kazdym
+           klikniecu w cokolwiek, co dodaje do koszyka, kilka razy
+           z rzedu - bo odpowiedz sklepu potrafi przyjsc z opoznieniem. */
+        var kolejka = [];
+        function przelicz() {
+          for (var i = 0; i < kolejka.length; i++) clearTimeout(kolejka[i]);
+          kolejka = [400, 1200, 2500].map(function (ms) { return setTimeout(policz, ms); });
+        }
+
         policz();
         document.addEventListener('ajaxProduct:added', policz);
         document.addEventListener('cart:build', policz);
+        document.addEventListener('cart:open', przelicz);
+
+        document.addEventListener('click', function (e) {
+          if (!e.target.closest) return;
+          if (e.target.closest('[data-snb-add], .snb__chip, [data-tile-add], .tile-hover__chip, button[name="add"], [type="submit"], .btn--add-to-cart, .add-to-cart')) {
+            przelicz();
+          }
+        }, true);
+
+        document.addEventListener('visibilitychange', function () {
+          if (!document.hidden) policz();
+        });
+        window.addEventListener('pageshow', policz);
       }
 
       var pasek = sekcja.querySelector('[data-snb-track]');
