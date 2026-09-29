@@ -1413,7 +1413,9 @@
     bottom: 14px;
     top: auto;
     right: auto;
-    z-index: 3;
+    /* nizej niz mgielka (z-index 1), zeby chowala sie pod nia i rozmywala;
+       wyzej niz samo zdjecie, ktore nie jest pozycjonowane */
+    z-index: 0;
     padding: 3px 9px 3px 14px;
     border-radius: 0 4px 4px 0;
     font-size: 12px;
