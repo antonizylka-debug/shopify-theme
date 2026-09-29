@@ -1,14 +1,16 @@
 {%- comment -%}
   Rzad produktow pod opisem: "polacz i zbierz wiekszy rabat".
 
-  Kafel jest wlasny, prostszy niz ten z kolekcji - chodzi o przejrzenie
-  wielu propozycji naraz, wiec rzad przesuwa sie w bok i miesci wiecej
-  produktow niz siatka.
+  Kafel jest DOKLADNIE ten sam co w kolekcji - renderowany tym samym
+  snippetem, wiec najezdzanie, mgielka, strzalki, kropki, rozmiary
+  i przycisk koszyka wygladaja i dzialaja identycznie. Zadnej kopii
+  wygladu, ktora rozjedzie sie przy nastepnej zmianie.
 
-  Panel po najechaniu wjezdza od dolu NA zdjecie, a nie pod kafel.
-  Kafel z kolekcji rosnie poza swoje granice; tutaj przycialby go
-  pojemnik z przewijaniem w poziomie, wiec panel musi zmiescic sie
-  w obrysie zdjecia.
+  Rzad przesuwa sie w bok, a pojemnik z przewijaniem przycina wszystko,
+  co z niego wystaje - a karta po najechaniu rosnie w dol poza swoj
+  kafel. Dlatego skrypt przelacza najechana karte na pozycjonowanie
+  wzgledem okna i wpisuje jej wspolrzedne: wtedy wychodzi ponad pasek
+  zamiast zostac uciety.
 {%- endcomment -%}
 
 {%- liquid
@@ -31,8 +33,6 @@
       background: {{ section.settings.color_bg }};
       color: {{ section.settings.color_text }};
       padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
-      --snb-muted: {{ section.settings.color_muted }};
-      --snb-sale: {{ section.settings.color_sale }};
     }
     #shopify-section-{{ section.id }} .snb__head {
       display: flex; align-items: baseline; justify-content: space-between;
@@ -54,6 +54,7 @@
 
     #shopify-section-{{ section.id }} .snb__track {
       display: flex;
+      flex-wrap: nowrap;
       gap: {{ section.settings.gap }}px;
       overflow-x: auto;
       scroll-snap-type: x proximity;
@@ -63,99 +64,30 @@
     }
     #shopify-section-{{ section.id }} .snb__track::-webkit-scrollbar { display: none; }
 
-    #shopify-section-{{ section.id }} .snb__item {
+    {%- comment -%}
+      Kafel z kolekcji ma wlasne klasy szerokosci pod siatke - w pasku
+      musimy je przykryc, bo szerokosc ustala flex, nie siatka.
+    {%- endcomment -%}
+    #shopify-section-{{ section.id }} .snb__track > .grid__item {
       flex: 0 0 {{ section.settings.card_width }}px;
       max-width: {{ section.settings.card_width }}px;
+      width: auto;
+      padding-left: 0;
       scroll-snap-align: start;
     }
-    #shopify-section-{{ section.id }} .snb__media {
-      position: relative;
-      aspect-ratio: 3 / 4;
-      overflow: hidden;
-      background: {{ section.settings.color_media }};
-      margin-bottom: 9px;
-    }
-    #shopify-section-{{ section.id }} .snb__media img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-    }
+
     {%- comment -%}
-      Odnosnik rozciagniety na zdjeciu zamiast opakowania calego kafla.
-      Przycisk musi stac obok niego, a nie w srodku: przycisk wewnatrz
-      odnosnika to nieprawidlowy kod, a klikniecie prowadziloby na karte
-      produktu zamiast dodac do koszyka.
+      Najechana karta przechodzi na pozycjonowanie wzgledem okna,
+      dzieki czemu wychodzi poza pasek z przewijaniem. Wspolrzedne
+      wpisuje skrypt, bo zna polozenie kafla po przewinieciu.
     {%- endcomment -%}
-    #shopify-section-{{ section.id }} .snb__stretch { position: absolute; inset: 0; z-index: 1; }
-
-    #shopify-section-{{ section.id }} .snb__flag {
-      position: absolute; left: 0; bottom: 12px; z-index: 2;
-      padding: 3px 9px 3px 14px;
-      border-radius: 0 4px 4px 0;
-      background: {{ section.settings.color_sale }};
-      color: #fff;
-      font-size: 11.5px; line-height: 1.35; text-transform: uppercase;
-    }
-    #shopify-section-{{ section.id }} .snb__link { color: inherit; text-decoration: none; display: block; }
-    #shopify-section-{{ section.id }} .snb__name {
-      display: block;
-      font-size: 13px; line-height: 1.35; margin-bottom: 4px;
-    }
-    #shopify-section-{{ section.id }} .snb__prices {
-      display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px;
-      font-size: 13px;
-    }
-    #shopify-section-{{ section.id }} .snb__was { color: var(--snb-muted); text-decoration: line-through; }
-    #shopify-section-{{ section.id }} .snb__now { color: var(--snb-sale); font-weight: 600; }
-    #shopify-section-{{ section.id }} .snb__save { color: var(--snb-sale); }
-
-    #shopify-section-{{ section.id }} .snb__hover {
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      z-index: 3;
-      padding: 12px 12px 14px;
-      background: rgba(255, 255, 255, 0.72);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-top: 1px solid rgba(28, 29, 29, 0.1);
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(10px);
-      transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.25, 0.8, 0.3, 1), visibility 0.3s;
-      text-align: center;
-    }
-    #shopify-section-{{ section.id }} .snb__sizes {
-      font-size: 11.5px; line-height: 1.4; color: var(--snb-muted);
-      margin-bottom: 8px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    #shopify-section-{{ section.id }} .snb__btn {
-      display: block; width: 100%;
-      padding: 10px 12px; border: 0; border-radius: 3px;
-      background: {{ section.settings.color_button }};
-      color: #fff;
-      font-size: 13px; font-weight: 600;
-      cursor: pointer;
-    }
-    #shopify-section-{{ section.id }} .snb__btn.is-done { background: #2f6b42; }
-    #shopify-section-{{ section.id }} .snb__btn[disabled] { background: #b7b3ac; cursor: default; }
-
-    #shopify-section-{{ section.id }} .snb__chips {
-      display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;
-      margin-top: 8px;
-    }
-    #shopify-section-{{ section.id }} .snb__chip {
-      min-width: 34px; padding: 6px 8px;
-      border: 1px solid rgba(28, 29, 29, 0.18);
-      background: #fff; font-size: 12px; line-height: 1; cursor: pointer;
-    }
-    #shopify-section-{{ section.id }} .snb__chip[disabled] {
-      color: #b7b3ac; border-color: rgba(28, 29, 29, 0.08);
-      text-decoration: line-through; cursor: default;
-    }
-
-    @media (hover: hover) and (pointer: fine) and (min-width: 769px) {
-      #shopify-section-{{ section.id }} .snb__item:hover .snb__hover {
-        opacity: 1; visibility: visible; transform: translateY(0);
-      }
+    #shopify-section-{{ section.id }} .grid-product.is-out .grid-product__content {
+      position: fixed;
+      left: var(--snb-x, 0px);
+      top: var(--snb-y, 0px);
+      right: auto;
+      width: var(--snb-w, auto);
+      z-index: 40;
     }
 
     @media only screen and (max-width: 768px) {
@@ -164,11 +96,10 @@
       }
       #shopify-section-{{ section.id }} .snb__title { font-size: {{ section.settings.title_size_mobile }}px; }
       #shopify-section-{{ section.id }} .snb__track { margin: 0 -16px; padding: 0 16px 4px; }
-      #shopify-section-{{ section.id }} .snb__item {
+      #shopify-section-{{ section.id }} .snb__track > .grid__item {
         flex-basis: {{ section.settings.card_width_mobile }}px;
         max-width: {{ section.settings.card_width_mobile }}px;
       }
-      #shopify-section-{{ section.id }} .snb__hover { display: none; }
     }
   {%- endstyle -%}
 
@@ -181,91 +112,14 @@
         {%- endif -%}
       </div>
 
-      <div class="snb__track">
+      <div class="snb__track grid grid--uniform" data-snb-track>
         {%- for produkt in lista limit: ile -%}
-          {%- liquid
-            assign na_przecenie = false
-            assign oszczednosc = 0
-            if produkt.compare_at_price > produkt.price
-              assign na_przecenie = true
-              assign oszczednosc = produkt.compare_at_price | minus: produkt.price | times: 100.0 | divided_by: produkt.compare_at_price | round
-            endif
-
-            assign poz_rozmiaru = 0
-            for opt in produkt.options_with_values
-              assign nazwa_opcji = opt.name | downcase
-              assign to_kolor = false
-              if nazwa_opcji contains 'color' or nazwa_opcji contains 'colour' or nazwa_opcji contains 'farve'
-                assign to_kolor = true
-              endif
-              if to_kolor == false and poz_rozmiaru == 0
-                assign poz_rozmiaru = forloop.index
-              endif
-            endfor
-
-            assign idx0 = poz_rozmiaru | minus: 1
-            assign dostepne = ''
-            if poz_rozmiaru > 0
-              for v in produkt.variants
-                assign wartosc = v.options[idx0]
-                assign znacznik = '|' | append: wartosc | append: '|'
-                unless dostepne contains znacznik
-                  if v.available
-                    assign dostepne = dostepne | append: znacznik
-                  endif
-                endunless
-              endfor
-            endif
+          {%- render 'product-grid-item',
+            product: produkt,
+            per_row: 4,
+            quick_shop_enable: settings.quick_shop_enable,
+            fallback: '39vw'
           -%}
-
-          <div class="snb__item">
-            <div class="snb__media">
-              {%- if produkt.featured_media != blank -%}
-                {{ produkt.featured_media | image_url: width: 500 | image_tag: loading: 'lazy', alt: produkt.title }}
-              {%- endif -%}
-              <a class="snb__stretch" href="{{ produkt.url }}" aria-label="{{ produkt.title | escape }}"></a>
-              {%- if na_przecenie and section.settings.sale_label != blank -%}
-                <span class="snb__flag">{{ section.settings.sale_label }}</span>
-              {%- endif -%}
-              {%- if produkt.available -%}
-                <div class="snb__hover" data-snb-hover>
-                  {%- if dostepne != blank -%}
-                    {%- assign tekst_rozmiarow = dostepne | remove_first: '|' | split: '|' | join: ', ' | replace: ', , ', ', ' -%}
-                    <div class="snb__sizes">{{ section.settings.sizes_label }} {{ tekst_rozmiarow }}</div>
-                  {%- endif -%}
-                  {%- if poz_rozmiaru > 0 -%}
-                    <button type="button" class="snb__btn" data-snb-add>{{ section.settings.add_label }}</button>
-                    <div class="snb__chips" data-snb-pick hidden>
-                      {%- assign widziane = '' -%}
-                      {%- for v in produkt.variants -%}
-                        {%- assign wartosc = v.options[idx0] -%}
-                        {%- assign znacznik = '|' | append: wartosc | append: '|' -%}
-                        {%- unless widziane contains znacznik -%}
-                          {%- assign widziane = widziane | append: znacznik -%}
-                          <button type="button" class="snb__chip" data-snb-variant="{{ v.id }}"{% unless v.available %} disabled{% endunless %}>{{ wartosc }}</button>
-                        {%- endunless -%}
-                      {%- endfor -%}
-                    </div>
-                  {%- else -%}
-                    <button type="button" class="snb__btn" data-snb-add data-snb-variant="{{ produkt.selected_or_first_available_variant.id }}">{{ section.settings.add_label }}</button>
-                  {%- endif -%}
-                </div>
-              {%- endif -%}
-            </div>
-
-            <a class="snb__link" href="{{ produkt.url }}">
-              <span class="snb__name">{{ produkt.title }}</span>
-              <span class="snb__prices">
-                {%- if na_przecenie -%}
-                  <span class="snb__was">{{ produkt.compare_at_price | money }}</span>
-                  <span class="snb__now">{{ produkt.price | money }}</span>
-                  <span class="snb__save">{{ section.settings.save_word }} {{ oszczednosc }}%</span>
-                {%- else -%}
-                  <span>{{ produkt.price | money }}</span>
-                {%- endif -%}
-              </span>
-            </a>
-          </div>
         {%- endfor -%}
       </div>
     </div>
@@ -275,52 +129,60 @@
     (function () {
       var sekcja = document.getElementById('shopify-section-{{ section.id }}');
       if (!sekcja) return;
+      var pasek = sekcja.querySelector('[data-snb-track]');
+      if (!pasek) return;
 
-      function dodaj(id, przycisk) {
-        przycisk.disabled = true;
-        fetch('/cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ items: [{ id: Number(id), quantity: 1 }] })
-        })
-          .then(function (r) { if (!r.ok) throw new Error('add'); return r.json(); })
-          .then(function () {
-            przycisk.classList.add('is-done');
-            document.dispatchEvent(new CustomEvent('ajaxProduct:added'));
-            setTimeout(function () {
-              przycisk.classList.remove('is-done');
-              przycisk.disabled = false;
-            }, 1600);
-          })
-          .catch(function () {
-            przycisk.disabled = false;
-            var kafel = przycisk.closest('.snb__item');
-            var link = kafel && kafel.querySelector('.snb__stretch');
-            if (link) window.location.href = link.href;
-          });
+      /* Tylko tam, gdzie jest prawdziwy kursor. Na dotyku ":hover"
+         zostaje wlaczony po tapnieciu i karta wisialaby nad trescia. */
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+      var aktywny = null;
+      var czeka = false;
+
+      function ustaw() {
+        czeka = false;
+        if (!aktywny) return;
+        var r = aktywny.getBoundingClientRect();
+        var st = getComputedStyle(aktywny);
+        var lewo = r.left + parseFloat(st.paddingLeft || 0);
+        var prawo = r.right - parseFloat(st.paddingRight || 0);
+        aktywny.style.setProperty('--snb-x', lewo + 'px');
+        aktywny.style.setProperty('--snb-y', r.top + 'px');
+        aktywny.style.setProperty('--snb-w', (prawo - lewo) + 'px');
       }
 
-      sekcja.addEventListener('click', function (e) {
-        var chip = e.target.closest('.snb__chip');
-        if (chip && !chip.disabled) {
-          e.preventDefault();
-          dodaj(chip.getAttribute('data-snb-variant'), chip);
-          var pick = chip.closest('[data-snb-pick]');
-          if (pick) pick.hidden = true;
-          return;
-        }
+      function odswiez() {
+        if (czeka) return;
+        czeka = true;
+        requestAnimationFrame(ustaw);
+      }
 
-        var btn = e.target.closest('[data-snb-add]');
-        if (!btn || btn.disabled) return;
-        e.preventDefault();
+      function otworz(kafel) {
+        if (aktywny === kafel) return;
+        zamknij();
+        aktywny = kafel;
+        ustaw();
+        kafel.classList.add('is-out');
+      }
 
-        var wariant = btn.getAttribute('data-snb-variant');
-        if (wariant) { dodaj(wariant, btn); return; }
+      function zamknij() {
+        if (!aktywny) return;
+        aktywny.classList.remove('is-out');
+        aktywny.style.removeProperty('--snb-x');
+        aktywny.style.removeProperty('--snb-y');
+        aktywny.style.removeProperty('--snb-w');
+        aktywny = null;
+      }
 
-        var panel = btn.closest('[data-snb-hover]');
-        var wybor = panel && panel.querySelector('[data-snb-pick]');
-        if (wybor) wybor.hidden = !wybor.hidden;
+      pasek.addEventListener('mouseover', function (e) {
+        var kafel = e.target.closest('.grid-product');
+        if (kafel && pasek.contains(kafel)) otworz(kafel);
       });
+
+      pasek.addEventListener('mouseleave', zamknij);
+      pasek.addEventListener('scroll', odswiez, { passive: true });
+      window.addEventListener('scroll', odswiez, { passive: true });
+      window.addEventListener('resize', zamknij);
     })();
   </script>
 {%- endif -%}
@@ -331,19 +193,15 @@
   "tag": "section",
   "class": "sn-bundle",
   "settings": [
-    { "type": "paragraph", "content": "A row of products under the description, for the buy-more-save-more offer. Left without a collection it uses the one the product sits in." },
+    { "type": "paragraph", "content": "A row of products under the description, for the buy-more-save-more offer. It uses the same card as the collection. Left without a collection it uses the one the product sits in." },
     { "type": "collection", "id": "collection", "label": "Collection" },
     { "type": "text", "id": "title", "label": "Heading", "default": "Køb flere og spar op til 25%" },
     { "type": "text", "id": "all_label", "label": "Link on the right", "default": "Se alle" },
-    { "type": "text", "id": "save_word", "label": "Before the percentage", "default": "Spar" },
-    { "type": "text", "id": "sale_label", "label": "Badge on a discounted photo", "default": "Udsalg" },
-    { "type": "text", "id": "sizes_label", "label": "Before the sizes", "default": "Størrelser:" },
-    { "type": "text", "id": "add_label", "label": "Button", "default": "Læg i kurv" },
     { "type": "range", "id": "count", "label": "Products", "default": 10, "min": 4, "max": 20, "step": 1 },
 
     { "type": "header", "content": "Size" },
-    { "type": "range", "id": "card_width", "label": "Card width", "default": 220, "min": 140, "max": 320, "step": 10, "unit": "px" },
-    { "type": "range", "id": "card_width_mobile", "label": "Card width (phone)", "default": 160, "min": 110, "max": 260, "step": 10, "unit": "px" },
+    { "type": "range", "id": "card_width", "label": "Card width", "default": 240, "min": 140, "max": 340, "step": 10, "unit": "px" },
+    { "type": "range", "id": "card_width_mobile", "label": "Card width (phone)", "default": 170, "min": 110, "max": 260, "step": 10, "unit": "px" },
     { "type": "range", "id": "gap", "label": "Gap between cards", "default": 16, "min": 6, "max": 40, "step": 2, "unit": "px" },
     { "type": "range", "id": "title_size", "label": "Heading", "default": 26, "min": 16, "max": 40, "step": 1, "unit": "px" },
     { "type": "range", "id": "title_size_mobile", "label": "Heading (phone)", "default": 19, "min": 14, "max": 30, "step": 1, "unit": "px" },
@@ -354,11 +212,7 @@
 
     { "type": "header", "content": "Colours" },
     { "type": "color", "id": "color_bg", "label": "Background", "default": "#ffffff" },
-    { "type": "color", "id": "color_text", "label": "Heading", "default": "#1c1d1d" },
-    { "type": "color", "id": "color_muted", "label": "Old price", "default": "#6e6b65" },
-    { "type": "color", "id": "color_sale", "label": "Sale price", "default": "#d6332e" },
-    { "type": "color", "id": "color_media", "label": "Behind the photo", "default": "#f4f3f1" },
-    { "type": "color", "id": "color_button", "label": "Button", "default": "#16150f" }
+    { "type": "color", "id": "color_text", "label": "Heading", "default": "#1c1d1d" }
   ],
   "presets": [{ "name": "Bundle row" }]
 }

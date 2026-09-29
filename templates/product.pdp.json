@@ -163,13 +163,9 @@
       "settings": {
         "title": "Køb flere og spar op til 25%",
         "all_label": "Se alle",
-        "save_word": "Spar",
-        "sale_label": "Udsalg",
-        "sizes_label": "Størrelser:",
-        "add_label": "Læg i kurv",
         "count": 10,
-        "card_width": 220,
-        "card_width_mobile": 160,
+        "card_width": 240,
+        "card_width_mobile": 170,
         "gap": 16,
         "title_size": 26,
         "title_size_mobile": 19,
@@ -178,11 +174,7 @@
         "padding_top_mobile": 32,
         "padding_bottom_mobile": 32,
         "color_bg": "#ffffff",
-        "color_text": "#1c1d1d",
-        "color_muted": "#6e6b65",
-        "color_sale": "#d6332e",
-        "color_media": "#f4f3f1",
-        "color_button": "#16150f"
+        "color_text": "#1c1d1d"
       }
     },
     "reviews": {
