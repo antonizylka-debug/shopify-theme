@@ -151,10 +151,37 @@
         "show_currency_flags": false,
         "show_locale_selector": false
       }
+    },
+    "uspbar": {
+      "type": "ob-uspbar",
+      "blocks": {
+        "i-1": { "type": "item", "settings": { "icon": "truck", "text": "Gratis fragt på alle ordrer" } },
+        "i-2": { "type": "item", "settings": { "icon": "tag", "text": "Store besparelser" } },
+        "i-3": { "type": "item", "settings": { "icon": "return", "text": "30 dages returret" } }
+      },
+      "block_order": ["i-1", "i-2", "i-3"],
+      "settings": {
+        "bg": "#000000",
+        "fg": "#ffffff",
+        "size": 11,
+        "weight": 600,
+        "tracking": 0.06,
+        "caps": true,
+        "pad": 13,
+        "icon_size": 18,
+        "max_width": 1500,
+        "show_mobile": true,
+        "breakpoint": 749,
+        "size_m": 9,
+        "tracking_m": 0.04,
+        "icon_size_m": 16,
+        "pad_m": 10
+      }
     }
   },
   "order": [
     "announcement",
-    "header"
+    "header",
+    "uspbar"
   ]
 }

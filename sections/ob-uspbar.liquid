@@ -1,0 +1,173 @@
+{%- comment -%}
+  Czarny pasek pod naglowkiem z trzema obietnicami naraz.
+  Rozni sie od paska ogloszeniowego nad naglowkiem: tamten przewija
+  komunikaty po kolei, ten pokazuje wszystkie trzy jednoczesnie,
+  wiec klient nie musi czekac az tresc sie zmieni.
+
+  Srodkowe pole jest miejscem na komunikat wyprzedazowy - dlatego
+  kazdy element moze miec wlasny kolor tekstu.
+{%- endcomment -%}
+
+{%- liquid
+  assign ile = section.blocks.size
+-%}
+
+{%- if ile > 0 -%}
+  <style>
+    #shopify-section-{{ section.id }} .ub {
+      background: {{ section.settings.bg }};
+      color: {{ section.settings.fg }};
+    }
+    #shopify-section-{{ section.id }} .ub__in {
+      max-width: {{ section.settings.max_width }}px;
+      margin: 0 auto;
+      padding: {{ section.settings.pad }}px 16px;
+      display: grid;
+      grid-template-columns: repeat({{ ile }}, minmax(0, 1fr));
+      align-items: center;
+    }
+    #shopify-section-{{ section.id }} .ub__item {
+      display: flex; align-items: center; justify-content: center;
+      gap: 9px;
+      min-width: 0;
+      text-align: center;
+      color: inherit; text-decoration: none;
+    }
+    #shopify-section-{{ section.id }} .ub__ico {
+      flex: 0 0 {{ section.settings.icon_size }}px;
+      width: {{ section.settings.icon_size }}px;
+      height: {{ section.settings.icon_size }}px;
+    }
+    #shopify-section-{{ section.id }} .ub__ico svg { width: 100%; height: 100%; display: block; }
+    #shopify-section-{{ section.id }} .ub__txt {
+      font-size: {{ section.settings.size }}px;
+      font-weight: {{ section.settings.weight }};
+      letter-spacing: {{ section.settings.tracking }}em;
+      line-height: 1.25;
+      {% if section.settings.caps %}text-transform: uppercase;{% endif %}
+    }
+    {%- comment -%}
+      Na telefonie trzy pola po jednej trzeciej szerokosci to okolo
+      105 px kazde - dlatego mniejszy stopien pisma, wezsze odstepy
+      i ikona nad tekstem zamiast obok niego.
+    {%- endcomment -%}
+    @media screen and (max-width: {{ section.settings.breakpoint }}px) {
+      #shopify-section-{{ section.id }} .ub { {% unless section.settings.show_mobile %}display: none;{% endunless %} }
+      #shopify-section-{{ section.id }} .ub__in {
+        padding: {{ section.settings.pad_m }}px 10px;
+      }
+      #shopify-section-{{ section.id }} .ub__item {
+        flex-direction: column; gap: 5px;
+      }
+      #shopify-section-{{ section.id }} .ub__ico {
+        flex: 0 0 {{ section.settings.icon_size_m }}px;
+        width: {{ section.settings.icon_size_m }}px;
+        height: {{ section.settings.icon_size_m }}px;
+      }
+      #shopify-section-{{ section.id }} .ub__txt {
+        font-size: {{ section.settings.size_m }}px;
+        letter-spacing: {{ section.settings.tracking_m }}em;
+      }
+    }
+  </style>
+
+  <div class="ub">
+    <div class="ub__in">
+      {%- for block in section.blocks -%}
+        {%- capture srodek -%}
+          <span class="ub__ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              {%- case block.settings.icon -%}
+                {%- when 'return' -%}<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>
+                {%- when 'swap' -%}<path d="M4 8h13l-3-3"/><path d="M20 16H7l3 3"/>
+                {%- when 'tag' -%}<path d="M3 12.5V4h8.5L21 13.5 12.5 22 3 12.5Z"/><circle cx="7.5" cy="7.5" r="1.4"/>
+                {%- when 'percent' -%}<path d="M6 18 18 6"/><circle cx="7.5" cy="7.5" r="2.2"/><circle cx="16.5" cy="16.5" r="2.2"/>
+                {%- when 'lock' -%}<rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>
+                {%- when 'clock' -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+                {%- when 'card' -%}<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/>
+                {%- when 'chat' -%}<path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 9.5h8M8 12.5h5"/>
+                {%- else -%}<path d="M2.5 6h10v10h-10z"/><path d="M12.5 9h4l3.5 3.5V16h-7.5"/><circle cx="6" cy="17.5" r="2"/><circle cx="16.5" cy="17.5" r="2"/>
+              {%- endcase -%}
+            </svg>
+          </span>
+          <span class="ub__txt"{% if block.settings.color != blank %} style="color: {{ block.settings.color }};"{% endif %}>{{ block.settings.text }}</span>
+        {%- endcapture -%}
+
+        {%- if block.settings.link != blank -%}
+          <a class="ub__item" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>{{ srodek }}</a>
+        {%- else -%}
+          <span class="ub__item" {{ block.shopify_attributes }}>{{ srodek }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Info bar",
+  "tag": "div",
+  "class": "ob-uspbar",
+  "enabled_on": { "groups": ["header", "footer"] },
+  "max_blocks": 5,
+  "settings": [
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#000000" },
+    { "type": "color", "id": "fg", "label": "Text", "default": "#ffffff" },
+
+    { "type": "header", "content": "Text" },
+    { "type": "range", "id": "size", "label": "Size", "default": 11, "min": 8, "max": 18, "step": 1, "unit": "px" },
+    { "type": "range", "id": "weight", "label": "Weight", "default": 600, "min": 400, "max": 800, "step": 100 },
+    { "type": "range", "id": "tracking", "label": "Letter spacing", "default": 0.06, "min": 0, "max": 0.2, "step": 0.01 },
+    { "type": "checkbox", "id": "caps", "label": "Capital letters", "default": true },
+
+    { "type": "header", "content": "Size" },
+    { "type": "range", "id": "pad", "label": "Height", "default": 13, "min": 4, "max": 30, "step": 1, "unit": "px" },
+    { "type": "range", "id": "icon_size", "label": "Icon", "default": 18, "min": 12, "max": 28, "step": 1, "unit": "px" },
+    { "type": "range", "id": "max_width", "label": "Width of the content", "default": 1500, "min": 800, "max": 1800, "step": 20, "unit": "px" },
+
+    { "type": "header", "content": "Mobile" },
+    { "type": "checkbox", "id": "show_mobile", "label": "Show on phones", "default": true },
+    { "type": "range", "id": "breakpoint", "label": "Phone below", "default": 749, "min": 480, "max": 1000, "step": 1, "unit": "px" },
+    { "type": "range", "id": "size_m", "label": "Size", "default": 9, "min": 7, "max": 14, "step": 1, "unit": "px" },
+    { "type": "range", "id": "tracking_m", "label": "Letter spacing", "default": 0.04, "min": 0, "max": 0.2, "step": 0.01 },
+    { "type": "range", "id": "icon_size_m", "label": "Icon", "default": 16, "min": 10, "max": 24, "step": 1, "unit": "px" },
+    { "type": "range", "id": "pad_m", "label": "Height", "default": 10, "min": 4, "max": 24, "step": 1, "unit": "px" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "truck",
+          "options": [
+            { "value": "truck", "label": "Delivery" },
+            { "value": "return", "label": "Return" },
+            { "value": "swap", "label": "Exchange" },
+            { "value": "tag", "label": "Price tag" },
+            { "value": "percent", "label": "Discount" },
+            { "value": "clock", "label": "Time" },
+            { "value": "lock", "label": "Secure" },
+            { "value": "card", "label": "Payment" },
+            { "value": "chat", "label": "Support" }
+          ]
+        },
+        { "type": "text", "id": "text", "label": "Text", "default": "Gratis fragt" },
+        { "type": "color", "id": "color", "label": "Its own text colour", "info": "Leave it on the bar's colour unless this one item should stand out" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Info bar",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "truck", "text": "Gratis fragt på alle ordrer" } },
+        { "type": "item", "settings": { "icon": "tag", "text": "Store besparelser" } },
+        { "type": "item", "settings": { "icon": "return", "text": "30 dages returret" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
