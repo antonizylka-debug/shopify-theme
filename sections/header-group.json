@@ -38,8 +38,12 @@
       "settings": {
         "announcement_compact": true,
         "announcement_sticky": true,
-        "announcement_layout": "slider",
+        "announcement_layout": "arrows_all",
         "announcement_interval": 5,
+        "bar_height": 34,
+        "bar_size": 12,
+        "bar_height_m": 30,
+        "bar_size_m": 11,
         "announcement_separator": "dash",
         "announcement_gap": 18
       }
@@ -189,11 +193,12 @@
         "weight": 600,
         "tracking": 0.7,
         "caps": true,
-        "pad": 13,
+        "pad": 10,
         "icon_size": 18,
         "stroke": 1.3,
         "max_width": 1500,
         "show_mobile": true,
+        "stack_m": false,
         "breakpoint": 750,
         "size_m": 9,
         "tracking_m": 0.4,

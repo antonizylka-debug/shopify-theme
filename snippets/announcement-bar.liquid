@@ -14,6 +14,16 @@
     assign announcement_row = true
   endif
 
+  # strzalki po bokach: albo tylko na telefonie i tablecie, albo na kazdym ekranie
+  assign uklad_strzalki = false
+  assign strzalki_wszedzie = false
+  if section.settings.announcement_layout == 'arrows'
+    assign uklad_strzalki = true
+  elsif section.settings.announcement_layout == 'arrows_all'
+    assign uklad_strzalki = true
+    assign strzalki_wszedzie = true
+  endif
+
   assign separator = '·'
   case section.settings.announcement_separator
     when 'line'
@@ -26,11 +36,13 @@
 -%}
 
 {% if show_announcement %}
-  {%- if section.settings.announcement_layout == 'arrows' -%}
+  {%- if uklad_strzalki -%}
     {%- comment -%}
       Uklad "arrows": na desktopie wszystkie wiadomosci w jednym rzedzie,
       na telefonie i tablecie jedna wiadomosc ze strzalkami (CSS w sekcji).
+      Uklad "arrows_all": strzalki na kazdym ekranie, bez rzedu na desktopie.
     {%- endcomment -%}
+    {%- unless strzalki_wszedzie -%}
     <div class="announcement-bar announcement-bar--row announcement-desktop-only">
       <div class="page-width">
         <div class="announcement-row">
@@ -52,11 +64,12 @@
         </div>
       </div>
     </div>
+    {%- endunless -%}
     {%- comment -%}
-      Jedna wiadomosc naraz ze strzalkami po bokach, zmiana co kilka sekund -
-      jak pasek u Oliver & Blake. Strzalki pokazuja sie przy 2+ wiadomosciach.
+      Jedna wiadomosc naraz ze strzalkami po bokach, zmiana co kilka sekund.
+      Strzalki pokazuja sie przy 2+ wiadomosciach.
     {%- endcomment -%}
-    <div class="announcement-bar announcement-arrows announcement-mobile-only" data-announcement-arrows data-interval="{{ section.settings.announcement_interval | default: 5 }}">
+    <div class="announcement-bar announcement-arrows{% unless strzalki_wszedzie %} announcement-mobile-only{% endunless %}" data-announcement-arrows data-interval="{{ section.settings.announcement_interval | default: 5 }}">
       {%- if announcement_block_count > 1 -%}
         <button type="button" class="announcement-arrows__btn announcement-arrows__btn--prev" data-announcement-prev aria-label="Forrige">
           <svg aria-hidden="true" focusable="false" viewBox="0 0 10 16" width="10" height="16"><path d="M8.5 1.5 2 8l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
