@@ -1413,9 +1413,13 @@
     bottom: 14px;
     top: auto;
     right: auto;
-    /* nizej niz mgielka (z-index 1), zeby chowala sie pod nia i rozmywala;
-       wyzej niz samo zdjecie, ktore nie jest pozycjonowane */
-    z-index: 0;
+    {%- comment -%}
+      Warstwy w kaflu, od dolu: zdjecie, plakietka (1), mgielka (2),
+      tekst i strzalki (3). Przy zerze plakietka wpadala pod opakowanie
+      zdjecia, bo to takze element pozycjonowany i stoi dalej w kodzie -
+      przy rownym z-index wygrywa ten pozniejszy.
+    {%- endcomment -%}
+    z-index: 1;
     padding: 3px 9px 3px 14px;
     border-radius: 0 4px 4px 0;
     font-size: 12px;
@@ -1570,7 +1574,7 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.18s ease;
-      z-index: 1;
+      z-index: 2;
     }
     .grid-product:hover .grid-product__content::before { opacity: 1; }
     /* tekst i panel nad mgielka, strzalki i kropki tez */
@@ -1583,9 +1587,9 @@
     .grid-product:hover .grid-product__lowest,
     .grid-product:hover .grid-product__price--savings {
       position: relative;
-      z-index: 2;
+      z-index: 3;
     }
-    .grid-product:hover .tile-nav { z-index: 2; }
+    .grid-product:hover .tile-nav { z-index: 3; }
     {%- comment -%}
       Plakietka nie znika - zostaje pod mgielka i rozmywa sie razem
       ze zdjeciem. O to chodzilo: karta ma na nia nachodzic.
