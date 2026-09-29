@@ -184,6 +184,29 @@ Arguments
             {{ settings.quick_shop_text }}
           </button>
         {%- endif -%}
+
+        {%- comment -%}
+          Przegladanie zdjec bez wchodzenia na karte produktu. Adresy
+          zdjec siedza w atrybucie, a skrypt podmienia tylko src -
+          dzieki temu nie ladujemy osmiu obrazkow na kazdy kafel.
+        {%- endcomment -%}
+        {%- assign zdjecia_kafla = product.media | where: 'media_type', 'image' -%}
+        {%- if zdjecia_kafla.size > 1 -%}
+          {%- capture lista_zdjec -%}{%- for m in zdjecia_kafla limit: 8 -%}{%- unless forloop.first -%},{%- endunless -%}"{{ m.preview_image | image_url: width: 700 }}"{%- endfor -%}{%- endcapture -%}
+          <div class="tile-nav" data-tile-nav data-tile-media='[{{ lista_zdjec }}]'>
+            <button type="button" class="tile-nav__btn tile-nav__btn--prev" data-tile-prev aria-label="{{ 'general.slider.previous_slide' | t }}">
+              <svg viewBox="0 0 10 16" width="10" height="16" aria-hidden="true" focusable="false"><path d="M8.5 1.5 2 8l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            </button>
+            <button type="button" class="tile-nav__btn tile-nav__btn--next" data-tile-next aria-label="{{ 'general.slider.next_slide' | t }}">
+              <svg viewBox="0 0 10 16" width="10" height="16" aria-hidden="true" focusable="false"><path d="M1.5 1.5 8 8l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            </button>
+            <div class="tile-nav__dots">
+              {%- for m in zdjecia_kafla limit: 8 -%}
+                <span class="tile-nav__dot{% if forloop.first %} is-on{% endif %}"></span>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
       </div>
 
       <a href="{{ product.url | within: collection }}" class="grid-product__link">
@@ -378,6 +401,10 @@ Arguments
           {%- endif -%}
         </div>
       </a>
+
+      {%- if type == blank -%}
+        {%- render 'tile-hover', product: product -%}
+      {%- endif -%}
     </div>
   </div>
 

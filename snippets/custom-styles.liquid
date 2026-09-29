@@ -1379,4 +1379,142 @@
     border-color: #16150f !important;
     color: #ffffff !important;
   }
+
+  /* ==========================================================================
+     Kafel w kolekcji: przegladanie zdjec i panel po najechaniu
+
+     Panel wysuwa sie POD kaflem i zaslania rzad nizej, wiec siatka
+     nie przeskakuje. Bialy prostokat z cieniem rysuje ::before kafla,
+     rozciagniety w dol o wysokosc panelu, ktora podaje skrypt - dzieki
+     temu cien obejmuje kafel i panel jako jedna calosc, bez szwu.
+
+     Wszystko tylko tam, gdzie jest prawdziwy kursor. Na dotyku
+     ":hover" zostaje wlaczony po tapnieciu i panel zaslanialby
+     sasiedni kafel.
+     ========================================================================== */
+  .tile-hover { display: none; }
+  .tile-nav { display: none; }
+
+  @media (hover: hover) and (pointer: fine) and (min-width: 769px) {
+    .grid-product { position: relative; }
+    .grid-product:hover { z-index: 6; }
+
+    .grid-product:hover::before {
+      content: "";
+      position: absolute;
+      left: -10px;
+      right: -10px;
+      top: -10px;
+      bottom: calc(-10px - var(--tile-panel-h, 0px));
+      background: #fff;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.13);
+      z-index: -1;
+    }
+
+    /* ---------- strzalki i kropki na zdjeciu ---------- */
+    .grid-product__image-mask { position: relative; }
+    .tile-nav {
+      display: block;
+      position: absolute;
+      left: 0; right: 0; top: 0; bottom: 0;
+      opacity: 0;
+      transition: opacity 0.12s ease;
+      pointer-events: none;
+    }
+    .grid-product:hover .tile-nav { opacity: 1; }
+    .tile-nav__btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0; border: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      color: #1c1d1d;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
+      cursor: pointer;
+      pointer-events: auto;
+    }
+    .tile-nav__btn--prev { left: 8px; }
+    .tile-nav__btn--next { right: 8px; }
+    .tile-nav__btn svg { width: 7px; height: 12px; display: block; }
+    .tile-nav__dots {
+      position: absolute;
+      left: 0; right: 0; bottom: 9px;
+      display: flex; justify-content: center; gap: 5px;
+    }
+    .tile-nav__dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(28, 29, 29, 0.28);
+      transition: background 0.12s ease;
+    }
+    .tile-nav__dot.is-on { background: #1c1d1d; }
+
+    /* ---------- panel pod kaflem ---------- */
+    .tile-hover {
+      display: block;
+      position: absolute;
+      left: 0; right: 0; top: 100%;
+      padding: 4px 0 2px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.12s ease, visibility 0.12s ease;
+    }
+    .grid-product:hover .tile-hover { opacity: 1; visibility: visible; }
+
+    .tile-hover__sizes {
+      font-size: 12.5px;
+      line-height: 1.4;
+      color: var(--colorTextBody, #6e6b65);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .tile-hover__sizes span { color: inherit; }
+
+    .tile-hover__btn {
+      display: block;
+      width: 100%;
+      padding: 11px 12px;
+      border: 0;
+      background: #16150f;
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+    }
+    .tile-hover__btn:hover { background: #2e2c24; }
+    .tile-hover__btn[disabled] { background: #b7b3ac; cursor: default; }
+    .tile-hover__btn.is-done { background: #2f6b42; }
+
+    .tile-hover__pick { margin-top: 8px; }
+    .tile-hover__pick-label {
+      font-size: 12px;
+      color: var(--colorTextBody, #6e6b65);
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .tile-hover__chips {
+      display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;
+    }
+    .tile-hover__chip {
+      min-width: 38px;
+      padding: 7px 9px;
+      border: 1px solid #d9d6d1;
+      background: #fff;
+      font-size: 12.5px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .tile-hover__chip:hover { border-color: #16150f; }
+    .tile-hover__chip[disabled] {
+      color: #b7b3ac;
+      border-color: #ebe8e3;
+      cursor: default;
+      text-decoration: line-through;
+    }
+  }
+
 </style>

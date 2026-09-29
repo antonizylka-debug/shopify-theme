@@ -272,3 +272,125 @@
     });
   })();
 </script>
+
+
+<script>
+  /* Kafel w kolekcji: przegladanie zdjec strzalkami i dodanie do koszyka
+     bez wchodzenia na karte produktu.
+
+     Zdarzenia wieszamy na dokumencie, a nie na kazdym kaflu - kafle
+     dochodza przy doladowywaniu kolejnej strony kolekcji i filtrowaniu,
+     wiec podpiecie ich raz na starcie nie wystarczyloby. */
+  (function () {
+    var KAFEL = '.grid-product';
+
+    function kafel(el) {
+      return el.closest ? el.closest(KAFEL) : null;
+    }
+
+    /* ---------- wysokosc panelu pod bialy prostokat z cieniem ---------- */
+    document.addEventListener('mouseover', function (e) {
+      var k = kafel(e.target);
+      if (!k) return;
+      var panel = k.querySelector('[data-tile-hover]');
+      if (!panel) return;
+      k.style.setProperty('--tile-panel-h', panel.offsetHeight + 'px');
+    });
+
+    /* ---------- strzalki i kropki ---------- */
+    function pokaz(nav, nowy) {
+      var lista;
+      try {
+        lista = JSON.parse(nav.getAttribute('data-tile-media') || '[]');
+      } catch (err) {
+        return;
+      }
+      if (!lista.length) return;
+
+      var i = ((nowy % lista.length) + lista.length) % lista.length;
+      var k = nav.closest(KAFEL);
+      var img = k && k.querySelector('.grid-product__image');
+      if (!img) return;
+
+      img.removeAttribute('srcset');
+      img.removeAttribute('sizes');
+      img.src = lista[i];
+      nav.setAttribute('data-tile-index', i);
+
+      var kropki = nav.querySelectorAll('.tile-nav__dot');
+      for (var j = 0; j < kropki.length; j++) {
+        kropki[j].classList.toggle('is-on', j === i);
+      }
+    }
+
+    document.addEventListener('click', function (e) {
+      var strzalka = e.target.closest('[data-tile-prev], [data-tile-next]');
+      if (!strzalka) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      var nav = strzalka.closest('[data-tile-nav]');
+      var teraz = parseInt(nav.getAttribute('data-tile-index') || '0', 10);
+      pokaz(nav, strzalka.hasAttribute('data-tile-next') ? teraz + 1 : teraz - 1);
+    });
+
+    /* ---------- dodanie do koszyka ---------- */
+    function dodaj(id, przycisk) {
+      przycisk.disabled = true;
+      var napis = przycisk.textContent;
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ items: [{ id: Number(id), quantity: 1 }] })
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error('add failed');
+          return r.json();
+        })
+        .then(function () {
+          przycisk.classList.add('is-done');
+          document.dispatchEvent(new CustomEvent('ajaxProduct:added'));
+          setTimeout(function () {
+            przycisk.classList.remove('is-done');
+            przycisk.textContent = napis;
+            przycisk.disabled = false;
+          }, 1600);
+        })
+        .catch(function () {
+          przycisk.disabled = false;
+          var k = przycisk.closest(KAFEL);
+          var link = k && k.querySelector('.grid-product__link');
+          if (link) window.location.href = link.href;
+        });
+    }
+
+    document.addEventListener('click', function (e) {
+      var chip = e.target.closest('.tile-hover__chip');
+      if (chip && !chip.disabled) {
+        e.preventDefault();
+        e.stopPropagation();
+        var panel = chip.closest('[data-tile-hover]');
+        dodaj(chip.getAttribute('data-variant'), panel.querySelector('[data-tile-add]'));
+        var pick = panel.querySelector('[data-tile-pick]');
+        if (pick) pick.hidden = true;
+        return;
+      }
+
+      var btn = e.target.closest('[data-tile-add]');
+      if (!btn || btn.disabled) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      var id = btn.getAttribute('data-variant');
+      if (id) {
+        dodaj(id, btn);
+        return;
+      }
+
+      // produkt ma rozmiary - najpierw trzeba wybrac ktory
+      var wybor = btn.closest('[data-tile-hover]').querySelector('[data-tile-pick]');
+      if (wybor) wybor.hidden = !wybor.hidden;
+    });
+  })();
+</script>

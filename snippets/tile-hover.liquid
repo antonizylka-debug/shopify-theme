@@ -1,0 +1,96 @@
+{%- comment -%}
+  Panel pokazywany po najechaniu na kafel w kolekcji: dostepne rozmiary
+  i przycisk dodania do koszyka. Wysuwa sie pod kaflem i zaslania rzad
+  nizej, wiec nie przesuwa siatki.
+
+  Rozmiary bierzemy z pierwszej opcji, ktora nie jest kolorem. Dla
+  kazdej wartosci rozmiaru bierzemy PIERWSZY wariant o tej wartosci -
+  przy dwoch opcjach (kolor + rozmiar) moze to byc wariant innego
+  koloru niz aktualnie widoczny, dlatego przy kliknieciu i tak
+  sprawdzamy dostepnosc.
+
+  @param {object} product - produkt kafla
+{%- endcomment -%}
+
+{%- liquid
+  assign klucz_koloru = 'products.general.color_swatch_trigger' | t | downcase
+  assign poz_rozmiaru = 0
+  assign nazwa_rozmiaru = ''
+
+  for opt in product.options_with_values
+    assign nazwa = opt.name | downcase
+    assign to_kolor = false
+    if nazwa contains klucz_koloru
+      assign to_kolor = true
+    endif
+    if nazwa contains 'colour' or nazwa contains 'color' or nazwa contains 'farve'
+      assign to_kolor = true
+    endif
+    if to_kolor == false and poz_rozmiaru == 0
+      assign poz_rozmiaru = forloop.index
+      assign nazwa_rozmiaru = opt.name
+    endif
+  endfor
+
+  assign jeden_wariant = false
+  if product.variants.size == 1
+    assign jeden_wariant = true
+  endif
+  if product.has_only_default_variant
+    assign jeden_wariant = true
+  endif
+-%}
+
+<div class="tile-hover" data-tile-hover>
+  {%- if jeden_wariant or poz_rozmiaru == 0 -%}
+    {%- assign war = product.selected_or_first_available_variant -%}
+    <button type="button" class="tile-hover__btn" data-tile-add data-variant="{{ war.id }}"
+            {% unless product.available %}disabled{% endunless %}>
+      {%- if product.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+    </button>
+  {%- else -%}
+    {%- liquid
+      assign idx0 = poz_rozmiaru | minus: 1
+      assign widziane = ''
+      assign dostepne = ''
+    -%}
+
+    {%- comment -%} lista dostepnych rozmiarow do wiersza tekstowego {%- endcomment -%}
+    {%- for v in product.variants -%}
+      {%- assign wartosc = v.options[idx0] -%}
+      {%- assign znacznik = '|' | append: wartosc | append: '|' -%}
+      {%- unless dostepne contains znacznik -%}
+        {%- if v.available -%}
+          {%- assign dostepne = dostepne | append: znacznik -%}
+        {%- endif -%}
+      {%- endunless -%}
+    {%- endfor -%}
+
+    {%- if dostepne != blank -%}
+      {%- assign tekst_rozmiarow = dostepne | remove_first: '|' | split: '|' | join: ', ' | replace: ', , ', ', ' -%}
+      <div class="tile-hover__sizes">
+        {{ 'products.general.sizes_available' | t }} <span>{{ tekst_rozmiarow }}</span>
+      </div>
+    {%- endif -%}
+
+    <button type="button" class="tile-hover__btn" data-tile-add
+            {% unless product.available %}disabled{% endunless %}>
+      {%- if product.available -%}{{ 'products.product.add_to_cart' | t }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+    </button>
+
+    <div class="tile-hover__pick" data-tile-pick hidden>
+      <div class="tile-hover__pick-label">{{ 'products.general.pick_size' | t }}</div>
+      <div class="tile-hover__chips">
+        {%- for v in product.variants -%}
+          {%- assign wartosc = v.options[idx0] -%}
+          {%- assign znacznik = '|' | append: wartosc | append: '|' -%}
+          {%- unless widziane contains znacznik -%}
+            {%- assign widziane = widziane | append: znacznik -%}
+            <button type="button" class="tile-hover__chip" data-variant="{{ v.id }}"
+                    {% unless v.available %}disabled{% endunless %}>{{ wartosc }}</button>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>

@@ -312,7 +312,9 @@
       "recent_products": "Senest set",
       "reviews": "Anmeldelser",
       "was_price": "Før:",
-      "lowest_30d": "Laveste pris de sidste 30 dage:"
+      "lowest_30d": "Laveste pris de sidste 30 dage:",
+      "sizes_available": "Tilgængelige størrelser:",
+      "pick_size": "Vælg størrelse"
     },
     "product": {
       "description": "Beskrivelse",

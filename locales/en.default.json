@@ -312,7 +312,9 @@
       "recent_products": "Recently viewed",
       "reviews": "Reviews",
       "was_price": "Was:",
-      "lowest_30d": "Lowest price in the last 30 days:"
+      "lowest_30d": "Lowest price in the last 30 days:",
+      "sizes_available": "Available sizes:",
+      "pick_size": "Pick a size"
     },
     "product": {
       "description": "Description",
