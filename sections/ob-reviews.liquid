@@ -51,57 +51,62 @@
     --obr-muted: {{ section.settings.color_muted }};
     --obr-line: {{ section.settings.color_line }};
     --obr-star: {{ section.settings.color_star }};
+    --obr-off: {{ section.settings.color_star_off }};
     --obr-bar: {{ section.settings.color_bar }};
     background: {{ section.settings.color_bg }};
     color: var(--obr-text);
     padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
   }
 
-  #shopify-section-{{ section.id }} .obr__eyebrow {
-    font-size: 14px; font-weight: 500; letter-spacing: 0.025em;
-    text-transform: uppercase; color: var(--obr-muted); margin: 0 0 8px;
+  {%- comment -%}
+    Uklad jak na Trustpilocie: werdykt slowem, piec zielonych kafelkow
+    z gwiazdka, pod spodem jedna linia z ocena i liczba opinii.
+    Karty w dwoch kolumnach, obwiedzione wlosowa kreska, bez cienia.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .obr__head { margin-bottom: 22px; }
+  #shopify-section-{{ section.id }} .obr__verdict {
+    display: flex; align-items: center; gap: 10px;
+    margin: 0 0 7px;
   }
-  #shopify-section-{{ section.id }} .obr__title {
-    font-size: {{ section.settings.title_size }}px; font-weight: 600;
-    letter-spacing: 0.025em; text-transform: uppercase; margin: 0 0 24px;
+  #shopify-section-{{ section.id }} .obr__verdict-word {
+    font-size: 21px; font-weight: 700; letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+  #shopify-section-{{ section.id }} .obr__rated {
+    margin: 0; font-size: 13.5px; color: var(--obr-muted);
   }
 
-  /* ---------- podsumowanie ---------- */
-  #shopify-section-{{ section.id }} .obr__summary {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 28px;
-    align-items: center;
-    padding: 22px 0;
-    border-top: 1px solid var(--obr-line);
-    border-bottom: 1px solid var(--obr-line);
-    margin-bottom: 26px;
+  /* ---------- kafelki z gwiazdkami ---------- */
+  #shopify-section-{{ section.id }} .obr__tiles { display: inline-flex; gap: 2px; }
+  #shopify-section-{{ section.id }} .obr__tile {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 20px; height: 20px;
+    background: var(--obr-off);
   }
-  #shopify-section-{{ section.id }} .obr__score { text-align: center; }
-  #shopify-section-{{ section.id }} .obr__score-num {
-    font-size: 40px; font-weight: 600; line-height: 1;
-  }
-  #shopify-section-{{ section.id }} .obr__score-of {
-    font-size: 14px; color: var(--obr-muted); margin-top: 4px;
-  }
-  #shopify-section-{{ section.id }} .obr__stars { display: inline-flex; gap: 2px; margin: 8px 0 2px; }
-  #shopify-section-{{ section.id }} .obr__stars svg { width: 17px; height: 17px; color: var(--obr-star); }
+  #shopify-section-{{ section.id }} .obr__tile.is-on { background: var(--obr-star); }
+  #shopify-section-{{ section.id }} .obr__tile svg { width: 13px; height: 13px; color: #fff; }
+  #shopify-section-{{ section.id }} .obr__tiles--sm .obr__tile { width: 17px; height: 17px; }
+  #shopify-section-{{ section.id }} .obr__tiles--sm .obr__tile svg { width: 11px; height: 11px; }
 
-  #shopify-section-{{ section.id }} .obr__bars { display: grid; gap: 6px; }
+  /* ---------- rozklad ocen ---------- */
+  #shopify-section-{{ section.id }} .obr__bars {
+    display: grid; gap: 6px;
+    max-width: 380px; margin: 0 0 22px;
+    font-size: 12.5px; color: var(--obr-muted);
+  }
   #shopify-section-{{ section.id }} .obr__bar {
-    display: grid; grid-template-columns: 46px minmax(0, 1fr) 34px;
-    align-items: center; gap: 10px;
-    font-size: 13px; color: var(--obr-muted);
+    display: grid; grid-template-columns: 76px minmax(0, 1fr) 34px;
+    gap: 10px; align-items: center;
   }
   #shopify-section-{{ section.id }} .obr__bar-track {
-    height: 8px; background: var(--obr-line); overflow: hidden;
+    height: 7px; background: var(--obr-line); display: block;
   }
   #shopify-section-{{ section.id }} .obr__bar-fill {
-    height: 100%; background: var(--obr-bar);
+    height: 100%; background: var(--obr-bar); display: block;
   }
   #shopify-section-{{ section.id }} .obr__bar-num { text-align: right; }
 
-  /* ---------- karty opinii ---------- */
+  /* ---------- karty ---------- */
   #shopify-section-{{ section.id }} .obr__list {
     display: grid;
     grid-template-columns: repeat({{ section.settings.columns }}, minmax(0, 1fr));
@@ -109,28 +114,32 @@
   }
   #shopify-section-{{ section.id }} .obr__card {
     border: 1px solid var(--obr-line);
-    padding: 18px;
-    display: flex; flex-direction: column; gap: 9px;
+    background: #fff;
+    padding: 18px 20px 20px;
   }
-  #shopify-section-{{ section.id }} .obr__card-stars { display: flex; gap: 2px; }
-  #shopify-section-{{ section.id }} .obr__card-stars svg { width: 15px; height: 15px; color: var(--obr-star); }
-  #shopify-section-{{ section.id }} .obr__card-title {
-    font-size: 14px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase;
+  #shopify-section-{{ section.id }} .obr__card-top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; margin-bottom: 12px;
   }
-  #shopify-section-{{ section.id }} .obr__card-text {
-    font-size: 14.5px; line-height: 1.6; margin: 0;
+  #shopify-section-{{ section.id }} .obr__card-where {
+    font-size: 12px; color: var(--obr-muted); white-space: nowrap;
   }
-  #shopify-section-{{ section.id }} .obr__card-meta {
-    margin-top: auto; padding-top: 4px;
-    font-size: 13px; color: var(--obr-muted);
-    display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  #shopify-section-{{ section.id }} .obr__card-sep { margin: 0 5px; opacity: 0.6; }
+  #shopify-section-{{ section.id }} .obr__card-who {
+    display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+    font-size: 13.5px; font-weight: 700; margin-bottom: 7px;
   }
   #shopify-section-{{ section.id }} .obr__verified {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-weight: 500; color: var(--obr-text);
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 12.5px; font-weight: 400; color: var(--obr-muted);
   }
-  #shopify-section-{{ section.id }} .obr__verified svg { width: 13px; height: 13px; }
-  #shopify-section-{{ section.id }} .obr__dot { opacity: 0.5; }
+  #shopify-section-{{ section.id }} .obr__verified svg { width: 12px; height: 12px; }
+  #shopify-section-{{ section.id }} .obr__card-title {
+    font-size: 14px; font-weight: 700; line-height: 1.35; margin-bottom: 7px;
+  }
+  #shopify-section-{{ section.id }} .obr__card-text {
+    font-size: 13.5px; line-height: 1.6; color: var(--obr-muted);
+  }
 
   #shopify-section-{{ section.id }} .obr__empty {
     border: 1px dashed var(--obr-line);
@@ -142,15 +151,9 @@
     #shopify-section-{{ section.id }} .obr {
       padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
     }
-    #shopify-section-{{ section.id }} .obr__title { font-size: {{ section.settings.title_size_mobile }}px; }
-    #shopify-section-{{ section.id }} .obr__summary {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 18px;
-      padding: 18px 0;
-    }
-    #shopify-section-{{ section.id }} .obr__score-num { font-size: 34px; }
+    #shopify-section-{{ section.id }} .obr__verdict-word { font-size: 18px; }
     #shopify-section-{{ section.id }} .obr__list { grid-template-columns: minmax(0, 1fr); }
-    #shopify-section-{{ section.id }} .obr__card { padding: 15px; }
+    #shopify-section-{{ section.id }} .obr__card { padding: 15px 16px 17px; }
   }
 {%- endstyle -%}
 
@@ -164,83 +167,99 @@
 <div class="obr" id="{{ section.settings.anchor | default: 'anmeldelser' | handleize }}">
   <div class="page-width">
 
-    {%- if section.settings.eyebrow != blank -%}
-      <p class="obr__eyebrow">{{ section.settings.eyebrow }}</p>
-    {%- endif -%}
-    {%- if section.settings.title != blank -%}
-      <h2 class="obr__title">{{ section.settings.title }}</h2>
-    {%- endif -%}
-
     {%- if ile > 0 -%}
+      {%- liquid
+        assign werdykt = section.settings.verdict_low
+        if srednia >= 3.5
+          assign werdykt = section.settings.verdict_mid
+        endif
+        if srednia >= 4.3
+          assign werdykt = section.settings.verdict_high
+        endif
+      -%}
+
       {%- comment -%}
         Liczby zapisane w atrybutach - stad bierze je sekcja produktu,
-        zeby gwiazdki na gorze pokazywaly dokladnie to samo.
+        zeby ocena nad tytulem pokazywala dokladnie to samo.
       {%- endcomment -%}
-      <div class="obr__summary" data-obr-agg data-obr-avg="{{ srednia }}" data-obr-count="{{ ile }}">
-        <div class="obr__score">
-          <div class="obr__score-num">{{ srednia }}</div>
-          <div class="obr__stars">
+      <div class="obr__head" data-obr-agg data-obr-avg="{{ srednia }}" data-obr-count="{{ ile }}">
+        <div class="obr__verdict">
+          <span class="obr__verdict-word">{{ werdykt }}</span>
+          <span class="obr__tiles">
             {%- for i in (1..5) -%}
-              {%- if forloop.index <= pelnych -%}{{ gwiazdka_pelna }}{%- else -%}{{ gwiazdka_pusta }}{%- endif -%}
+              <span class="obr__tile{% if forloop.index <= pelnych %} is-on{% endif %}">{{ gwiazdka_pelna }}</span>
             {%- endfor -%}
-          </div>
-          <div class="obr__score-of">{{ section.settings.count_label }} {{ ile }}</div>
+          </span>
         </div>
-
-        {%- if section.settings.show_distribution -%}
-          <div class="obr__bars">
-            {%- assign licznosci = n5 | append: ',' | append: n4 | append: ',' | append: n3 | append: ',' | append: n2 | append: ',' | append: n1 | split: ',' -%}
-            {%- for licz in licznosci -%}
-              {%- liquid
-                assign gwiazd = 5 | minus: forloop.index0
-                assign n = licz | plus: 0
-                assign procent = 0
-                if ile > 0
-                  assign procent = n | times: 100 | divided_by: ile
-                endif
-              -%}
-              <div class="obr__bar">
-                <span>{{ gwiazd }} {{ section.settings.star_word }}</span>
-                <span class="obr__bar-track"><span class="obr__bar-fill" style="width: {{ procent }}%;"></span></span>
-                <span class="obr__bar-num">{{ n }}</span>
-              </div>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
+        <p class="obr__rated">
+          {{ section.settings.rated_label }} {{ srednia }} / 5 {{ section.settings.based_label }} {{ ile }} {{ section.settings.reviews_word }}
+        </p>
       </div>
+
+      {%- if section.settings.show_distribution -%}
+        <div class="obr__bars">
+          {%- assign licznosci = n5 | append: ',' | append: n4 | append: ',' | append: n3 | append: ',' | append: n2 | append: ',' | append: n1 | split: ',' -%}
+          {%- for licz in licznosci -%}
+            {%- liquid
+              assign gwiazd = 5 | minus: forloop.index0
+              assign n = licz | plus: 0
+              assign procent = 0
+              if ile > 0
+                assign procent = n | times: 100 | divided_by: ile
+              endif
+            -%}
+            <div class="obr__bar">
+              <span>{{ gwiazd }} {{ section.settings.star_word }}</span>
+              <span class="obr__bar-track"><span class="obr__bar-fill" style="width: {{ procent }}%;"></span></span>
+              <span class="obr__bar-num">{{ n }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
 
       <div class="obr__list">
         {%- for block in opinie -%}
           {%- assign oc = block.settings.rating | plus: 0 -%}
           <div class="obr__card" {{ block.shopify_attributes }}>
-            <div class="obr__card-stars">
-              {%- for i in (1..5) -%}
-                {%- if forloop.index <= oc -%}{{ gwiazdka_pelna }}{%- else -%}{{ gwiazdka_pusta }}{%- endif -%}
-              {%- endfor -%}
+            <div class="obr__card-top">
+              <span class="obr__tiles obr__tiles--sm">
+                {%- for i in (1..5) -%}
+                  <span class="obr__tile{% if forloop.index <= oc %} is-on{% endif %}">{{ gwiazdka_pelna }}</span>
+                {%- endfor -%}
+              </span>
+              {%- if block.settings.country != blank or block.settings.date != blank -%}
+                <span class="obr__card-where">
+                  {%- if block.settings.country != blank -%}{{ block.settings.country }}{%- endif -%}
+                  {%- if block.settings.country != blank and block.settings.date != blank -%}
+                    <span class="obr__card-sep">&ndash;</span>
+                  {%- endif -%}
+                  {%- if block.settings.date != blank -%}{{ block.settings.date }}{%- endif -%}
+                </span>
+              {%- endif -%}
             </div>
+
+            {%- if block.settings.author != blank or block.settings.verified -%}
+              <div class="obr__card-who">
+                {%- if block.settings.author != blank -%}<span>{{ block.settings.author }}</span>{%- endif -%}
+                {%- if block.settings.verified -%}
+                  <span class="obr__verified">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12 5 5L19 7"/></svg>
+                    {{ section.settings.verified_label }}
+                  </span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
             {%- if block.settings.title != blank -%}
               <div class="obr__card-title">{{ block.settings.title }}</div>
             {%- endif -%}
             {%- if block.settings.text != blank -%}
               <div class="obr__card-text">{{ block.settings.text }}</div>
             {%- endif -%}
-            <div class="obr__card-meta">
-              {%- if block.settings.author != blank -%}<span>{{ block.settings.author }}</span>{%- endif -%}
-              {%- if block.settings.verified -%}
-                <span class="obr__dot">·</span>
-                <span class="obr__verified">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12 5 5L19 7"/></svg>
-                  {{ section.settings.verified_label }}
-                </span>
-              {%- endif -%}
-              {%- if block.settings.date != blank -%}
-                <span class="obr__dot">·</span><span>{{ block.settings.date }}</span>
-              {%- endif -%}
-            </div>
           </div>
         {%- endfor -%}
       </div>
-    {%- else -%}
+{%- else -%}
       <div class="obr__empty">{{ section.settings.empty_text }}</div>
     {%- endif -%}
 
@@ -257,6 +276,12 @@
     { "type": "text", "id": "title", "label": "Heading", "default": "Det siger vores kunder" },
     { "type": "text", "id": "anchor", "label": "Anchor, for the link from the stars", "default": "anmeldelser" },
     { "type": "text", "id": "count_label", "label": "Before the number of reviews", "default": "Baseret på" },
+    { "type": "text", "id": "verdict_high", "label": "Word at 4.3 and above", "default": "Fremragende" },
+    { "type": "text", "id": "verdict_mid", "label": "Word from 3.5 to 4.2", "default": "Godt" },
+    { "type": "text", "id": "verdict_low", "label": "Word below 3.5", "default": "Middel" },
+    { "type": "text", "id": "rated_label", "label": "Before the score", "default": "Bedømt" },
+    { "type": "text", "id": "based_label", "label": "Between the score and the count", "default": "ud fra" },
+    { "type": "text", "id": "reviews_word", "label": "After the count", "default": "anmeldelser" },
     { "type": "text", "id": "star_word", "label": "Word next to each bar", "default": "stjerner" },
     { "type": "text", "id": "verified_label", "label": "Verified buyer label", "default": "Verificeret køb" },
     { "type": "text", "id": "empty_text", "label": "Text when there are no reviews yet", "default": "Der er endnu ingen anmeldelser af denne vare." },
@@ -277,6 +302,7 @@
     { "type": "color", "id": "color_muted", "label": "Secondary text", "default": "#6e6b65" },
     { "type": "color", "id": "color_line", "label": "Lines", "default": "#e6e3de" },
     { "type": "color", "id": "color_star", "label": "Stars", "default": "#1c1d1d" },
+    { "type": "color", "id": "color_star_off", "label": "Empty star tile", "default": "#dcdce6" },
     { "type": "color", "id": "color_bar", "label": "Bars", "default": "#1c1d1d" }
   ],
   "blocks": [
@@ -297,6 +323,7 @@
         { "type": "text", "id": "title", "label": "Headline" },
         { "type": "textarea", "id": "text", "label": "Review" },
         { "type": "text", "id": "author", "label": "Name" },
+        { "type": "text", "id": "country", "label": "Country code", "info": "Two letters, e.g. DK. Left empty it is not shown." },
         { "type": "text", "id": "date", "label": "Date" },
         { "type": "checkbox", "id": "verified", "label": "Verified purchase", "default": true }
       ]
