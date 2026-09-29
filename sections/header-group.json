@@ -165,15 +165,15 @@
         "fg": "#ffffff",
         "size": 11,
         "weight": 600,
-        "tracking": 0.06,
+        "tracking": 0.7,
         "caps": true,
         "pad": 13,
         "icon_size": 18,
         "max_width": 1500,
         "show_mobile": true,
-        "breakpoint": 749,
+        "breakpoint": 750,
         "size_m": 9,
-        "tracking_m": 0.04,
+        "tracking_m": 0.4,
         "icon_size_m": 16,
         "pad_m": 10
       }
