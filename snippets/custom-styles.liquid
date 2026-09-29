@@ -1453,7 +1453,7 @@
       Karta rosnie wiec w obie strony, a nie tylko w dol. Samo zdjecie
       stoi w miejscu: przesuwa sie to, co pod nim.
     {%- endcomment -%}
-    .grid-product:hover .grid-product__image-mask { margin-bottom: -11px; }
+    .grid-product.is-measured:hover .grid-product__image-mask { margin-bottom: -11px; }
     .grid-product .grid-product__vendor { order: 2; }
     .grid-product .grid-product__title { order: 3; }
     .grid-product .grid-product__price-now { order: 4; }
@@ -1498,12 +1498,12 @@
       transition: max-height 0.22s ease, opacity 0.16s ease, margin 0.22s ease;
     }
     .grid-product .grid-product__colors { display: flex; justify-content: center; gap: 5px; }
-    .grid-product:hover .grid-product__colors {
+    .grid-product.is-measured:hover .grid-product__colors {
       max-height: 40px;
       opacity: 1;
       margin: 8px 0 2px;
     }
-    .grid-product:hover .tile-hover {
+    .grid-product.is-measured:hover .tile-hover {
       max-height: 220px;
       opacity: 1;
       margin: 0;
@@ -1520,15 +1520,27 @@
       jakby sie powiekszalo. Dlatego left i right biora wciecie kafla,
       ktore podaje skrypt.
     {%- endcomment -%}
-    .grid-product:hover .grid-product__content {
+    {%- comment -%}
+      Karta jest wyjeta z ukladu ZAWSZE, nie tylko po najechaniu.
+      Wczesniej wracala do ukladu w chwili zjechania kursorem, a odstep
+      i wysokosci dalej sie animowaly - wiec kafel kurczyl sie na oczach
+      i caly rzad nizej obnizal sie i wracal. Teraz kafel trzyma stala
+      wysokosc z min-height, a karta nasuwa sie na rzad nizej i nic
+      pod nia nie drgnie.
+
+      Klasa is-measured pilnuje, zeby to wlaczylo sie dopiero wtedy,
+      gdy skrypt zdazyl zmierzyc kafel. Bez niej kafel bez zmierzonej
+      wysokosci zapadlby sie do zera.
+    {%- endcomment -%}
+    .grid-product.is-measured .grid-product__content {
       position: absolute;
       left: var(--tile-pad-l, 0px);
       right: var(--tile-pad-r, 0px);
       top: 0;
       padding-bottom: 12px;
       background: transparent;
-      z-index: 6;
     }
+    .grid-product.is-measured:hover .grid-product__content { z-index: 6; }
     {%- comment -%}
       Blok z opisem wchodzi NA dol zdjecia - tak jak u nich. Rysuje go
       ::before, bo samo tlo karty objelo by tez zdjecie i przykrylo je

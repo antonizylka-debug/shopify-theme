@@ -309,6 +309,9 @@
       var st = getComputedStyle(k);
       k.style.setProperty('--tile-pad-l', st.paddingLeft);
       k.style.setProperty('--tile-pad-r', st.paddingRight);
+
+      // dopiero teraz karta moze wyjsc z ukladu - wysokosc jest zmierzona
+      k.classList.add('is-measured');
     }
 
     /* requestAnimationFrame nie chodzi, kiedy karta jest w tle albo
