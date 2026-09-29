@@ -165,17 +165,26 @@
     position: absolute; left: {{ section.settings.flag_left }}px; top: 0;
     display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
   }
+  {%- comment -%}
+    Plakietka: ostre rogi, tekst zdaniowy, oddech po bokach wiekszy niz
+    u gory i dolu. Wysokosc wiersza 1 sprawia, ze wysokosc plakietki
+    wynika z tekstu i paddingu, a nie z domyslnej interlinii - inaczej
+    przy tym samym paddingu wygladalaby na rozdeta.
+  {%- endcomment -%}
   #shopify-section-{{ section.id }} .pdp__flag {
+    display: inline-block;
     background: var(--pdp-sale); color: #fff;
-    font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
-    padding: 6px 12px;
-    border-radius: {{ section.settings.radius }}px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    line-height: 1;
+    padding: 9px 14px;
   }
-  /* plakietka wpisywana recznie - jasne tlo, jak na wzorcu */
+  /* plakietka wpisywana recznie - jasna, bez wersalikow, jak na wzorcu */
   #shopify-section-{{ section.id }} .pdp__flag--note {
     background: {{ section.settings.note_bg }};
     color: {{ section.settings.note_text }};
-    font-weight: 500; text-transform: none; letter-spacing: 0;
+    font-size: 13px; font-weight: 400;
+    letter-spacing: 0; text-transform: none;
+    padding: 10px 16px;
   }
 
   /* ---------- plywajacy przycisk koszyka (telefon) ---------- */
@@ -301,37 +310,46 @@
   }
   #shopify-section-{{ section.id }} .pdp__atc[disabled] { opacity: 0.45; cursor: not-allowed; }
 
-  /* ---------- wiersze dostawy ----------
-     Zamiast luznej listy - jeden panel z ramka i cienkimi przegrodami.
-     Ikona siedzi w jasnym kolku, tekst ma naglowek i opis pod spodem. */
+  {%- comment -%}
+    Wiersze z obietnicami.
+
+    Wczesniej byla to lista z ramka i przegrodami - czytelna, ale plaska
+    i niczym sie nie wyrozniajaca. Teraz: miekkie tlo zamiast obwodki,
+    dwie kolumny zamiast jednej (cztery punkty zajmuja polowe wysokosci),
+    ikona kreslona w kolorze tekstu bez kolka, i wyrazniejsza roznica
+    miedzy naglowkiem a opisem. Bez ramek i bez kolorowych plamek -
+    przy odbiorcy 40-65 lat spokojna typografia dziala lepiej niz ozdobniki.
+  {%- endcomment -%}
   #shopify-section-{{ section.id }} .pdp__rows {
-    margin: 20px 0 0;
-    border: 1px solid var(--pdp-line);
+    margin: 22px 0 0;
+    background: var(--pdp-soft);
     border-radius: {{ section.settings.radius }}px;
-    overflow: hidden;
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 22px;
   }
   #shopify-section-{{ section.id }} .pdp__row {
-    display: flex; align-items: center; gap: 12px;
-    padding: 13px 15px;
-  }
-  #shopify-section-{{ section.id }} .pdp__row + .pdp__row {
-    border-top: 1px solid var(--pdp-line);
+    display: flex; align-items: flex-start; gap: 11px;
   }
   #shopify-section-{{ section.id }} .pdp__row-ico {
     display: flex; align-items: center; justify-content: center;
-    flex: 0 0 32px; width: 32px; height: 32px;
-    border-radius: 50%;
-    background: var(--pdp-soft);
+    flex: 0 0 22px; width: 22px; height: 22px;
+    margin-top: 1px;
   }
   #shopify-section-{{ section.id }} .pdp__row-ico svg {
-    width: 16px; height: 16px; color: var(--pdp-text);
+    width: 21px; height: 21px; color: var(--pdp-text);
   }
   #shopify-section-{{ section.id }} .pdp__row-txt { min-width: 0; }
   #shopify-section-{{ section.id }} .pdp__row-title {
-    font-size: 13.5px; font-weight: 600; line-height: 1.35;
+    display: block;
+    font-size: 13.5px; font-weight: 600; line-height: 1.3;
+    letter-spacing: 0.005em;
   }
   #shopify-section-{{ section.id }} .pdp__row-sub {
-    font-size: 12.5px; color: var(--pdp-muted); margin-top: 1px;
+    display: block;
+    font-size: 12.5px; line-height: 1.45;
+    color: var(--pdp-muted); margin-top: 3px;
   }
 
   /* ---------- akordeony ---------- */
@@ -423,6 +441,13 @@
     #shopify-section-{{ section.id }} .pdp__flags { top: auto; bottom: 0; }
     #shopify-section-{{ section.id }} .pdp__fab {
       display: flex; bottom: 52px;
+    }
+
+    /* dwie kolumny przy 375 px lamalyby "Afsendes inden for 3-4 hverdage" */
+    #shopify-section-{{ section.id }} .pdp__rows {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 15px;
+      padding: 16px 17px;
     }
 
     #shopify-section-{{ section.id }} .pdp__dots {
