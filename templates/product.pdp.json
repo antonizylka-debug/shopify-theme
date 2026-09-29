@@ -161,7 +161,7 @@
     "bundle": {
       "type": "sn-bundle",
       "settings": {
-        "title": "Køb flere og spar op til 25%",
+        "title": "Sæt flere sammen og få op til 25% ekstra rabat",
         "all_label": "Se alle",
         "count": 10,
         "show_progress": true,

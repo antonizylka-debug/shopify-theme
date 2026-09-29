@@ -81,6 +81,33 @@
       color: {{ section.settings.color_accent }}; font-weight: 700;
     }
 
+    {%- comment -%}
+      Strzalki stoja przy krawedziach zdjec, a nie przy krawedziach
+      sekcji - wysokosc zdjecia wynika z szerokosci kafla i proporcji
+      3:4, wiec srodek zdjecia to polowa tej wysokosci.
+    {%- endcomment -%}
+    #shopify-section-{{ section.id }} .snb__wrap { position: relative; }
+    #shopify-section-{{ section.id }} .snb__strzalka {
+      position: absolute;
+      top: calc({{ section.settings.card_width }}px * 2 / 3);
+      transform: translateY(-50%);
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0; border: 0; border-radius: 50%;
+      background: #fff;
+      color: #1c1d1d;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      z-index: 5;
+      transition: opacity 0.2s ease;
+    }
+    #shopify-section-{{ section.id }} .snb__strzalka svg { width: 8px; height: 14px; display: block; }
+    #shopify-section-{{ section.id }} .snb__strzalka--wstecz { left: -14px; }
+    #shopify-section-{{ section.id }} .snb__strzalka--dalej { right: -14px; }
+    #shopify-section-{{ section.id }} .snb__strzalka[disabled] {
+      opacity: 0; pointer-events: none;
+    }
+
     #shopify-section-{{ section.id }} .snb__track { /*ROW*/
       display: flex;
       flex-wrap: nowrap;
@@ -167,6 +194,16 @@
         </div>
       {%- endif -%}
 
+      <div class="snb__wrap">
+        <button type="button" class="snb__strzalka snb__strzalka--wstecz" data-snb-wstecz
+                aria-label="{{ 'general.slider.previous_slide' | t }}" disabled>
+          <svg viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M8.5 1.5 2 8l6.5 6.5"/></svg>
+        </button>
+        <button type="button" class="snb__strzalka snb__strzalka--dalej" data-snb-dalej
+                aria-label="{{ 'general.slider.next_slide' | t }}">
+          <svg viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M1.5 1.5 8 8l-6.5 6.5"/></svg>
+        </button>
+
       <div class="snb__track grid grid--uniform" data-snb-track>
         {%- for produkt in lista limit: ile -%}
           {%- render 'product-grid-item',
@@ -176,6 +213,7 @@
             fallback: '39vw'
           -%}
         {%- endfor -%}
+      </div>
       </div>
     </div>
   </div>
@@ -320,6 +358,37 @@
         aktywny = null;
       }
 
+      /* ---------- przewijanie strzalkami ---------- */
+      (function () {
+        var wstecz = sekcja.querySelector('[data-snb-wstecz]');
+        var dalej = sekcja.querySelector('[data-snb-dalej]');
+        if (!wstecz || !dalej) return;
+
+        function krok() {
+          var kafel = pasek.querySelector('.grid__item');
+          if (!kafel) return pasek.clientWidth * 0.8;
+          var st = getComputedStyle(pasek);
+          return kafel.getBoundingClientRect().width + (parseFloat(st.columnGap || st.gap) || 0);
+        }
+
+        function stan() {
+          var maks = pasek.scrollWidth - pasek.clientWidth;
+          wstecz.disabled = pasek.scrollLeft < 4;
+          dalej.disabled = pasek.scrollLeft > maks - 4;
+        }
+
+        wstecz.addEventListener('click', function () {
+          pasek.scrollBy({ left: -krok() * 2, behavior: 'smooth' });
+        });
+        dalej.addEventListener('click', function () {
+          pasek.scrollBy({ left: krok() * 2, behavior: 'smooth' });
+        });
+
+        pasek.addEventListener('scroll', stan, { passive: true });
+        window.addEventListener('resize', stan);
+        stan();
+      })();
+
       pasek.addEventListener('mouseover', function (e) {
         var kafel = e.target.closest('.grid-product');
         if (kafel && pasek.contains(kafel)) otworz(kafel);
@@ -341,7 +410,7 @@
   "settings": [
     { "type": "paragraph", "content": "A row of products under the description, for the buy-more-save-more offer. It uses the same card as the collection. Left without a collection it uses the one the product sits in." },
     { "type": "collection", "id": "collection", "label": "Collection" },
-    { "type": "text", "id": "title", "label": "Heading", "default": "Køb flere og spar op til 25%" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Sæt flere sammen og få op til 25% ekstra rabat" },
     { "type": "text", "id": "all_label", "label": "Link on the right", "default": "Se alle" },
     { "type": "range", "id": "count", "label": "Products", "default": 10, "min": 4, "max": 20, "step": 1 },
 
