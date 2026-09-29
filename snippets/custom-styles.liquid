@@ -1401,6 +1401,28 @@
   .tile-hover { display: none; }
   .tile-nav { display: none; }
 
+  /* Plakietka na zdjeciu - zmierzona u nich: przylega do lewej krawedzi,
+     zaokraglona tylko z prawej, wiekszy oddech od strony przyleglej. */
+  .grid-product .grid-product__tag {
+    position: absolute;
+    left: 0;
+    bottom: 14px;
+    top: auto;
+    right: auto;
+    z-index: 3;
+    padding: 3px 9px 3px 14px;
+    border-radius: 0 4px 4px 0;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    line-height: 1.35;
+    background: #d9232a;
+    color: #ffffff;
+  }
+  .grid-product .grid-product__tag--sold-out { background: #6e6b65; }
+  .grid-product .grid-product__tag--custom { background: #16150f; }
+
   @media (hover: hover) and (pointer: fine) and (min-width: 769px) {
     .grid-product { position: relative; }
     .grid-product:hover { z-index: 6; }
@@ -1453,12 +1475,13 @@
     }
     .grid-product:hover .tile-hover { display: block; }
 
-    /* karta rosnie w dol nad rzedem nizej */
+    /* Karta rosnie TYLKO w dol. Zadnego powiekszania na boki i do gory
+       ani cienia - zmierzone u nich: ta sama gorna krawedz, biale tlo,
+       box-shadow: none, wieksza jedynie wysokosc. */
     .grid-product:hover .grid-product__content {
       position: absolute;
-      left: -10px; right: -10px; top: -10px;
-      padding: 10px 10px 12px;
-      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.14);
+      left: 0; right: 0; top: 0;
+      padding-bottom: 12px;
       z-index: 6;
     }
     .grid-product:hover .grid-product__tag { opacity: 0; }
