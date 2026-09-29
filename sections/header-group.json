@@ -152,8 +152,8 @@
         "show_locale_selector": false
       }
     },
-    "uspbar": {
-      "type": "ob-uspbar",
+    "infobar": {
+      "type": "sn-infobar",
       "blocks": {
         "i-1": { "type": "item", "settings": { "icon": "truck", "text": "Gratis fragt på alle ordrer" } },
         "i-2": { "type": "item", "settings": { "icon": "tag", "text": "Store besparelser" } },
@@ -182,6 +182,6 @@
   "order": [
     "announcement",
     "header",
-    "uspbar"
+    "infobar"
   ]
 }
