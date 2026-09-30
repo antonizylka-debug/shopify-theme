@@ -83,6 +83,7 @@
     --pdp-muted: {{ section.settings.c_muted }};
     --pdp-line: {{ section.settings.c_line }};
     --pdp-sale: {{ section.settings.c_sale }};
+    --pdp-button: {{ section.settings.c_button }};
     --pdp-btn: {{ section.settings.c_button }};
     --pdp-soft: {{ section.settings.c_soft }};
     color: var(--pdp-text);
@@ -983,6 +984,11 @@
           </div>
         {%- endif -%}
 
+        {%- comment -%} ---------- propozycja pod akordeonami ---------- {%- endcomment -%}
+        {%- if section.settings.cross_show -%}
+          {%- render 'pdp-crosssell', product: product, ustawienia: section.settings -%}
+        {%- endif -%}
+
       </div>
     </div>
   </div>
@@ -1348,6 +1354,13 @@
     { "type": "header", "content": "Promise rows" },
     { "type": "color", "id": "row_accent", "label": "Line at the first row", "default": "#d6332e" },
     { "type": "color", "id": "row_hi", "label": "Highlighted part of a heading", "default": "#1f7a3d" },
+
+    { "type": "header", "content": "Suggestion under the accordions" },
+    { "type": "checkbox", "id": "cross_show", "label": "Show it", "default": true },
+    { "type": "text", "id": "cross_title", "label": "Heading", "default": "Måske kan du også lide" },
+    { "type": "text", "id": "cross_add", "label": "Button", "default": "Læg i kurv" },
+    { "type": "collection", "id": "cross_collection", "label": "Collection", "info": "Left empty it uses the one this product sits in." },
+    { "type": "range", "id": "cross_count", "label": "How many to offer", "default": 8, "min": 2, "max": 20, "step": 1 },
 
     { "type": "header", "content": "Rating" },
     { "type": "paragraph", "content": "Taken from the Reviews section on the same page, never typed in. Hidden below the threshold." },

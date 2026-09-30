@@ -145,6 +145,10 @@
         "show_fab": true,
         "row_accent": "#d6332e",
         "row_hi": "#1f7a3d",
+        "cross_show": true,
+        "cross_title": "Måske kan du også lide",
+        "cross_add": "Læg i kurv",
+        "cross_count": 8,
         "show_rating": true,
         "rating_min": 4,
         "rating_anchor": "anmeldelser",
@@ -156,29 +160,6 @@
         "c_sale": "#d6332e",
         "c_low": "#b05f2e",
         "c_button": "#000000"
-      }
-    },
-    "crosssell": {
-      "type": "sn-crosssell",
-      "settings": {
-        "title": "Måske kan du også lide",
-        "add_label": "Læg i kurv",
-        "count": 8,
-        "thumb": 56,
-        "radius": 4,
-        "title_size": 19,
-        "title_size_mobile": 17,
-        "padding_top": 40,
-        "padding_bottom": 40,
-        "padding_top_mobile": 28,
-        "padding_bottom_mobile": 28,
-        "color_bg": "#ffffff",
-        "color_text": "#1c1d1d",
-        "color_muted": "#6e6b65",
-        "color_sale": "#d6332e",
-        "color_line": "#e6e3de",
-        "color_media": "#f4f3f1",
-        "color_button": "#16150f"
       }
     },
     "bundle": {
@@ -366,7 +347,6 @@
   },
   "order": [
     "main",
-    "crosssell",
     "bundle",
     "reviews",
     "faq",

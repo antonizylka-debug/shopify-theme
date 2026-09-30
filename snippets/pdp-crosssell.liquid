@@ -1,0 +1,291 @@
+{%- comment -%}
+  Propozycja dodatkowego produktu w prawej kolumnie karty produktu,
+  pod akordeonami: miniatura, nazwa, wybor wariantu i przycisk dodania
+  w jednym wierszu, jeden produkt naraz.
+
+  To snippet, a nie sekcja, bo ma stac WEWNATRZ kolumny z opisem.
+  Sekcja renderuje sie zawsze na calej szerokosci strony i nie da sie
+  jej wsunac miedzy akordeony a koniec kolumny.
+
+  @param {object} product - ogladany produkt
+  @param {object} ustawienia - section.settings sekcji karty produktu
+{%- endcomment -%}
+
+{%- liquid
+  assign kolekcja = collections[ustawienia.cross_collection]
+  if kolekcja == blank or kolekcja.products.size == 0
+    assign kolekcja = product.collections.first
+  endif
+
+  assign wszystkie = kolekcja.products
+  assign ile = ustawienia.cross_count
+-%}
+
+{%- if wszystkie.size > 1 -%}
+  {%- style -%}
+    .snx { margin-top: 26px; }
+    .snx__head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 14px; margin-bottom: 11px;
+    }
+    .snx__title {
+      margin: 0; font-size: 13px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.2;
+    }
+    .snx__nav { display: flex; gap: 2px; flex: 0 0 auto; }
+    .snx__arrow {
+      display: flex; align-items: center; justify-content: center;
+      width: 24px; height: 24px; padding: 0; border: 0;
+      background: none; color: inherit; cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    .snx__arrow svg { width: 8px; height: 13px; display: block; }
+    .snx__arrow[disabled] { opacity: 0.25; cursor: default; }
+
+    {%- comment -%}
+      Jeden kafel na szerokosc kolumny, przyciaganie obowiazkowe -
+      w waskiej kolumnie polowiczny kafel przestaje sie czytac jako
+      jedna propozycja.
+    {%- endcomment -%}
+    .snx__track {
+      display: flex; gap: 10px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      cursor: grab;
+    }
+    .snx__track::-webkit-scrollbar { display: none; }
+    .snx__track.is-drag { cursor: grabbing; }
+
+    .snx__item {
+      flex: 0 0 100%; max-width: 100%;
+      scroll-snap-align: start;
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr) auto;
+      gap: 12px; align-items: center;
+      border: 1px solid var(--pdp-line);
+      border-radius: {{ ustawienia.radius }}px;
+      padding: 10px 12px;
+    }
+    .snx__media {
+      width: 56px; height: 56px; overflow: hidden;
+      background: var(--pdp-soft);
+      border-radius: {{ ustawienia.radius }}px;
+    }
+    .snx__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .snx__body { min-width: 0; }
+    .snx__name {
+      font-size: 13px; line-height: 1.3; color: inherit; text-decoration: none;
+      display: block; margin-bottom: 3px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .snx__name:hover { text-decoration: underline; text-underline-offset: 2px; }
+    .snx__select {
+      font: inherit; font-size: 12px; color: var(--pdp-muted);
+      border: 0; background: none; padding: 0 15px 0 0; margin-bottom: 3px;
+      cursor: pointer; max-width: 100%;
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%236e6b65' stroke-width='1.4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 2px center; background-size: 9px;
+    }
+    .snx__prices { font-size: 13px; }
+    .snx__now { color: var(--pdp-sale); font-weight: 700; }
+    .snx__was { color: var(--pdp-muted); text-decoration: line-through; margin-left: 6px; }
+
+    .snx__btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 15px; border: 0; border-radius: {{ ustawienia.radius }}px;
+      background: var(--pdp-button); color: #fff;
+      font-size: 12.5px; font-weight: 600; cursor: pointer; white-space: nowrap;
+    }
+    .snx__btn[disabled] { background: #b7b3ac; cursor: default; }
+    .snx__btn.is-done { background: #2f6b42; }
+    .snx__btn svg { width: 10px; height: 10px; }
+
+    @media screen and (max-width: {{ ustawienia.breakpoint }}px) {
+      .snx__item { grid-template-columns: 56px minmax(0, 1fr); row-gap: 9px; }
+      .snx__btn { grid-column: 1 / -1; justify-content: center; width: 100%; }
+    }
+  {%- endstyle -%}
+
+  <div class="snx" data-snx>
+    <div class="snx__head">
+      <h2 class="snx__title">{{ ustawienia.cross_title }}</h2>
+      <div class="snx__nav">
+        <button type="button" class="snx__arrow" data-snx-prev aria-label="{{ 'general.slider.previous_slide' | t }}" disabled>
+          <svg viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M8.5 1.5 2 8l6.5 6.5"/></svg>
+        </button>
+        <button type="button" class="snx__arrow" data-snx-next aria-label="{{ 'general.slider.next_slide' | t }}">
+          <svg viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M1.5 1.5 8 8l-6.5 6.5"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="snx__track" data-snx-track>
+      {%- assign pokazane = 0 -%}
+      {%- for kandydat in wszystkie -%}
+        {%- if pokazane >= ile -%}{%- break -%}{%- endif -%}
+        {%- unless kandydat.id == product.id -%}
+          {%- liquid
+            assign pokazane = pokazane | plus: 1
+            assign war = kandydat.selected_or_first_available_variant
+            assign na_przecenie = false
+            if kandydat.compare_at_price > kandydat.price
+              assign na_przecenie = true
+            endif
+          -%}
+          <div class="snx__item" data-snx-item>
+            <a class="snx__media" href="{{ kandydat.url }}" aria-label="{{ kandydat.title | escape }}">
+              {%- if kandydat.featured_media != blank -%}
+                {{ kandydat.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', alt: kandydat.title }}
+              {%- endif -%}
+            </a>
+
+            <div class="snx__body">
+              <a class="snx__name" href="{{ kandydat.url }}">{{ kandydat.title }}</a>
+
+              {%- unless kandydat.has_only_default_variant -%}
+                <select class="snx__select" data-snx-select aria-label="{{ kandydat.title | escape }}">
+                  {%- for v in kandydat.variants -%}
+                    <option value="{{ v.id }}"
+                            data-price="{{ v.price | money }}"
+                            data-compare="{{ v.compare_at_price | money }}"
+                            data-available="{{ v.available }}"
+                            {% unless v.available %}disabled{% endunless %}
+                            {% if v.id == war.id %}selected{% endif %}>{{ v.title }}</option>
+                  {%- endfor -%}
+                </select>
+              {%- endunless -%}
+
+              <div class="snx__prices">
+                <span class="snx__now" data-snx-price>{{ war.price | money }}</span>
+                {%- if na_przecenie -%}
+                  <span class="snx__was" data-snx-compare>{{ war.compare_at_price | money }}</span>
+                {%- else -%}
+                  <span class="snx__was" data-snx-compare hidden></span>
+                {%- endif -%}
+              </div>
+            </div>
+
+            <button type="button" class="snx__btn" data-snx-add data-variant="{{ war.id }}"
+                    {% unless kandydat.available %}disabled{% endunless %}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
+              {{ ustawienia.cross_add }}
+            </button>
+          </div>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var blok = document.querySelector('[data-snx]');
+      if (!blok || blok.dataset.gotowe) return;
+      blok.dataset.gotowe = '1';
+
+      var pasek = blok.querySelector('[data-snx-track]');
+      var prev = blok.querySelector('[data-snx-prev]');
+      var next = blok.querySelector('[data-snx-next]');
+      if (!pasek) return;
+
+      function stan() {
+        var maks = pasek.scrollWidth - pasek.clientWidth;
+        if (prev) prev.disabled = pasek.scrollLeft < 4;
+        if (next) next.disabled = pasek.scrollLeft > maks - 4;
+      }
+      function krok() { return pasek.clientWidth + 10; }
+
+      if (prev) prev.addEventListener('click', function () { pasek.scrollBy({ left: -krok(), behavior: 'smooth' }); });
+      if (next) next.addEventListener('click', function () { pasek.scrollBy({ left: krok(), behavior: 'smooth' }); });
+      pasek.addEventListener('scroll', stan, { passive: true });
+      window.addEventListener('resize', stan);
+      stan();
+
+      /* przeciaganie myszka - tak jak palcem na telefonie */
+      var ciagnie = false, startX = 0, startScroll = 0, droga = 0;
+      pasek.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'touch' || e.button !== 0) return;
+        if (e.target.closest('select, button')) return;
+        ciagnie = true; droga = 0;
+        startX = e.clientX; startScroll = pasek.scrollLeft;
+        pasek.classList.add('is-drag');
+        pasek.style.scrollSnapType = 'none';
+      });
+      pasek.addEventListener('pointermove', function (e) {
+        if (!ciagnie) return;
+        var d = e.clientX - startX;
+        if (Math.abs(d) > droga) droga = Math.abs(d);
+        if (droga > 4) { e.preventDefault(); pasek.setPointerCapture(e.pointerId); }
+        pasek.scrollLeft = startScroll - d;
+      });
+      function koniec() {
+        if (!ciagnie) return;
+        ciagnie = false;
+        pasek.classList.remove('is-drag');
+        pasek.style.scrollSnapType = '';
+        stan();
+      }
+      pasek.addEventListener('pointerup', koniec);
+      pasek.addEventListener('pointercancel', koniec);
+      pasek.addEventListener('pointerleave', koniec);
+      pasek.addEventListener('click', function (e) {
+        if (droga > 6) { e.preventDefault(); e.stopPropagation(); droga = 0; }
+      }, true);
+
+      /* wybor wariantu przestawia cene i to, co trafi do koszyka */
+      blok.addEventListener('change', function (e) {
+        var sel = e.target.closest('[data-snx-select]');
+        if (!sel) return;
+        var opcja = sel.options[sel.selectedIndex];
+        var kafel = sel.closest('[data-snx-item]');
+        var cena = kafel.querySelector('[data-snx-price]');
+        var stara = kafel.querySelector('[data-snx-compare]');
+        var btn = kafel.querySelector('[data-snx-add]');
+
+        if (cena) cena.textContent = opcja.getAttribute('data-price') || cena.textContent;
+        if (stara) {
+          var por = opcja.getAttribute('data-compare') || '';
+          var pokaz = por && por.replace(/[^0-9]/g, '') !== '' && por !== cena.textContent;
+          stara.textContent = por;
+          stara.hidden = !pokaz;
+        }
+        if (btn) {
+          btn.setAttribute('data-variant', opcja.value);
+          btn.disabled = opcja.getAttribute('data-available') !== 'true';
+        }
+      });
+
+      blok.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-snx-add]');
+        if (!btn || btn.disabled) return;
+        e.preventDefault();
+        var id = btn.getAttribute('data-variant');
+        if (!id) return;
+        btn.disabled = true;
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ items: [{ id: Number(id), quantity: 1 }] })
+        })
+          .then(function (r) { if (!r.ok) throw new Error('add'); return r.json(); })
+          .then(function () {
+            btn.classList.add('is-done');
+            document.dispatchEvent(new CustomEvent('ajaxProduct:added'));
+            setTimeout(function () {
+              btn.classList.remove('is-done');
+              btn.disabled = false;
+            }, 1600);
+          })
+          .catch(function () {
+            btn.disabled = false;
+            var link = btn.closest('[data-snx-item]').querySelector('.snx__name');
+            if (link) window.location.href = link.href;
+          });
+      });
+    })();
+  </script>
+{%- endif -%}
