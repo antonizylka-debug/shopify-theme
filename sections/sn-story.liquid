@@ -31,6 +31,7 @@
     {%- else -%}
       grid-template-columns: minmax(0, 1fr);
       max-width: {{ section.settings.max_width }}px;
+      margin: 0 auto;
     {%- endif -%}
   }
   {%- if section.settings.layout == 'right' -%}
@@ -72,6 +73,52 @@
     color: {{ section.settings.color_accent }};
   }
 
+  {%- comment -%}
+    Zdjecie do krawedzi ekranu. Nie przesuwam samego zdjecia ujemnym
+    marginesem, bo procentowy margines elementu siatki liczy sie wzgledem
+    sciezki siatki, nie okna, i wynik rozjezdza sie miedzy przegladarkami.
+    Zamiast tego zdejmuje ograniczenie z kontenera, a odstep od krawedzi
+    oddaje sama kolumna tekstu - po stronie przeciwnej do zdjecia.
+  {%- endcomment -%}
+  {%- if ma_zdjecie and section.settings.bleed -%}
+    {%- if section.settings.layout == 'right' -%}
+      {%- assign strona_tekstu = 'left' -%}
+    {%- else -%}
+      {%- assign strona_tekstu = 'right' -%}
+    {%- endif -%}
+    #shopify-section-{{ section.id }} .sns--bleed > .page-width {
+      max-width: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+    #shopify-section-{{ section.id }} .sns--bleed .sns__body {
+      padding-{{ strona_tekstu }}: 40px;
+    }
+    {%- comment -%}
+      Miara wiersza, nie szerokosc kolumny. Na szerokim ekranie kolumna
+      ma i 800 px, a akapit czytany w takiej linii gubi poczatek
+      nastepnego wiersza.
+    {%- endcomment -%}
+    #shopify-section-{{ section.id }} .sns--bleed .sns__title,
+    #shopify-section-{{ section.id }} .sns--bleed .sns__text,
+    #shopify-section-{{ section.id }} .sns--bleed .sns__list,
+    #shopify-section-{{ section.id }} .sns--bleed .sns__note {
+      max-width: 58ch;
+    }
+    @media only screen and (max-width: 768px) {
+      #shopify-section-{{ section.id }} .sns--bleed .sns__body {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+      #shopify-section-{{ section.id }} .sns--bleed .sns__title,
+      #shopify-section-{{ section.id }} .sns--bleed .sns__text,
+      #shopify-section-{{ section.id }} .sns--bleed .sns__list,
+      #shopify-section-{{ section.id }} .sns--bleed .sns__note {
+        max-width: none;
+      }
+    }
+  {%- endif -%}
+
   @media only screen and (max-width: 768px) {
     #shopify-section-{{ section.id }} .sns {
       padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
@@ -85,7 +132,7 @@
   }
 {%- endstyle -%}
 
-<div class="sns">
+<div class="sns{% if ma_zdjecie and section.settings.bleed %} sns--bleed{% endif %}">
   <div class="page-width">
     <div class="sns__in">
       {%- if ma_zdjecie -%}
@@ -144,6 +191,7 @@
       ]
     },
     { "type": "image_picker", "id": "image", "label": "Photo" },
+    { "type": "checkbox", "id": "bleed", "label": "Photo to the page edge", "default": true },
     { "type": "text", "id": "title", "label": "Heading", "default": "30 dages pengene-tilbage-garanti" },
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Vi står inde for kvaliteten af vores tøj. Derfor er hver ordre dækket af 30 dages returret uden bøvl.</p><p>Passer varen ikke, sender du den tilbage inden for 30 dage og får pengene retur.</p>" },
     { "type": "textarea", "id": "list", "label": "List", "info": "One row per line. Køb 2 varer → | Spar 10%" },
