@@ -6,7 +6,9 @@
 <style>
   /* --- karta produktu: tytul wersalikami, swatche nad cena --- */
   .grid-product__title {
-    text-transform: uppercase;
+    /* nazwa produktu to nie naglowek - wersaliki utrudnialy czytanie
+       przy dlugich nazwach typu "Castello Wool-Blend Overcoat" */
+    text-transform: none;
     font-size: 13px;
     line-height: 1.4;
     letter-spacing: 0.02em;
@@ -1819,6 +1821,15 @@
      Krój bierze sie ze zmiennych motywu, wiec zmiana czcionki
      w edytorze przechodzi przez cala strone bez ruszania kodu.
      ========================================================================== */
+  {%- comment -%}
+    Waga 600, nie 700. Zmierzone na piecu dunskich sklepach odziezowych:
+    Magasin, Bahne, Part Two, Zizzi, Masai - zaden nie uzywa 700
+    w naglowkach, chodza w przedziale 400-600.
+
+    Wersaliki zostaja tylko tam, gdzie naglowek ma dwa-trzy slowa.
+    Dluzsze zdanie wielkimi literami czyta sie wolniej, bo wszystkie
+    litery maja ten sam prostokatny obrys i oko nie ma sie czego zlapac.
+  {%- endcomment -%}
   .obr__verdict-word,
   .obf__title,
   .snb__title,
@@ -1826,18 +1837,23 @@
   .index-section .section-header__title,
   .recently-viewed .section-header__title {
     font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
-    font-weight: 700;
+    font-weight: 600;
     font-size: 18px;
     line-height: 1.2;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-transform: none;
   }
+
+  /* jedno slowo - wersaliki dzialaja jak znak, nie jak zdanie */
+  .obr__verdict-word { text-transform: uppercase; letter-spacing: 0.03em; }
 
   /* naglowek w waskiej kolumnie karty produktu - ten sam kroj, mniejszy stopien */
   .snx__title {
     font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    text-transform: none;
   }
 
   /* nadtytuly nad naglowkami: jeden stopien, jeden odstep, jedna waga */
