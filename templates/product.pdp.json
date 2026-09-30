@@ -117,7 +117,7 @@
         "promo_title": "Køb flere — spar mere",
         "promo_sub": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens.",
         "promo_tiers": "2:10, 3:20, 4:25",
-        "promo_qty_word": "stk.",
+        "promo_qty_word": "varer",
         "promo_head2": "Rabat for flere varer",
         "promo_buy_word": "Køb",
         "promo_off_word": "rabat",
@@ -366,32 +366,6 @@
         "color_accent": "#1c1d1d",
         "ratio": "4 / 3"
       }
-    },
-    "event": {
-      "type": "sn-story",
-      "settings": {
-        "layout": "text",
-        "bleed": false,
-        "title": "Flere dele, større rabat",
-        "text": "<p>Tøjet her er tænkt til at blive båret sammen — en kjole, et par sko, en jakke over. Derfor falder prisen, jo mere du tager med i den samme ordre.</p><p>Rabatten gælder på tværs af hele sortimentet, og delene behøver ikke at være ens. Bland kjoler, sko og tilbehør, præcis som du vil have det.</p><p><strong>Sådan regnes den</strong></p>",
-        "list": "Køb 2 dele → | spar 10%\nKøb 3 dele → | spar 20%\nKøb 4 dele eller flere → | spar 25%",
-        "note": "Rabatten lægges på i kurven — du skal ikke huske en kode.",
-        "image_width": 50,
-        "max_width": 760,
-        "gap": 48,
-        "gap_mobile": 20,
-        "title_size": 24,
-        "title_size_mobile": 20,
-        "padding_top": 56,
-        "padding_bottom": 56,
-        "padding_top_mobile": 36,
-        "padding_bottom_mobile": 36,
-        "color_bg": "#ffffff",
-        "color_text": "#1c1d1d",
-        "color_muted": "#56524c",
-        "color_accent": "#d6332e",
-        "ratio": "auto"
-      }
     }
   },
   "order": [
@@ -399,7 +373,6 @@
     "bundle",
     "guarantee",
     "reviews",
-    "event",
     "faq",
     "recently-viewed",
     "product-recommendations",
