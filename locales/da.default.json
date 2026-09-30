@@ -91,6 +91,10 @@
     "slideshow": {
       "play_slideshow": "Start slideshow",
       "pause_slideshow": "Sæt slideshow på pause"
+    },
+    "slider": {
+      "previous_slide": "Forrige",
+      "next_slide": "Næste"
     }
   },
   "blogs": {

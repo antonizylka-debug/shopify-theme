@@ -118,7 +118,11 @@
       padding-bottom: 4px;
       cursor: grab;
     }
-    #shopify-section-{{ section.id }} .snb__track.is-drag { cursor: grabbing; }
+    #shopify-section-{{ section.id }} .snb__track.is-drag {
+      cursor: grabbing;
+      scroll-behavior: auto;
+      user-select: none;
+    }
     #shopify-section-{{ section.id }} .snb__track::-webkit-scrollbar { display: none; }
 
     {%- comment -%}
@@ -188,11 +192,11 @@
             <a class="snb__all" href="{{ kolekcja.url }}" style="margin-right: 10px;">{{ section.settings.all_label }}</a>
           {%- endif -%}
           <button type="button" class="snb__strzalka snb__strzalka--wstecz" data-snb-wstecz
-                  aria-label="{{ 'general.slider.previous_slide' | t }}" disabled>
+                  aria-label="{{ section.settings.prev_label }}" disabled>
             <svg viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M8.5 1.5 2 8l6.5 6.5"/></svg>
           </button>
           <button type="button" class="snb__strzalka snb__strzalka--dalej" data-snb-dalej
-                  aria-label="{{ 'general.slider.next_slide' | t }}">
+                  aria-label="{{ section.settings.next_label }}">
             <svg viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M1.5 1.5 8 8l-6.5 6.5"/></svg>
           </button>
         </div>
@@ -373,6 +377,7 @@
            Przyciaganie do kafla wylaczamy na czas ciagniecia, bo inaczej
            pasek szarpie sie przy kazdym ruchu. */
         var ciagnie = false, startX = 0, startScroll = 0, droga = 0;
+        var ostX = 0, ostT = 0, predkosc = 0;
 
         pasek.addEventListener('pointerdown', function (e) {
           if (e.pointerType === 'touch' || e.button !== 0) return;
@@ -380,6 +385,7 @@
           droga = 0;
           startX = e.clientX;
           startScroll = pasek.scrollLeft;
+          ostX = e.clientX; ostT = performance.now(); predkosc = 0;
           pasek.classList.add('is-drag');
           pasek.style.scrollSnapType = 'none';
         });
@@ -392,15 +398,89 @@
             e.preventDefault();
             pasek.setPointerCapture(e.pointerId);
           }
+          var teraz = performance.now(), dt = teraz - ostT;
+          if (dt > 0) {
+            /* Ruch kursora w lewo to przewijanie w prawo, stad minus. */
+            predkosc = predkosc * 0.4 + (-(e.clientX - ostX) / dt) * 0.6;
+            ostX = e.clientX; ostT = teraz;
+          }
           pasek.scrollLeft = startScroll - d;
         });
+
+        /* Przyciaganie wraca dopiero, gdy pasek sam dojedzie na miejsce.
+           Przywrocone w chwili puszczenia teleportuje kafle do najblizszego
+           punktu - i to wlasnie wyglada tak, jakby zamiast przesuniecia
+           podmienily sie zdjecia.
+
+           Krzywa i czas jak w Swiperze, ktorego uzywa wzor: 300 ms i
+           cubic-bezier(.25,.1,.25,1). scrollTo z behavior smooth tego nie
+           odda, bo jedno i drugie nalezy tam do przegladarki. */
+        function krzywa(x1, y1, x2, y2) {
+          function A(a, b) { return 1 - 3 * b + 3 * a; }
+          function B(a, b) { return 3 * b - 6 * a; }
+          function C(a) { return 3 * a; }
+          function wart(t, a, b) { return ((A(a, b) * t + B(a, b)) * t + C(a)) * t; }
+          function nachyl(t, a, b) { return 3 * A(a, b) * t * t + 2 * B(a, b) * t + C(a); }
+          return function (x) {
+            var t = x;
+            for (var i = 0; i < 5; i++) {
+              var d = nachyl(t, x1, x2);
+              if (d === 0) break;
+              t -= (wart(t, x1, x2) - x) / d;
+            }
+            return wart(t, y1, y2);
+          };
+        }
+        var EASE = krzywa(0.25, 0.1, 0.25, 1);
+        var klatka = null;
+
+        function celGestu() {
+          var dzieci = pasek.children;
+          if (dzieci.length < 2) return pasek.scrollLeft;
+          var baza = pasek.getBoundingClientRect().left, poz = [];
+          for (var i = 0; i < dzieci.length; i++) {
+            poz.push(dzieci[i].getBoundingClientRect().left - baza + pasek.scrollLeft);
+          }
+          var krok = poz[1] - poz[0];
+          var teraz = pasek.scrollLeft / krok;
+          var j;
+          if (Math.abs(predkosc) > 0.35) {
+            j = predkosc > 0 ? Math.ceil(teraz) : Math.floor(teraz);
+          } else {
+            j = Math.round(teraz);
+          }
+          j = Math.max(0, Math.min(j, poz.length - 1));
+          var maks = pasek.scrollWidth - pasek.clientWidth;
+          return Math.max(0, Math.min(poz[j], maks));
+        }
+
+        function dosun() {
+          var cel = celGestu();
+          var start = pasek.scrollLeft, roznica = cel - start;
+          if (Math.abs(roznica) < 1) { pasek.style.scrollSnapType = ''; stan(); return; }
+          var t0 = performance.now();
+          if (klatka) cancelAnimationFrame(klatka);
+          klatka = requestAnimationFrame(function krok(teraz) {
+            var p = (teraz - t0) / 300;
+            if (p >= 1) {
+              pasek.scrollLeft = cel;
+              klatka = null;
+              pasek.style.scrollSnapType = '';
+              stan();
+              return;
+            }
+            pasek.scrollLeft = start + roznica * EASE(p);
+            klatka = requestAnimationFrame(krok);
+          });
+        }
 
         function koniec() {
           if (!ciagnie) return;
           ciagnie = false;
           pasek.classList.remove('is-drag');
-          pasek.style.scrollSnapType = '';
+          if (performance.now() - ostT > 90) predkosc = 0;
           stan();
+          dosun();
         }
         pasek.addEventListener('pointerup', koniec);
         pasek.addEventListener('pointercancel', koniec);
@@ -499,6 +579,8 @@
     { "type": "collection", "id": "collection", "label": "Collection" },
     { "type": "text", "id": "title", "label": "Heading", "default": "Sæt flere sammen og få op til 25% ekstra rabat" },
     { "type": "text", "id": "all_label", "label": "Link on the right", "default": "Se alle" },
+    { "type": "text", "id": "prev_label", "label": "Back arrow, for screen readers", "default": "Forrige" },
+    { "type": "text", "id": "next_label", "label": "Forward arrow, for screen readers", "default": "Næste" },
     { "type": "range", "id": "count", "label": "Products", "default": 10, "min": 4, "max": 20, "step": 1 },
 
     { "type": "header", "content": "Progress towards the discount" },
