@@ -420,7 +420,17 @@
     <div class="snb2__panel{% if ktory_panel == 0 %} is-on{% endif %}" data-snb2-panel="{{ forloop.index0 }}">
     {%- assign ktory_panel = ktory_panel | plus: 1 -%}
       <div class="snb2__track" data-snb2-track>
-        {%- for p in kolekcja.products limit: ile -%}
+        {%- comment -%}
+          Na karcie produktu pomijam ogladany produkt - byl pierwsza karta
+          w rzedzie "bestsellerow" pod samym soba. Licznik reczny, bo
+          limit: w petli liczylby takze pominiety produkt i rzad
+          wychodzilby o jeden krotszy.
+        {%- endcomment -%}
+        {%- assign pokazane_p = 0 -%}
+        {%- for p in kolekcja.products -%}
+          {%- if product != blank and p.id == product.id -%}{%- continue -%}{%- endif -%}
+          {%- if pokazane_p >= ile -%}{%- break -%}{%- endif -%}
+          {%- assign pokazane_p = pokazane_p | plus: 1 -%}
           {%- liquid
             assign na_promocji = false
             if p.compare_at_price > p.price
