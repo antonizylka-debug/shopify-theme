@@ -1,0 +1,538 @@
+{%- comment -%}
+  Szybki wybor wariantu spod przycisku "+" na kafelku produktu.
+
+  Jedno okno na cala strone, nie jedno na kafelek. Przy kolekcji z 48
+  produktami po kilkanascie wariantow kazdy wlasny formularz w HTML
+  urosl by do kilkuset kilobajtow, a otwarte jest zawsze jedno.
+
+  Dane produktu sciagam dopiero przy kliknieciu, z /products/<uchwyt>.js.
+  Kafelek nosi tylko uchwyt, wiec siatka zostaje lekka.
+
+  Wstawiane raz, w layout/theme.liquid tuz przed </body>.
+{%- endcomment -%}
+
+{%- liquid
+  assign t_wybierz = 'Vælg'
+  assign t_dodaj = 'Læg i kurv'
+  assign t_dodano = 'Lagt i kurven'
+  assign t_wyprzedane = 'Udsolgt'
+  assign t_zamknij = 'Luk'
+  assign t_blad = 'Noget gik galt. Prøv igen.'
+  assign t_oszczedzasz = 'Spar'
+-%}
+
+<div class="snq" data-snq hidden>
+  <div class="snq__tlo" data-snq-tlo></div>
+
+  <div class="snq__slot">
+    <button type="button" class="snq__zamknij" data-snq-zamknij aria-label="{{ t_zamknij }}">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </button>
+
+    <div class="snq__okno" role="dialog" aria-modal="true" aria-labelledby="snq-tytul">
+      <div class="snq__gora">
+        <img class="snq__mini" data-snq-mini alt="" width="88" height="120">
+        <div class="snq__opis">
+          <p class="snq__tytul" id="snq-tytul" data-snq-tytul></p>
+          <p class="snq__ceny">
+            <span class="snq__bylo" data-snq-bylo hidden></span>
+            <span class="snq__jest" data-snq-jest></span>
+            <span class="snq__spar" data-snq-spar hidden></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="snq__opcje" data-snq-opcje></div>
+
+      <p class="snq__blad" data-snq-blad hidden>{{ t_blad }}</p>
+
+      <button type="button" class="snq__dodaj" data-snq-dodaj>{{ t_dodaj }}</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .snq[hidden] { display: none; }
+
+  {%- comment -%}
+    Okno siedzi przy prawym dolnym rogu, nie na srodku. Dzieki temu
+    siatka produktow zostaje widoczna i klientka nie traci miejsca,
+    w ktorym byla.
+  {%- endcomment -%}
+  .snq {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 24px;
+  }
+
+  .snq__tlo {
+    position: absolute;
+    inset: 0;
+    background: rgba(28, 29, 29, 0.28);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    opacity: 0;
+    transition: opacity 0.24s ease;
+  }
+  .snq.is-on .snq__tlo { opacity: 1; }
+
+  .snq__slot {
+    position: relative;
+    width: 100%;
+    max-width: 580px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .snq__okno {
+    max-height: calc(100vh - 48px);
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
+    background: #ffffff;
+    color: #1c1d1d;
+    padding: 26px 28px;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.24s ease, transform 0.24s ease;
+  }
+  .snq.is-on .snq__okno { opacity: 1; transform: translateY(0); }
+
+  .snq__zamknij {
+    position: absolute;
+    top: 18px; right: 18px;
+    z-index: 2;
+    width: 34px; height: 34px;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0; border: 0;
+    background: transparent; color: #1c1d1d; cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.24s ease;
+  }
+  .snq.is-on .snq__zamknij { opacity: 1; }
+  .snq__zamknij svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+
+  /* ---------- gora ---------- */
+  .snq__gora {
+    display: flex;
+    gap: 18px;
+    padding-bottom: 22px;
+    padding-right: 40px;
+    border-bottom: 1px solid #e6e3de;
+  }
+  .snq__mini {
+    width: 88px; height: 120px;
+    object-fit: cover;
+    background: #f1efec;
+    flex: 0 0 auto;
+  }
+  .snq__opis { min-width: 0; }
+  .snq__tytul {
+    margin: 0 0 8px;
+    font-size: 15px; font-weight: 600;
+    letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.35;
+  }
+  .snq__ceny { margin: 0; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; font-size: 16px; }
+  {%- comment -%}
+    Motyw przygasza przekreslona cene do 45 procent krycia i robi sie
+    nieczytelna - tutaj kolor ustawiam wprost.
+  {%- endcomment -%}
+  .snq__bylo { color: #6e6b65; opacity: 1; text-decoration: line-through; }
+  .snq__jest { font-weight: 600; }
+  .snq__spar { color: #d6332e; font-size: 13.5px; font-weight: 600; }
+
+  /* ---------- opcje ---------- */
+  .snq__opcje { margin-top: 22px; }
+  .snq__grupa + .snq__grupa { margin-top: 22px; }
+  .snq__etykieta { margin: 0 0 10px; font-size: 14px; color: #6e6b65; }
+  .snq__etykieta b { color: #1c1d1d; font-weight: 600; }
+
+  .snq__wartosci { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  {%- comment -%}
+    Kolor pokazuje zdjecie wariantu, a nie kolorowe kolko. Przy
+    zaimportowanych produktach probki koloru w panelu prawie nigdy nie
+    sa ustawione, a zdjecie jest zawsze.
+  {%- endcomment -%}
+  .snq__foto {
+    width: 64px; height: 88px;
+    padding: 0;
+    border: 1px solid #e6e3de;
+    background: #f1efec center/cover no-repeat;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .snq__foto:hover { border-color: #b8b4ae; }
+  .snq__foto.is-on { border: 2px solid #1c1d1d; }
+
+  .snq__chip {
+    flex: 1 1 0;
+    min-width: 64px;
+    padding: 14px 10px;
+    border: 1px solid #d9d6d1;
+    background: #ffffff; color: #1c1d1d;
+    font-family: inherit; font-size: 14px; font-weight: 500; line-height: 1;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .snq__chip:hover { border-color: #1c1d1d; }
+  .snq__chip.is-on { border: 2px solid #1c1d1d; font-weight: 600; }
+  {%- comment -%}
+    Wyprzedany rozmiar zostaje widoczny, a nie znika - inaczej klientka
+    szuka go w kolko i mysli, ze to blad strony.
+  {%- endcomment -%}
+  .snq__chip.is-brak {
+    color: #a8a49e; border-color: #ececea;
+    text-decoration: line-through; cursor: not-allowed;
+  }
+  .snq__foto.is-brak { opacity: 0.4; }
+
+  .snq__blad { margin: 16px 0 0; font-size: 14px; color: #d6332e; }
+  .snq__blad[hidden] { display: none; }
+
+  .snq__dodaj {
+    margin-top: 26px;
+    width: 100%;
+    padding: 17px 18px;
+    border: 0;
+    background: #000000; color: #ffffff;
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.18s ease;
+  }
+  .snq__dodaj:hover { background: #2a2a2a; }
+  .snq__dodaj[disabled] { background: #c9c6c1; cursor: not-allowed; }
+  .snq__dodaj.is-ok { background: #1f7a3d; }
+
+  {%- comment -%}
+    Na telefonie panel siada na dole na cala szerokosc, a krzyzyk
+    przenosi sie nad niego, w wlasny bialy kwadrat - w panelu zjadalby
+    miejsce, ktorego tam nie ma.
+  {%- endcomment -%}
+  @media only screen and (max-width: 749px) {
+    .snq {
+      padding: 0 12px 0;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .snq__slot { max-width: none; }
+    .snq__okno {
+      max-height: 78vh;
+      max-height: 78dvh;
+      padding: 22px 18px calc(22px + env(safe-area-inset-bottom, 0px));
+    }
+    .snq__zamknij {
+      position: static;
+      align-self: center;
+      width: 44px; height: 44px;
+      margin-bottom: 14px;
+      background: #ffffff;
+    }
+    .snq__gora { gap: 14px; padding-right: 0; }
+    .snq__tytul { font-size: 14.5px; }
+    .snq__foto { width: 58px; height: 80px; }
+  }
+</style>
+
+<script>
+  (function () {
+    var okno = document.querySelector('[data-snq]');
+    if (!okno) return;
+
+    var panel = okno.querySelector('.snq__okno');
+    var mini = okno.querySelector('[data-snq-mini]');
+    var tytul = okno.querySelector('[data-snq-tytul]');
+    var bylo = okno.querySelector('[data-snq-bylo]');
+    var jest = okno.querySelector('[data-snq-jest]');
+    var spar = okno.querySelector('[data-snq-spar]');
+    var opcje = okno.querySelector('[data-snq-opcje]');
+    var blad = okno.querySelector('[data-snq-blad]');
+    var dodaj = okno.querySelector('[data-snq-dodaj]');
+
+    var produkt = null;
+    var wybor = [];
+    var wrocDo = null;
+    var pobrane = {};
+
+    var NAZWY = {
+      kolor: ['color', 'colour', 'farve', 'kolor'],
+      rozmiar: ['size', 'størrelse', 'storrelse', 'rozmiar', 'maat']
+    };
+    var TEKST = {
+      dodaj: {{ t_dodaj | json }},
+      dodano: {{ t_dodano | json }},
+      wyprzedane: {{ t_wyprzedane | json }},
+      wybierz: {{ t_wybierz | json }},
+      spar: {{ t_oszczedzasz | json }}
+    };
+    var WALUTA = {{ cart.currency.iso_code | json }};
+    var JEZYK = {{ request.locale.iso_code | json }};
+
+    /* Kwoty skladam przez Intl, a nie recznie - w Danii separator jest
+       inny niz w angielskim i recznie sklejony napis zdradza obcy sklep. */
+    function pieniadze(grosze) {
+      try {
+        return new Intl.NumberFormat(JEZYK, {
+          style: 'currency',
+          currency: WALUTA,
+          minimumFractionDigits: grosze % 100 === 0 ? 0 : 2
+        }).format(grosze / 100);
+      } catch (e) {
+        return (grosze / 100).toFixed(2);
+      }
+    }
+
+    function rodzaj(nazwa) {
+      var n = String(nazwa).toLowerCase().trim();
+      if (NAZWY.kolor.indexOf(n) > -1) return 'kolor';
+      if (NAZWY.rozmiar.indexOf(n) > -1) return 'rozmiar';
+      return 'inne';
+    }
+
+    function wariantDla(opcjeWyboru) {
+      for (var i = 0; i < produkt.variants.length; i++) {
+        var w = produkt.variants[i], pasuje = true;
+        for (var j = 0; j < opcjeWyboru.length; j++) {
+          if (opcjeWyboru[j] !== null && w.options[j] !== opcjeWyboru[j]) { pasuje = false; break; }
+        }
+        if (pasuje) return w;
+      }
+      return null;
+    }
+
+    /* Czy przy obecnym wyborze istnieje dostepny wariant z ta wartoscia na
+       tej pozycji. Dzieki temu rozmiar, ktorego nie ma w wybranym kolorze,
+       jest przekreslony od razu, a nie dopiero po kliknieciu. */
+    function dostepna(poz, wartosc) {
+      for (var i = 0; i < produkt.variants.length; i++) {
+        var w = produkt.variants[i], pasuje = true;
+        for (var j = 0; j < wybor.length; j++) {
+          if (j !== poz && wybor[j] !== null && w.options[j] !== wybor[j]) { pasuje = false; break; }
+        }
+        if (pasuje && w.options[poz] === wartosc && w.available) return true;
+      }
+      return false;
+    }
+
+    function zdjecieDla(poz, wartosc) {
+      for (var i = 0; i < produkt.variants.length; i++) {
+        var w = produkt.variants[i];
+        if (w.options[poz] === wartosc && w.featured_image && w.featured_image.src) {
+          return w.featured_image.src;
+        }
+      }
+      return produkt.featured_image || '';
+    }
+
+    function maly(url) {
+      if (!url) return '';
+      return url.replace(/(\.(jpg|jpeg|png|webp|gif))(\?|$)/i, '_240x$1$3');
+    }
+
+    function rysujOpcje() {
+      opcje.innerHTML = '';
+      /* Jeden wariant bez nazwanych opcji - nie ma czego wybierac. */
+      if (produkt.variants.length === 1 && produkt.options.length === 1 &&
+          String(produkt.options[0]).toLowerCase() === 'title') return;
+
+      produkt.options.forEach(function (nazwa, poz) {
+        var typ = rodzaj(nazwa);
+        var wartosci = [];
+        produkt.variants.forEach(function (w) {
+          if (wartosci.indexOf(w.options[poz]) === -1) wartosci.push(w.options[poz]);
+        });
+
+        var grupa = document.createElement('div');
+        grupa.className = 'snq__grupa';
+
+        var etykieta = document.createElement('p');
+        etykieta.className = 'snq__etykieta';
+        etykieta.appendChild(document.createTextNode(nazwa + ': '));
+        var mocne = document.createElement('b');
+        mocne.textContent = wybor[poz] || TEKST.wybierz;
+        etykieta.appendChild(mocne);
+        grupa.appendChild(etykieta);
+
+        var rzad = document.createElement('div');
+        rzad.className = 'snq__wartosci';
+
+        wartosci.forEach(function (wartosc) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.setAttribute('data-snq-poz', poz);
+          b.setAttribute('data-snq-wartosc', wartosc);
+
+          if (typ === 'kolor') {
+            b.className = 'snq__foto';
+            b.style.backgroundImage = 'url(' + maly(zdjecieDla(poz, wartosc)) + ')';
+            b.setAttribute('aria-label', wartosc);
+            b.title = wartosc;
+          } else {
+            b.className = 'snq__chip';
+            b.textContent = wartosc;
+          }
+
+          if (wybor[poz] === wartosc) b.classList.add('is-on');
+          if (!dostepna(poz, wartosc)) {
+            b.classList.add('is-brak');
+            /* Kolor zostaje klikalny - przelaczenie na inny kolor moze
+               odblokowac rozmiary, ktorych w tym nie bylo. */
+            if (typ !== 'kolor') b.disabled = true;
+          }
+          rzad.appendChild(b);
+        });
+
+        grupa.appendChild(rzad);
+        opcje.appendChild(grupa);
+      });
+    }
+
+    function odswiez() {
+      var w = wariantDla(wybor);
+      var pelny = wybor.length > 0 && wybor.every(function (x) { return x !== null && x !== undefined; });
+
+      if (w) {
+        if (w.featured_image && w.featured_image.src) mini.src = maly(w.featured_image.src);
+        jest.textContent = pieniadze(w.price);
+        if (w.compare_at_price && w.compare_at_price > w.price) {
+          bylo.hidden = false; bylo.textContent = pieniadze(w.compare_at_price);
+          spar.hidden = false; spar.textContent = TEKST.spar + ' ' + pieniadze(w.compare_at_price - w.price);
+        } else {
+          bylo.hidden = true; spar.hidden = true;
+        }
+      }
+
+      if (!pelny) { dodaj.disabled = true; dodaj.textContent = TEKST.wybierz; }
+      else if (!w || !w.available) { dodaj.disabled = true; dodaj.textContent = TEKST.wyprzedane; }
+      else { dodaj.disabled = false; dodaj.textContent = TEKST.dodaj; }
+
+      dodaj.classList.remove('is-ok');
+      dodaj.setAttribute('data-snq-wariant', w ? w.id : '');
+    }
+
+    function pokaz() {
+      okno.hidden = false;
+      /* Klasa dopiero w nastepnej klatce - inaczej przejscie nie ma od
+         czego ruszyc i okno pojawia sie skokiem. */
+      requestAnimationFrame(function () { okno.classList.add('is-on'); });
+      document.documentElement.style.overflow = 'hidden';
+      panel.scrollTop = 0;
+    }
+
+    function schowaj() {
+      okno.classList.remove('is-on');
+      document.documentElement.style.overflow = '';
+      setTimeout(function () { okno.hidden = true; }, 240);
+      if (wrocDo && document.contains(wrocDo)) wrocDo.focus();
+    }
+
+    function otworz(uchwyt, zrodlo) {
+      wrocDo = zrodlo || null;
+      blad.hidden = true;
+
+      function gotowe(dane) {
+        produkt = dane;
+        /* Zaczynam od pierwszego dostepnego wariantu, zeby klientka
+           zobaczyla cene i zdjecie od razu, a nie pusty formularz. */
+        var start = null;
+        for (var i = 0; i < produkt.variants.length; i++) {
+          if (produkt.variants[i].available) { start = produkt.variants[i]; break; }
+        }
+        if (!start) start = produkt.variants[0];
+        wybor = start ? start.options.slice() : [];
+
+        tytul.textContent = produkt.title;
+        mini.alt = produkt.title;
+        mini.src = maly((start && start.featured_image && start.featured_image.src) || produkt.featured_image);
+
+        rysujOpcje();
+        odswiez();
+        pokaz();
+      }
+
+      if (pobrane[uchwyt]) { gotowe(pobrane[uchwyt]); return; }
+
+      var korzen = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+      fetch(korzen + 'products/' + uchwyt + '.js', { headers: { Accept: 'application/json' } })
+        .then(function (o) { if (!o.ok) throw new Error('brak'); return o.json(); })
+        .then(function (dane) { pobrane[uchwyt] = dane; gotowe(dane); })
+        .catch(function () { window.location.href = korzen + 'products/' + uchwyt; });
+    }
+
+    /* ---------- zdarzenia ---------- */
+
+    document.addEventListener('click', function (e) {
+      var start = e.target.closest ? e.target.closest('[data-snq-otworz]') : null;
+      if (!start) return;
+      /* Kafelek ma pod spodem odnosnik na cala powierzchnie - bez tego
+         strona zmienilaby sie zamiast otworzyc okno. */
+      e.preventDefault();
+      e.stopPropagation();
+      otworz(start.getAttribute('data-snq-otworz'), start);
+    });
+
+    okno.addEventListener('click', function (e) {
+      if (e.target.closest('[data-snq-tlo]') || e.target.closest('[data-snq-zamknij]')) { schowaj(); return; }
+
+      var wartosc = e.target.closest('[data-snq-wartosc]');
+      if (wartosc && !wartosc.disabled) {
+        var poz = Number(wartosc.getAttribute('data-snq-poz'));
+        wybor[poz] = wartosc.getAttribute('data-snq-wartosc');
+
+        /* Zmiana koloru moze uniewaznic rozmiar - wtedy biore pierwszy
+           dostepny w nowym kolorze zamiast zostawiac martwy wybor. */
+        for (var i = 0; i < wybor.length; i++) {
+          if (i !== poz && !dostepna(i, wybor[i])) {
+            var zamiast = null;
+            for (var k = 0; k < produkt.variants.length; k++) {
+              var kandydat = produkt.variants[k].options[i];
+              if (dostepna(i, kandydat)) { zamiast = kandydat; break; }
+            }
+            if (zamiast !== null) wybor[i] = zamiast;
+          }
+        }
+
+        rysujOpcje();
+        odswiez();
+        return;
+      }
+
+      if (e.target.closest('[data-snq-dodaj]') && !dodaj.disabled) {
+        var id = dodaj.getAttribute('data-snq-wariant');
+        if (!id) return;
+        dodaj.disabled = true;
+        blad.hidden = true;
+
+        var korzen = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+        fetch(korzen + 'cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ items: [{ id: Number(id), quantity: 1 }] })
+        })
+          .then(function (o) { if (!o.ok) throw new Error('odmowa'); return o.json(); })
+          .then(function () {
+            dodaj.classList.add('is-ok');
+            dodaj.textContent = TEKST.dodano;
+            /* Motyw na to zdarzenie sam otwiera szuflade i przelicza licznik. */
+            document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { addToCartBtn: dodaj } }));
+            setTimeout(schowaj, 700);
+          })
+          .catch(function () {
+            dodaj.disabled = false;
+            blad.hidden = false;
+          });
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !okno.hidden) schowaj();
+    });
+  })();
+</script>

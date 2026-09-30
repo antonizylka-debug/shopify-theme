@@ -431,6 +431,11 @@
                   class="snb2__add"
                   data-snb2-add
                   data-wariant="{% if jeden %}{{ p.variants.first.id }}{% endif %}"
+                  {%- comment -%}
+                    Wiecej niz jeden wariant otwiera okno wyboru rozmiaru
+                    i koloru, ktore stoi raz w layoucie.
+                  {%- endcomment -%}
+                  {% unless jeden %}data-snq-otworz="{{ p.handle }}"{% endunless %}
                   data-url="{{ p.url }}"
                   aria-label="{% if jeden %}{{ section.settings.add_label }}{% else %}{{ section.settings.pick_label }}{% endif %}"
                   title="{% if jeden %}{{ section.settings.add_label }}{% else %}{{ section.settings.pick_label }}{% endif %}">
@@ -695,6 +700,11 @@
     korzen.addEventListener('click', function (e) {
       var kolko = e.target.closest('[data-snb2-add]');
       if (!kolko) return;
+
+      /* Produkt z rozmiarami obsluguje okno wyboru, ktore slucha na
+         document. Wychodze tu BEZ stopPropagation - inaczej ten nasluch,
+         lezacy wyzej w drodze zdarzenia, nigdy by sie nie odezwal. */
+      if (kolko.hasAttribute('data-snq-otworz')) return;
 
       /* Przycisk lezy nad odnosnikiem karty - bez tego klikniecie
          doszloby do niego i strona zmienilaby sie w trakcie dodawania. */

@@ -385,5 +385,13 @@
   {%- endcomment -%}
   {%- render 'cart-drawer' -%}
 
+  {%- comment -%}
+    Okno szybkiego wyboru rozmiaru i koloru spod przycisku "+" na
+    kafelkach. Jedno na cala strone, z tego samego powodu co szuflada:
+    bezposrednio w body ma wlasny z-index i nic z siatki ani z naglowka
+    go nie przykryje.
+  {%- endcomment -%}
+  {%- render 'sn-quickadd' -%}
+
 </body>
 </html>
