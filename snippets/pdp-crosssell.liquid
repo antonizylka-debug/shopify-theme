@@ -74,13 +74,10 @@
     }
 
     {%- comment -%}
-      W waskiej kolumnie nazwa i cena nie mieszcza sie obok siebie -
-      jak we wzorze: nazwa, pod nia cena i "Spar" w jednym wierszu.
+      W waskiej kolumnie jedna linijka nazwy - dwie przy dwoch kafelkach
+      obok siebie rozpychaja rzad w pionie bardziej niz zdjecie.
     {%- endcomment -%}
-    .snx .snc__wiersz:first-child { flex-direction: column; align-items: flex-start; gap: 4px; }
-    .snx .snc__nazwa { font-size: 13px; -webkit-line-clamp: 1; }
-    .snx .snc__wiersz--dol { justify-content: flex-start; }
-    .snx .snc__notka:empty { display: none; }
+    .snx .snc__nazwa { -webkit-line-clamp: 1; }
 
     {%- comment -%}
       Dwa poziome przewijania w sobie: rzad i pasek zdjec w kafelku. Palec

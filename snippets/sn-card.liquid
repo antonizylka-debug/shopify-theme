@@ -139,29 +139,29 @@
       </button>
     </div>
 
+    {%- comment -%}
+      Nazwa, pod nia jedna linijka cen - jak w rzedzie "Style it with"
+      ze wzoru. Wczesniej cena stala obok nazwy, a przy pasku filtrow
+      kafel ma 233 px: dwie ceny wciskaly sie obok dwulinijkowej nazwy,
+      a "Spar" szlo osobna czerwona linijka pod spodem.
+    {%- endcomment -%}
     <a class="snc__opis" href="{{ product.url }}">
-      <span class="snc__wiersz">
-        <span class="snc__nazwa">{{ product.title }}</span>
-        <span class="snc__ceny">
-          {%- if na_promocji -%}
-            <span class="snc__bylo">{{ product.compare_at_price | money }}</span>
-            <span class="snc__jest snc__jest--sale">{{ product.price | money }}</span>
-          {%- else -%}
-            {%- if product.price_varies -%}<span class="snc__od">Fra</span>{%- endif -%}
-            <span class="snc__jest">{{ product.price | money }}</span>
-          {%- endif -%}
-        </span>
+      <span class="snc__nazwa">{{ product.title }}</span>
+      <span class="snc__ceny">
+        {%- if na_promocji -%}
+          <span class="snc__bylo">{{ product.compare_at_price | money }}</span>
+          <span class="snc__jest snc__jest--sale">{{ product.price | money }}</span>
+          <span class="snc__spar">−{{ product.compare_at_price | minus: product.price | money }}</span>
+        {%- else -%}
+          {%- if product.price_varies -%}<span class="snc__od">Fra</span>{%- endif -%}
+          <span class="snc__jest">{{ product.price | money }}</span>
+        {%- endif -%}
       </span>
       {%- liquid
         assign notka = product.metafields.custom.fit
       -%}
-      {%- if notka != blank or na_promocji -%}
-        <span class="snc__wiersz snc__wiersz--dol">
-          <span class="snc__notka">{{ notka }}</span>
-          {%- if na_promocji -%}
-            <span class="snc__spar">Spar {{ product.compare_at_price | minus: product.price | money }}</span>
-          {%- endif -%}
-        </span>
+      {%- if notka != blank -%}
+        <span class="snc__notka">{{ notka }}</span>
       {%- endif -%}
     </a>
   </div>
