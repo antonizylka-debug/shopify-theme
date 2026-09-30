@@ -1,0 +1,604 @@
+{%- comment -%}
+  Rzad bestsellerow na cala szerokosc ekranu, z zakladkami nad nim.
+
+  Kazda zakladka to osobny blok z wlasna kolekcja. Wszystkie panele sa
+  renderowane od razu, a przelaczanie tylko je pokazuje i chowa - dzieki
+  temu zmiana zakladki jest natychmiastowa i dziala bez zapytania do
+  serwera. Przy czterech zakladkach po dwanascie kafli to nadal jeden
+  ekran HTML-a, wiec nie ma czego oszczedzac.
+
+  Przeciaganie myszka i palcem obsluguje ten sam kod na wskaznikach
+  (pointer events). Nie rozdzielam tego na mysz i dotyk, bo laptopy z
+  ekranem dotykowym maja jedno i drugie naraz.
+{%- endcomment -%}
+
+{%- liquid
+  assign per = section.settings.per_view
+  assign per_m = section.settings.per_view_mobile
+  assign odstep = section.settings.gap
+
+  assign tytul = section.settings.title | escape | newline_to_br
+  if section.settings.accent_word != blank
+    assign slowo = section.settings.accent_word | escape
+    capture zamiennik
+      echo '<span class="snb2__akcent">'
+      echo slowo
+      echo '</span>'
+    endcapture
+    assign tytul = tytul | replace: slowo, zamiennik
+  endif
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .snb2 {
+    background: {{ section.settings.color_bg }};
+    color: {{ section.settings.color_text }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    --snb2-muted: {{ section.settings.color_muted }};
+    --snb2-line: {{ section.settings.color_line }};
+    --snb2-akcent: {{ section.settings.color_accent }};
+    overflow: hidden;
+  }
+
+  /* ---------- naglowek ---------- */
+  #shopify-section-{{ section.id }} .snb2__head {
+    text-align: center;
+    margin-bottom: {{ section.settings.head_gap }}px;
+  }
+  #shopify-section-{{ section.id }} .snb2__title {
+    margin: 0;
+    font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 600;
+    line-height: 1.18;
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+  }
+  #shopify-section-{{ section.id }} .snb2__akcent { color: var(--snb2-akcent); }
+  #shopify-section-{{ section.id }} .snb2__sub {
+    margin: 10px 0 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--snb2-muted);
+  }
+
+  /* ---------- zakladki ---------- */
+  #shopify-section-{{ section.id }} .snb2__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 18px;
+  }
+  #shopify-section-{{ section.id }} .snb2__tab {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    padding: 9px 16px;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background-color 0.18s ease;
+  }
+  #shopify-section-{{ section.id }} .snb2__tab:hover { background: {{ section.settings.color_tab_on }}; }
+  #shopify-section-{{ section.id }} .snb2__tab.is-on {
+    background: {{ section.settings.color_tab_on }};
+    font-weight: 600;
+  }
+
+  /* ---------- panele i tor ---------- */
+  #shopify-section-{{ section.id }} .snb2__panel { display: none; }
+  #shopify-section-{{ section.id }} .snb2__panel.is-on { display: block; }
+
+  {%- comment -%}
+    Tor jedzie od krawedzi do krawedzi. scroll-snap trzyma kafle rowno
+    po rzucie palcem, ale na czas ciagniecia mysza jest wylaczany klasa
+    is-drag - inaczej karta wyrywa sie spod kursora.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .snb2__track {
+    display: flex;
+    gap: {{ odstep }}px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+  }
+  #shopify-section-{{ section.id }} .snb2__track::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .snb2__track.is-drag {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    user-select: none;
+  }
+  #shopify-section-{{ section.id }} .snb2__track.is-drag * { pointer-events: none; }
+
+  #shopify-section-{{ section.id }} .snb2__card {
+    flex: 0 0 calc((100% - {{ per | minus: 1 | times: odstep }}px) / {{ per }});
+    scroll-snap-align: start;
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  /* ---------- zdjecie ---------- */
+  #shopify-section-{{ section.id }} .snb2__img {
+    position: relative;
+    aspect-ratio: {{ section.settings.ratio }};
+    overflow: hidden;
+    background: {{ section.settings.color_photo_bg }};
+  }
+  #shopify-section-{{ section.id }} .snb2__photo {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  {%- comment -%}
+    Drugie zdjecie lezy na pierwszym i tylko sie wyswietla. Nie ruszam
+    skali ani polozenia - klientka ma zobaczyc inne ujecie, a nie ruch.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .snb2__photo--alt {
+    position: absolute; inset: 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  #shopify-section-{{ section.id }} .snb2__card:hover .snb2__photo--alt { opacity: 1; }
+
+  #shopify-section-{{ section.id }} .snb2__sale {
+    position: absolute;
+    top: 12px; left: 12px;
+    z-index: 2;
+    padding: 4px 9px;
+    background: {{ section.settings.color_sale_bg }};
+    color: {{ section.settings.color_sale_text }};
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 2px;
+  }
+
+  /* ---------- opis pod zdjeciem ---------- */
+  #shopify-section-{{ section.id }} .snb2__meta { padding: 14px 14px 0; }
+  #shopify-section-{{ section.id }} .snb2__name {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    line-height: 1.3;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+  #shopify-section-{{ section.id }} .snb2__note {
+    margin-top: 3px;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--snb2-muted);
+  }
+  #shopify-section-{{ section.id }} .snb2__price {
+    margin-top: 8px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 15px;
+  }
+  {%- comment -%}
+    Motyw przygasza przekreslona cene do 45 procent krycia i robi sie
+    nieczytelna, wiec kolor ustawiam tu wprost.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .snb2__was {
+    color: var(--snb2-muted);
+    opacity: 1;
+    text-decoration: line-through;
+  }
+  #shopify-section-{{ section.id }} .snb2__now { font-weight: 600; }
+  #shopify-section-{{ section.id }} .snb2__now--sale { color: {{ section.settings.color_sale_price }}; }
+
+  /* ---------- kolory ---------- */
+  #shopify-section-{{ section.id }} .snb2__dots {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  #shopify-section-{{ section.id }} .snb2__dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1px solid var(--snb2-line);
+    background-color: var(--dot, #dcdcdc);
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 0 0 2px {{ section.settings.color_bg }};
+  }
+  #shopify-section-{{ section.id }} .snb2__dot--first {
+    box-shadow: inset 0 0 0 2px {{ section.settings.color_bg }}, 0 0 0 1px {{ section.settings.color_text }};
+  }
+  #shopify-section-{{ section.id }} .snb2__more {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 22px; height: 16px; padding: 0 5px;
+    border: 1px solid var(--snb2-line);
+    border-radius: 9px;
+    font-size: 10.5px;
+    color: var(--snb2-muted);
+  }
+
+  /* ---------- pasek postepu ---------- */
+  #shopify-section-{{ section.id }} .snb2__bar {
+    position: relative;
+    height: 2px;
+    margin: {{ section.settings.bar_gap }}px auto 0;
+    width: {{ section.settings.bar_width }}%;
+    background: var(--snb2-line);
+  }
+  #shopify-section-{{ section.id }} .snb2__bar-in {
+    position: absolute;
+    top: -1px; left: 0;
+    height: 4px;
+    width: 30%;
+    background: {{ section.settings.color_text }};
+    transition: transform 0.08s linear;
+  }
+  #shopify-section-{{ section.id }} .snb2__bar[hidden] { display: none; }
+
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .snb2 {
+      padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
+    }
+    #shopify-section-{{ section.id }} .snb2__title { font-size: {{ section.settings.title_size_mobile }}px; }
+    #shopify-section-{{ section.id }} .snb2__sub { font-size: 15px; }
+    #shopify-section-{{ section.id }} .snb2__card {
+      flex: 0 0 calc((100% - {{ per_m | minus: 1 | times: odstep }}px) / {{ per_m }});
+    }
+    #shopify-section-{{ section.id }} .snb2__tab { padding: 8px 12px; font-size: 13px; }
+    #shopify-section-{{ section.id }} .snb2__meta { padding: 12px 12px 0; }
+  }
+{%- endstyle -%}
+
+<div class="snb2" data-snb2>
+  <div class="page-width snb2__head">
+    {%- if section.settings.title != blank -%}
+      <h2 class="snb2__title">{{ tytul }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subtitle != blank -%}
+      <p class="snb2__sub">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 1 -%}
+      <div class="snb2__tabs" role="tablist">
+        {%- for block in section.blocks -%}
+          <button
+            type="button"
+            role="tab"
+            class="snb2__tab{% if forloop.first %} is-on{% endif %}"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            data-snb2-tab="{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}>{{ block.settings.label }}</button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- for block in section.blocks -%}
+    {%- liquid
+      assign kolekcja = collections[block.settings.collection]
+      assign ile = section.settings.count
+    -%}
+    <div class="snb2__panel{% if forloop.first %} is-on{% endif %}" data-snb2-panel="{{ forloop.index0 }}">
+      <div class="snb2__track" data-snb2-track>
+        {%- for p in kolekcja.products limit: ile -%}
+          {%- liquid
+            assign na_promocji = false
+            if p.compare_at_price > p.price
+              assign na_promocji = true
+            endif
+
+            # Opcja koloru moze byc na dowolnej pozycji i miec dowolna
+            # nazwe zaleznie od tego, skad przyszedl produkt.
+            assign opcja_koloru = null
+            for o in p.options_with_values
+              assign n = o.name | downcase
+              if n == 'color' or n == 'colour' or n == 'farve' or n == 'kolor'
+                assign opcja_koloru = o
+              endif
+            endfor
+          -%}
+          <a class="snb2__card" href="{{ p.url }}">
+            <div class="snb2__img">
+              {%- if na_promocji and section.settings.show_sale -%}
+                <span class="snb2__sale">{{ section.settings.sale_label }}</span>
+              {%- endif -%}
+
+              {%- if p.featured_media -%}
+                {{ p.featured_media | image_url: width: 800 | image_tag: loading: 'lazy', class: 'snb2__photo', alt: p.title, widths: '300,400,600,800' }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'snb2__photo placeholder-svg' }}
+              {%- endif -%}
+
+              {%- if section.settings.hover_photo and p.media.size > 1 -%}
+                {{ p.media[1] | image_url: width: 800 | image_tag: loading: 'lazy', class: 'snb2__photo snb2__photo--alt', alt: p.title, widths: '300,400,600,800' }}
+              {%- endif -%}
+            </div>
+
+            <div class="snb2__meta">
+              <div class="snb2__name">{{ p.title }}</div>
+
+              {%- liquid
+                assign dopisek = ''
+                case section.settings.note_source
+                  when 'type'
+                    assign dopisek = p.type
+                  when 'vendor'
+                    assign dopisek = p.vendor
+                  when 'metafield'
+                    assign dopisek = p.metafields.custom.fit
+                endcase
+              -%}
+              {%- if dopisek != blank -%}
+                <div class="snb2__note">{{ dopisek }}</div>
+              {%- endif -%}
+
+              <div class="snb2__price">
+                {%- if na_promocji -%}
+                  <span class="snb2__was">{{ p.compare_at_price | money }}</span>
+                  <span class="snb2__now snb2__now--sale">{{ p.price | money }}</span>
+                {%- else -%}
+                  <span class="snb2__now">{{ p.price | money }}</span>
+                {%- endif -%}
+              </div>
+
+              {%- if section.settings.show_dots and opcja_koloru != null and opcja_koloru.values.size > 1 -%}
+                {%- liquid
+                  assign maks = section.settings.dots_max
+                  assign nadmiar = opcja_koloru.values.size | minus: maks
+                -%}
+                <div class="snb2__dots">
+                  {%- for w in opcja_koloru.values limit: maks -%}
+                    {%- liquid
+                      assign tlo = ''
+                      assign obraz = null
+                      if w.swatch.color
+                        assign tlo = w.swatch.color
+                      endif
+                      if w.swatch.image
+                        assign obraz = w.swatch.image
+                      elsif w.variant.featured_media
+                        assign obraz = w.variant.featured_media
+                      endif
+                    -%}
+                    <span
+                      class="snb2__dot{% if forloop.first %} snb2__dot--first{% endif %}"
+                      title="{{ w }}"
+                      style="
+                        {%- if tlo != blank %}--dot: {{ tlo }};{% endif -%}
+                        {%- if obraz %}background-image: url({{ obraz | image_url: width: 48 }});{% endif -%}
+                      "></span>
+                  {%- endfor -%}
+                  {%- if nadmiar > 0 -%}
+                    <span class="snb2__more">+{{ nadmiar }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.show_bar -%}
+        <div class="snb2__bar" data-snb2-bar><span class="snb2__bar-in" data-snb2-bar-in></span></div>
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+</div>
+
+<script>
+  (function () {
+    var korzen = document.getElementById('shopify-section-{{ section.id }}');
+    if (!korzen) return;
+
+    /* ---------- pasek postepu ---------- */
+    function odswiezPasek(tor) {
+      var panel = tor.closest('[data-snb2-panel]');
+      if (!panel) return;
+      var pasek = panel.querySelector('[data-snb2-bar]');
+      var kreska = panel.querySelector('[data-snb2-bar-in]');
+      if (!pasek || !kreska) return;
+
+      var zapas = tor.scrollWidth - tor.clientWidth;
+      /* Nie ma czego przewijac - pasek tylko myli, wiec znika. */
+      if (zapas < 2) { pasek.hidden = true; return; }
+      pasek.hidden = false;
+
+      var udzial = tor.clientWidth / tor.scrollWidth;
+      kreska.style.width = (udzial * 100) + '%';
+      var droga = pasek.clientWidth - kreska.offsetWidth;
+      kreska.style.transform = 'translateX(' + (tor.scrollLeft / zapas * droga) + 'px)';
+    }
+
+    /* ---------- ciagniecie wskaznikiem ---------- */
+    function wlaczCiagniecie(tor) {
+      var trzyma = false, startX = 0, startScroll = 0, ruszony = false;
+
+      tor.addEventListener('pointerdown', function (e) {
+        /* Palec ma wlasne, plynniejsze przewijanie przegladarki. */
+        if (e.pointerType === 'touch') return;
+        trzyma = true; ruszony = false;
+        startX = e.clientX;
+        startScroll = tor.scrollLeft;
+        tor.setPointerCapture(e.pointerId);
+      });
+
+      tor.addEventListener('pointermove', function (e) {
+        if (!trzyma) return;
+        var przesuniecie = e.clientX - startX;
+        /* Kilka pikseli to jeszcze klikniecie, nie przeciagniecie. */
+        if (!ruszony && Math.abs(przesuniecie) < 4) return;
+        if (!ruszony) { ruszony = true; tor.classList.add('is-drag'); }
+        e.preventDefault();
+        tor.scrollLeft = startScroll - przesuniecie;
+      });
+
+      function koniec(e) {
+        if (!trzyma) return;
+        trzyma = false;
+        tor.classList.remove('is-drag');
+        if (e && e.pointerId !== undefined && tor.hasPointerCapture(e.pointerId)) {
+          tor.releasePointerCapture(e.pointerId);
+        }
+      }
+
+      /* Klikniecie w karte po przeciagnieciu otwieraloby produkt, ktorego
+         klientka wcale nie wybrala. Nasluch stoi tu na stale i patrzy na
+         znacznik - doczepiany po kazdym ciagnieciu zostawalby wiszacy,
+         gdyby po nim nie padlo zadne klikniecie. */
+      tor.addEventListener('click', function (ev) {
+        if (!ruszony) return;
+        ruszony = false;
+        ev.preventDefault();
+        ev.stopPropagation();
+      }, true);
+
+      tor.addEventListener('pointerup', koniec);
+      tor.addEventListener('pointercancel', koniec);
+      tor.addEventListener('pointerleave', koniec);
+      tor.addEventListener('dragstart', function (e) { e.preventDefault(); });
+      tor.addEventListener('scroll', function () { odswiezPasek(tor); }, { passive: true });
+    }
+
+    var tory = korzen.querySelectorAll('[data-snb2-track]');
+    for (var i = 0; i < tory.length; i++) {
+      wlaczCiagniecie(tory[i]);
+      odswiezPasek(tory[i]);
+    }
+
+    /* ---------- zakladki ---------- */
+    korzen.addEventListener('click', function (e) {
+      var przycisk = e.target.closest('[data-snb2-tab]');
+      if (!przycisk) return;
+      var nr = przycisk.getAttribute('data-snb2-tab');
+
+      var zakladki = korzen.querySelectorAll('[data-snb2-tab]');
+      for (var i = 0; i < zakladki.length; i++) {
+        var wybrana = zakladki[i] === przycisk;
+        zakladki[i].classList.toggle('is-on', wybrana);
+        zakladki[i].setAttribute('aria-selected', wybrana ? 'true' : 'false');
+      }
+
+      var panele = korzen.querySelectorAll('[data-snb2-panel]');
+      for (var j = 0; j < panele.length; j++) {
+        var czynny = panele[j].getAttribute('data-snb2-panel') === nr;
+        panele[j].classList.toggle('is-on', czynny);
+        if (czynny) {
+          var tor = panele[j].querySelector('[data-snb2-track]');
+          /* Panel byl schowany, wiec jego szerokosci nie dalo sie zmierzyc. */
+          if (tor) odswiezPasek(tor);
+        }
+      }
+    });
+
+    /* Zdjecia doladowuja sie po starcie i zmieniaja szerokosc toru. */
+    window.addEventListener('load', function () {
+      for (var i = 0; i < tory.length; i++) odswiezPasek(tory[i]);
+    });
+    window.addEventListener('resize', function () {
+      for (var i = 0; i < tory.length; i++) odswiezPasek(tory[i]);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Bestsellers slider",
+  "tag": "section",
+  "class": "index-section sn-bestsellers",
+  "settings": [
+    { "type": "paragraph", "content": "Each tab below is one collection. With a single tab the buttons are hidden and only the row is shown." },
+    { "type": "textarea", "id": "title", "label": "Heading", "default": "ONTDEK\nDE BESTSELLERE" },
+    { "type": "text", "id": "accent_word", "label": "Word in colour", "info": "Must match the heading exactly.", "default": "BESTSELLERE" },
+    { "type": "text", "id": "subtitle", "label": "Line under the heading", "default": "Se de styles vores kunder vender tilbage til." },
+
+    { "type": "header", "content": "Products" },
+    { "type": "range", "id": "count", "label": "Products per tab", "default": 12, "min": 4, "max": 24, "step": 1 },
+    { "type": "range", "id": "per_view", "label": "Visible at once", "default": 4, "min": 2, "max": 6, "step": 1 },
+    { "type": "range", "id": "per_view_mobile", "label": "Visible at once (phone)", "default": 2, "min": 1, "max": 3, "step": 1 },
+    { "type": "range", "id": "gap", "label": "Gap between cards", "default": 2, "min": 0, "max": 32, "step": 1, "unit": "px" },
+    {
+      "type": "select", "id": "ratio", "label": "Photo shape", "default": "3 / 4",
+      "options": [
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait" },
+        { "value": "3 / 4", "label": "Tall portrait" },
+        { "value": "2 / 3", "label": "Very tall" }
+      ]
+    },
+    { "type": "checkbox", "id": "hover_photo", "label": "Second photo on hover", "default": true },
+    { "type": "checkbox", "id": "show_sale", "label": "Sale badge", "default": true },
+    { "type": "text", "id": "sale_label", "label": "Sale badge text", "default": "Tilbud" },
+    { "type": "checkbox", "id": "show_dots", "label": "Colour dots", "default": true },
+    { "type": "range", "id": "dots_max", "label": "Dots before the +N", "default": 4, "min": 2, "max": 8, "step": 1 },
+    {
+      "type": "select", "id": "note_source", "label": "Small line under the name", "default": "none",
+      "options": [
+        { "value": "none", "label": "Nothing" },
+        { "value": "type", "label": "Product type" },
+        { "value": "vendor", "label": "Vendor" },
+        { "value": "metafield", "label": "Metafield custom.fit" }
+      ]
+    },
+
+    { "type": "header", "content": "Progress bar" },
+    { "type": "checkbox", "id": "show_bar", "label": "Show progress bar", "default": true },
+    { "type": "range", "id": "bar_width", "label": "Bar width", "default": 40, "min": 10, "max": 100, "step": 5, "unit": "%" },
+    { "type": "range", "id": "bar_gap", "label": "Space above the bar", "default": 28, "min": 8, "max": 80, "step": 4, "unit": "px" },
+
+    { "type": "header", "content": "Size" },
+    { "type": "range", "id": "title_size", "label": "Heading", "default": 30, "min": 18, "max": 54, "step": 1, "unit": "px" },
+    { "type": "range", "id": "title_size_mobile", "label": "Heading (phone)", "default": 22, "min": 14, "max": 36, "step": 1, "unit": "px" },
+    { "type": "range", "id": "head_gap", "label": "Space under the heading", "default": 28, "min": 8, "max": 80, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_top", "label": "Space above", "default": 56, "min": 0, "max": 120, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "default": 56, "min": 0, "max": 120, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_top_mobile", "label": "Space above (phone)", "default": 36, "min": 0, "max": 80, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Space below (phone)", "default": 36, "min": 0, "max": 80, "step": 4, "unit": "px" },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "color_text", "label": "Text", "default": "#1c1d1d" },
+    { "type": "color", "id": "color_muted", "label": "Quiet text", "default": "#6e6b65" },
+    { "type": "color", "id": "color_line", "label": "Lines", "default": "#e6e3de" },
+    { "type": "color", "id": "color_accent", "label": "Word in colour", "default": "#d6332e" },
+    { "type": "color", "id": "color_tab_on", "label": "Selected tab", "default": "#f4f2ee" },
+    { "type": "color", "id": "color_photo_bg", "label": "Behind the photo", "default": "#f1efec" },
+    { "type": "color", "id": "color_sale_bg", "label": "Sale badge", "default": "#ffffff" },
+    { "type": "color", "id": "color_sale_text", "label": "Sale badge text", "default": "#1c1d1d" },
+    { "type": "color", "id": "color_sale_price", "label": "Price on sale", "default": "#d6332e" }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Tab label", "default": "Bestsellere" },
+        { "type": "collection", "id": "collection", "label": "Collection" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bestsellers slider",
+      "blocks": [{ "type": "tab" }]
+    }
+  ],
+  "disabled_on": { "groups": ["footer", "header", "custom.popups"] }
+}
+{% endschema %}

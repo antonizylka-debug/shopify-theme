@@ -47,10 +47,6 @@
   endif
 -%}
 
-{%- comment -%}diagnostyka{%- endcomment -%}
-{%- assign proba_cena = collection.products | sort: "price" -%}
-{%- assign proba_nazwa = collection.products | sort_natural: "title" -%}
-<!-- SN-DIAG ustawienie={{ section.settings.sort }} | posortowane_ceny={% for p in proba_cena limit: 6 %}{{ p.price }},{% endfor %} | oryginal={% for p in collection.products limit: 6 %}{{ p.price }},{% endfor %} | posortowane_nazwy={% for p in proba_nazwa limit: 3 %}{{ p.title | slice: 0, 12 }},{% endfor %} -->
 {%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
 
 <div
