@@ -47,6 +47,8 @@
   endif
 -%}
 
+{%- comment -%}diagnostyka{%- endcomment -%}
+<!-- SN-DIAG sort={{ section.settings.sort }} typ_lista={{ lista.size }} typ_prod={{ collection.products.size }} ceny_lista={% for p in lista limit: 5 %}{{ p.price }},{% endfor %} ceny_prod={% for p in collection.products limit: 5 %}{{ p.price }},{% endfor %} -->
 {%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
 
 <div
