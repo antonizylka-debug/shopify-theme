@@ -181,6 +181,9 @@
       var trzyma = false, ruszony = false, startX = 0, startScroll = 0, ostX = 0, ostT = 0, predkosc = 0;
 
       tor.addEventListener('pointerdown', function (e) {
+        /* Zerowane przy kazdym wcisnieciu - po przeciagnieciu zakonczonym
+           poza torem zostawaloby ustawione i zjadalo nastepne klikniecie. */
+        ruszony = false;
         /* Palec zostawiam przegladarce - jej przewijanie ma bezwladnosc. */
         if (e.pointerType === 'touch' || e.button !== 0) return;
         /* Klikniecie w "+" albo strzalke zdjecia to nie poczatek ciagniecia. */

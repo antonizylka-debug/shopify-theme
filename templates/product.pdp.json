@@ -170,28 +170,64 @@
           "type": "tab",
           "settings": {
             "label": "Kjoler",
-            "collection": "womens-dresses"
+            "collection": "womens-dresses",
+            "audience": "women"
           }
         },
         "t2": {
           "type": "tab",
           "settings": {
             "label": "Toppe",
-            "collection": "womens-tops"
+            "collection": "womens-tops",
+            "audience": "women"
           }
         },
         "t3": {
           "type": "tab",
           "settings": {
             "label": "Sko",
-            "collection": "womens-footwear"
+            "collection": "womens-footwear",
+            "audience": "women"
           }
         },
         "t4": {
           "type": "tab",
           "settings": {
             "label": "Se alt",
-            "collection": "womens-favorites"
+            "collection": "womens-favorites",
+            "audience": "women"
+          }
+        },
+        "m1": {
+          "type": "tab",
+          "settings": {
+            "label": "Jakker",
+            "collection": "mens-jackets-and-coats",
+            "audience": "men"
+          }
+        },
+        "m2": {
+          "type": "tab",
+          "settings": {
+            "label": "Skjorter",
+            "collection": "mens-shirts",
+            "audience": "men"
+          }
+        },
+        "m3": {
+          "type": "tab",
+          "settings": {
+            "label": "Sko",
+            "collection": "mens-footwear",
+            "audience": "men"
+          }
+        },
+        "m4": {
+          "type": "tab",
+          "settings": {
+            "label": "Se alt",
+            "collection": "mens-favorites",
+            "audience": "men"
           }
         }
       },
@@ -199,7 +235,11 @@
         "t1",
         "t2",
         "t3",
-        "t4"
+        "t4",
+        "m1",
+        "m2",
+        "m3",
+        "m4"
       ],
       "settings": {
         "title": "OPDAG\nVORES BESTSELLERE",
@@ -235,7 +275,10 @@
         "color_photo_bg": "#f1efec",
         "color_sale_bg": "#ffffff",
         "color_sale_text": "#1c1d1d",
-        "color_sale_price": "#d6332e"
+        "color_sale_price": "#d6332e",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens"
       }
     },
     "guarantee": {

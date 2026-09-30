@@ -27,6 +27,34 @@
     endcapture
     assign tytul = tytul | replace: slowo, zamiennik
   endif
+
+  # Dla kogo ten rzad. Na karcie produktu decyduje produkt: jesli lezy w
+  # kolekcji meskiej, pokazuje zakladki meskie, jesli w damskiej - damskie.
+  # Kolekcje mens i womens sa w sklepie rozlaczne (sprawdzone: zero
+  # produktow w obu), wiec jeden produkt nie trafi w oba warunki.
+  # Poza karta produktu - ustawienie sekcji.
+  assign dla = section.settings.audience_default
+  if template.name == 'product' and product != blank
+    assign uchwyty = product.collections | map: 'handle'
+    if uchwyty contains section.settings.men_handle
+      assign dla = 'men'
+    elsif uchwyty contains section.settings.women_handle
+      assign dla = 'women'
+    endif
+  endif
+
+  # Zakladki "all" widac zawsze, reszte tylko dla swojej grupy. Numery
+  # widocznych blokow zbieram raz, zeby zakladki i panele liczyly sie
+  # tak samo, a pierwsza WIDOCZNA byla wlaczona - forloop.first
+  # wskazywalby pierwsza w ogole, czesto schowana.
+  assign widoczne = ''
+  assign ile_widocznych = 0
+  for block in section.blocks
+    if block.settings.audience == 'all' or block.settings.audience == dla
+      assign widoczne = widoczne | append: ',' | append: forloop.index0 | append: ','
+      assign ile_widocznych = ile_widocznych | plus: 1
+    endif
+  endfor
 -%}
 
 {%- style -%}
@@ -362,27 +390,35 @@
       <p class="snb2__sub">{{ section.settings.subtitle }}</p>
     {%- endif -%}
 
-    {%- if section.blocks.size > 1 -%}
+    {%- if ile_widocznych > 1 -%}
       <div class="snb2__tabs" role="tablist">
+        {%- assign ktora = 0 -%}
         {%- for block in section.blocks -%}
+          {%- assign znacznik = ',' | append: forloop.index0 | append: ',' -%}
+          {%- unless widoczne contains znacznik -%}{%- continue -%}{%- endunless -%}
           <button
             type="button"
             role="tab"
-            class="snb2__tab{% if forloop.first %} is-on{% endif %}"
-            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            class="snb2__tab{% if ktora == 0 %} is-on{% endif %}"
+            aria-selected="{% if ktora == 0 %}true{% else %}false{% endif %}"
             data-snb2-tab="{{ forloop.index0 }}"
             {{ block.shopify_attributes }}>{{ block.settings.label }}</button>
+          {%- assign ktora = ktora | plus: 1 -%}
         {%- endfor -%}
       </div>
     {%- endif -%}
   </div>
 
+  {%- assign ktory_panel = 0 -%}
   {%- for block in section.blocks -%}
+    {%- assign znacznik = ',' | append: forloop.index0 | append: ',' -%}
+    {%- unless widoczne contains znacznik -%}{%- continue -%}{%- endunless -%}
     {%- liquid
       assign kolekcja = collections[block.settings.collection]
       assign ile = section.settings.count
     -%}
-    <div class="snb2__panel{% if forloop.first %} is-on{% endif %}" data-snb2-panel="{{ forloop.index0 }}">
+    <div class="snb2__panel{% if ktory_panel == 0 %} is-on{% endif %}" data-snb2-panel="{{ forloop.index0 }}">
+    {%- assign ktory_panel = ktory_panel | plus: 1 -%}
       <div class="snb2__track" data-snb2-track>
         {%- for p in kolekcja.products limit: ile -%}
           {%- liquid
@@ -629,14 +665,23 @@
       tor.addEventListener('pointerdown', function (e) {
         /* Palec ma wlasne przewijanie przegladarki z bezwladnoscia -
            lepsze niz cokolwiek przepisanego tutaj. */
-        if (e.pointerType === 'touch') return;
+        /* Kazde nowe wcisniecie zeruje znacznik ciagniecia. Inaczej po
+           przeciagnieciu zakonczonym poza torem (bez klikniecia na koncu)
+           zostawal ustawiony i zjadal nastepne klikniecie w "+". */
+        ruszony = false;
+        if (e.pointerType === 'touch' || e.button !== 0) return;
+        /* "+" to klikniecie, nigdy poczatek ciagniecia. */
+        if (e.target.closest('button')) return;
         przerwijDojazd();
         tor.classList.remove('is-dojezdza');
         trzyma = true; ruszony = false; predkosc = 0;
         startX = e.clientX;
         startScroll = tor.scrollLeft;
         ostX = e.clientX; ostT = performance.now();
-        tor.setPointerCapture(e.pointerId);
+        /* BEZ setPointerCapture tutaj. Przejety wskaznik kieruje potem
+           klikniecie do toru zamiast do odnosnika albo "+" pod kursorem -
+           i wtedy zadne klikniecie mysza w karte nie dzialalo. Przejmuje
+           go dopiero wtedy, gdy wiadomo, ze to przeciaganie. */
       });
 
       tor.addEventListener('pointermove', function (e) {
@@ -644,7 +689,11 @@
         var przesuniecie = e.clientX - startX;
         /* Kilka pikseli to jeszcze klikniecie, nie przeciagniecie. */
         if (!ruszony && Math.abs(przesuniecie) < 4) return;
-        if (!ruszony) { ruszony = true; tor.classList.add('is-drag'); }
+        if (!ruszony) {
+          ruszony = true;
+          tor.classList.add('is-drag');
+          tor.setPointerCapture(e.pointerId);
+        }
         e.preventDefault();
 
         var teraz = performance.now(), dt = teraz - ostT;
@@ -783,6 +832,19 @@
     { "type": "text", "id": "accent_word", "label": "Word in colour", "info": "Must match the heading exactly.", "default": "BESTSELLERE" },
     { "type": "text", "id": "subtitle", "label": "Line under the heading", "default": "Se de styles vores kunder vender tilbage til." },
 
+    { "type": "header", "content": "Women or men" },
+    { "type": "paragraph", "content": "On a product page the tabs follow the product: a product from the men's collection shows the tabs marked Men, one from the women's collection the tabs marked Women. Tabs marked Everyone always show." },
+    {
+      "type": "select", "id": "audience_default", "label": "Everywhere else, show", "default": "women",
+      "options": [
+        { "value": "women", "label": "Women's tabs" },
+        { "value": "men", "label": "Men's tabs" },
+        { "value": "all", "label": "Only tabs for everyone" }
+      ]
+    },
+    { "type": "text", "id": "women_handle", "label": "Women's collection handle", "default": "womens" },
+    { "type": "text", "id": "men_handle", "label": "Men's collection handle", "default": "mens" },
+
     { "type": "header", "content": "Products" },
     { "type": "range", "id": "count", "label": "Products per tab", "default": 12, "min": 4, "max": 24, "step": 1 },
     { "type": "range", "id": "per_view", "label": "Visible at once", "default": 4, "min": 2, "max": 6, "step": 1 },
@@ -860,10 +922,18 @@
     {
       "type": "tab",
       "name": "Tab",
-      "limit": 6,
+      "limit": 12,
       "settings": [
         { "type": "text", "id": "label", "label": "Tab label", "default": "Bestsellere" },
-        { "type": "collection", "id": "collection", "label": "Collection" }
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        {
+          "type": "select", "id": "audience", "label": "Show for", "default": "all",
+          "options": [
+            { "value": "all", "label": "Everyone" },
+            { "value": "women", "label": "Women" },
+            { "value": "men", "label": "Men" }
+          ]
+        }
       ]
     }
   ],

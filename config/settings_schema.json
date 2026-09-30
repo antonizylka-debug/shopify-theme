@@ -874,6 +874,70 @@
         "type": "url",
         "id": "cart_terms_conditions_page",
         "label": "t:settings_schema.cart.settings.cart_terms_conditions_page.label"
+      },
+      {
+        "type": "header",
+        "content": "Empty cart"
+      },
+      {
+        "type": "paragraph",
+        "content": "Left empty, the two tiles use the collections new-women and womens-favorites, and each tile takes the collection image or its first product photo."
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_title",
+        "label": "Heading",
+        "default": "Din kurv er tom"
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_sub",
+        "label": "Line under the heading",
+        "default": "Opdag vores nyeste kollektioner"
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_btn",
+        "label": "Button",
+        "default": "Se alt"
+      },
+      {
+        "type": "url",
+        "id": "cart_empty_btn_url",
+        "label": "Button link",
+        "default": "/collections/all"
+      },
+      {
+        "type": "collection",
+        "id": "cart_empty_c1",
+        "label": "First tile, collection"
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_c1_label",
+        "label": "First tile, text",
+        "default": "Nyheder"
+      },
+      {
+        "type": "image_picker",
+        "id": "cart_empty_c1_image",
+        "label": "First tile, photo"
+      },
+      {
+        "type": "collection",
+        "id": "cart_empty_c2",
+        "label": "Second tile, collection"
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_c2_label",
+        "label": "Second tile, text",
+        "default": "Bestsellere"
+      },
+      {
+        "type": "image_picker",
+        "id": "cart_empty_c2_image",
+        "label": "Second tile, photo"
       }
     ]
   },
