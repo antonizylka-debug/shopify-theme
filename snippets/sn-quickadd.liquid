@@ -274,10 +274,17 @@
     };
     var WALUTA = {{ cart.currency.iso_code | json }};
     var JEZYK = {{ request.locale.iso_code | json }};
+    var FORMAT = {{ shop.money_format | json }};
 
-    /* Kwoty skladam przez Intl, a nie recznie - w Danii separator jest
-       inny niz w angielskim i recznie sklejony napis zdradza obcy sklep. */
+    /* Kwoty przez formater motywu i format sklepu - ten sam, ktorym
+       liczone sa ceny na kafelkach, wiec w oknie wychodzi "1.599 kr",
+       a nie "DKK 1,599". Intl bral jezyk sklepu (en) i skladal kwote
+       po angielsku, co obok duńskich cen na siatce zdradza obcy sklep.
+       Intl zostaje tylko na wypadek, gdyby motyw formatera nie mial. */
     function pieniadze(grosze) {
+      if (window.theme && window.theme.Currency && window.theme.Currency.formatMoney) {
+        try { return window.theme.Currency.formatMoney(grosze, FORMAT); } catch (e) {}
+      }
       try {
         return new Intl.NumberFormat(JEZYK, {
           style: 'currency',
@@ -339,10 +346,16 @@
     function rysujOpcje() {
       opcje.innerHTML = '';
       /* Jeden wariant bez nazwanych opcji - nie ma czego wybierac. */
+      var pierwsza = produkt.options[0];
+      var pierwszaNazwa = (pierwsza && typeof pierwsza === 'object') ? pierwsza.name : pierwsza;
       if (produkt.variants.length === 1 && produkt.options.length === 1 &&
-          String(produkt.options[0]).toLowerCase() === 'title') return;
+          String(pierwszaNazwa).toLowerCase() === 'title') return;
 
-      produkt.options.forEach(function (nazwa, poz) {
+      produkt.options.forEach(function (opcja, poz) {
+        /* /products/<uchwyt>.js daje opcje jako obiekty {name, values},
+           a nie same nazwy - bez tego w etykiecie stalo "[object Object]",
+           a kolor nie byl rozpoznawany i nie dostawal zdjec. */
+        var nazwa = (opcja && typeof opcja === 'object') ? opcja.name : opcja;
         var typ = rodzaj(nazwa);
         var wartosci = [];
         produkt.variants.forEach(function (w) {
