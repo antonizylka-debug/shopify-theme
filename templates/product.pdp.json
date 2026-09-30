@@ -341,6 +341,12 @@
         "color_line": "#e6e3de"
       }
     },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": {
+        "recent_count": 5
+      }
+    },
     "product-recommendations": {
       "type": "product-recommendations",
       "disabled": true,
@@ -348,12 +354,6 @@
         "product_recommendations_heading": "ANBEFALET TIL DIG",
         "related_count": 6,
         "products_per_row": 3
-      }
-    },
-    "recently-viewed": {
-      "type": "recently-viewed",
-      "settings": {
-        "recent_count": 5
       }
     },
     "apps": {
@@ -370,8 +370,8 @@
     "bundle",
     "reviews",
     "faq",
-    "product-recommendations",
     "recently-viewed",
+    "product-recommendations",
     "apps"
   ]
 }
