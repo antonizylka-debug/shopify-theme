@@ -32,7 +32,7 @@
     "color_image_overlay": "#2A3743",
     "color_image_overlay_opacity": 20,
     "color_image_overlay_text_shadow": 20,
-    "type_header_font_family": "instrument_sans_n4",
+    "type_header_font_family": "jost_n4",
     "type_header_spacing": "0",
     "type_header_base_size": 27,
     "type_header_line_height": 1.1,
