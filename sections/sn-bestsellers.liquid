@@ -49,7 +49,14 @@
   # wskazywalby pierwsza w ogole, czesto schowana.
   assign widoczne = ''
   assign ile_widocznych = 0
+  # Zakladka z pusta kolekcja tez znika. "Se alt" wskazywalo na
+  # womens-favorites i mens-favorites, ktore w sklepie sa puste - klik
+  # w zakladke pokazywal pusty rzad.
   for block in section.blocks
+    assign kol_bloku = collections[block.settings.collection]
+    if kol_bloku == blank or kol_bloku.products_count == 0
+      continue
+    endif
     if block.settings.audience == 'all' or block.settings.audience == dla
       assign widoczne = widoczne | append: ',' | append: forloop.index0 | append: ','
       assign ile_widocznych = ile_widocznych | plus: 1

@@ -881,7 +881,7 @@
       },
       {
         "type": "paragraph",
-        "content": "Left empty, the two tiles use the collections new-women and womens-favorites, and each tile takes the collection image or its first product photo."
+        "content": "Left empty, or pointing at a collection with no products, the tiles use womens-dresses and womens. Each tile takes the collection image or its first product photo. Once New in and Favourites have products, pick them here and change the texts to Nyheder and Bestsellere."
       },
       {
         "type": "text",
@@ -916,7 +916,7 @@
         "type": "text",
         "id": "cart_empty_c1_label",
         "label": "First tile, text",
-        "default": "Nyheder"
+        "default": "Kjoler"
       },
       {
         "type": "image_picker",
@@ -932,7 +932,7 @@
         "type": "text",
         "id": "cart_empty_c2_label",
         "label": "Second tile, text",
-        "default": "Bestsellere"
+        "default": "Se alt"
       },
       {
         "type": "image_picker",

@@ -87,13 +87,17 @@
         motywu -> Koszyk -> Empty cart.
       {%- endcomment -%}
       {%- liquid
+        # Zapas to kolekcje, ktore naprawde maja produkty. new-women i
+        # womens-favorites sa w sklepie puste (sprawdzone: zero produktow),
+        # a kafel prowadzacy do pustej strony jest gorszy niz zaden.
+        # Wybrana w edytorze kolekcja bez produktow tez spada na zapas.
         assign k1 = collections[settings.cart_empty_c1]
-        if k1 == blank or k1.handle == blank
-          assign k1 = collections['new-women']
+        if k1 == blank or k1.handle == blank or k1.products_count == 0
+          assign k1 = collections['womens-dresses']
         endif
         assign k2 = collections[settings.cart_empty_c2]
-        if k2 == blank or k2.handle == blank
-          assign k2 = collections['womens-favorites']
+        if k2 == blank or k2.handle == blank or k2.products_count == 0
+          assign k2 = collections['womens']
         endif
 
         assign obraz1 = settings.cart_empty_c1_image
@@ -176,6 +180,13 @@
           font-size: 16px;
           color: #6e6b65;
         }
+        {%- comment -%}
+          Przez #CartDrawer, nie sama klasa - motyw koloruje wszystkie
+          linki w szufladzie swoim kolorem i napis wychodzil granatowy
+          na czarnym, nieczytelny.
+        {%- endcomment -%}
+        #CartDrawer .snpk__btn,
+        #CartDrawer .snpk__btn:hover { color: #ffffff; }
         .snpk__btn {
           display: inline-block;
           margin-top: 20px;
@@ -205,6 +216,7 @@
           color: #ffffff;
           text-decoration: none;
         }
+        #CartDrawer .snpk__napis { color: #ffffff; }
         .snpk__img {
           width: 100%;
           height: 100%;

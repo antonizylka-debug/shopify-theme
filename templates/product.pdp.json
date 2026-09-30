@@ -194,7 +194,7 @@
           "type": "tab",
           "settings": {
             "label": "Se alt",
-            "collection": "womens-favorites",
+            "collection": "womens",
             "audience": "women"
           }
         },
@@ -226,7 +226,7 @@
           "type": "tab",
           "settings": {
             "label": "Se alt",
-            "collection": "mens-favorites",
+            "collection": "mens",
             "audience": "men"
           }
         }
