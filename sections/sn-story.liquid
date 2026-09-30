@@ -41,6 +41,11 @@
   #shopify-section-{{ section.id }} .sns__media { min-width: 0; }
   #shopify-section-{{ section.id }} .sns__media img {
     width: 100%; height: auto; display: block;
+    {%- if section.settings.ratio != 'auto' %}
+      aspect-ratio: {{ section.settings.ratio }};
+      object-fit: cover;
+      object-position: center;
+    {%- endif %}
   }
 
   #shopify-section-{{ section.id }} .sns__body { min-width: 0; }
@@ -192,6 +197,17 @@
     },
     { "type": "image_picker", "id": "image", "label": "Photo" },
     { "type": "checkbox", "id": "bleed", "label": "Photo to the page edge", "default": true },
+    {
+      "type": "select", "id": "ratio", "label": "Photo shape", "default": "4 / 3",
+      "options": [
+        { "value": "auto", "label": "As uploaded" },
+        { "value": "16 / 9", "label": "Wide" },
+        { "value": "3 / 2", "label": "Landscape" },
+        { "value": "4 / 3", "label": "Slightly landscape" },
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait" }
+      ]
+    },
     { "type": "text", "id": "title", "label": "Heading", "default": "30 dages pengene-tilbage-garanti" },
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Vi står inde for kvaliteten af vores tøj. Derfor er hver ordre dækket af 30 dages returret uden bøvl.</p><p>Passer varen ikke, sender du den tilbage inden for 30 dage og får pengene retur.</p>" },
     { "type": "textarea", "id": "list", "label": "List", "info": "One row per line. Køb 2 varer → | Spar 10%" },

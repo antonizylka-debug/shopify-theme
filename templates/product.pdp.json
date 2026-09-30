@@ -350,7 +350,7 @@
         "text": "<p>Vi står inde for det tøj, vi sælger. Derfor er hver eneste ordre dækket af 30 dages returret — regnet fra den dag pakken lander hos dig, ikke fra den dag du bestiller.</p><p>Passer den ikke, eller er den ikke, som du havde forestillet dig, skriver du til os med dit ordrenummer. Du får returadressen i svaret, og pengene er tilbage på din konto, så snart varen er nået frem til os.</p>",
         "list": "",
         "note": "Ingen formularer og ingen forklaringer. En mail er nok.",
-        "image_width": 50,
+        "image_width": 40,
         "max_width": 900,
         "gap": 48,
         "gap_mobile": 20,
@@ -363,7 +363,8 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#56524c",
-        "color_accent": "#1c1d1d"
+        "color_accent": "#1c1d1d",
+        "ratio": "4 / 3"
       }
     },
     "event": {
@@ -388,7 +389,8 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#56524c",
-        "color_accent": "#d6332e"
+        "color_accent": "#d6332e",
+        "ratio": "auto"
       }
     }
   },
