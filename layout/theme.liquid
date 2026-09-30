@@ -375,5 +375,15 @@
       </image-element>
     </div>
   </template>
+  {%- comment -%}
+    Szuflada koszyka stoi TU, a nie w sekcji naglowka. W naglowku
+    siedziala wewnatrz przyklejonej grupy z wlasnym z-index, przez co
+    jej z-index liczyl sie tylko wewnatrz tej grupy i przyciemnienie
+    strony kladlo sie na niej. Jako bezposrednie dziecko body ma wlasny
+    z-index wzgledem calej strony i zaden uklad w naglowku juz na nia
+    nie wplywa.
+  {%- endcomment -%}
+  {%- render 'cart-drawer' -%}
+
 </body>
 </html>

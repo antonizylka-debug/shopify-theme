@@ -1884,40 +1884,16 @@
   }
 
   /* ==========================================================================
-     Szuflada koszyka pod przyciemnieniem strony
+     Szuflada koszyka a przyciemnienie strony
 
-     Szuflada siedzi w grupie naglowka, a ta grupa jest przyklejona
-     z z-index 26 - tworzy wiec wlasny kontekst ukladania. Wewnetrzne
-     30 szuflady liczy sie tylko w tym kontekscie, a na zewnatrz cala
-     grupa ma 26. Przyciemnienie strony tez ma 26 i stoi dalej w kodzie,
-     wiec przy rownym z-index wygrywa i przykrywa szuflade: widac ja,
-     ale jest przygaszona i nie lapie klikniec.
+     Szuflada jest teraz renderowana z layout/theme.liquid, wiec stoi
+     bezposrednio w body i jej z-index 30 liczy sie wzgledem calej strony.
+     Przyciemnienie ma 26, wiec szuflada jest nad nim, a naglowek - ktory
+     zostal w przyklejonej grupie z z-index 26 - pod nim. Czyli: przygaszona
+     cala strona z naglowkiem wlacznie, jasna tylko szuflada.
 
-     Podnosimy cala grupe ponad przyciemnienie tylko na czas otwartej
-     szuflady - poza tym stanem uklad zostaje bez zmian.
+     Zadnych nadpisan z-index nie trzeba; poprzednie proby podnosily albo
+     cala grupe naglowka, albo zdejmowaly jej kontekst ukladania, i za
+     kazdym razem cos innego wychodzilo nie tak.
      ========================================================================== */
-  {%- comment -%}
-    Nie podnosimy grupy naglowka ponad przyciemnienie - wtedy menu
-    i paski zostawalyby jasne, a ma byc odwrotnie: przygaszona ma byc
-    cala strona, jasna tylko szuflada.
-
-    Zamiast tego na czas otwartej szuflady grupa PRZESTAJE tworzyc
-    wlasny kontekst ukladania. Wtedy z-index 30 szuflady liczy sie
-    wzgledem strony, a nie wzgledem grupy, i szuflada wychodzi nad
-    przyciemnienie. Naglowek zostaje w srodku bez wlasnego z-index,
-    wiec przyciemnienie kladzie sie na nim tak jak na reszcie.
-
-    !important, bo motyw ustawia ten z-index selektorem z identyfikatorem
-    sekcji, a identyfikator bije klasy.
-  {%- endcomment -%}
-  .js-drawer-open .shopify-section-group-header-group,
-  .js-drawer-closing .shopify-section-group-header-group {
-    z-index: auto !important;
-  }
-
-  /* Przyciemnienie ponizej szuflady, ale powyzej naglowka. */
-  .js-drawer-open .main-content:after,
-  .js-drawer-closing .main-content:after {
-    z-index: 20;
-  }
 </style>
