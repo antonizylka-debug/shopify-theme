@@ -1,7 +1,16 @@
 {%- comment -%}
-  Kafel produktu w stylu icon-amsterdam: zdjecia do przesuwania z
-  kropkami, plakietka promocji, okragly "+" do szybkiego wyboru, pod
-  spodem nazwa z cena po prawej i "Spar" pod cena.
+  Kafel produktu. Uklad wybrany przez Antoniego z makiety 10 wariantow:
+
+  - zdjecia: wszystkie zdjecia produktu po kolei, jak w galerii zwyklego
+    motywu Shopify - strzalki i kropki przechodza przez kazde,
+  - na zdjeciu: procent rabatu w wygladzie wariantu 02 (czerwona
+    plakietka, bialy napis),
+  - pod zdjeciem: dwie kolumny (wariant 04) - po lewej nazwa i pod nia
+    pigulka rabatu z wariantu 07, po prawej cena i pod nia przekreslona
+    cena sprzed obnizki,
+  - pod spodem: kolka kolorow (wariant 09).
+
+  Cena jest czarna, jak w wariancie 07 - rabat mowia plakietka i pigulka.
 
   Argumenty
   - product: obiekt produktu
@@ -9,12 +18,10 @@
   - [grid_item]: false, gdy kafel nie siedzi w siatce motywu
   - [rounded]: true dla wersji z zaokraglonym zdjeciem (rzad na PDP)
 
-  Style i skrypt sa w sn-card-assets, wstawiane raz na strone, a nie
-  przy kazdym z 48 kafli.
+  Style i skrypt sa w sn-card-assets, wstawiane raz na strone.
 
-  Swiadomie BEZ klasy grid-product. Na nia polowaly wszystkie reguly i
-  skrypty starego kafla kolekcji (mierzenie, wysuwana karta, blur) i
-  rozebralyby ten kafel na czesci.
+  Swiadomie BEZ klasy grid-product. Na nia poluja reguly i skrypty starego
+  kafla kolekcji (mierzenie, wysuwana karta, blur) i rozebralyby ten kafel.
 {%- endcomment -%}
 
 {%- liquid
@@ -29,6 +36,7 @@
   assign na_promocji = false
   if product.compare_at_price > product.price
     assign na_promocji = true
+    assign procent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
   endif
 
   assign jeden = false
@@ -37,68 +45,19 @@
   endif
 
   assign zdjecia = product.media | where: 'media_type', 'image'
-  assign wariant = product.selected_or_first_available_variant
--%}
 
-{%- comment -%}Krotka nazwa liczona raz - idzie do kafla i do okna wyboru pod "+".{%- endcomment -%}
-{%- capture krotka_nazwa -%}{%- render 'sn-krotka-nazwa', product: product -%}{%- endcapture -%}
-
-{%- capture przypisane -%}
-  {%- for v in product.variants -%}
-    {%- if v.featured_media != blank -%}|{{ v.featured_media.id }}|{%- endif -%}
-  {%- endfor -%}
-{%- endcapture -%}
-
-{%- comment -%}
-  Kolejnosc zdjec na kafelku.
-
-  W Shopify wariant ma tylko JEDNO wlasne zdjecie. Kolejne ujecia tego
-  samego koloru (tyl, detal) leza w galerii zaraz za nim, bez przypiecia.
-  Dlatego zdjecia skladaja sie w serie: zdjecie wariantu i nieprzypisane
-  ujecia za nim, az do nastepnego zdjecia wariantu.
-
-  Na kafelku: najpierw seria pokazanego koloru, potem ujecia ogolne (sprzed
-  pierwszego zdjecia wariantu), potem po JEDNYM zdjeciu kazdego innego
-  koloru. Maksymalnie 6.
-
-  Poprzednia zasada brala tylko zdjecie pokazanego wariantu plus
-  nieprzypisane. Produkt z jednym zdjeciem na kolor dostawal przez to
-  jedno zdjecie i zero strzalek - 342 produkty w sklepie. Z ta zasada
-  bez strzalek zostaja 2 (sprawdzone na wszystkich 3608).
-
-  Ujecia dodatkowe innych kolorow NIE wchodza - tylko po jednym zdjeciu
-  na kolor, zeby strzalki pokazywaly gamę, a nie zasypywaly tylem i
-  detalem kazdego koloru po kolei.
-{%- endcomment -%}
-{%- liquid
-  assign wlasne_id = 0
-  if wariant.featured_media != blank
-    assign wlasne_id = wariant.featured_media.id
-  endif
-
-  assign moja = ''
-  assign ogolne = ''
-  assign inne = ''
-  assign wlasciciel = 0
-  for m in zdjecia
-    assign znacznik = '|' | append: m.id | append: '|'
-    if przypisane contains znacznik
-      assign wlasciciel = m.id
-      if m.id == wlasne_id
-        assign moja = moja | append: ',' | append: forloop.index0
-      else
-        assign inne = inne | append: ',' | append: forloop.index0
-      endif
-    elsif wlasciciel == 0
-      assign ogolne = ogolne | append: ',' | append: forloop.index0
-    elsif wlasciciel == wlasne_id
-      assign moja = moja | append: ',' | append: forloop.index0
+  # Opcja koloru moze byc na dowolnej pozycji i miec dowolna nazwe
+  # zaleznie od tego, skad przyszedl produkt.
+  assign opcja_koloru = nil
+  for o in product.options_with_values
+    assign n = o.name | downcase
+    if n == 'color' or n == 'colour' or n == 'farve' or n == 'kolor'
+      assign opcja_koloru = o
     endif
   endfor
-
-  assign numery = moja | append: ogolne | append: inne | remove_first: ',' | split: ','
-  assign ile_max = 6
 -%}
+
+{%- capture krotka_nazwa -%}{%- render 'sn-krotka-nazwa', product: product -%}{%- endcapture -%}
 
 {%- if grid_item != false -%}
 <div class="grid__item {{ widok_siatki }} snc-item" data-product-handle="{{ product.handle }}" data-product-id="{{ product.id }}">
@@ -107,23 +66,14 @@
   <div class="snc{% if rounded %} snc--round{% endif %}">
     <div class="snc__foto">
       <div class="snc__pas" data-snc-pas>
-        {%- if numery.size > 0 -%}
-          {%- assign pokazane = 0 -%}
-          {%- for n in numery -%}
-            {%- if pokazane >= ile_max -%}{%- break -%}{%- endif -%}
-            {%- assign i = n | plus: 0 -%}
-            {%- assign m = zdjecia[i] -%}
-            <a class="snc__klatka" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
-              {{ m.preview_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 769px) 25vw, 50vw', alt: product.title, class: 'snc__img' }}
-            </a>
-            {%- assign pokazane = pokazane | plus: 1 -%}
-          {%- endfor -%}
-        {%- elsif product.featured_media -%}
-          {%- assign pokazane = 1 -%}
+        {%- assign pokazane = 0 -%}
+        {%- for m in zdjecia -%}
           <a class="snc__klatka" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
-            {{ product.featured_media.preview_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 769px) 25vw, 50vw', alt: product.title, class: 'snc__img' }}
+            {{ m.preview_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 769px) 25vw, 50vw', alt: product.title, class: 'snc__img' }}
           </a>
-        {%- else -%}
+          {%- assign pokazane = pokazane | plus: 1 -%}
+        {%- endfor -%}
+        {%- if pokazane == 0 -%}
           {%- assign pokazane = 1 -%}
           <a class="snc__klatka" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
             {{ 'product-1' | placeholder_svg_tag: 'snc__img placeholder-svg' }}
@@ -132,7 +82,7 @@
       </div>
 
       {%- if na_promocji -%}
-        <span class="snc__sale">Tilbud</span>
+        <span class="snc__sale">−{{ procent }} %</span>
       {%- endif -%}
 
       {%- if pokazane > 1 -%}
@@ -160,29 +110,62 @@
       </button>
     </div>
 
-    {%- comment -%}
-      Nazwa, pod nia jedna linijka cen - jak w rzedzie "Style it with"
-      ze wzoru. Wczesniej cena stala obok nazwy, a przy pasku filtrow
-      kafel ma 233 px: dwie ceny wciskaly sie obok dwulinijkowej nazwy,
-      a "Spar" szlo osobna czerwona linijka pod spodem.
-    {%- endcomment -%}
     <a class="snc__opis" href="{{ product.url }}">
-      <span class="snc__nazwa">{{ krotka_nazwa }}</span>
-      <span class="snc__ceny">
-        {%- if na_promocji -%}
-          <span class="snc__bylo">{{ product.compare_at_price | money }}</span>
-          <span class="snc__jest snc__jest--sale">{{ product.price | money }}</span>
-          <span class="snc__spar">−{{ product.compare_at_price | minus: product.price | money }}</span>
-        {%- else -%}
-          {%- if product.price_varies -%}<span class="snc__od">Fra</span>{%- endif -%}
-          <span class="snc__jest">{{ product.price | money }}</span>
-        {%- endif -%}
+      <span class="snc__rzad">
+        <span class="snc__lewa">
+          <span class="snc__nazwa">{{ krotka_nazwa }}</span>
+          {%- if na_promocji -%}
+            <span class="snc__pigulka">−{{ procent }} %</span>
+          {%- endif -%}
+        </span>
+        <span class="snc__ceny">
+          {%- if na_promocji -%}
+            <span class="snc__jest">{{ product.price | money }}</span>
+            <span class="snc__bylo">{{ product.compare_at_price | money }}</span>
+          {%- else -%}
+            <span class="snc__jest">{% if product.price_varies %}<span class="snc__od">Fra</span> {% endif %}{{ product.price | money }}</span>
+          {%- endif -%}
+        </span>
       </span>
-      {%- liquid
-        assign notka = product.metafields.custom.fit
-      -%}
-      {%- if notka != blank -%}
-        <span class="snc__notka">{{ notka }}</span>
+
+      {%- if opcja_koloru != nil and opcja_koloru.values.size > 1 -%}
+        {%- liquid
+          assign maks = 4
+          assign nadmiar = opcja_koloru.values.size | minus: maks
+        -%}
+        <span class="snc__kolory">
+          {%- for w in opcja_koloru.values limit: maks -%}
+            {%- liquid
+              assign tlo = ''
+              assign obraz = nil
+              if w.swatch.color
+                assign tlo = w.swatch.color
+              elsif w.swatch.image
+                assign obraz = w.swatch.image
+              else
+                capture tlo
+                  render 'sn-kolor', nazwa: w
+                endcapture
+                assign tlo = tlo | strip
+                if tlo == blank and w.variant.featured_media
+                  assign obraz = w.variant.featured_media
+                endif
+              endif
+            -%}
+            <span
+              class="snc__kolko"
+              title="{{ w | escape }}"
+              style="
+                {%- if tlo == 'multi' -%}background: conic-gradient(#c2415a, #f0b48a, #d1a32a, #557a55, #4a6fa5, #6b4a8a, #c2415a);
+                {%- elsif tlo != blank -%}background-color: {{ tlo }};
+                {%- elsif obraz -%}background-image: url({{ obraz | image_url: width: 48 }});
+                {%- endif -%}
+              "></span>
+          {%- endfor -%}
+          {%- if nadmiar > 0 -%}
+            <span class="snc__wiecej">+{{ nadmiar }}</span>
+          {%- endif -%}
+        </span>
       {%- endif -%}
     </a>
   </div>

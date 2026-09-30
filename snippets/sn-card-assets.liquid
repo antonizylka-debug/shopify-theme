@@ -53,18 +53,23 @@
     display: block;
   }
 
+  {%- comment -%}
+    Procent rabatu na zdjeciu, wyglad z wariantu 02: czerwone tlo, bialy
+    napis, prostokat jak dawna plakietka "Tilbud". Procent po dunsku, ze
+    spacja: "−50 %".
+  {%- endcomment -%}
   .snc__sale {
     position: absolute;
     top: 10px; left: 10px;
     z-index: 2;
     padding: 5px 9px 4px;
-    background: #efe9dd;
-    color: #1c1d1d;
+    background: #d6332e;
+    color: #ffffff;
     font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0.02em;
     line-height: 1;
+    font-variant-numeric: tabular-nums;
     pointer-events: none;
   }
 
@@ -159,62 +164,120 @@
     .snc__strz { display: none; }
   }
 
-  /* ---------- opis ---------- */
+  /* ---------- opis: dwie kolumny (wariant 04) ---------- */
   .snc__opis {
     display: block;
     padding: 10px 2px 0;
     color: inherit;
     text-decoration: none;
   }
+  .snc__rzad {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+  }
   {%- comment -%}
-    Nazwa bez pogrubienia i bez wielkich liter. Nazwy z importu maja po
-    osiem-dziesiec slow ("Women's Floral Halter Neck Maxi Dress - ..."),
-    a takie zdanie wielkimi literami czyta sie wolno. Ta sama zasada,
-    ktora juz obowiazywala dla nazw w starym kaflu kolekcji.
+    Nazwa w jednej linijce - druga linijka rozjezdzala rzad, bo ceny w
+    sasiednich kafelkach stawaly na roznych wysokosciach. Bez pogrubienia
+    i bez wielkich liter: dlugie nazwy z importu wielkimi literami czytaly
+    sie wolno.
   {%- endcomment -%}
+  {%- comment -%}
+    Lewa kolumna: nazwa, pod nia pigulka rabatu (wariant 07). Prawa: cena
+    i pod nia przekreslona cena. Obie kolumny maja po dwa wiersze, wiec
+    stoja w rownowadze, a rzad kafli trzyma jedna linie.
+  {%- endcomment -%}
+  .snc__lewa {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+  .snc__pigulka {
+    padding: 2px 7px 1px;
+    border-radius: 10px;
+    background: #fbe9e8;
+    color: #d6332e;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
   .snc__nazwa {
-    display: -webkit-box;
+    max-width: 100%;
     font-size: 14px;
     font-weight: 400;
     letter-spacing: 0;
     text-transform: none;
     line-height: 1.4;
+    white-space: nowrap;
     overflow: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
   }
   .snc__ceny {
+    flex: 0 0 auto;
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    column-gap: 8px;
-    row-gap: 2px;
-    margin-top: 5px;
+    flex-direction: column;
+    align-items: flex-end;
     font-size: 14px;
+    line-height: 1.4;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
   {%- comment -%}
-    Motyw przygasza przekreslona cene do 45 procent krycia i robi sie
-    nieczytelna - kolor ustawiam wprost.
+    Cena czarna, nie czerwona, jak w wariancie 07 - rabat mowia pigulka i plakietka. Motyw
+    przygasza przekreslona cene do 45 procent krycia, wiec kolor wprost.
   {%- endcomment -%}
-  .snc__bylo { color: #8a867f; opacity: 1; text-decoration: line-through; }
-  .snc__jest { font-weight: 500; }
-  .snc__jest--sale { color: #d6332e; }
-  .snc__spar { font-size: 13px; color: #d6332e; }
-  .snc__od { color: #6e6b65; font-size: 13px; }
-  .snc__notka {
-    display: block;
-    margin-top: 3px;
-    font-size: 12px;
-    color: #8a867f;
+  .snc__jest { font-weight: 500; color: #1c1d1d; }
+  .snc__bylo { font-size: 13px; color: #8a867f; opacity: 1; text-decoration: line-through; }
+  .snc__od { color: #6e6b65; font-size: 13px; font-weight: 400; }
+
+  /* ---------- kolka kolorow (wariant 09) ---------- */
+  .snc__kolory {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 9px;
   }
+  {%- comment -%}
+    Biala obwodka w srodku oddziela kolor od szarej ramki - bez niej biala
+    i kremowa sukienka zlewalyby sie z tlem strony.
+  {%- endcomment -%}
+  .snc__kolko {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid #d9d6d1;
+    box-shadow: inset 0 0 0 2px #ffffff;
+    background-color: #f1efec;
+    background-size: cover;
+    background-position: center;
+  }
+  .snc__wiecej { font-size: 12px; color: #6e6b65; }
 
   @media only screen and (max-width: 768px) {
     .snc__plus { width: 30px; height: 30px; right: 8px; bottom: 8px; }
     .snc__plus svg { width: 14px; height: 14px; }
     .snc__kropki { bottom: 10px; }
-    .snc__nazwa { font-size: 13px; }
-    .snc__ceny { font-size: 13px; column-gap: 6px; }
-    .snc__spar { font-size: 12px; }
+    .snc__rzad { gap: 6px; }
+    {%- comment -%}
+      Na telefonie kafel ma ~180 px i jedna linijka nazwy obok cen
+      obcinalaby prawie kazda nazwe. Tu nazwa dostaje dwie linijki.
+    {%- endcomment -%}
+    .snc__nazwa {
+      font-size: 13px;
+      white-space: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .snc__ceny { font-size: 13px; }
+    .snc__bylo { font-size: 12px; }
+    .snc__kolko { width: 16px; height: 16px; }
   }
 </style>
 

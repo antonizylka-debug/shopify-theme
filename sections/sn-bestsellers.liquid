@@ -172,6 +172,13 @@
     min-width: 0;
   }
   {%- comment -%}
+    Dwa poziome przewijania w sobie: rzad i pasek zdjec w kafelku. Palec
+    trafialby w zdjecia i przesuwal je zamiast rzedu. W rzedzie pasek zdjec
+    nie reaguje na palec - strzalki na PC dalej go przewijaja, bo
+    przewijanie z kodu dziala takze przy overflow: hidden.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .snc__pas { overflow-x: hidden; }
+  {%- comment -%}
     Odnosnik rozciagniety na cala karte zamiast opakowania. Przycisk
     koszyka nie moze stac w srodku <a>, bo przycisk w odnosniku to
     nieprawidlowy HTML i przegladarki roznie go klikaja.
@@ -395,6 +402,8 @@
   }
 {%- endstyle -%}
 
+{%- render 'sn-card-assets' -%}
+
 <div class="snb2" data-snb2>
   <div class="page-width snb2__head">
     {%- if section.settings.title != blank -%}
@@ -445,137 +454,14 @@
           {%- if product != blank and p.id == product.id -%}{%- continue -%}{%- endif -%}
           {%- if pokazane_p >= ile -%}{%- break -%}{%- endif -%}
           {%- assign pokazane_p = pokazane_p | plus: 1 -%}
-          {%- capture krotka_p -%}{%- render 'sn-krotka-nazwa', product: p -%}{%- endcapture -%}
-          {%- liquid
-            assign na_promocji = false
-            if p.compare_at_price > p.price
-              assign na_promocji = true
-            endif
-
-            # Opcja koloru moze byc na dowolnej pozycji i miec dowolna
-            # nazwe zaleznie od tego, skad przyszedl produkt.
-            assign opcja_koloru = null
-            for o in p.options_with_values
-              assign n = o.name | downcase
-              if n == 'color' or n == 'colour' or n == 'farve' or n == 'kolor'
-                assign opcja_koloru = o
-              endif
-            endfor
-          -%}
+          {%- comment -%}
+            Ten sam kafel co w kolekcji i w rzedzie "Style den med" (sn-card):
+            wszystkie zdjecia po kolei, plakietka i pigulka rabatu, dwie
+            kolumny, kolka kolorow. Jeden kafel w calym sklepie - zmiana
+            wygladu w jednym miejscu idzie wszedzie naraz.
+          {%- endcomment -%}
           <div class="snb2__card">
-            <div class="snb2__img">
-              {%- if na_promocji and section.settings.show_sale -%}
-                <span class="snb2__sale">{{ section.settings.sale_label }}</span>
-              {%- endif -%}
-
-              {%- if p.featured_media -%}
-                {{ p.featured_media | image_url: width: 800 | image_tag: loading: 'lazy', class: 'snb2__photo', alt: p.title, widths: '300,400,600,800' }}
-              {%- else -%}
-                {{ 'product-1' | placeholder_svg_tag: 'snb2__photo placeholder-svg' }}
-              {%- endif -%}
-
-              {%- if section.settings.hover_photo and p.media.size > 1 -%}
-                {{ p.media[1] | image_url: width: 800 | image_tag: loading: 'lazy', class: 'snb2__photo snb2__photo--alt', alt: p.title, widths: '300,400,600,800' }}
-              {%- endif -%}
-              {%- if section.settings.add_where != 'off' -%}
-                {%- liquid
-                  # Jeden wariant idzie prosto do koszyka. Wiecej niz jeden
-                  # znaczy rozmiary, a wybor rozmiaru za klientke jest
-                  # gorszy niz jedno klikniecie wiecej.
-                  assign jeden = false
-                  if p.variants.size == 1 and p.variants.first.available
-                    assign jeden = true
-                  endif
-                -%}
-                <button
-                  type="button"
-                  class="snb2__add"
-                  data-snb2-add
-                  data-wariant="{% if jeden %}{{ p.variants.first.id }}{% endif %}"
-                  {%- comment -%}
-                    Wiecej niz jeden wariant otwiera okno wyboru rozmiaru
-                    i koloru, ktore stoi raz w layoucie.
-                  {%- endcomment -%}
-                  {% unless jeden %}data-snq-otworz="{{ p.handle }}" data-snq-nazwa="{{ krotka_p }}"{% endunless %}
-                  data-url="{{ p.url }}"
-                  aria-label="{% if jeden %}{{ section.settings.add_label }}{% else %}{{ section.settings.pick_label }}{% endif %}"
-                  title="{% if jeden %}{{ section.settings.add_label }}{% else %}{{ section.settings.pick_label }}{% endif %}">
-                  <svg class="snb2__ikona-add" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    {%- if jeden -%}
-                      <path d="M6 7h12l-1 12H7L6 7Z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/>
-                    {%- else -%}
-                      <path d="M12 5v14"/><path d="M5 12h14"/>
-                    {%- endif -%}
-                  </svg>
-                  <svg class="snb2__ikona-ok" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M5 12.5 10 17.5 19 7"/>
-                  </svg>
-                </button>
-              {%- endif -%}
-            </div>
-
-            <div class="snb2__meta">
-              <div class="snb2__name">{{ krotka_p }}</div>
-
-              {%- liquid
-                assign dopisek = ''
-                case section.settings.note_source
-                  when 'type'
-                    assign dopisek = p.type
-                  when 'vendor'
-                    assign dopisek = p.vendor
-                  when 'metafield'
-                    assign dopisek = p.metafields.custom.fit
-                endcase
-              -%}
-              {%- if dopisek != blank -%}
-                <div class="snb2__note">{{ dopisek }}</div>
-              {%- endif -%}
-
-              <div class="snb2__price">
-                {%- if na_promocji -%}
-                  <span class="snb2__was">{{ p.compare_at_price | money }}</span>
-                  <span class="snb2__now snb2__now--sale">{{ p.price | money }}</span>
-                  <span class="snb2__spar">−{{ p.compare_at_price | minus: p.price | money }}</span>
-                {%- else -%}
-                  <span class="snb2__now">{{ p.price | money }}</span>
-                {%- endif -%}
-              </div>
-
-              {%- if section.settings.show_dots and opcja_koloru != null and opcja_koloru.values.size > 1 -%}
-                {%- liquid
-                  assign maks = section.settings.dots_max
-                  assign nadmiar = opcja_koloru.values.size | minus: maks
-                -%}
-                <div class="snb2__dots">
-                  {%- for w in opcja_koloru.values limit: maks -%}
-                    {%- liquid
-                      assign tlo = ''
-                      assign obraz = null
-                      if w.swatch.color
-                        assign tlo = w.swatch.color
-                      endif
-                      if w.swatch.image
-                        assign obraz = w.swatch.image
-                      elsif w.variant.featured_media
-                        assign obraz = w.variant.featured_media
-                      endif
-                    -%}
-                    <span
-                      class="snb2__dot{% if forloop.first %} snb2__dot--first{% endif %}"
-                      title="{{ w }}"
-                      style="
-                        {%- if tlo != blank %}--dot: {{ tlo }};{% endif -%}
-                        {%- if obraz %}background-image: url({{ obraz | image_url: width: 48 }});{% endif -%}
-                      "></span>
-                  {%- endfor -%}
-                  {%- if nadmiar > 0 -%}
-                    <span class="snb2__more">+{{ nadmiar }}</span>
-                  {%- endif -%}
-                </div>
-              {%- endif -%}
-            </div>
-            <a class="snb2__link" href="{{ p.url }}" aria-label="{{ p.title | escape }}"></a>
+            {%- render 'sn-card', product: p, grid_item: false -%}
           </div>
         {%- endfor -%}
       </div>

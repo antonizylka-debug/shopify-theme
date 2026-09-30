@@ -1,0 +1,27 @@
+{%- comment -%}
+  Kolor kolka dla nazwy koloru wariantu. Zwraca hex, "multi" albo nic.
+
+  Nazwy przyszly z importu i sa dowolne ("Pale Blush Pink", "Rose Red",
+  "Apricot"), a probki koloru w panelu nie sa ustawione. Dlatego szukam
+  slowa kluczowego w nazwie - pierwsze trafienie wygrywa, wiec dluzsze
+  i konkretniejsze nazwy stoja przed ogolnymi: "dark green" przed
+  "green", "rose red" przed "rose" i "red", "off white" przed "white".
+
+  Nic nie pasuje - kafel pokazuje w kolku zdjecie wariantu.
+
+  @param {string} nazwa - nazwa koloru
+{%- endcomment -%}
+
+{%- liquid
+  assign n = nazwa | downcase
+  assign mapa = 'multi:multi|floral:multi|print:multi|pattern:multi|leopard:#b98a4e|navy:#1f2d4d|burgundy:#6d1f2c|bordeaux:#6d1f2c|wine:#6d1f2c|maroon:#6d1f2c|rose red:#c2415a|hot pink:#d6337a|fuchsia:#d6337a|magenta:#d6337a|dusty pink:#e2b6b8|blush:#ecc9c7|light pink:#f2cdd5|pink:#e8b4c0|rose:#e8b4c0|light blue:#a9c7e8|sky:#a9c7e8|baby blue:#a9c7e8|royal blue:#2c4fa6|cobalt:#2c4fa6|dark blue:#233a66|teal:#2a8c8c|turquoise:#34a7a3|denim:#4a6fa5|blue:#4a6fa5|olive:#6b6b3a|army:#5b5e3a|khaki:#b5a47a|mint:#bfe3cf|sage:#9aae8f|dark green:#2f5a3d|forest:#2f5a3d|emerald:#1f7a55|green:#557a55|mustard:#d1a32a|yellow:#f0d253|lemon:#f0d253|apricot:#f0b48a|peach:#f3bf9c|coral:#ee8a6f|rust:#b5532a|terracotta:#c0643e|orange:#e07b33|red:#b8322e|lilac:#b9a6d6|lavender:#b9a6d6|purple:#6b4a8a|violet:#6b4a8a|plum:#6a3355|camel:#c19a6b|tan:#c19a6b|coffee:#6b4a32|chocolate:#5a3a26|brown:#7a5236|nude:#e0c3a8|sand:#d9c7a8|taupe:#a89886|beige:#d9c7a8|champagne:#efe0c4|off white:#f3efe6|off-white:#f3efe6|ivory:#f4efe2|cream:#efe6d2|apricot:#f0b48a|white:#ffffff|silver:#c9c9c9|gold:#c9a54a|charcoal:#4a4a4a|dark grey:#4a4a4a|dark gray:#4a4a4a|light grey:#cfcfcf|light gray:#cfcfcf|grey:#9a9a9a|gray:#9a9a9a|black:#1c1c1c' | split: '|'
+  assign wynik = ''
+  for para in mapa
+    assign czesci = para | split: ':'
+    if n contains czesci[0]
+      assign wynik = czesci[1]
+      break
+    endif
+  endfor
+-%}
+{{- wynik -}}
