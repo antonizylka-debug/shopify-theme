@@ -106,6 +106,28 @@
 
   /* ---------- siatka zdjec ---------- */
   #shopify-section-{{ section.id }} .pdp__media { position: relative; }
+
+  {%- comment -%}
+    Zdjecia przyklejone przy przewijaniu prawej kolumny (tylko na PC, gdzie
+    kolumny stoja obok siebie). Prawa kolumna jest mniej wiecej trzy razy
+    wyzsza od galerii - opis, rozmiary, akordeony, "Style den med" - wiec
+    bez tego zdjecia uciekaly w gore, a klientka czytala o sukience, ktorej
+    juz nie widziala.
+
+    Przyklejanie konczy sie samo na koncu sekcji produktu, bo sticky nie
+    wychodzi poza swoj rodzic.
+
+    Gore liczy skrypt nizej: pod przyklejonym naglowkiem, a gdy galeria
+    jest wyzsza niz okno (po "Vis flere billeder") - tak, zeby przykleil
+    sie jej DOL. Przyklejona gora przy wysokiej galerii chowalaby dolne
+    zdjecia na zawsze.
+  {%- endcomment -%}
+  @media only screen and (min-width: {{ section.settings.breakpoint | plus: 1 }}px) {
+    #shopify-section-{{ section.id }} .pdp__media {
+      position: sticky;
+      top: var(--pdp-sticky-top, 16px);
+    }
+  }
   {%- comment -%}
     Podstawa ma 6 kolumn, bo to najmniejsza liczba dzielaca sie i przez 2,
     i przez 3. Duze zdjecie zajmuje 3 z 6 (dwa w rzedzie), male 2 z 6 (trzy
@@ -1022,6 +1044,36 @@
 </script>
 
 <script>
+  (function () {
+    var korzen = document.getElementById('shopify-section-{{ section.id }}');
+    var media = korzen && korzen.querySelector('.pdp__media');
+    if (!media) return;
+    var prog = {{ section.settings.breakpoint | json }};
+
+    function naglowek() {
+      var h = document.querySelector('.shopify-section-group-header-group');
+      if (!h) return 0;
+      var p = getComputedStyle(h).position;
+      return (p === 'sticky' || p === 'fixed') ? h.offsetHeight : 0;
+    }
+
+    function ustaw() {
+      if (window.innerWidth <= prog) { media.style.removeProperty('--pdp-sticky-top'); return; }
+      var odstep = 16;
+      var gora = naglowek() + odstep;
+      /* Galeria wyzsza niz okno: ujemna gora, zeby przykleil sie jej dol. */
+      var top = Math.min(gora, window.innerHeight - media.offsetHeight - odstep);
+      media.style.setProperty('--pdp-sticky-top', Math.round(top) + 'px');
+    }
+
+    ustaw();
+    window.addEventListener('resize', ustaw);
+    window.addEventListener('load', ustaw);
+    /* Zdjecia doladowuja sie po starcie, a "Vis flere billeder" wydluza
+       galerie - wysokosc trzeba przeliczyc przy kazdej zmianie. */
+    if (window.ResizeObserver) new ResizeObserver(ustaw).observe(media);
+  })();
+
   (function () {
     var root = document.getElementById('shopify-section-{{ section.id }}');
     if (!root) return;
