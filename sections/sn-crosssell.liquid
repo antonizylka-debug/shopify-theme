@@ -1,0 +1,337 @@
+{%- comment -%}
+  Szeroki kafel z propozycja: miniatura, nazwa, wybor wariantu i przycisk
+  dodania - wszystko w jednym wierszu, jeden produkt naraz.
+
+  Rozni sie od rzedu "kup wiecej" zadaniem. Tamten pokazuje duzo rzeczy
+  do obejrzenia; ten pokazuje JEDNA i pozwala ja dorzucic bez wychodzenia
+  z karty. Dlatego ma wybor rozmiaru na miejscu, a nie odsyla dalej.
+{%- endcomment -%}
+
+{%- liquid
+  assign kolekcja = collections[section.settings.collection]
+  if kolekcja == blank or kolekcja.products.size == 0
+    assign kolekcja = product.collections.first
+  endif
+  assign lista = kolekcja.products
+  assign ile = section.settings.count
+-%}
+
+{%- if lista.size > 0 -%}
+  {%- style -%}
+    #shopify-section-{{ section.id }} .snx {
+      background: {{ section.settings.color_bg }};
+      color: {{ section.settings.color_text }};
+      padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+      --snx-muted: {{ section.settings.color_muted }};
+      --snx-sale: {{ section.settings.color_sale }};
+      --snx-line: {{ section.settings.color_line }};
+    }
+    #shopify-section-{{ section.id }} .snx__head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; margin-bottom: 12px;
+    }
+    #shopify-section-{{ section.id }} .snx__title {
+      margin: 0; font-size: {{ section.settings.title_size }}px;
+      font-weight: 700; letter-spacing: -0.01em; line-height: 1.2;
+    }
+    #shopify-section-{{ section.id }} .snx__nav { display: flex; gap: 4px; flex: 0 0 auto; }
+    #shopify-section-{{ section.id }} .snx__arrow {
+      display: flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; padding: 0; border: 0;
+      background: none; color: inherit; cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    #shopify-section-{{ section.id }} .snx__arrow svg { width: 9px; height: 15px; display: block; }
+    #shopify-section-{{ section.id }} .snx__arrow[disabled] { opacity: 0.25; cursor: default; }
+
+    {%- comment -%}
+      Jeden kafel na ekran, przyciaganie obowiazkowe - inaczej przy
+      przewijaniu zostawalby polowiczny kafel i wiersz przestawalby
+      sie czytac jako jedna propozycja.
+    {%- endcomment -%}
+    #shopify-section-{{ section.id }} .snx__track {
+      display: flex; gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      cursor: grab;
+    }
+    #shopify-section-{{ section.id }} .snx__track::-webkit-scrollbar { display: none; }
+    #shopify-section-{{ section.id }} .snx__track.is-drag { cursor: grabbing; }
+
+    #shopify-section-{{ section.id }} .snx__item {
+      flex: 0 0 100%;
+      max-width: 100%;
+      scroll-snap-align: start;
+      display: grid;
+      grid-template-columns: {{ section.settings.thumb }}px minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      border: 1px solid var(--snx-line);
+      border-radius: {{ section.settings.radius }}px;
+      padding: 12px 14px;
+      background: #fff;
+    }
+    #shopify-section-{{ section.id }} .snx__media {
+      width: {{ section.settings.thumb }}px; height: {{ section.settings.thumb }}px;
+      overflow: hidden; background: {{ section.settings.color_media }};
+      border-radius: {{ section.settings.radius }}px;
+    }
+    #shopify-section-{{ section.id }} .snx__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    #shopify-section-{{ section.id }} .snx__body { min-width: 0; }
+    #shopify-section-{{ section.id }} .snx__name {
+      font-size: 13.5px; line-height: 1.3; color: inherit; text-decoration: none;
+      display: block; margin-bottom: 4px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #shopify-section-{{ section.id }} .snx__name:hover { text-decoration: underline; text-underline-offset: 2px; }
+    #shopify-section-{{ section.id }} .snx__select {
+      font: inherit; font-size: 12.5px; color: var(--snx-muted);
+      border: 0; background: none; padding: 0 16px 0 0; margin-bottom: 4px;
+      cursor: pointer; max-width: 100%;
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%236e6b65' stroke-width='1.4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 2px center; background-size: 9px;
+    }
+    #shopify-section-{{ section.id }} .snx__prices { font-size: 13.5px; }
+    #shopify-section-{{ section.id }} .snx__now { color: var(--snx-sale); font-weight: 700; }
+    #shopify-section-{{ section.id }} .snx__was { color: var(--snx-muted); text-decoration: line-through; margin-left: 6px; }
+
+    #shopify-section-{{ section.id }} .snx__btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 11px 18px; border: 0; border-radius: {{ section.settings.radius }}px;
+      background: {{ section.settings.color_button }}; color: #fff;
+      font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+    }
+    #shopify-section-{{ section.id }} .snx__btn[disabled] { background: #b7b3ac; cursor: default; }
+    #shopify-section-{{ section.id }} .snx__btn.is-done { background: #2f6b42; }
+    #shopify-section-{{ section.id }} .snx__btn svg { width: 11px; height: 11px; }
+
+    @media only screen and (max-width: 768px) {
+      #shopify-section-{{ section.id }} .snx {
+        padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
+      }
+      #shopify-section-{{ section.id }} .snx__title { font-size: {{ section.settings.title_size_mobile }}px; }
+      #shopify-section-{{ section.id }} .snx__item {
+        grid-template-columns: {{ section.settings.thumb }}px minmax(0, 1fr);
+        row-gap: 10px;
+      }
+      #shopify-section-{{ section.id }} .snx__btn { grid-column: 1 / -1; justify-content: center; width: 100%; }
+    }
+  {%- endstyle -%}
+
+  <div class="snx">
+    <div class="page-width">
+      <div class="snx__head">
+        <h2 class="snx__title">{{ section.settings.title }}</h2>
+        <div class="snx__nav">
+          <button type="button" class="snx__arrow" data-snx-prev aria-label="{{ 'general.slider.previous_slide' | t }}" disabled>
+            <svg viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M8.5 1.5 2 8l6.5 6.5"/></svg>
+          </button>
+          <button type="button" class="snx__arrow" data-snx-next aria-label="{{ 'general.slider.next_slide' | t }}">
+            <svg viewBox="0 0 10 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><path d="M1.5 1.5 8 8l-6.5 6.5"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="snx__track" data-snx-track>
+        {%- for produkt in lista limit: ile -%}
+          {%- liquid
+            assign war = produkt.selected_or_first_available_variant
+            assign na_przecenie = false
+            if produkt.compare_at_price > produkt.price
+              assign na_przecenie = true
+            endif
+          -%}
+          <div class="snx__item" data-snx-item>
+            <a class="snx__media" href="{{ produkt.url }}" aria-label="{{ produkt.title | escape }}">
+              {%- if produkt.featured_media != blank -%}
+                {{ produkt.featured_media | image_url: width: 200 | image_tag: loading: 'lazy', alt: produkt.title }}
+              {%- endif -%}
+            </a>
+
+            <div class="snx__body">
+              <a class="snx__name" href="{{ produkt.url }}">{{ produkt.title }}</a>
+
+              {%- unless produkt.has_only_default_variant -%}
+                <select class="snx__select" data-snx-select aria-label="{{ produkt.title | escape }}">
+                  {%- for v in produkt.variants -%}
+                    <option value="{{ v.id }}"
+                            data-price="{{ v.price | money }}"
+                            data-compare="{{ v.compare_at_price | money }}"
+                            data-available="{{ v.available }}"
+                            {% unless v.available %}disabled{% endunless %}
+                            {% if v.id == war.id %}selected{% endif %}>{{ v.title }}</option>
+                  {%- endfor -%}
+                </select>
+              {%- endunless -%}
+
+              <div class="snx__prices">
+                <span class="snx__now" data-snx-price>{{ war.price | money }}</span>
+                {%- if na_przecenie -%}
+                  <span class="snx__was" data-snx-compare>{{ war.compare_at_price | money }}</span>
+                {%- else -%}
+                  <span class="snx__was" data-snx-compare hidden></span>
+                {%- endif -%}
+              </div>
+            </div>
+
+            <button type="button" class="snx__btn" data-snx-add data-variant="{{ war.id }}"
+                    {% unless produkt.available %}disabled{% endunless %}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
+              {{ section.settings.add_label }}
+            </button>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var sekcja = document.getElementById('shopify-section-{{ section.id }}');
+      if (!sekcja) return;
+      var pasek = sekcja.querySelector('[data-snx-track]');
+      if (!pasek) return;
+
+      var prev = sekcja.querySelector('[data-snx-prev]');
+      var next = sekcja.querySelector('[data-snx-next]');
+
+      function stan() {
+        var maks = pasek.scrollWidth - pasek.clientWidth;
+        if (prev) prev.disabled = pasek.scrollLeft < 4;
+        if (next) next.disabled = pasek.scrollLeft > maks - 4;
+      }
+      function krok() { return pasek.clientWidth + 12; }
+
+      if (prev) prev.addEventListener('click', function () { pasek.scrollBy({ left: -krok(), behavior: 'smooth' }); });
+      if (next) next.addEventListener('click', function () { pasek.scrollBy({ left: krok(), behavior: 'smooth' }); });
+      pasek.addEventListener('scroll', stan, { passive: true });
+      window.addEventListener('resize', stan);
+      stan();
+
+      /* ---------- przeciaganie myszka ---------- */
+      var ciagnie = false, startX = 0, startScroll = 0, droga = 0;
+      pasek.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'touch' || e.button !== 0) return;
+        if (e.target.closest('select, button')) return;
+        ciagnie = true; droga = 0;
+        startX = e.clientX; startScroll = pasek.scrollLeft;
+        pasek.classList.add('is-drag');
+        pasek.style.scrollSnapType = 'none';
+      });
+      pasek.addEventListener('pointermove', function (e) {
+        if (!ciagnie) return;
+        var d = e.clientX - startX;
+        if (Math.abs(d) > droga) droga = Math.abs(d);
+        if (droga > 4) { e.preventDefault(); pasek.setPointerCapture(e.pointerId); }
+        pasek.scrollLeft = startScroll - d;
+      });
+      function koniec() {
+        if (!ciagnie) return;
+        ciagnie = false;
+        pasek.classList.remove('is-drag');
+        pasek.style.scrollSnapType = '';
+        stan();
+      }
+      pasek.addEventListener('pointerup', koniec);
+      pasek.addEventListener('pointercancel', koniec);
+      pasek.addEventListener('pointerleave', koniec);
+      pasek.addEventListener('click', function (e) {
+        if (droga > 6) { e.preventDefault(); e.stopPropagation(); droga = 0; }
+      }, true);
+
+      /* ---------- wybor wariantu: cena i przycisk ida za nim ---------- */
+      sekcja.addEventListener('change', function (e) {
+        var sel = e.target.closest('[data-snx-select]');
+        if (!sel) return;
+        var opcja = sel.options[sel.selectedIndex];
+        var kafel = sel.closest('[data-snx-item]');
+        var cena = kafel.querySelector('[data-snx-price]');
+        var stara = kafel.querySelector('[data-snx-compare]');
+        var btn = kafel.querySelector('[data-snx-add]');
+
+        if (cena) cena.textContent = opcja.getAttribute('data-price') || cena.textContent;
+        if (stara) {
+          var por = opcja.getAttribute('data-compare') || '';
+          /* pusta cena porownawcza przychodzi jako pusty ciag albo zero */
+          var pokaz = por && por.replace(/[^0-9]/g, '') !== '' && por !== cena.textContent;
+          stara.textContent = por;
+          stara.hidden = !pokaz;
+        }
+        if (btn) {
+          btn.setAttribute('data-variant', opcja.value);
+          btn.disabled = opcja.getAttribute('data-available') !== 'true';
+        }
+      });
+
+      /* ---------- dodanie do koszyka ---------- */
+      sekcja.addEventListener('click', function (e) {
+        var btn = e.target.closest('[data-snx-add]');
+        if (!btn || btn.disabled) return;
+        e.preventDefault();
+
+        var id = btn.getAttribute('data-variant');
+        if (!id) return;
+        btn.disabled = true;
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ items: [{ id: Number(id), quantity: 1 }] })
+        })
+          .then(function (r) { if (!r.ok) throw new Error('add'); return r.json(); })
+          .then(function () {
+            btn.classList.add('is-done');
+            document.dispatchEvent(new CustomEvent('ajaxProduct:added'));
+            setTimeout(function () {
+              btn.classList.remove('is-done');
+              btn.disabled = false;
+            }, 1600);
+          })
+          .catch(function () {
+            btn.disabled = false;
+            var link = btn.closest('[data-snx-item]').querySelector('.snx__name');
+            if (link) window.location.href = link.href;
+          });
+      });
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Cross-sell row",
+  "tag": "section",
+  "class": "sn-crosssell",
+  "settings": [
+    { "type": "paragraph", "content": "One wide card at a time: photo, name, variant and an add button. Left without a collection it uses the one the product sits in." },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Måske kan du også lide" },
+    { "type": "text", "id": "add_label", "label": "Button", "default": "Læg i kurv" },
+    { "type": "range", "id": "count", "label": "Products", "default": 8, "min": 2, "max": 20, "step": 1 },
+
+    { "type": "header", "content": "Size" },
+    { "type": "range", "id": "thumb", "label": "Photo", "default": 56, "min": 40, "max": 96, "step": 4, "unit": "px" },
+    { "type": "range", "id": "radius", "label": "Corner rounding", "default": 4, "min": 0, "max": 16, "step": 1, "unit": "px" },
+    { "type": "range", "id": "title_size", "label": "Heading", "default": 19, "min": 14, "max": 30, "step": 1, "unit": "px" },
+    { "type": "range", "id": "title_size_mobile", "label": "Heading (phone)", "default": 17, "min": 12, "max": 26, "step": 1, "unit": "px" },
+    { "type": "range", "id": "padding_top", "label": "Space above", "default": 40, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "default": 40, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_top_mobile", "label": "Space above (phone)", "default": 28, "min": 0, "max": 80, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Space below (phone)", "default": 28, "min": 0, "max": 80, "step": 4, "unit": "px" },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "color_text", "label": "Heading", "default": "#1c1d1d" },
+    { "type": "color", "id": "color_muted", "label": "Variant and old price", "default": "#6e6b65" },
+    { "type": "color", "id": "color_sale", "label": "Price", "default": "#d6332e" },
+    { "type": "color", "id": "color_line", "label": "Card border", "default": "#e6e3de" },
+    { "type": "color", "id": "color_media", "label": "Behind the photo", "default": "#f4f3f1" },
+    { "type": "color", "id": "color_button", "label": "Button", "default": "#16150f" }
+  ],
+  "presets": [{ "name": "Cross-sell row" }]
+}
+{% endschema %}
