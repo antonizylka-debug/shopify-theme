@@ -445,6 +445,7 @@
           {%- if product != blank and p.id == product.id -%}{%- continue -%}{%- endif -%}
           {%- if pokazane_p >= ile -%}{%- break -%}{%- endif -%}
           {%- assign pokazane_p = pokazane_p | plus: 1 -%}
+          {%- capture krotka_p -%}{%- render 'sn-krotka-nazwa', product: p -%}{%- endcapture -%}
           {%- liquid
             assign na_promocji = false
             if p.compare_at_price > p.price
@@ -495,7 +496,7 @@
                     Wiecej niz jeden wariant otwiera okno wyboru rozmiaru
                     i koloru, ktore stoi raz w layoucie.
                   {%- endcomment -%}
-                  {% unless jeden %}data-snq-otworz="{{ p.handle }}"{% endunless %}
+                  {% unless jeden %}data-snq-otworz="{{ p.handle }}" data-snq-nazwa="{{ krotka_p }}"{% endunless %}
                   data-url="{{ p.url }}"
                   aria-label="{% if jeden %}{{ section.settings.add_label }}{% else %}{{ section.settings.pick_label }}{% endif %}"
                   title="{% if jeden %}{{ section.settings.add_label }}{% else %}{{ section.settings.pick_label }}{% endif %}">
@@ -514,7 +515,7 @@
             </div>
 
             <div class="snb2__meta">
-              <div class="snb2__name">{{ p.title }}</div>
+              <div class="snb2__name">{{ krotka_p }}</div>
 
               {%- liquid
                 assign dopisek = ''

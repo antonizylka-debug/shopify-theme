@@ -1,0 +1,121 @@
+{%- comment -%}
+  Krotka nazwa produktu na kafelku. Tylko do wyswietlenia - na karcie
+  produktu, w koszyku, w mailach i dla Google zostaje pelny tytul.
+
+  Zasada wyprobowana na wszystkich 3608 nazwach w sklepie, zanim trafila
+  tutaj. Usuwa tylko to, co ewidentnie zbedne, i nigdy nie rusza nazwy
+  modelu ("Lila", "Ridgeway", "Serena-Louise"):
+
+  1. Nazwa pisana w calosci wielkimi literami -> kazde slowo z wielkiej.
+  2. Dopisek po " | ", " – ", " — ", " - " odpada ("... – Relaxed Summer
+     Style"). Jesli przed nim stoi samo imie modelu ("Maeve - Elegant
+     Cardigan"), imie dostaje dwa ostatnie slowa opisu: "Maeve Elegant
+     Cardigan", zeby bylo wiadomo, co to jest.
+  3. "Women's", "Men's", "Ladies" odpadaja w kazdym miejscu, gole
+     "Women"/"Men" tylko na poczatku.
+  4. Dopisek po " with " odpada, jesli przed nim zostaja co najmniej dwa
+     slowa ("Wendell Shirt with Chest Pockets..." -> "Wendell Shirt").
+
+  Wynik z proby: nazw dluzszych niz 40 znakow bylo 429, jest 16.
+
+  Wyjatki mozna poprawic recznie metapolem custom.short_title - jesli jest
+  wypelnione, wygrywa bez zadnej obrobki.
+
+  Swiadomie NIE obcinam slow od przodu do stalej dlugosci. Proba pokazala,
+  ze to gubi nazwe modelu ("Ridgeway Corduroy Trucker Jacket" -> "Corduroy
+  Trucker Jacket") i tnie w srodku zwrotu ("Satin Feel Long Sleeve..." ->
+  "Feel Long Sleeve...").
+
+  @param {object} product
+{%- endcomment -%}
+
+{%- liquid
+  assign wynik = product.metafields.custom.short_title | strip
+
+  if wynik == blank
+    assign s = product.title | strip | replace: '  ', ' ' | replace: '  ', ' '
+
+    # 1. wielkie litery
+    assign dol = s | downcase
+    assign gora = s | upcase
+    if s == gora and s != dol
+      assign slowa = dol | split: ' '
+      assign s = ''
+      for w in slowa
+        assign duze = w | capitalize
+        assign s = s | append: ' ' | append: duze
+      endfor
+      assign s = s | strip
+    endif
+
+    # 2. dopisek po separatorze
+    assign z = s | replace: ' | ', '¦' | replace: ' – ', '¦' | replace: ' — ', '¦' | replace: ' - ', '¦'
+    assign czesci = z | split: '¦'
+    if czesci.size > 1
+      assign lewa = czesci[0] | strip
+      assign slowa_l = lewa | split: ' '
+      assign ile_l = 0
+      for w in slowa_l
+        assign n = w | downcase | replace: '’', "'"
+        unless n == "women's" or n == 'womens' or n == "men's" or n == 'mens' or n == 'ladies' or n == "ladies'"
+          assign ile_l = ile_l | plus: 1
+        endunless
+      endfor
+
+      if ile_l >= 2
+        assign s = lewa
+      else
+        assign prawa = czesci[1] | strip
+        assign prawa_z = prawa | replace: ' with ', '¦' | replace: ' With ', '¦' | split: '¦'
+        assign prawa = prawa_z[0] | strip
+        assign slowa_p = prawa | split: ' '
+        assign czyste_p = ''
+        for w in slowa_p
+          assign n = w | downcase | replace: '’', "'"
+          unless n == "women's" or n == 'womens' or n == "men's" or n == 'mens' or n == 'ladies' or n == "ladies'"
+            assign czyste_p = czyste_p | append: '¦' | append: w
+          endunless
+        endfor
+        assign lista_p = czyste_p | remove_first: '¦' | split: '¦'
+        if lista_p.size > 2
+          assign od = lista_p.size | minus: 2
+          assign koncowka = lista_p | slice: od, 2 | join: ' '
+        else
+          assign koncowka = lista_p | join: ' '
+        endif
+        assign s = lewa | append: ' ' | append: koncowka | strip
+      endif
+    endif
+
+    # 3. slowa o plci
+    assign slowa = s | split: ' '
+    assign s2 = ''
+    for w in slowa
+      assign n = w | downcase | replace: '’', "'"
+      unless n == "women's" or n == 'womens' or n == "men's" or n == 'mens' or n == 'ladies' or n == "ladies'"
+        assign s2 = s2 | append: ' ' | append: w
+      endunless
+    endfor
+    assign s = s2 | strip
+    assign slowa = s | split: ' '
+    if slowa.size > 2
+      assign pierwsze = slowa.first | downcase
+      if pierwsze == 'women' or pierwsze == 'men'
+        assign s = s | remove_first: slowa.first | strip
+      endif
+    endif
+
+    # 4. dopisek po "with"
+    assign z = s | replace: ' with ', '¦' | replace: ' With ', '¦' | split: '¦'
+    if z.size > 1
+      assign przed = z[0] | strip
+      assign ile_przed = przed | split: ' ' | size
+      if ile_przed >= 2
+        assign s = przed
+      endif
+    endif
+
+    assign wynik = s
+  endif
+-%}
+{{- wynik | escape -}}

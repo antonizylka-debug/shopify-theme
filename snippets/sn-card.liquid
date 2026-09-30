@@ -43,6 +43,9 @@
   assign wariant = product.selected_or_first_available_variant
 -%}
 
+{%- comment -%}Krotka nazwa liczona raz - idzie do kafla i do okna wyboru pod "+".{%- endcomment -%}
+{%- capture krotka_nazwa -%}{%- render 'sn-krotka-nazwa', product: product -%}{%- endcapture -%}
+
 {%- capture przypisane -%}
   {%- for v in product.variants -%}
     {%- if v.featured_media != blank -%}|{{ v.featured_media.id }}|{%- endif -%}
@@ -133,6 +136,7 @@
         type="button"
         class="snc__plus"
         {% if jeden %}data-snc-dodaj="{{ product.variants.first.id }}"{% else %}data-snq-otworz="{{ product.handle }}"{% endif %}
+        data-snq-nazwa="{{ krotka_nazwa }}"
         aria-label="{% if jeden %}Læg i kurv{% else %}Vælg størrelse og farve{% endif %}">
         <svg class="snc__ikona" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
         <svg class="snc__ikona-ok" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5 10 17.5 19 7"/></svg>
@@ -146,7 +150,7 @@
       a "Spar" szlo osobna czerwona linijka pod spodem.
     {%- endcomment -%}
     <a class="snc__opis" href="{{ product.url }}">
-      <span class="snc__nazwa">{{ product.title }}</span>
+      <span class="snc__nazwa">{{ krotka_nazwa }}</span>
       <span class="snc__ceny">
         {%- if na_promocji -%}
           <span class="snc__bylo">{{ product.compare_at_price | money }}</span>

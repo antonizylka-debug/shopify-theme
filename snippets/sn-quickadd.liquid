@@ -478,7 +478,11 @@
         if (!start) start = produkt.variants[0];
         wybor = start ? start.options.slice() : [];
 
-        tytul.textContent = produkt.title;
+        /* Ta sama krotka nazwa co na kafelku, z ktorego przyszlo klikniecie -
+           inaczej okno witalo by klientke innym, dluzszym napisem niz ten,
+           w ktory przed chwila kliknela. Pelny tytul tylko jako zapas. */
+        var krotka = zrodlo && zrodlo.getAttribute ? zrodlo.getAttribute('data-snq-nazwa') : '';
+        tytul.textContent = krotka || produkt.title;
         mini.alt = produkt.title;
         mini.src = maly((start && start.featured_image && start.featured_image.src) || produkt.featured_image);
 
