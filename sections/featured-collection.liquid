@@ -1,6 +1,51 @@
-{%- assign per_row = section.settings.per_row -%}
-{%- assign product_limit = per_row | times: section.settings.rows -%}
-{%- assign collection = collections[section.settings.home_featured_products] -%}
+{%- liquid
+  assign per_row = section.settings.per_row
+  assign product_limit = per_row | times: section.settings.rows
+  assign collection = collections[section.settings.home_featured_products]
+
+  # Recznie wybrane produkty biora gore nad kolekcja. Jeden pusty blok
+  # (dodany i jeszcze niewypelniony) nie moze wygasic calej sekcji,
+  # wiec licze tylko te, ktore maja przypisany produkt.
+  assign wybrane_ok = false
+  for b in section.blocks
+    if b.settings.product != blank
+      assign wybrane_ok = true
+      break
+    endif
+  endfor
+
+  # Sortowanie dziala na tablicy, ktora Liquid faktycznie wczytal, a to
+  # pierwszych 50 produktow kolekcji w jej wlasnej kolejnosci z panelu.
+  # Czyli "najtansze" znaczy: najtansze z tych piecdziesieciu.
+  assign lista = collection.products
+  case section.settings.sort
+    when 'price-asc'
+      assign lista = lista | sort: 'price'
+    when 'price-desc'
+      assign lista = lista | sort: 'price' | reverse
+    when 'title-asc'
+      assign lista = lista | sort_natural: 'title'
+    when 'title-desc'
+      assign lista = lista | sort_natural: 'title' | reverse
+    when 'newest'
+      assign lista = lista | sort: 'published_at' | reverse
+    when 'oldest'
+      assign lista = lista | sort: 'published_at'
+  endcase
+
+  # Liquid nie zna nawiasow w warunkach, wiec stan pustej sekcji
+  # wyliczam tutaj, a nie w samym if-ie nizej.
+  assign pokaz_zastepcze = false
+  if wybrane_ok == false
+    if section.settings.home_featured_products == blank
+      assign pokaz_zastepcze = true
+    elsif collection.empty?
+      assign pokaz_zastepcze = true
+    elsif collection.products_count == 0
+      assign pokaz_zastepcze = true
+    endif
+  endif
+-%}
 
 {%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
 
@@ -151,7 +196,7 @@
           endif
         -%}
 
-        {%- if section.settings.home_featured_products == blank or collections[section.settings.home_featured_products].empty? or collections[section.settings.home_featured_products].products_count == 0 -%}
+        {%- if pokaz_zastepcze -%}
 
           {%- unless emptyState -%}
             {%- assign emptyState = true -%}
@@ -180,15 +225,34 @@
 
         {%- else -%}
 
-          {%- for product in collections[section.settings.home_featured_products].products limit: product_limit -%}
-            {%- render 'product-grid-item',
-              product: product,
-              collection: collection,
-              per_row: per_row,
-              quick_shop_enable: settings.quick_shop_enable,
-              fallback: fallback,
-            -%}
-          {%- endfor -%}
+          {%- if wybrane_ok -%}
+            {%- comment -%}
+              Kolejnosc blokow w edytorze jest kolejnoscia na stronie -
+              przeciagniecie bloku to jedyne "sortowanie reczne", jakie
+              ma sens, bo nie zalezy od zadnego pola produktu.
+            {%- endcomment -%}
+            {%- for block in section.blocks -%}
+              {%- if block.settings.product != blank -%}
+                {%- render 'product-grid-item',
+                  product: block.settings.product,
+                  collection: collection,
+                  per_row: per_row,
+                  quick_shop_enable: settings.quick_shop_enable,
+                  fallback: fallback,
+                -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for product in lista limit: product_limit -%}
+              {%- render 'product-grid-item',
+                product: product,
+                collection: collection,
+                per_row: per_row,
+                quick_shop_enable: settings.quick_shop_enable,
+                fallback: fallback,
+              -%}
+            {%- endfor -%}
+          {%- endif -%}
 
           {%- if section.settings.view_all -%}
 
@@ -269,6 +333,22 @@
       "label": "t:sections.featured-collection.settings.home_featured_products.label"
     },
     {
+      "type": "select",
+      "id": "sort",
+      "label": "Order",
+      "default": "collection",
+      "info": "Applies to the first 50 products of the collection. Ignored when you pick products by hand below.",
+      "options": [
+        { "value": "collection", "label": "As sorted in the collection" },
+        { "value": "price-asc", "label": "Price, low to high" },
+        { "value": "price-desc", "label": "Price, high to low" },
+        { "value": "newest", "label": "Newest first" },
+        { "value": "oldest", "label": "Oldest first" },
+        { "value": "title-asc", "label": "Name, A to Z" },
+        { "value": "title-desc", "label": "Name, Z to A" }
+      ]
+    },
+    {
       "type": "range",
       "id": "per_row",
       "label": "t:sections.featured-collection.settings.per_row.label",
@@ -311,7 +391,17 @@
       "category": "t:sections.categories.collections"
     }
   ],
-  "blocks": [],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "limit": 25,
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "paragraph", "content": "Adding products here replaces the collection above. Drag the blocks to set the order." }
+      ]
+    }
+  ],
   "disabled_on": {
     "groups": ["footer", "header", "custom.popups"]
   }
