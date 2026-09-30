@@ -1807,4 +1807,63 @@
       padding-top: 22px;
     }
   }
+
+  /* ==========================================================================
+     Jedna skala typografii dla sekcji, ktore dopisalem
+
+     Zmierzone przed ujednoliceniem: naglowki sekcji chodzily w trzech
+     wagach (400, 600, 700) i trzech rozmiarach (16,7 / 17 / 19 px),
+     a werdykt w opiniach szedl krojem tekstowym zamiast naglowkowym.
+     Ponizej jeden zestaw regul dla wszystkich.
+
+     Krój bierze sie ze zmiennych motywu, wiec zmiana czcionki
+     w edytorze przechodzi przez cala strone bez ruszania kodu.
+     ========================================================================== */
+  .obr__verdict-word,
+  .obf__title,
+  .snb__title,
+  #shopify-section-product-recommendations .section-header__title,
+  .index-section .section-header__title,
+  .recently-viewed .section-header__title {
+    font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  /* naglowek w waskiej kolumnie karty produktu - ten sam kroj, mniejszy stopien */
+  .snx__title {
+    font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  /* nadtytuly nad naglowkami: jeden stopien, jeden odstep, jedna waga */
+  .obf__eyebrow,
+  .obr__eyebrow {
+    font-family: var(--typeBasePrimary), var(--typeBaseFallback);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* pytania i tytuly rozwijane: jeden stopien w akordeonie i w FAQ */
+  .obf__item summary {
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .obr__verdict-word,
+    .obf__title,
+    .snb__title,
+    #shopify-section-product-recommendations .section-header__title,
+    .index-section .section-header__title,
+    .recently-viewed .section-header__title {
+      font-size: 16px;
+    }
+  }
 </style>
