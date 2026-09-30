@@ -1898,6 +1898,18 @@
      ========================================================================== */
   .js-drawer-open .shopify-section-group-header-group,
   .js-drawer-closing .shopify-section-group-header-group {
-    z-index: 31;
+    /* !important, bo motyw ustawia tu z-index selektorem z identyfikatorem
+       sekcji (#shopify-section-...), a identyfikator bije dwie klasy.
+       Bez tego regula w ogole sie nie stosowala i szuflada dalej
+       siedziala pod przyciemnieniem. */
+    z-index: 31 !important;
+  }
+
+  /* Drugie zabezpieczenie: samo przyciemnienie schodzi nizej. Nawet gdyby
+     grupa naglowka kiedys przestala byc przyklejona, szuflada zostanie
+     nad przyciemnieniem, a nie pod nim. */
+  .js-drawer-open .main-content:after,
+  .js-drawer-closing .main-content:after {
+    z-index: 20;
   }
 </style>
