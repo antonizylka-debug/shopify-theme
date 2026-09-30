@@ -1,0 +1,171 @@
+{%- comment -%}
+  Kafel produktu w stylu icon-amsterdam: zdjecia do przesuwania z
+  kropkami, plakietka promocji, okragly "+" do szybkiego wyboru, pod
+  spodem nazwa z cena po prawej i "Spar" pod cena.
+
+  Argumenty
+  - product: obiekt produktu
+  - [per_row]: ile w rzedzie, do klas siatki motywu
+  - [grid_item]: false, gdy kafel nie siedzi w siatce motywu
+  - [rounded]: true dla wersji z zaokraglonym zdjeciem (rzad na PDP)
+
+  Style i skrypt sa w sn-card-assets, wstawiane raz na strone, a nie
+  przy kazdym z 48 kafli.
+
+  Swiadomie BEZ klasy grid-product. Na nia polowaly wszystkie reguly i
+  skrypty starego kafla kolekcji (mierzenie, wysuwana karta, blur) i
+  rozebralyby ten kafel na czesci.
+{%- endcomment -%}
+
+{%- liquid
+  unless per_row
+    assign per_row = 4
+  endunless
+
+  capture widok_siatki
+    render 'products_per_row', products_per_row: per_row, style: 'fractions'
+  endcapture
+
+  assign na_promocji = false
+  if product.compare_at_price > product.price
+    assign na_promocji = true
+  endif
+
+  assign jeden = false
+  if product.variants.size == 1 and product.variants.first.available
+    assign jeden = true
+  endif
+
+  # Te same zdjecia, co w starym kaflu: wlasne zdjecie pokazanego wariantu
+  # plus ujecia nieprzypisane do zadnego wariantu. Inaczej przesuwanie
+  # przerzucalo przez inne kolory i wygladalo jak zmiana wariantu.
+  assign zdjecia = product.media | where: 'media_type', 'image'
+  assign wariant = product.selected_or_first_available_variant
+-%}
+
+{%- capture przypisane -%}
+  {%- for v in product.variants -%}
+    {%- if v.featured_media != blank -%}|{{ v.featured_media.id }}|{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign wlasne = ''
+  if wariant.featured_media != blank
+    assign wlasne = '|' | append: wariant.featured_media.id | append: '|'
+  endif
+-%}
+
+{%- capture numery -%}
+  {%- for m in zdjecia -%}
+    {%- assign znacznik = '|' | append: m.id | append: '|' -%}
+    {%- assign bierzemy = false -%}
+    {%- if znacznik == wlasne -%}{%- assign bierzemy = true -%}{%- endif -%}
+    {%- unless przypisane contains znacznik -%}{%- assign bierzemy = true -%}{%- endunless -%}
+    {%- if bierzemy -%},{{ forloop.index0 }}{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign numery = numery | strip | remove_first: ',' | split: ','
+  # Wlasne zdjecie wariantu na poczatek, zeby kafel otwieral sie kolorem,
+  # ktory stoi w nazwie i cenie, a nie przypadkowym ujeciem.
+  assign ile_max = 5
+-%}
+
+{%- if grid_item != false -%}
+<div class="grid__item {{ widok_siatki }} snc-item" data-product-handle="{{ product.handle }}" data-product-id="{{ product.id }}">
+{%- endif -%}
+
+  <div class="snc{% if rounded %} snc--round{% endif %}">
+    <div class="snc__foto">
+      <div class="snc__pas" data-snc-pas>
+        {%- if numery.size > 0 -%}
+          {%- if wariant.featured_media != blank -%}
+            <a class="snc__klatka" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+              {{ wariant.featured_media.preview_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 769px) 25vw, 50vw', alt: product.title, class: 'snc__img' }}
+            </a>
+          {%- endif -%}
+          {%- assign pokazane = 0 -%}
+          {%- if wariant.featured_media != blank -%}{%- assign pokazane = 1 -%}{%- endif -%}
+          {%- for n in numery -%}
+            {%- assign i = n | plus: 0 -%}
+            {%- assign m = zdjecia[i] -%}
+            {%- if m.id == wariant.featured_media.id -%}{%- continue -%}{%- endif -%}
+            {%- if pokazane >= ile_max -%}{%- break -%}{%- endif -%}
+            <a class="snc__klatka" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+              {{ m.preview_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 769px) 25vw, 50vw', alt: product.title, class: 'snc__img' }}
+            </a>
+            {%- assign pokazane = pokazane | plus: 1 -%}
+          {%- endfor -%}
+        {%- elsif product.featured_media -%}
+          {%- assign pokazane = 1 -%}
+          <a class="snc__klatka" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+            {{ product.featured_media.preview_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360,540,720,900', sizes: '(min-width: 769px) 25vw, 50vw', alt: product.title, class: 'snc__img' }}
+          </a>
+        {%- else -%}
+          {%- assign pokazane = 1 -%}
+          <a class="snc__klatka" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+            {{ 'product-1' | placeholder_svg_tag: 'snc__img placeholder-svg' }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if na_promocji -%}
+        <span class="snc__sale">Tilbud</span>
+      {%- endif -%}
+
+      {%- if pokazane > 1 -%}
+        <button type="button" class="snc__strz snc__strz--l" data-snc-krok="-1" aria-label="{{ 'general.slider.previous_slide' | t }}">
+          <svg viewBox="0 0 10 16" aria-hidden="true" focusable="false"><path d="M8.5 1.5 2 8l6.5 6.5"/></svg>
+        </button>
+        <button type="button" class="snc__strz snc__strz--p" data-snc-krok="1" aria-label="{{ 'general.slider.next_slide' | t }}">
+          <svg viewBox="0 0 10 16" aria-hidden="true" focusable="false"><path d="M1.5 1.5 8 8l-6.5 6.5"/></svg>
+        </button>
+        <div class="snc__kropki" aria-hidden="true">
+          {%- for k in (1..pokazane) -%}
+            <span class="snc__kropka{% if forloop.first %} is-on{% endif %}"></span>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      <button
+        type="button"
+        class="snc__plus"
+        {% if jeden %}data-snc-dodaj="{{ product.variants.first.id }}"{% else %}data-snq-otworz="{{ product.handle }}"{% endif %}
+        aria-label="{% if jeden %}Læg i kurv{% else %}Vælg størrelse og farve{% endif %}">
+        <svg class="snc__ikona" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
+        <svg class="snc__ikona-ok" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5 10 17.5 19 7"/></svg>
+      </button>
+    </div>
+
+    <a class="snc__opis" href="{{ product.url }}">
+      <span class="snc__wiersz">
+        <span class="snc__nazwa">{{ product.title }}</span>
+        <span class="snc__ceny">
+          {%- if na_promocji -%}
+            <span class="snc__bylo">{{ product.compare_at_price | money }}</span>
+            <span class="snc__jest snc__jest--sale">{{ product.price | money }}</span>
+          {%- else -%}
+            {%- if product.price_varies -%}<span class="snc__od">Fra</span>{%- endif -%}
+            <span class="snc__jest">{{ product.price | money }}</span>
+          {%- endif -%}
+        </span>
+      </span>
+      {%- liquid
+        assign notka = product.metafields.custom.fit
+      -%}
+      {%- if notka != blank or na_promocji -%}
+        <span class="snc__wiersz snc__wiersz--dol">
+          <span class="snc__notka">{{ notka }}</span>
+          {%- if na_promocji -%}
+            <span class="snc__spar">Spar {{ product.compare_at_price | minus: product.price | money }}</span>
+          {%- endif -%}
+        </span>
+      {%- endif -%}
+    </a>
+  </div>
+
+{%- if grid_item != false -%}
+</div>
+{%- endif -%}

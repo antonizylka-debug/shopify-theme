@@ -70,13 +70,20 @@ Snippet Arguments
     </div>
   </div>
 
+  {%- comment -%}
+    Kafel w stylu icon-amsterdam (sn-card) zamiast starego product-grid-item.
+    Podmiana tylko tutaj, czyli w kolekcji i wynikach wyszukiwania -
+    rekomendacje, wyszukiwarka w naglowku i inne sekcje zostaja na starym
+    kaflu, dopoki nie zobaczysz nowego na zywo.
+  {%- endcomment -%}
+  {%- render 'sn-card-assets' -%}
+
   <div class="grid grid--uniform{% if mobile_flush_grid %} small--grid--flush{% endif %}" data-product-grid{% unless enable_collection_count %} data-scroll-to{% endunless %}>
     {%- for item in items -%}
       {%- if item.object_type == 'product' -%}
-        {%- render 'product-grid-item',
+        {%- render 'sn-card',
           product: item,
-          per_row: per_row,
-          quick_shop_enable: quick_shop_enable
+          per_row: per_row
         -%}
       {%- else -%}
         {%- render 'search-grid-item',

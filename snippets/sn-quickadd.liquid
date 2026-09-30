@@ -296,6 +296,23 @@
       }
     }
 
+    /* Ten sam slownik co na karcie produktu (ustawienie "dictionary" w
+       sekcji PDP). Tlumacze tylko to, co widac - do dopasowania wariantu
+       i do koszyka idzie oryginalna wartosc z produktu, bo po niej
+       Shopify szuka wariantu. */
+    var SLOWNIK = {
+      'color': 'Farve', 'colour': 'Farve', 'size': 'Størrelse',
+      'black': 'Sort', 'white': 'Hvid', 'grey': 'Grå', 'gray': 'Grå', 'brown': 'Brun',
+      'blue': 'Blå', 'navy': 'Marineblå', 'green': 'Grøn', 'red': 'Rød', 'pink': 'Rosa',
+      'purple': 'Lilla', 'yellow': 'Gul', 'orange': 'Orange', 'beige': 'Beige',
+      'khaki': 'Khaki', 'gold': 'Guld', 'multi': 'Flerfarvet', 'burgundy': 'Bordeaux',
+      'cream': 'Creme', 'ivory': 'Elfenben'
+    };
+    function poDunsku(tekst) {
+      var klucz = String(tekst).toLowerCase().trim();
+      return SLOWNIK.hasOwnProperty(klucz) ? SLOWNIK[klucz] : tekst;
+    }
+
     function rodzaj(nazwa) {
       var n = String(nazwa).toLowerCase().trim();
       if (NAZWY.kolor.indexOf(n) > -1) return 'kolor';
@@ -367,9 +384,9 @@
 
         var etykieta = document.createElement('p');
         etykieta.className = 'snq__etykieta';
-        etykieta.appendChild(document.createTextNode(nazwa + ': '));
+        etykieta.appendChild(document.createTextNode(poDunsku(nazwa) + ': '));
         var mocne = document.createElement('b');
-        mocne.textContent = wybor[poz] || TEKST.wybierz;
+        mocne.textContent = wybor[poz] ? poDunsku(wybor[poz]) : TEKST.wybierz;
         etykieta.appendChild(mocne);
         grupa.appendChild(etykieta);
 
@@ -385,11 +402,11 @@
           if (typ === 'kolor') {
             b.className = 'snq__foto';
             b.style.backgroundImage = 'url(' + maly(zdjecieDla(poz, wartosc)) + ')';
-            b.setAttribute('aria-label', wartosc);
-            b.title = wartosc;
+            b.setAttribute('aria-label', poDunsku(wartosc));
+            b.title = poDunsku(wartosc);
           } else {
             b.className = 'snq__chip';
-            b.textContent = wartosc;
+            b.textContent = poDunsku(wartosc);
           }
 
           if (wybor[poz] === wartosc) b.classList.add('is-on');

@@ -1,0 +1,272 @@
+{%- comment -%}
+  Style i skrypt kafla sn-card. Wstawiane raz przed siatka, nie w kazdym
+  kaflu. Filtry kolekcji przeladowuja sekcje przez AJAX i wstawiaja ten
+  plik jeszcze raz - skrypt pilnuje sie znacznikiem na window, a wszystkie
+  nasluchy sa podpiete do document, wiec nowe kafle dzialaja bez
+  ponownego podpinania.
+{%- endcomment -%}
+
+<style>
+  /* ---------- siatka: kafle niemal stykaja sie jak we wzorze ---------- */
+  [data-product-grid].grid:has(> .snc-item) { margin-left: -4px; }
+  [data-product-grid] > .snc-item {
+    padding-left: 4px;
+    margin-bottom: 30px;
+  }
+
+  .snc { position: relative; color: #1c1d1d; }
+
+  /* ---------- zdjecia ---------- */
+  .snc__foto {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    background: #f1efec;
+    overflow: hidden;
+  }
+  .snc--round .snc__foto { border-radius: 8px; }
+
+  {%- comment -%}
+    Pasek zdjec przewija sie natywnie, wiec na telefonie przesuwa sie
+    palcem z bezwladnoscia przegladarki. Na PC przewija sie strzalkami.
+  {%- endcomment -%}
+  .snc__pas {
+    display: flex;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .snc__pas::-webkit-scrollbar { display: none; }
+  .snc__klatka {
+    flex: 0 0 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    display: block;
+  }
+  .snc__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .snc__sale {
+    position: absolute;
+    top: 10px; left: 10px;
+    z-index: 2;
+    padding: 5px 9px 4px;
+    background: #efe9dd;
+    color: #1c1d1d;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  /* ---------- kropki ---------- */
+  .snc__kropki {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    z-index: 2;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    padding: 5px 8px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.85);
+    pointer-events: none;
+  }
+  .snc__kropka {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #b8b4ae;
+    transition: background-color 0.2s ease;
+  }
+  .snc__kropka.is-on { background: #1c1d1d; }
+
+  /* ---------- strzalki, tylko przy najechaniu ---------- */
+  .snc__strz {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    width: 34px; height: 34px;
+    margin-top: -17px;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0; border: 0; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    color: #1c1d1d;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .snc__strz svg { width: 9px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+  .snc__strz--l { left: 10px; }
+  .snc__strz--p { right: 10px; }
+  .snc__strz[disabled] { opacity: 0 !important; pointer-events: none; }
+  @media (hover: hover) and (pointer: fine) {
+    .snc__foto:hover .snc__strz { opacity: 1; }
+  }
+
+  /* ---------- plus ---------- */
+  .snc__plus {
+    position: absolute;
+    right: 10px; bottom: 10px;
+    z-index: 3;
+    width: 34px; height: 34px;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0; border: 0; border-radius: 50%;
+    background: #3a3a3a;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.18s ease, transform 0.18s ease;
+  }
+  .snc__plus:hover { background: #000000; transform: scale(1.06); }
+  .snc__plus svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .snc__ikona-ok { display: none; }
+  .snc__plus.is-ok { background: #1f7a3d; }
+  .snc__plus.is-ok .snc__ikona { display: none; }
+  .snc__plus.is-ok .snc__ikona-ok { display: block; }
+
+  /* ---------- opis ---------- */
+  .snc__opis {
+    display: block;
+    padding: 10px 2px 0;
+    color: inherit;
+    text-decoration: none;
+  }
+  .snc__wiersz {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .snc__wiersz--dol { margin-top: 3px; }
+  .snc__nazwa {
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    line-height: 1.35;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .snc__ceny {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  {%- comment -%}
+    Motyw przygasza przekreslona cene do 45 procent krycia i robi sie
+    nieczytelna - kolor ustawiam wprost.
+  {%- endcomment -%}
+  .snc__bylo { color: #8a867f; opacity: 1; text-decoration: line-through; }
+  .snc__jest { font-weight: 600; }
+  .snc__jest--sale { color: #d6332e; }
+  .snc__od { color: #6e6b65; font-size: 12.5px; }
+  .snc__notka {
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8a867f;
+  }
+  .snc__spar {
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #d6332e;
+    white-space: nowrap;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .snc__plus { width: 30px; height: 30px; right: 8px; bottom: 8px; }
+    .snc__plus svg { width: 14px; height: 14px; }
+    .snc__kropki { bottom: 10px; }
+    .snc__nazwa { font-size: 12px; }
+    .snc__ceny { font-size: 13px; gap: 5px; }
+    {%- comment -%}
+      Na waskim kafelku nazwa i cena w jednym wierszu sie nie mieszcza -
+      cena schodzi pod nazwe, a "Spar" zostaje po prawej pod nia.
+    {%- endcomment -%}
+    .snc__wiersz:first-child { flex-direction: column; gap: 3px; }
+  }
+</style>
+
+<script>
+  (function () {
+    if (window.__sncGotowe) return;
+    window.__sncGotowe = true;
+
+    function kropki(pas) {
+      var foto = pas.closest('.snc__foto');
+      if (!foto) return;
+      var nr = Math.round(pas.scrollLeft / Math.max(1, pas.clientWidth));
+      var k = foto.querySelectorAll('.snc__kropka');
+      for (var i = 0; i < k.length; i++) k[i].classList.toggle('is-on', i === nr);
+      var l = foto.querySelector('.snc__strz--l');
+      var p = foto.querySelector('.snc__strz--p');
+      if (l) l.disabled = nr <= 0;
+      if (p) p.disabled = nr >= k.length - 1;
+    }
+
+    /* scroll nie bąbelkuje, ale da sie go zlapac w fazie przechwytywania -
+       jeden nasluch obsluguje wszystkie kafle, takze te dociagniete
+       filtrem albo paginacja. */
+    document.addEventListener('scroll', function (e) {
+      var t = e.target;
+      if (t && t.nodeType === 1 && t.hasAttribute('data-snc-pas')) kropki(t);
+    }, true);
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest) return;
+
+      var strz = e.target.closest('[data-snc-krok]');
+      if (strz) {
+        e.preventDefault();
+        var pas = strz.closest('.snc__foto').querySelector('[data-snc-pas]');
+        pas.scrollBy({ left: Number(strz.getAttribute('data-snc-krok')) * pas.clientWidth, behavior: 'smooth' });
+        return;
+      }
+
+      /* Jeden wariant - prosto do koszyka. Produkty z rozmiarami ida do
+         okna wyboru przez data-snq-otworz, ktore obsluguje sn-quickadd. */
+      var plus = e.target.closest('[data-snc-dodaj]');
+      if (!plus) return;
+      e.preventDefault();
+      if (plus.classList.contains('is-busy')) return;
+      plus.classList.add('is-busy');
+
+      var korzen = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+      fetch(korzen + 'cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ items: [{ id: Number(plus.getAttribute('data-snc-dodaj')), quantity: 1 }] })
+      })
+        .then(function (o) { if (!o.ok) throw new Error('odmowa'); return o.json(); })
+        .then(function () {
+          plus.classList.remove('is-busy');
+          plus.classList.add('is-ok');
+          document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { addToCartBtn: plus } }));
+          setTimeout(function () { plus.classList.remove('is-ok'); }, 2000);
+        })
+        .catch(function () {
+          plus.classList.remove('is-busy');
+          var a = plus.closest('.snc').querySelector('.snc__opis');
+          if (a) window.location.href = a.href;
+        });
+    });
+  })();
+</script>
