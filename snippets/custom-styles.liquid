@@ -1882,4 +1882,22 @@
       font-size: 16px;
     }
   }
+
+  /* ==========================================================================
+     Szuflada koszyka pod przyciemnieniem strony
+
+     Szuflada siedzi w grupie naglowka, a ta grupa jest przyklejona
+     z z-index 26 - tworzy wiec wlasny kontekst ukladania. Wewnetrzne
+     30 szuflady liczy sie tylko w tym kontekscie, a na zewnatrz cala
+     grupa ma 26. Przyciemnienie strony tez ma 26 i stoi dalej w kodzie,
+     wiec przy rownym z-index wygrywa i przykrywa szuflade: widac ja,
+     ale jest przygaszona i nie lapie klikniec.
+
+     Podnosimy cala grupe ponad przyciemnienie tylko na czas otwartej
+     szuflady - poza tym stanem uklad zostaje bez zmian.
+     ========================================================================== */
+  .js-drawer-open .shopify-section-group-header-group,
+  .js-drawer-closing .shopify-section-group-header-group {
+    z-index: 31;
+  }
 </style>
