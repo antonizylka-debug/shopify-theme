@@ -87,6 +87,10 @@
     },
     "language": {
       "dropdown_label": "Language"
+    },
+    "slider": {
+      "previous_slide": "Previous",
+      "next_slide": "Next"
     }
   },
   "sections": {
@@ -100,10 +104,6 @@
     "slideshow": {
       "play_slideshow": "Play slideshow",
       "pause_slideshow": "Pause slideshow"
-    },
-    "slider": {
-      "previous_slide": "Previous",
-      "next_slide": "Next"
     }
   },
   "blogs": {
