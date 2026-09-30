@@ -145,6 +145,11 @@
         "show_fab": true,
         "row_accent": "#d6332e",
         "row_hi": "#1f7a3d",
+        "cross_show": true,
+        "cross_title": "Måske kan du også lide",
+        "cross_add": "Læg i kurv",
+        "cross_collection": "",
+        "cross_count": 8,
         "show_rating": true,
         "rating_min": 4,
         "rating_anchor": "anmeldelser",
@@ -158,35 +163,106 @@
         "c_button": "#000000"
       }
     },
-    "bundle": {
-      "type": "sn-bundle",
+    "bestsellers": {
+      "type": "sn-bestsellers",
+      "blocks": {
+        "t1": {
+          "type": "tab",
+          "settings": {
+            "label": "Kjoler",
+            "collection": "womens-dresses"
+          }
+        },
+        "t2": {
+          "type": "tab",
+          "settings": {
+            "label": "Toppe",
+            "collection": "womens-tops"
+          }
+        },
+        "t3": {
+          "type": "tab",
+          "settings": {
+            "label": "Sko",
+            "collection": "womens-footwear"
+          }
+        },
+        "t4": {
+          "type": "tab",
+          "settings": {
+            "label": "Se alt",
+            "collection": "womens-favorites"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
       "settings": {
-        "collection": "womens-favorites",
-        "title": "Sæt flere sammen og få op til 25% ekstra rabat",
-        "all_label": "Se alle",
-        "count": 10,
-        "show_progress": true,
-        "tiers": "2:10, 3:20, 4:25",
-        "label_items": "varer",
-        "label_start": "Læg # i kurven og spar %.",
-        "label_have": "Du har # — % rabat.",
-        "label_more": "Læg # mere i kurven og få %.",
-        "label_max": "Du har den største rabat: %.",
-        "per_view": 5,
+        "title": "OPDAG\nVORES BESTSELLERE",
+        "accent_word": "BESTSELLERE",
+        "subtitle": "Se de styles, vores kunder vender tilbage til.",
+        "count": 24,
+        "per_view": 4,
         "per_view_mobile": 2,
-        "gap": 16,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Tilbud",
+        "show_dots": true,
+        "dots_max": 3,
+        "note_source": "type",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 32,
         "title_size": 26,
-        "title_size_mobile": 19,
+        "title_size_mobile": 20,
+        "head_gap": 28,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6e6b65",
+        "color_line": "#e6e3de",
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f4f2ee",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e"
+      }
+    },
+    "guarantee": {
+      "type": "sn-story",
+      "settings": {
+        "layout": "left",
+        "image": "shopify://shop_images/about_us_image_2.webp",
+        "bleed": true,
+        "ratio": "4 / 3",
+        "title": "30 dages pengene-tilbage-garanti",
+        "text": "<p>Vi står inde for det tøj, vi sælger. Derfor er hver eneste ordre dækket af 30 dages returret — regnet fra den dag pakken lander hos dig, ikke fra den dag du bestiller.</p><p>Passer den ikke, eller er den ikke, som du havde forestillet dig, skriver du til os med dit ordrenummer. Du får returadressen i svaret, og pengene er tilbage på din konto, så snart varen er nået frem til os.</p>",
+        "list": "",
+        "note": "Ingen formularer og ingen forklaringer. En mail er nok.",
+        "image_width": 40,
+        "max_width": 900,
+        "gap": 48,
+        "gap_mobile": 20,
+        "title_size": 28,
+        "title_size_mobile": 21,
         "padding_top": 48,
         "padding_bottom": 48,
         "padding_top_mobile": 32,
         "padding_bottom_mobile": 32,
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
-        "color_muted": "#6e6b65",
-        "color_accent": "#d6332e",
-        "color_track": "#eee9e2",
-        "color_fill": "#16150f"
+        "color_muted": "#56524c",
+        "color_accent": "#1c1d1d"
       }
     },
     "reviews": {
@@ -333,117 +409,14 @@
         "full_width": false,
         "space_around": true
       }
-    },
-    "guarantee": {
-      "type": "sn-story",
-      "settings": {
-        "layout": "left",
-        "bleed": true,
-        "image": "shopify://shop_images/about_us_image_2.webp",
-        "title": "30 dages pengene-tilbage-garanti",
-        "text": "<p>Vi står inde for det tøj, vi sælger. Derfor er hver eneste ordre dækket af 30 dages returret — regnet fra den dag pakken lander hos dig, ikke fra den dag du bestiller.</p><p>Passer den ikke, eller er den ikke, som du havde forestillet dig, skriver du til os med dit ordrenummer. Du får returadressen i svaret, og pengene er tilbage på din konto, så snart varen er nået frem til os.</p>",
-        "list": "",
-        "note": "Ingen formularer og ingen forklaringer. En mail er nok.",
-        "image_width": 40,
-        "max_width": 900,
-        "gap": 48,
-        "gap_mobile": 20,
-        "title_size": 28,
-        "title_size_mobile": 21,
-        "padding_top": 48,
-        "padding_bottom": 48,
-        "padding_top_mobile": 32,
-        "padding_bottom_mobile": 32,
-        "color_bg": "#ffffff",
-        "color_text": "#1c1d1d",
-        "color_muted": "#56524c",
-        "color_accent": "#1c1d1d",
-        "ratio": "4 / 3"
-      }
-    },
-    "bestsellers": {
-      "type": "sn-bestsellers",
-      "blocks": {
-        "t1": {
-          "type": "tab",
-          "settings": {
-            "label": "Kjoler",
-            "collection": "womens-dresses"
-          }
-        },
-        "t2": {
-          "type": "tab",
-          "settings": {
-            "label": "Toppe",
-            "collection": "womens-tops"
-          }
-        },
-        "t3": {
-          "type": "tab",
-          "settings": {
-            "label": "Sko",
-            "collection": "womens-footwear"
-          }
-        },
-        "t4": {
-          "type": "tab",
-          "settings": {
-            "label": "Se alt",
-            "collection": "womens-favorites"
-          }
-        }
-      },
-      "block_order": [
-        "t1",
-        "t2",
-        "t3",
-        "t4"
-      ],
-      "settings": {
-        "title": "OPDAG\nVORES BESTSELLERE",
-        "accent_word": "BESTSELLERE",
-        "subtitle": "Se de styles, vores kunder vender tilbage til.",
-        "count": 12,
-        "per_view": 4,
-        "per_view_mobile": 2,
-        "gap": 2,
-        "ratio": "3 / 4",
-        "hover_photo": true,
-        "show_sale": true,
-        "sale_label": "Tilbud",
-        "show_dots": true,
-        "dots_max": 4,
-        "note_source": "none",
-        "show_bar": true,
-        "bar_width": 40,
-        "bar_gap": 28,
-        "title_size": 26,
-        "title_size_mobile": 20,
-        "head_gap": 28,
-        "padding_top": 56,
-        "padding_bottom": 56,
-        "padding_top_mobile": 36,
-        "padding_bottom_mobile": 36,
-        "color_bg": "#ffffff",
-        "color_text": "#1c1d1d",
-        "color_muted": "#6e6b65",
-        "color_line": "#e6e3de",
-        "color_accent": "#d6332e",
-        "color_tab_on": "#f4f2ee",
-        "color_photo_bg": "#f1efec",
-        "color_sale_bg": "#ffffff",
-        "color_sale_text": "#1c1d1d",
-        "color_sale_price": "#d6332e"
-      }
     }
   },
   "order": [
     "main",
-    "bundle",
+    "bestsellers",
     "guarantee",
     "reviews",
     "faq",
-    "bestsellers",
     "product-recommendations",
     "apps"
   ]
