@@ -1896,18 +1896,26 @@
      Podnosimy cala grupe ponad przyciemnienie tylko na czas otwartej
      szuflady - poza tym stanem uklad zostaje bez zmian.
      ========================================================================== */
+  {%- comment -%}
+    Nie podnosimy grupy naglowka ponad przyciemnienie - wtedy menu
+    i paski zostawalyby jasne, a ma byc odwrotnie: przygaszona ma byc
+    cala strona, jasna tylko szuflada.
+
+    Zamiast tego na czas otwartej szuflady grupa PRZESTAJE tworzyc
+    wlasny kontekst ukladania. Wtedy z-index 30 szuflady liczy sie
+    wzgledem strony, a nie wzgledem grupy, i szuflada wychodzi nad
+    przyciemnienie. Naglowek zostaje w srodku bez wlasnego z-index,
+    wiec przyciemnienie kladzie sie na nim tak jak na reszcie.
+
+    !important, bo motyw ustawia ten z-index selektorem z identyfikatorem
+    sekcji, a identyfikator bije klasy.
+  {%- endcomment -%}
   .js-drawer-open .shopify-section-group-header-group,
   .js-drawer-closing .shopify-section-group-header-group {
-    /* !important, bo motyw ustawia tu z-index selektorem z identyfikatorem
-       sekcji (#shopify-section-...), a identyfikator bije dwie klasy.
-       Bez tego regula w ogole sie nie stosowala i szuflada dalej
-       siedziala pod przyciemnieniem. */
-    z-index: 31 !important;
+    z-index: auto !important;
   }
 
-  /* Drugie zabezpieczenie: samo przyciemnienie schodzi nizej. Nawet gdyby
-     grupa naglowka kiedys przestala byc przyklejona, szuflada zostanie
-     nad przyciemnieniem, a nie pod nim. */
+  /* Przyciemnienie ponizej szuflady, ale powyzej naglowka. */
   .js-drawer-open .main-content:after,
   .js-drawer-closing .main-content:after {
     z-index: 20;
