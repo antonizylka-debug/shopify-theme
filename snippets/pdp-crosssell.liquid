@@ -118,7 +118,7 @@
     }
   </style>
 
-  <div class="snx" data-snx>
+  <div class="snx" data-snx data-snx-produkt="{{ product.id }}" data-snx-ile="{{ ile }}">
     <div class="snx__head">
       <p class="snx__title">{{ ustawienia.cross_title }}</p>
       <div class="snx__nav">
@@ -263,6 +263,42 @@
       }, true);
 
       stan();
+
+      /* ---------- rekomendacje Shopify (Search & Discovery) ----------
+         Najpierw produkty uzupelniajace ustawione recznie w Search &
+         Discovery, potem powiazane, ktore Shopify dobiera sam - az do
+         pelnego rzedu, bez powtorzen. Gdy Shopify nic nie zwroci, zostaje
+         to, co wyrenderowal serwer (bestsellery Dame/Herre). */
+      var KORZEN = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+      var ID = ramka.getAttribute('data-snx-produkt');
+      var ILE = Number(ramka.getAttribute('data-snx-ile')) || 8;
+
+      function pobierz(intent) {
+        var url = KORZEN + 'recommendations/products?section_id=sn-rekomendacje&product_id=' + ID +
+          '&limit=' + ILE + '&intent=' + intent;
+        return fetch(url)
+          .then(function (o) { return o.ok ? o.text() : ''; })
+          .then(function (t) {
+            var d = new DOMParser().parseFromString(t, 'text/html');
+            return Array.prototype.slice.call(d.querySelectorAll('.snx__item[data-produkt]'));
+          })
+          .catch(function () { return []; });
+      }
+
+      Promise.all([pobierz('complementary'), pobierz('related')]).then(function (wyniki) {
+        var widziane = {}, wybrane = [];
+        wyniki[0].concat(wyniki[1]).forEach(function (el) {
+          var id = el.getAttribute('data-produkt');
+          if (widziane[id] || wybrane.length >= ILE) return;
+          widziane[id] = true;
+          wybrane.push(el);
+        });
+        if (!wybrane.length) return;
+        tor.innerHTML = '';
+        wybrane.forEach(function (el) { tor.appendChild(document.importNode(el, true)); });
+        tor.scrollLeft = 0;
+        stan();
+      });
     })();
   </script>
 {%- endif -%}

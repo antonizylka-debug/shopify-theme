@@ -1,0 +1,32 @@
+{%- comment -%}
+  Kafle do rzedu "Style den med" z rekomendacji Shopify - tych samych,
+  ktorymi steruje aplikacja Search & Discovery.
+
+  Ta sekcja nie stoi w zadnym szablonie. Skrypt w snippets/pdp-crosssell
+  pobiera ja z adresu
+    /recommendations/products?product_id=...&intent=...&section_id=sn-rekomendacje
+  i wstawia gotowe kafle do rzedu. Shopify wypelnia wtedy obiekt
+  recommendations produktami dla danego intent:
+    complementary - wybrane recznie w Search & Discovery ("do tej sukienki
+                    te buty"),
+    related       - dobierane przez Shopify z opisu, kolekcji i tego, co
+                    ludzie kupuja razem; dzialaja od pierwszego dnia.
+{%- endcomment -%}
+
+{%- if recommendations.performed? and recommendations.products_count > 0 -%}
+  <div data-sn-rek="{{ recommendations.intent }}">
+    {%- for p in recommendations.products -%}
+      {%- unless p.available -%}{%- continue -%}{%- endunless -%}
+      <div class="snx__item" data-produkt="{{ p.id }}">
+        {%- render 'sn-card', product: p, grid_item: false, rounded: true -%}
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Recommended cards",
+  "settings": []
+}
+{% endschema %}
