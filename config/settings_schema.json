@@ -1145,7 +1145,7 @@
         "type": "text",
         "id": "campaign_name",
         "label": "Campaign name",
-        "default": "Sæsonudsalg"
+        "default": "Sæsonudsalg · op til 70 %"
       },
       {
         "type": "text",

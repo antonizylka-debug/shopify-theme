@@ -1,7 +1,10 @@
 {%- comment -%}
-  Rabat za ilosc na gorze kolekcji, zaraz pod tytulem - to samo, co "Fall
-  Bundle Savings" u Iselle, ale zwiezle: tytul, jedno zdanie, progi.
-  Na telefonie to pierwsza rzecz, ktora widac po wejsciu w kolekcje.
+  Rabat za ilosc na gorze kolekcji, zaraz pod tytulem - na telefonie
+  pierwsza rzecz, ktora widac po wejsciu w kolekcje.
+  Uklad wysrodkowany, jedna hierarchia: czerwony naglowek akcji (z
+  licznikiem, gdy jest data), duzy tytul, progi w jednym rzedzie z cienkimi
+  kreskami, szara linijka z zasadami, pogrubione haslo. Poprzednia wersja
+  (tekst po lewej, ramki po prawej, trzy akapity) byla za gesta.
 
   Parametry: title, sub, text2 i note (opcjonalne), tiers ("2:10, 3:20, 4:25, 5:30").
   Progi musza sie zgadzac z rabatami automatycznymi w Shopify - sprawdzone
@@ -12,29 +15,21 @@
   <div class="snbund">
     <style>
       .snbund { margin: 0 0 26px; }
-      .snbund__box {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px 32px;
-        padding: 18px 24px;
-        background: #fdf6f4;
-        border: 1px solid #e8d9d6;
-      }
-      .snbund__tekst { min-width: 0; }
+      .snbund__box { padding: 26px 24px 24px; background: #fdf6f4; text-align: center; }
       .snbund__brw {
         display: flex;
         align-items: center;
+        justify-content: center;
         flex-wrap: wrap;
-        gap: 2px 7px;
-        margin: 0 0 6px;
+        gap: 2px 8px;
+        margin: 0 0 8px;
         font-size: 12px;
         font-weight: 700;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
         color: #c8102e;
       }
-      .snbund__dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #c8102e; flex: 0 0 8px; }
+      .snbund__dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #c8102e; flex: 0 0 7px; }
       .snbund__dot::after {
         content: "";
         position: absolute;
@@ -48,77 +43,63 @@
       .snbund__licznik[hidden] { display: none; }
       .snbund__licznik b { font-weight: 700; font-variant-numeric: tabular-nums; }
       .snbund__tytul {
-        margin: 0 0 4px;
+        margin: 0 0 18px;
         font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
-        font-size: 20px;
+        font-size: 26px;
         font-weight: 600;
-        line-height: 1.25;
+        line-height: 1.2;
         letter-spacing: 0.01em;
         text-transform: none;
         color: #1c1d1d;
       }
-      .snbund__pod { margin: 0; font-size: 14px; line-height: 1.45; color: #5a5651; }
-      .snbund__pod--2 { margin-top: 6px; }
-      .snbund__tekst { max-width: 760px; }
-      .snbund__note { margin: 6px 0 0; font-size: 14px; font-weight: 700; line-height: 1.4; color: #1c1d1d; }
-      .snbund__progi { display: flex; gap: 8px; flex: 0 0 auto; margin: 0; padding: 0; list-style: none; }
-      .snbund__prog {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2px;
-        min-width: 84px;
-        margin: 0;
-        padding: 9px 12px;
-        background: #ffffff;
-        border: 1px solid #ecdcd8;
+      .snbund__progi {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(0, 1fr);
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+        border-top: 1px solid #ead9d5;
+        border-bottom: 1px solid #ead9d5;
       }
-      .snbund__ile { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #6e6b65; white-space: nowrap; }
-      .snbund__proc { font-size: 20px; font-weight: 700; line-height: 1.15; color: #c8102e; white-space: nowrap; font-variant-numeric: tabular-nums; }
-      .snbund__prog--max { background: #c8102e; border-color: #c8102e; }
+      .snbund__prog { display: flex; flex-direction: column; align-items: center; gap: 3px; margin: 0; padding: 12px 4px; }
+      .snbund__prog + .snbund__prog { border-left: 1px solid #ead9d5; }
+      .snbund__ile { font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6e6b65; white-space: nowrap; }
+      .snbund__proc { font-size: 24px; font-weight: 700; line-height: 1.1; color: #1c1d1d; white-space: nowrap; font-variant-numeric: tabular-nums; }
       .snbund__prog--max .snbund__ile,
-      .snbund__prog--max .snbund__proc { color: #ffffff; }
+      .snbund__prog--max .snbund__proc { color: #c8102e; }
+      .snbund__pod { max-width: 560px; margin: 14px auto 0; font-size: 13.5px; line-height: 1.45; color: #6e6b65; }
+      .snbund__note { max-width: 560px; margin: 6px auto 0; font-size: 14px; font-weight: 700; line-height: 1.4; color: #1c1d1d; }
       /* strzalki rzedu podkategorii (38 px) wisza 62 px nad nim - bez tego
-         odstepu wchodzily na ostatni prog. 72 = 62 + 10 px przerwy; marginesy
-         sie nakladaja, wiec liczy sie wiekszy, nie suma z 26 px rabatu */
+         odstepu wchodzily na kafel. 72 = 62 + 10 px przerwy; marginesy
+         sie nakladaja, wiec liczy sie wiekszy, nie suma z 26 px kafla */
       @media only screen and (min-width: 769px) {
         .snbund + .subrow { margin-top: 72px; }
       }
       @media only screen and (max-width: 768px) {
         .snbund { margin: 0 0 18px; }
-        .snbund__box { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 12px 12px; }
-        .snbund__brw { margin-bottom: 4px; font-size: 11px; }
-        .snbund__tytul { margin-bottom: 2px; font-size: 16px; }
-        .snbund__pod { font-size: 12.5px; line-height: 1.35; }
-        .snbund__note { font-size: 12.5px; }
-        .snbund__progi { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
-        .snbund__prog { min-width: 0; padding: 6px 2px; gap: 1px; }
-        .snbund__ile { font-size: 10.5px; letter-spacing: 0.04em; }
-        .snbund__proc { font-size: 16px; }
+        .snbund__box { padding: 18px 12px 16px; }
+        .snbund__brw { margin-bottom: 6px; font-size: 11px; }
+        .snbund__tytul { margin-bottom: 12px; font-size: 20px; }
+        .snbund__prog { padding: 9px 2px; gap: 2px; }
+        .snbund__ile { font-size: 10.5px; letter-spacing: 0.05em; }
+        .snbund__proc { font-size: 19px; }
+        .snbund__pod { margin-top: 10px; font-size: 12.5px; }
+        .snbund__note { margin-top: 4px; font-size: 13px; }
       }
     </style>
     <div class="snbund__box">
-      <div class="snbund__tekst">
-        {%- if settings.campaign_name != blank -%}
-          <p class="snbund__brw">
-            <span class="snbund__dot" aria-hidden="true"></span>
-            {{ settings.campaign_name | escape }}
-            {%- if settings.campaign_end != blank -%}
-              <span class="snbund__licznik" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· slutter om <b data-sn-czas></b></span>
-            {%- endif -%}
-          </p>
-        {%- endif -%}
-        <p class="snbund__tytul">{{ title | escape }}</p>
-        {%- if sub != blank -%}
-          <p class="snbund__pod">{{ sub | escape }}</p>
-        {%- endif -%}
-        {%- if text2 != blank -%}
-          <p class="snbund__pod snbund__pod--2">{{ text2 | escape }}</p>
-        {%- endif -%}
-        {%- if note != blank -%}
-          <p class="snbund__note">{{ note | escape }}</p>
-        {%- endif -%}
-      </div>
+      {%- if settings.campaign_name != blank -%}
+        <p class="snbund__brw">
+          <span class="snbund__dot" aria-hidden="true"></span>
+          {{ settings.campaign_name | escape }}
+          {%- if settings.campaign_end != blank -%}
+            <span class="snbund__licznik" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· slutter om <b data-sn-czas></b></span>
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+      <p class="snbund__tytul">{{ title | escape }}</p>
       <ol class="snbund__progi">
         {%- for prog in progi -%}
           {%- assign czesci = prog | split: ':' -%}
@@ -132,6 +113,15 @@
           {%- endif -%}
         {%- endfor -%}
       </ol>
+      {%- if sub != blank -%}
+        <p class="snbund__pod">{{ sub | escape }}</p>
+      {%- endif -%}
+      {%- if text2 != blank -%}
+        <p class="snbund__pod">{{ text2 | escape }}</p>
+      {%- endif -%}
+      {%- if note != blank -%}
+        <p class="snbund__note">{{ note | escape }}</p>
+      {%- endif -%}
     </div>
     {%- if settings.campaign_end != blank -%}
       <script>
