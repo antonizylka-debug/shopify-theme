@@ -7,12 +7,17 @@
 {%- endcomment -%}
 
 <style>
-  /* ---------- siatka: kafle niemal stykaja sie jak we wzorze ---------- */
+  {%- comment -%}
+    Odstep miedzy rzedami w kazdej siatce, nie tylko w kolekcji. Stary kafel
+    motywu niosl wlasny dolny margines (klasa grid-product), nowy go nie ma -
+    i na stronie glownej kolka kolorow pierwszego rzedu dotykaly zdjec
+    drugiego.
+  {%- endcomment -%}
+  .snc-item { margin-bottom: 30px; }
+
+  /* ---------- siatka kolekcji: kafle niemal stykaja sie jak we wzorze ---------- */
   [data-product-grid].grid:has(> .snc-item) { margin-left: -4px; }
-  [data-product-grid] > .snc-item {
-    padding-left: 4px;
-    margin-bottom: 30px;
-  }
+  [data-product-grid] > .snc-item { padding-left: 4px; }
 
   .snc { position: relative; color: #1c1d1d; }
 
