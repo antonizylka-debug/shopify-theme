@@ -58,6 +58,7 @@
             "heading": "SHOP DAME",
             "text": "Stilsikkert design, skabt til at blive båret.",
             "button_label": "SHOP DAME",
+            "link": "",
             "text_color": "#ffffff"
           }
         },
@@ -69,6 +70,7 @@
             "heading": "SHOP HERRE",
             "text": "Gennemtænkte basics til den moderne garderobe.",
             "button_label": "SHOP HERRE",
+            "link": "",
             "text_color": "#ffffff"
           }
         }
@@ -88,40 +90,6 @@
         "full_width": false,
         "heading_size": 26,
         "content_padding": 40,
-        "padding_top": 40,
-        "padding_bottom": 40
-      }
-    },
-    "wide_banner": {
-      "type": "collection-banners",
-      "blocks": {
-        "b1": {
-          "type": "banner",
-          "settings": {
-            "collection": "",
-            "eyebrow": "UDVALGT",
-            "heading": "LAG PÅ LAG TIL DE KØLIGE MÅNEDER.",
-            "text": "Varm strik, frakker og jakker – lavet til efteråret.",
-            "button_label": "SHOP NU",
-            "link": "/collections/all",
-            "text_color": "#ffffff"
-          }
-        }
-      },
-      "block_order": [
-        "b1"
-      ],
-      "settings": {
-        "title": "",
-        "columns": 1,
-        "gap": 0,
-        "image_ratio": "3.6 / 1",
-        "banner_height": 420,
-        "banner_height_mobile": 320,
-        "text_position": "middle",
-        "full_width": false,
-        "heading_size": 34,
-        "content_padding": 44,
         "padding_top": 40,
         "padding_bottom": 40
       }
@@ -180,7 +148,7 @@
         "view_all_link": "/collections/womens",
         "view_all_text": "SE ALT TIL DAMER",
         "image_crop": true,
-        "image_height": 500,
+        "image_height": 350,
         "image_height_mobile": 200,
         "image_max_width": 0,
         "image_ratio": "tall",
@@ -202,6 +170,7 @@
         "image_height": 500,
         "image_height_mobile": 200,
         "home_featured_products": "womens",
+        "sort": "collection",
         "per_row": 4,
         "rows": 2,
         "mobile_scrollable": true,
@@ -209,81 +178,39 @@
         "divider": false
       }
     },
-    "bestsellers": {
-      "type": "sn-bestsellers",
+    "wide_banner": {
+      "type": "collection-banners",
       "blocks": {
-        "t1": {
-          "type": "tab",
+        "b1": {
+          "type": "banner",
           "settings": {
-            "label": "Kjoler",
-            "collection": "womens-dresses"
-          }
-        },
-        "t2": {
-          "type": "tab",
-          "settings": {
-            "label": "Toppe",
-            "collection": "womens-tops"
-          }
-        },
-        "t3": {
-          "type": "tab",
-          "settings": {
-            "label": "Sko",
-            "collection": "womens-footwear"
-          }
-        },
-        "t4": {
-          "type": "tab",
-          "settings": {
-            "label": "Se alt",
-            "collection": "womens"
+            "collection": "",
+            "eyebrow": "UDVALGT",
+            "heading": "LAG PÅ LAG TIL DE KØLIGE MÅNEDER.",
+            "text": "Varm strik, frakker og jakker – lavet til efteråret.",
+            "button_label": "SHOP NU",
+            "link": "/collections/all",
+            "text_color": "#ffffff"
           }
         }
       },
       "block_order": [
-        "t1",
-        "t2",
-        "t3",
-        "t4"
+        "b1"
       ],
       "settings": {
-        "title": "OPDAG\nVORES BESTSELLERE",
-        "accent_word": "BESTSELLERE",
-        "subtitle": "Se de styles, vores kunder vender tilbage til.",
-        "count": 12,
-        "per_view": 4,
-        "per_view_mobile": 2,
-        "gap": 2,
-        "ratio": "3 / 4",
-        "hover_photo": true,
-        "show_sale": true,
-        "sale_label": "Tilbud",
-        "show_dots": true,
-        "dots_max": 4,
-        "note_source": "none",
-        "show_bar": true,
-        "bar_width": 40,
-        "bar_gap": 28,
-        "title_size": 30,
-        "title_size_mobile": 22,
-        "head_gap": 28,
-        "padding_top": 56,
-        "padding_bottom": 56,
-        "padding_top_mobile": 36,
-        "padding_bottom_mobile": 36,
-        "color_bg": "#ffffff",
-        "color_text": "#1c1d1d",
-        "color_muted": "#6e6b65",
-        "color_line": "#e6e3de",
-        "color_accent": "#d6332e",
-        "color_tab_on": "#f4f2ee",
-        "color_photo_bg": "#f1efec",
-        "color_sale_bg": "#ffffff",
-        "color_sale_text": "#1c1d1d",
-        "color_sale_price": "#d6332e"
-      },
-      "disabled": true
+        "title": "",
+        "columns": 1,
+        "gap": 0,
+        "image_ratio": "3.6 / 1",
+        "banner_height": 420,
+        "banner_height_mobile": 320,
+        "text_position": "middle",
+        "full_width": false,
+        "heading_size": 34,
+        "content_padding": 44,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     },
     "popular_men": {
       "type": "featured-collections",
@@ -291,21 +218,27 @@
         "m1": {
           "type": "collection",
           "settings": {
+            "image": "shopify://shop_images/mens_jackets_1.webp",
             "collection": "mens-jackets-and-coats",
+            "title": "",
             "focal_point": "center center"
           }
         },
         "m2": {
           "type": "collection",
           "settings": {
+            "image": "shopify://shop_images/mens_crew_neck_and_polos_1.webp",
             "collection": "mens-shirts",
+            "title": "",
             "focal_point": "center center"
           }
         },
         "m3": {
           "type": "collection",
           "settings": {
+            "image": "shopify://shop_images/menspants_1.webp",
             "collection": "mens-sweaters-and-knitwear",
+            "title": "",
             "focal_point": "center center"
           }
         },
@@ -313,6 +246,7 @@
           "type": "collection",
           "settings": {
             "collection": "mens-bottoms",
+            "title": "",
             "focal_point": "center center"
           }
         }
@@ -331,7 +265,7 @@
         "view_all_link": "/collections/mens",
         "view_all_text": "SE ALT TIL HERRER",
         "image_crop": true,
-        "image_height": 500,
+        "image_height": 350,
         "image_height_mobile": 200,
         "image_max_width": 0,
         "image_ratio": "tall",
@@ -353,11 +287,103 @@
         "image_height": 500,
         "image_height_mobile": 200,
         "home_featured_products": "mens",
+        "sort": "collection",
         "per_row": 4,
         "rows": 2,
         "mobile_scrollable": true,
         "view_all": true,
         "divider": false
+      }
+    },
+    "bestsellers": {
+      "type": "sn-bestsellers",
+      "blocks": {
+        "t1": {
+          "type": "tab",
+          "settings": {
+            "label": "Kjoler",
+            "collection": "womens-dresses",
+            "audience": "all"
+          }
+        },
+        "t2": {
+          "type": "tab",
+          "settings": {
+            "label": "Toppe",
+            "collection": "womens-tops",
+            "audience": "all"
+          }
+        },
+        "t3": {
+          "type": "tab",
+          "settings": {
+            "label": "Sko",
+            "collection": "womens-footwear",
+            "audience": "all"
+          }
+        },
+        "t4": {
+          "type": "tab",
+          "settings": {
+            "label": "Se alt",
+            "collection": "womens",
+            "audience": "all"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "OPDAG\nVORES BESTSELLERE",
+        "accent_word": "BESTSELLERE",
+        "subtitle": "Se de styles, vores kunder vender tilbage til.",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens",
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Tilbud",
+        "add_where": "hover",
+        "add_label": "Læg i kurv",
+        "pick_label": "Vælg størrelse",
+        "show_dots": true,
+        "dots_max": 4,
+        "dots_size": 22,
+        "note_source": "none",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 28,
+        "title_size": 30,
+        "title_size_mobile": 22,
+        "head_gap": 28,
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6e6b65",
+        "color_line": "#e6e3de",
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f4f2ee",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e",
+        "color_add_bg": "#ffffff",
+        "color_add_hover": "#f4f2ee",
+        "color_add_icon": "#1c1d1d",
+        "color_add_ok": "#1f7a3d"
       }
     }
   },
