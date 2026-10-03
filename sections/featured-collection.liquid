@@ -181,6 +181,17 @@
     </div>
   {%- endif -%}
 
+  {%- comment -%}
+    Ten sam kafel co w kolekcjach (sn-card) - u Oliver & Blake siatka na
+    stronie glownej i w kolekcji wyglada jednakowo. Na telefonie rzad
+    przewija sie w bok, wiec pasek zdjec w kafelku nie lapie palca:
+    palec ma przesuwac rzad, nie zdjecia.
+  {%- endcomment -%}
+  {%- render 'sn-card-assets' -%}
+  {%- if section.settings.mobile_scrollable -%}
+    <style>#CollectionSection-{{ section.id }} .snc__pas { overflow-x: hidden; }</style>
+  {%- endif -%}
+
   <div class="page-width{% if section.settings.mobile_scrollable %} page-width--flush-small{% endif %}">
     <div{% if section.settings.mobile_scrollable %} class="grid-overflow-wrapper"{% endif %}>
       <div class="grid grid--uniform"{% if section.settings.mobile_scrollable %} data-aos="overflow__animation"{% endif %}>
@@ -233,24 +244,12 @@
             {%- endcomment -%}
             {%- for block in section.blocks -%}
               {%- if block.settings.product != blank -%}
-                {%- render 'product-grid-item',
-                  product: block.settings.product,
-                  collection: collection,
-                  per_row: per_row,
-                  quick_shop_enable: settings.quick_shop_enable,
-                  fallback: fallback,
-                -%}
+                {%- render 'sn-card', product: block.settings.product, per_row: per_row -%}
               {%- endif -%}
             {%- endfor -%}
           {%- else -%}
             {%- for product in lista limit: product_limit -%}
-              {%- render 'product-grid-item',
-                product: product,
-                collection: collection,
-                per_row: per_row,
-                quick_shop_enable: settings.quick_shop_enable,
-                fallback: fallback,
-              -%}
+              {%- render 'sn-card', product: product, per_row: per_row -%}
             {%- endfor -%}
           {%- endif -%}
 

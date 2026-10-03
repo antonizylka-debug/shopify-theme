@@ -53,24 +53,22 @@
         "b1": {
           "type": "banner",
           "settings": {
-            "collection": "womens-dresses",
+            "collection": "womens",
             "eyebrow": "",
-            "heading": "SHOP KJOLER",
-            "text": "Stilsikkert design, skabt til at blive brugt.",
-            "button_label": "SHOP KJOLER",
-            "link": "",
+            "heading": "SHOP DAME",
+            "text": "Stilsikkert design, skabt til at blive båret.",
+            "button_label": "SHOP DAME",
             "text_color": "#ffffff"
           }
         },
         "b2": {
           "type": "banner",
           "settings": {
-            "collection": "womens-jackets-coats",
+            "collection": "mens",
             "eyebrow": "",
-            "heading": "SHOP OVERTØJ",
-            "text": "Considered essentials for the modern wardrobe.",
-            "button_label": "SHOP OVERTØJ",
-            "link": "",
+            "heading": "SHOP HERRE",
+            "text": "Gennemtænkte basics til den moderne garderobe.",
+            "button_label": "SHOP HERRE",
             "text_color": "#ffffff"
           }
         }
@@ -101,9 +99,9 @@
           "type": "banner",
           "settings": {
             "collection": "",
-            "eyebrow": "BESTSELLER",
-            "heading": "MADE FOR THE LONG WAY AROUND.",
-            "text": "Layering pieces, refined for the cooler months.",
+            "eyebrow": "UDVALGT",
+            "heading": "LAG PÅ LAG TIL DE KØLIGE MÅNEDER.",
+            "text": "Varm strik, frakker og jakker – lavet til efteråret.",
             "button_label": "SHOP NU",
             "link": "/collections/all",
             "text_color": "#ffffff"
@@ -135,7 +133,7 @@
           "type": "collection",
           "settings": {
             "image": "shopify://shop_images/Womens_Jackets.webp",
-            "collection": "womens-jackets-coats",
+            "collection": "womens-jackets-and-coats",
             "title": "",
             "focal_point": "center center"
           }
@@ -144,7 +142,7 @@
           "type": "collection",
           "settings": {
             "image": "shopify://shop_images/womens_sweaters.webp",
-            "collection": "womens-sweaters",
+            "collection": "womens-sweaters-and-knitwear",
             "title": "",
             "focal_point": "center center"
           }
@@ -153,7 +151,7 @@
           "type": "collection",
           "settings": {
             "image": "shopify://shop_images/womens_pants.webp",
-            "collection": "womens-pants",
+            "collection": "womens-bottoms",
             "title": "",
             "focal_point": "center center"
           }
@@ -179,7 +177,7 @@
         "eyebrow": "MEST EFTERSPURGTE",
         "heading_size": 34,
         "heading_bold": true,
-        "view_all_link": "/collections/all",
+        "view_all_link": "/collections/womens",
         "view_all_text": "SE ALT TIL DAMER",
         "image_crop": true,
         "image_height": 500,
@@ -209,8 +207,7 @@
         "mobile_scrollable": true,
         "view_all": true,
         "divider": false
-      },
-      "disabled": true
+      }
     },
     "bestsellers": {
       "type": "sn-bestsellers",
@@ -285,15 +282,93 @@
         "color_sale_bg": "#ffffff",
         "color_sale_text": "#1c1d1d",
         "color_sale_price": "#d6332e"
+      },
+      "disabled": true
+    },
+    "popular_men": {
+      "type": "featured-collections",
+      "blocks": {
+        "m1": {
+          "type": "collection",
+          "settings": {
+            "collection": "mens-jackets-and-coats",
+            "focal_point": "center center"
+          }
+        },
+        "m2": {
+          "type": "collection",
+          "settings": {
+            "collection": "mens-shirts",
+            "focal_point": "center center"
+          }
+        },
+        "m3": {
+          "type": "collection",
+          "settings": {
+            "collection": "mens-sweaters-and-knitwear",
+            "focal_point": "center center"
+          }
+        },
+        "m4": {
+          "type": "collection",
+          "settings": {
+            "collection": "mens-bottoms",
+            "focal_point": "center center"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
+      "settings": {
+        "title": "POPULÆRT TIL HERRER",
+        "eyebrow": "MEST EFTERSPURGTE",
+        "heading_size": 34,
+        "heading_bold": true,
+        "view_all_link": "/collections/mens",
+        "view_all_text": "SE ALT TIL HERRER",
+        "image_crop": true,
+        "image_height": 500,
+        "image_height_mobile": 200,
+        "image_max_width": 0,
+        "image_ratio": "tall",
+        "divider": false,
+        "per_row": 4
+      }
+    },
+    "featured_men": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "UDVALGT TIL HERRER",
+        "eyebrow": "VORES FAVORITTER",
+        "heading_size": 34,
+        "heading_bold": true,
+        "view_all_plain": true,
+        "view_all_text": "SE ALT TIL HERRER",
+        "image_crop": true,
+        "image_shape": "portrait",
+        "image_height": 500,
+        "image_height_mobile": 200,
+        "home_featured_products": "mens",
+        "per_row": 4,
+        "rows": 2,
+        "mobile_scrollable": true,
+        "view_all": true,
+        "divider": false
       }
     }
   },
   "order": [
     "slideshow",
     "collection_banners",
-    "wide_banner",
     "featured_popular",
-    "bestsellers",
-    "featured_picks"
+    "featured_picks",
+    "wide_banner",
+    "popular_men",
+    "featured_men",
+    "bestsellers"
   ]
 }
