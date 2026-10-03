@@ -310,46 +310,44 @@
     Cena jest juz czerwona, wiec trzeci jaskrawy kolor bylby o jeden za duzo.
   {%- endcomment -%}
   {%- comment -%}
-    Pole z rabatem za komplet: zamkniete pudelko z obwodka, tresc
-    wysrodkowana, naglowek z zegarkiem, pod kreska same progi.
-    Wczesniej byl to pasek z kreska z boku i kafelkami - czytalo sie
-    jak przypis, a nie jak oferta.
+    Ramka akcji (nazwa akcji z licznikiem, kup wiecej, popyt) - zwarta,
+    w stylu rabatu z kolekcji. Wczesniej: duze pudelko "Kob flere" z piecioma
+    wierszami (ok. 250 px na telefonie) i osobna ramka pod przyciskiem.
   {%- endcomment -%}
-  #shopify-section-{{ section.id }} .pdp__promo {
+  #shopify-section-{{ section.id }} .pdp__akcja {
     margin: 16px 0 0;
+    padding: 12px 14px;
     background: {{ section.settings.promo_bg }};
-    border: 1px solid {{ section.settings.promo_border }};
     border-radius: {{ section.settings.radius }}px;
-    padding: 17px 18px 16px;
     text-align: center;
   }
-  #shopify-section-{{ section.id }} .pdp__promo-t {
-    display: flex; align-items: center; justify-content: center; gap: 7px;
-    font-size: 12.5px; font-weight: 700; line-height: 1.3;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    color: {{ section.settings.promo_accent }};
+  #shopify-section-{{ section.id }} .pdp__akcja-brw {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2px 8px;
+    margin: 0 0 3px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #c8102e;
   }
-  #shopify-section-{{ section.id }} .pdp__promo-t svg { width: 15px; height: 15px; flex: 0 0 15px; }
-  #shopify-section-{{ section.id }} .pdp__promo-s {
-    font-size: 12.5px; color: var(--pdp-muted); line-height: 1.5; margin-top: 8px;
+  #shopify-section-{{ section.id }} .pdp__akcja-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #c8102e; flex: 0 0 7px; }
+  #shopify-section-{{ section.id }} .pdp__akcja-dot::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%; background: #c8102e;
+    animation: pdp-akcja-puls 1.6s ease-out infinite;
   }
-  #shopify-section-{{ section.id }} .pdp__promo-hr {
-    height: 1px; background: {{ section.settings.promo_border }};
-    margin: 14px 0 12px;
+  @keyframes pdp-akcja-puls { from { transform: scale(1); opacity: 0.6; } to { transform: scale(2.6); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { #shopify-section-{{ section.id }} .pdp__akcja-dot::after { animation: none; } }
+  #shopify-section-{{ section.id }} .pdp__akcja-czas[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .pdp__akcja-czas b { font-weight: 700; font-variant-numeric: tabular-nums; }
+  #shopify-section-{{ section.id }} .pdp__akcja-t { margin: 0 0 8px; font-size: 15px; font-weight: 700; line-height: 1.3; }
+  #shopify-section-{{ section.id }} .pdp__akcja-progi {
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+    margin: 0; padding: 7px 0 0; list-style: none;
+    border-top: 1px solid {{ section.settings.promo_border }};
   }
-  #shopify-section-{{ section.id }} .pdp__promo-h2 {
-    font-size: 13.5px; font-weight: 700; margin-bottom: 8px;
-  }
-  #shopify-section-{{ section.id }} .pdp__tiers {
-    display: grid; gap: 5px;
-    margin: 0; padding: 0; list-style: none;
-  }
-  #shopify-section-{{ section.id }} .pdp__tier {
-    font-size: 13.5px; line-height: 1.4;
-  }
-  #shopify-section-{{ section.id }} .pdp__tier b {
-    font-weight: 700; color: {{ section.settings.promo_accent }};
-  }
+  #shopify-section-{{ section.id }} .pdp__akcja-prog { display: flex; flex-direction: column; align-items: center; margin: 0; padding: 0 2px; }
+  #shopify-section-{{ section.id }} .pdp__akcja-prog + .pdp__akcja-prog { border-left: 1px solid {{ section.settings.promo_border }}; }
+  #shopify-section-{{ section.id }} .pdp__akcja-prog span { font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pdp-muted); white-space: nowrap; }
+  #shopify-section-{{ section.id }} .pdp__akcja-prog b { font-size: 18px; font-weight: 700; line-height: 1.15; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  #shopify-section-{{ section.id }} .pdp__akcja-prog--max span,
+  #shopify-section-{{ section.id }} .pdp__akcja-prog--max b { color: #c8102e; }
+  #shopify-section-{{ section.id }} .pdp__akcja-s { margin: 8px 0 0; font-size: 12.5px; line-height: 1.4; color: var(--pdp-muted); text-wrap: balance; }
 
   #shopify-section-{{ section.id }} .pdp__refs { margin: 10px 0 0; }
   #shopify-section-{{ section.id }} .pdp__ref {
@@ -416,22 +414,6 @@
     border-radius: {{ section.settings.radius }}px;
   }
   #shopify-section-{{ section.id }} .pdp__atc[disabled] { opacity: 0.45; cursor: not-allowed; }
-  /* ramka akcji pod przyciskiem */
-  #shopify-section-{{ section.id }} .pdp__pilne { margin: 12px 0 0; padding: 12px 14px; background: #fdf6f4; }
-  #shopify-section-{{ section.id }} .pdp__pilne-t {
-    display: flex; align-items: center; flex-wrap: wrap; gap: 2px 8px; margin: 0 0 4px;
-    font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #c8102e;
-  }
-  #shopify-section-{{ section.id }} .pdp__pilne-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #c8102e; flex: 0 0 7px; }
-  #shopify-section-{{ section.id }} .pdp__pilne-dot::after {
-    content: ""; position: absolute; inset: 0; border-radius: 50%; background: #c8102e;
-    animation: pdp-pilne-puls 1.6s ease-out infinite;
-  }
-  @keyframes pdp-pilne-puls { from { transform: scale(1); opacity: 0.6; } to { transform: scale(2.6); opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { #shopify-section-{{ section.id }} .pdp__pilne-dot::after { animation: none; } }
-  #shopify-section-{{ section.id }} .pdp__pilne-czas[hidden] { display: none; }
-  #shopify-section-{{ section.id }} .pdp__pilne-czas b { font-weight: 700; font-variant-numeric: tabular-nums; }
-  #shopify-section-{{ section.id }} .pdp__pilne-s { margin: 0; font-size: 13.5px; line-height: 1.45; color: #3a3a3a; }
 
   {%- comment -%}
     Wiersze z obietnicami.
@@ -582,8 +564,7 @@
     #shopify-section-{{ section.id }} .pdp__info > .pdp__swatches,
     #shopify-section-{{ section.id }} .pdp__info > .pdp__help,
     #shopify-section-{{ section.id }} .pdp__info > .pdp__opt,
-    #shopify-section-{{ section.id }} .pdp__info > .shopify-product-form,
-    #shopify-section-{{ section.id }} .pdp__info > .pdp__pilne { order: 2; }
+    #shopify-section-{{ section.id }} .pdp__info > .shopify-product-form { order: 2; }
     {%- comment -%}
       Odstepy w nowej kolejnosci. W kolumnie flex marginesy sasiadow sie
       sumuja zamiast nakladac, a sasiedzi sa teraz inni niz w kodzie:
@@ -594,7 +575,7 @@
     #shopify-section-{{ section.id }} .pdp__info > .pdp__price { margin-bottom: 18px; }
     #shopify-section-{{ section.id }} .pdp__info > .pdp__refs { margin-top: -8px; margin-bottom: 18px; }
     #shopify-section-{{ section.id }} .pdp__info > .pdp__help { margin-top: 0; }
-    #shopify-section-{{ section.id }} .pdp__info > .pdp__promo { margin: 20px 0 6px; }
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__akcja { margin: 14px 0 4px; }
 
     {%- comment -%}
       Na telefonie siatka spychala cene daleko pod ekran - przy kilkunastu
@@ -937,39 +918,60 @@
           {%- endif -%}
         </div>
 
-        {%- comment -%} ---------- kup wiecej, zaplac mniej ---------- {%- endcomment -%}
-        {%- if section.settings.show_promo and section.settings.promo_tiers != blank -%}
-          <div class="pdp__promo">
-            {%- if section.settings.promo_title != blank -%}
-              <div class="pdp__promo-t">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-                {{ section.settings.promo_title }}
-              </div>
-            {%- endif -%}
-            {%- if section.settings.promo_sub != blank -%}
-              <div class="pdp__promo-s">{{ section.settings.promo_sub }}</div>
-            {%- endif -%}
-            <div class="pdp__promo-hr"></div>
-            {%- if section.settings.promo_head2 != blank -%}
-              <div class="pdp__promo-h2">{{ section.settings.promo_head2 }}</div>
-            {%- endif -%}
-            <ul class="pdp__tiers">
-              {%- assign progi = section.settings.promo_tiers | split: ',' -%}
-              {%- for prog in progi -%}
-                {%- liquid
-                  assign para = prog | strip | split: ':'
-                  assign ile = para[0] | strip
-                  assign proc = para[1] | strip
-                -%}
-                {%- if ile != blank and proc != blank -%}
-                  <li class="pdp__tier">
-                    {{ section.settings.promo_buy_word }} {{ ile }} {{ section.settings.promo_qty_word }}
-                    <span aria-hidden="true">&rarr;</span>
-                    <b>{{ proc }}% {{ section.settings.promo_off_word }}</b>
-                  </li>
+        {%- comment -%}
+          ---------- ramka akcji: nazwa akcji + licznik, kup wiecej, popyt ----------
+          Jedna zwarta ramka zamiast dwoch (duze "Kob flere" na gorze i osobny
+          tekst pod przyciskiem). Ten sam styl co rabat w kolekcjach: czerwony
+          naglowek akcji (Ustawienia motywu > Campaign; w dniu konca "slutter i
+          aften"), tytul, progi w jednym rzedzie z cienkimi kreskami, jedno
+          zdanie. Na PC tu, nad rozmiarami; na telefonie zaraz za przyciskiem.
+        {%- endcomment -%}
+        {%- liquid
+          assign pokaz_progi = false
+          if section.settings.show_promo and section.settings.promo_tiers != blank
+            assign pokaz_progi = true
+          endif
+          assign pokaz_tekst = false
+          if section.settings.pilne_show and section.settings.pilne_text != blank
+            assign pokaz_tekst = true
+          endif
+        -%}
+        {%- if pokaz_progi or pokaz_tekst -%}
+          <div class="pdp__akcja">
+            {%- if pokaz_tekst -%}
+              <p class="pdp__akcja-brw">
+                <span class="pdp__akcja-dot" aria-hidden="true"></span>
+                {{ settings.campaign_name | default: 'Sæsonudsalg' | escape }}
+                {%- if settings.campaign_end != blank -%}
+                  <span class="pdp__akcja-czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>slutter om</span> <b data-sn-czas></b></span>
                 {%- endif -%}
-              {%- endfor -%}
-            </ul>
+              </p>
+            {%- endif -%}
+            {%- if pokaz_progi -%}
+              {%- if section.settings.promo_title != blank -%}
+                <p class="pdp__akcja-t">{{ section.settings.promo_title }}</p>
+              {%- endif -%}
+              <ol class="pdp__akcja-progi">
+                {%- assign progi = section.settings.promo_tiers | split: ',' -%}
+                {%- for prog in progi -%}
+                  {%- liquid
+                    assign para = prog | strip | split: ':'
+                    assign ile = para[0] | strip
+                    assign proc = para[1] | strip
+                  -%}
+                  {%- if ile != blank and proc != blank -%}
+                    <li class="pdp__akcja-prog{% if forloop.last %} pdp__akcja-prog--max{% endif %}">
+                      <span>{{ ile }}{% if forloop.last %}+{% endif %} stk.</span>
+                      <b>−{{ proc }} %</b>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ol>
+            {%- endif -%}
+            {%- if pokaz_tekst -%}
+              <p class="pdp__akcja-s">{{ section.settings.pilne_text | escape }}</p>
+              {%- if settings.campaign_end != blank -%}{%- render 'sn-licznik' -%}{%- endif -%}
+            {%- endif -%}
           </div>
         {%- endif -%}
 
@@ -1021,25 +1023,6 @@
             </span>
           </button>
         {%- endform -%}
-        {%- comment -%}
-          Ramka akcji pod przyciskiem: nazwa akcji z ustawien motywu (Campaign),
-          licznik do daty konca (w dniu konca: "slutter i aften") i tekst
-          z ustawien sekcji. Bez daty - sama nazwa i tekst.
-        {%- endcomment -%}
-        {%- if section.settings.pilne_show and section.settings.pilne_text != blank -%}
-          <div class="pdp__pilne">
-            <p class="pdp__pilne-t">
-              <span class="pdp__pilne-dot" aria-hidden="true"></span>
-              {{ settings.campaign_name | default: 'Sæsonudsalg' | escape }}
-              {%- if settings.campaign_end != blank -%}
-                <span class="pdp__pilne-czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>slutter om</span> <b data-sn-czas></b></span>
-              {%- endif -%}
-            </p>
-            <p class="pdp__pilne-s">{{ section.settings.pilne_text | escape }}</p>
-          </div>
-          {%- if settings.campaign_end != blank -%}{%- render 'sn-licznik' -%}{%- endif -%}
-        {%- endif -%}
-
         {%- assign wiersze = section.blocks | where: 'type', 'row' -%}
         {%- if wiersze.size > 0 -%}
           <div class="pdp__rows">
@@ -1429,8 +1412,8 @@
     { "type": "range", "id": "price_size", "label": "Price", "default": 28, "min": 18, "max": 44, "step": 1, "unit": "px" },
     { "type": "range", "id": "price_size_m", "label": "Price (mobile)", "default": 24, "min": 16, "max": 36, "step": 1, "unit": "px" },
     { "type": "text", "id": "atc_label", "label": "Button", "default": "Læg i kurv" },
-    { "type": "checkbox", "id": "pilne_show", "label": "Sale notice under the button", "info": "Heading = campaign name, countdown = campaign end (Theme settings, Campaign).", "default": true },
-    { "type": "text", "id": "pilne_text", "label": "Sale notice text", "default": "På grund af stor efterspørgsel i udsalget er der kun et begrænset antal varer tilbage. Kan du stadig trykke »Læg i kurv«, er varen der endnu." },
+    { "type": "checkbox", "id": "pilne_show", "label": "Sale text in the discount box", "info": "Heading = campaign name, countdown = campaign end (Theme settings, Campaign).", "default": true },
+    { "type": "text", "id": "pilne_text", "label": "Sale notice text", "default": "Stor efterspørgsel – begrænset antal tilbage. Kan du trykke »Læg i kurv«, er den der endnu." },
     { "type": "text", "id": "vat_note", "label": "Next to the price", "default": "inkl. moms" },
     { "type": "text", "id": "label_normal", "label": "Before the normal price", "default": "Normalpris:" },
     { "type": "text", "id": "label_omnibus", "label": "Before the 30-day price", "default": "Laveste pris 30 dage før nedsættelsen:" },
