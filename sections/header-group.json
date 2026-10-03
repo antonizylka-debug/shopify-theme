@@ -166,10 +166,10 @@
           "settings": {
             "icon": "lock",
             "text": "Sikker betaling",
-            "hide_m": true,
             "text_m": "Sikker betaling",
             "color": "",
-            "link": ""
+            "link": "",
+            "hide_m": true
           }
         },
         "i-3": {
