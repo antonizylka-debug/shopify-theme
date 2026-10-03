@@ -50,6 +50,11 @@
       .snbund__prog--max { background: #c8102e; border-color: #c8102e; }
       .snbund__prog--max .snbund__ile,
       .snbund__prog--max .snbund__proc { color: #ffffff; }
+      /* strzalki rzedu podkategorii wisza 62 px nad nim (top: -62px) -
+         bez tego odstepu wchodzily na ostatni prog */
+      @media only screen and (min-width: 769px) {
+        .snbund + .subrow { margin-top: 46px; }
+      }
       @media only screen and (max-width: 768px) {
         .snbund { margin: 0 0 18px; }
         .snbund__box { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 12px 12px; }
