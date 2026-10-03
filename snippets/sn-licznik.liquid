@@ -1,0 +1,45 @@
+{%- comment -%}
+  Wspolny zegar licznikow akcji (kolekcja, strona produktu). Szuka co
+  sekunde elementow [data-sn-licznik data-slut="2026-10-31 23:59"] i wpisuje
+  w [data-sn-etykieta] "slutter i aften" / "slutter i dag" (w dniu konca)
+  albo "slutter om", a w [data-sn-czas] pozostaly czas. Po terminie chowa
+  licznik. Laduje sie raz na strone (window.__snLicznik).
+{%- endcomment -%}
+<script>
+        (function () {
+          // jeden zegar na strone; co sekunde szuka licznikow na nowo, wiec
+          // dziala tez po filtrowaniu, gdy motyw podmienia tresc kolekcji
+          if (window.__snLicznik) return;
+          window.__snLicznik = true;
+          function koniecZ(tekst) {
+            var m = (tekst || '').match(/(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T]+(\d{1,2})[:.](\d{2}))?/);
+            if (!m) return null;
+            return m[4]
+              ? new Date(+m[1], m[2] - 1, +m[3], +m[4], +m[5], 0)
+              : new Date(+m[1], m[2] - 1, +m[3], 23, 59, 59);
+          }
+          function dwa(n) { return (n < 10 ? '0' : '') + n; }
+          function tik() {
+            var el = document.querySelectorAll('[data-sn-licznik]');
+            for (var i = 0; i < el.length; i++) {
+              var koniec = koniecZ(el[i].getAttribute('data-slut'));
+              var s = koniec ? Math.floor((koniec - new Date()) / 1000) : 0;
+              if (s <= 0) { el[i].hidden = true; continue; }
+              var d = Math.floor(s / 86400); s -= d * 86400;
+              var h = Math.floor(s / 3600); s -= h * 3600;
+              var mi = Math.floor(s / 60); s -= mi * 60;
+              // w dniu konca: 'slutter i aften' (od 17:00 do konca dnia) albo
+              // 'slutter i dag' i sam licznik godzin; wczesniej 'slutter om X dage'
+              var teraz = new Date();
+              var dzis = koniec.toDateString() === teraz.toDateString();
+              var etykieta = el[i].querySelector('[data-sn-etykieta]');
+              if (etykieta) etykieta.textContent = dzis ? (koniec.getHours() >= 17 ? 'slutter i aften' : 'slutter i dag') : 'slutter om';
+              var czas = el[i].querySelector('[data-sn-czas]');
+              if (czas) czas.textContent = (!dzis && d > 0 ? d + (d === 1 ? ' dag ' : ' dage ') : '') + dwa(h + (dzis ? d * 24 : 0)) + ':' + dwa(mi) + ':' + dwa(s);
+              el[i].hidden = false;
+            }
+          }
+          tik();
+          setInterval(tik, 1000);
+        })();
+      </script>
