@@ -543,6 +543,43 @@
     #shopify-section-{{ section.id }} .pdp__grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
 
     {%- comment -%}
+      Kolejnosc na telefonie. Na PC prawa kolumna stoi obok zdjec i widac ja
+      od razu; na telefonie stoi pod zdjeciem, a przed cena byly jeszcze
+      kolory, a miedzy cena a przyciskiem ramka "Kob flere" (ok. 230 px).
+      Zmierzone: cena na 887 px, przycisk koszyka na 1394 px przy ekranie
+      812 px. Teraz: tytul, plakietki, cena -> kolor, pomoc, rozmiary,
+      przycisk -> ramka rabatu i reszta. Kolejnosc tylko w CSS, na PC bez
+      zmian.
+
+      Okruszki na telefonie schowane - 40 px nad zdjeciem.
+    {%- endcomment -%}
+    #shopify-section-{{ section.id }} .pdp__crumbs { display: none; }
+    #shopify-section-{{ section.id }} .pdp__info { display: flex; flex-direction: column; }
+    #shopify-section-{{ section.id }} .pdp__info > * { order: 3; }
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__rating,
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__title,
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__sub,
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__pbs,
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__price,
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__refs { order: 1; }
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__optlabel,
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__swatches,
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__help,
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__opt,
+    #shopify-section-{{ section.id }} .pdp__info > .shopify-product-form { order: 2; }
+    {%- comment -%}
+      Odstepy w nowej kolejnosci. W kolumnie flex marginesy sasiadow sie
+      sumuja zamiast nakladac, a sasiedzi sa teraz inni niz w kodzie:
+      za cena (albo za "Normalpris") 18 px do kolorow, miedzy cena a
+      "Normalpris" dalej 10 px, a ramka pomocy nie dodaje swoich 18 px do
+      18 px pod kolorami.
+    {%- endcomment -%}
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__price { margin-bottom: 18px; }
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__refs { margin-top: -8px; margin-bottom: 18px; }
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__help { margin-top: 0; }
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__promo { margin: 20px 0 6px; }
+
+    {%- comment -%}
       Na telefonie siatka spychala cene daleko pod ekran - przy kilkunastu
       zdjeciach trzeba bylo dlugo przewijac, zanim w ogole widac bylo cene.
       Dlatego zamiast siatki jedna karuzela przesuwana palcem: zajmuje
@@ -935,7 +972,7 @@
         {%- comment -%} ---------- rozmiary i pozostale opcje ---------- {%- endcomment -%}
         {%- for opt in product.options_with_values -%}
           {%- unless forloop.index == poz_koloru -%}
-            <div data-pdp-opt="{{ forloop.index }}">
+            <div class="pdp__opt" data-pdp-opt="{{ forloop.index }}">
               <div class="pdp__sizehead">
                 {%- assign nazwa_tej_opcji = opt.name -%}
                 <span class="pdp__optlabel" style="margin:0;">{% render 'ob-da', mapa: mapa, tekst: nazwa_tej_opcji %}</span>

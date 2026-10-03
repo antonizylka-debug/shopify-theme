@@ -209,7 +209,22 @@
   {%- endcomment -%}
   {%- render 'sn-card-assets' -%}
   {%- if section.settings.mobile_scrollable -%}
-    <style>#CollectionSection-{{ section.id }} .snc__pas { overflow-x: hidden; }</style>
+    {%- comment -%}
+      Motyw daje kafelkom w przewijanym rzedzie 39 procent ekranu (146 px na
+      telefonie) - przy dwoch kolumnach pod zdjeciem na nazwe zostawalo
+      ok. 65 px i wychodzilo "Floral V-...". 45 procent to ok. 169 px, prawie
+      tyle co w kolekcji (176 px), a trzeci kafel nadal wystaje z boku i
+      widac, ze rzad sie przewija.
+    {%- endcomment -%}
+    <style>
+      #CollectionSection-{{ section.id }} .snc__pas { overflow-x: hidden; }
+      @media only screen and (max-width: 768px) {
+        #CollectionSection-{{ section.id }} .grid-overflow-wrapper .snc-item {
+          flex: 0 0 45vw;
+          width: 45vw;
+        }
+      }
+    </style>
   {%- endif -%}
 
   <div class="page-width{% if section.settings.mobile_scrollable %} page-width--flush-small{% endif %}">

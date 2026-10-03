@@ -102,9 +102,35 @@
   }
 
   @media only screen and (max-width: 768px) {
+    {%- comment -%}
+      Na telefonie przyciski kategorii lamaly sie na dwa rzedy i razem z
+      tytulem spychaly pierwsze produkty do polowy ekranu. Teraz stoja w
+      jednym rzedzie przewijanym w bok, od krawedzi do krawedzi ekranu.
+    {%- endcomment -%}
     .collection-pills {
       gap: 8px;
-      margin-bottom: 18px;
+      margin: 0 -17px 16px;
+      padding: 0 17px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .collection-pills::-webkit-scrollbar { display: none; }
+    .collection-pills > li { flex: 0 0 auto; }
+
+    {%- comment -%}
+      Pola dotyku: linki "Se alt til ...", "Til toppen" i "Se alle sporgsmal"
+      mialy 15-21 px wysokosci. Niewidoczny margines wokol powieksza pole
+      do ok. 40 px bez przesuwania ukladu.
+    {%- endcomment -%}
+    .section-header__link--plain,
+    .footer__to-top,
+    .obf__more {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      margin-top: -12px;
+      margin-bottom: -12px;
     }
 
     .collection-pills__link {

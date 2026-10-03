@@ -166,6 +166,7 @@
           "settings": {
             "icon": "lock",
             "text": "Sikker betaling",
+            "hide_m": true,
             "text_m": "Sikker betaling",
             "color": "",
             "link": ""
@@ -202,7 +203,7 @@
         "stack_m": false,
         "sticky": false,
         "breakpoint": 750,
-        "size_m": 9,
+        "size_m": 12,
         "tracking_m": 0.4,
         "icon_size_m": 16,
         "pad_m": 9
