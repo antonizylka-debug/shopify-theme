@@ -1,0 +1,39 @@
+{%- comment -%}
+  Jedna cena w calym sklepie: "549,95 kr", "1.099 kr", "45,50 kr".
+
+  Kropka co trzy cyfry, przecinek przed groszami, a ",00" znika. Grosze
+  zostaja, gdy sa - ceny w sklepie koncza sie na ,95, a schowanie ich
+  zaokraglalo 549,95 w gore do "550 kr", czyli pokazywalo wiecej, niz
+  klientka placi.
+
+  Wczesniej bylo trzech roznych autorow formatu: kafel bral format sklepu
+  bez groszy ("550 kr"), strona produktu wlasny zapas z toFixed ("549,95
+  kr", "1099,00 kr" bez kropki tysiecy), koszyk znowu format sklepu.
+
+  Ten sam zapis w JS: window.snCena w snippets/custom-scripts.liquid.
+  Inna waluta niz DKK -> zwykly filtr money, bo tam nie wiadomo, jakiego
+  zapisu oczekuje klientka.
+
+  @param {number} kwota - w groszach (jak wszystkie ceny w Liquid)
+{%- endcomment -%}
+{%- liquid
+  if cart.currency.iso_code == 'DKK'
+    assign gr = kwota | plus: 0 | round
+    assign kr = gr | divided_by: 100
+    assign ore = gr | modulo: 100
+    if kr >= 1000
+      assign tys = kr | divided_by: 1000
+      assign reszta = kr | modulo: 1000 | plus: 1000 | append: '' | slice: 1, 3
+      assign tekst = tys | append: '.' | append: reszta
+    else
+      assign tekst = kr | append: ''
+    endif
+    if ore > 0
+      assign ore_s = ore | plus: 100 | append: '' | slice: 1, 2
+      assign tekst = tekst | append: ',' | append: ore_s
+    endif
+    echo tekst | append: ' kr'
+  else
+    echo kwota | money
+  endif
+-%}

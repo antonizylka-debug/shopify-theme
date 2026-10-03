@@ -106,20 +106,20 @@
                       {% if settings.predictive_search_show_price %}
                         {%- if on_sale -%}
                           <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
-                          <span class="grid-product__price--original">{{ product.compare_at_price | money }}</span>
+                          <span class="grid-product__price--original">{%- render 'sn-cena', kwota: product.compare_at_price -%}</span>
                           <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
                         {%- endif -%}
 
                         {%- if product.price_varies -%}
-                          {%- assign price = product.price_min | money -%}
+                          {%- capture price -%}{%- render 'sn-cena', kwota: product.price_min -%}{%- endcapture -%}
                           <span class="grid-product__price">{{ 'products.general.from_text_html' | t: price: price }}</span>
                         {%- else -%}
-                          <span class="grid-product__price">{{ product.price | money }}</span>
+                          <span class="grid-product__price">{%- render 'sn-cena', kwota: product.price -%}</span>
                         {%- endif -%}
                         {%- if on_sale -%}
                           {%- if settings.product_save_amount -%}
                             {%- if settings.product_save_type == 'dollar' -%}
-                              {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money }}{%- endcapture -%}
+                              {%- assign sn_roznica = product.compare_at_price | minus: product.price -%}{%- capture saved_amount -%}{%- render 'sn-cena', kwota: sn_roznica -%}{%- endcapture -%}
                             {%- else -%}
                               {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
                             {%- endif -%}

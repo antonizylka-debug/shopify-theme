@@ -282,6 +282,7 @@
        po angielsku, co obok duńskich cen na siatce zdradza obcy sklep.
        Intl zostaje tylko na wypadek, gdyby motyw formatera nie mial. */
     function pieniadze(grosze) {
+      if (window.snCena && WALUTA === 'DKK') return window.snCena(grosze);
       if (window.theme && window.theme.Currency && window.theme.Currency.formatMoney) {
         try { return window.theme.Currency.formatMoney(grosze, FORMAT); } catch (e) {}
       }

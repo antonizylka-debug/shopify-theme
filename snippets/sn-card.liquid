@@ -120,10 +120,10 @@
         </span>
         <span class="snc__ceny">
           {%- if na_promocji -%}
-            <span class="snc__jest">{{ product.price | money }}</span>
-            <span class="snc__bylo">{{ product.compare_at_price | money }}</span>
+            <span class="snc__jest">{%- render 'sn-cena', kwota: product.price -%}</span>
+            <span class="snc__bylo">{%- render 'sn-cena', kwota: product.compare_at_price -%}</span>
           {%- else -%}
-            <span class="snc__jest">{% if product.price_varies %}<span class="snc__od">Fra</span> {% endif %}{{ product.price | money }}</span>
+            <span class="snc__jest">{% if product.price_varies %}<span class="snc__od">Fra</span> {% endif %}{%- render 'sn-cena', kwota: product.price -%}</span>
           {%- endif -%}
         </span>
       </span>

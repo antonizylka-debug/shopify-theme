@@ -7,6 +7,40 @@
   i przy aktualizacji Impulse zostalby nadpisany.
 {% endcomment %}
 
+{%- comment -%}
+  Jedna cena w calym sklepie, wersja JS - ta sama co snippets/sn-cena.liquid:
+  "549,95 kr", "1.099 kr". Stoi w <head>, wiec jest gotowa, zanim ruszy
+  skrypt strony produktu czy okna wyboru.
+
+  Po zaladowaniu motywu podmienia tez theme.Currency.formatMoney. Przez
+  niego motyw liczy sume w koszyku, oszczednosc i suwak ceny w filtrach -
+  bez tego koszyk pokazywalby "550 kr" pod produktem za 549,95 kr.
+  Tylko dla DKK; inna waluta idzie formatem sklepu jak dotad.
+{%- endcomment -%}
+<script>
+  (function () {
+    var DKK = {{ cart.currency.iso_code | json }} === 'DKK';
+    window.snCena = function (gr, zapas) {
+      gr = Math.round(Number(gr) || 0);
+      if (!DKK) return typeof zapas === 'function' ? zapas(gr) : (gr / 100).toFixed(2);
+      var ujemna = gr < 0;
+      gr = Math.abs(gr);
+      var kr = Math.floor(gr / 100), ore = gr % 100;
+      var s = String(kr).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      if (ore) s += ',' + (ore < 10 ? '0' : '') + ore;
+      return (ujemna ? '-' : '') + s + ' kr';
+    };
+    if (!DKK) return;
+    function podmien() {
+      if (!window.theme || !window.theme.Currency || window.theme.Currency.__sn) return;
+      window.theme.Currency.formatMoney = function (gr) { return window.snCena(gr); };
+      window.theme.Currency.__sn = true;
+    }
+    podmien();
+    document.addEventListener('DOMContentLoaded', podmien);
+  })();
+</script>
+
 {%- assign ob_czerwien = '#d6332e' -%}
 {%- style -%}
   /* ---------- kafelek w wyprzedazy ---------- */

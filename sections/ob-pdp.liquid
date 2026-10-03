@@ -285,7 +285,25 @@
     font-size: {{ section.settings.price_size }}px; font-weight: 700; line-height: 1.1;
     display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap;
   }
-  #shopify-section-{{ section.id }} .pdp__price--sale { color: var(--pdp-sale); }
+  {%- comment -%}
+    Cena czarna, tak jak na kafelkach (wariant 07 z makiety) - rabat mowi
+    pigulka obok, jednym kolorowym elementem.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp__price--sale { color: var(--pdp-text); }
+  #shopify-section-{{ section.id }} .pdp__pigulka {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 3px 9px 2px;
+    border-radius: 12px;
+    background: #fbe9e8;
+    color: var(--pdp-sale);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    vertical-align: middle;
+    font-variant-numeric: tabular-nums;
+  }
+  #shopify-section-{{ section.id }} .pdp__pigulka[hidden] { display: none; }
   #shopify-section-{{ section.id }} .pdp__vat {
     font-size: 13px; font-weight: 400; color: var(--pdp-muted);
   }
@@ -641,9 +659,11 @@
           endif
 
           assign jest_plakietka = false
-          if section.settings.show_flag and malo and section.settings.flag_label != blank
-            assign jest_plakietka = true
-          endif
+          # Flaga "Udsalg" na zdjeciu wylaczona: rabat mowi juz pigulka przy
+          # cenie. Na gorze strony stal czterokrotnie - "UDSALG", "TILBUD",
+          # "-50%" i jeszcze raz "-50%" po cenie normalnej. Ustawienia
+          # show_flag i flag_label zostaja w schemacie, bo edytor trzyma ich
+          # wartosci w szablonie.
         -%}
 
         {%- if jest_plakietka or notka != blank -%}
@@ -831,14 +851,13 @@
             assign etykieta_extra = extra_meta.value
           endif
         -%}
-        {%- if na_przecenie or etykieta_extra != blank -%}
+        {%- comment -%}
+          Plakietki "TILBUD" i "-50%" nad cena zdjete - rabat mowi jeden
+          element: pigulka zaraz przy cenie. Zostaje tylko wlasna plakietka
+          produktu (metapole custom.price_badge albo "Second badge").
+        {%- endcomment -%}
+        {%- if etykieta_extra != blank -%}
           <div class="pdp__pbs">
-            {%- if na_przecenie and section.settings.pb_sale_label != blank -%}
-              <span class="pdp__pb pdp__pb--sale">{{ section.settings.pb_sale_label }}</span>
-            {%- endif -%}
-            {%- if na_przecenie and rabat > 0 -%}
-              <span class="pdp__pb pdp__pb--sale">-{{ rabat }}%</span>
-            {%- endif -%}
             {%- if etykieta_extra != blank -%}
               <span class="pdp__pb pdp__pb--extra">{{ etykieta_extra }}</span>
             {%- endif -%}
@@ -847,7 +866,8 @@
 
         {%- comment -%} ---------- cena ---------- {%- endcomment -%}
         <div class="pdp__price{% if na_przecenie %} pdp__price--sale{% endif %}" data-pdp-price>
-          <span data-pdp-now>{{ war.price | money }}</span>
+          <span data-pdp-now>{%- render 'sn-cena', kwota: war.price -%}</span>
+          <span class="pdp__pigulka" data-pdp-pigulka{% unless na_przecenie and rabat > 0 %} hidden{% endunless %}>−{{ rabat }} %</span>
           {%- if section.settings.vat_note != blank -%}
             <span class="pdp__vat">{{ section.settings.vat_note }}</span>
           {%- endif -%}
@@ -855,7 +875,7 @@
 
         <div class="pdp__refs">
           <span class="pdp__ref" data-pdp-ref-normal{% unless na_przecenie %} hidden{% endunless %}>
-            {{ section.settings.label_normal }}<s>{{ war.compare_at_price | money }}</s><b>-{{ rabat }}%</b>
+            {{ section.settings.label_normal }}<s>{%- render 'sn-cena', kwota: war.compare_at_price -%}</s>
           </span>
 
           {%- liquid
@@ -872,7 +892,7 @@
           -%}
           {%- if pokaz_omni -%}
             <span class="pdp__ref">
-              {{ section.settings.label_omnibus }}<s>{{ omni_gr | money }}</s>
+              {{ section.settings.label_omnibus }}<s>{%- render 'sn-cena', kwota: omni_gr -%}</s>
               {%- if spadek > 0 -%}<b>-{{ spadek }}%</b>{%- endif -%}
             </span>
           {%- endif -%}
@@ -1094,6 +1114,8 @@
     var FORMAT = {{ shop.money_format | json }};
 
     function kwota(gr) {
+      /* Wspolny zapis cen z custom-scripts: "549,95 kr", "1.099 kr". */
+      if (window.snCena && {{ cart.currency.iso_code | json }} === 'DKK') return window.snCena(gr);
       if (window.theme && window.theme.Currency && window.theme.Currency.formatMoney) return window.theme.Currency.formatMoney(gr, FORMAT);
       if (window.Shopify && window.Shopify.formatMoney) return window.Shopify.formatMoney(gr, FORMAT);
       return (gr / 100).toFixed(2).replace('.', ',') + ' kr';
@@ -1141,10 +1163,15 @@
       blokCeny.classList.toggle('pdp__price--sale', !!przecena);
       teraz.innerHTML = kwota(w.price);
 
+      var pigulka = root.querySelector('[data-pdp-pigulka]');
+      var p = przecena ? Math.round((w.compare_at_price - w.price) / w.compare_at_price * 100) : 0;
+      if (pigulka) {
+        pigulka.textContent = '−' + p + ' %';
+        pigulka.hidden = !(przecena && p > 0);
+      }
       if (refNormal) {
         if (przecena) {
-          var p = Math.round((w.compare_at_price - w.price) / w.compare_at_price * 100);
-          refNormal.innerHTML = ETYKIETA + '<s>' + kwota(w.compare_at_price) + '</s><b>-' + p + '%</b>';
+          refNormal.innerHTML = ETYKIETA + '<s>' + kwota(w.compare_at_price) + '</s>';
           refNormal.hidden = false;
         } else {
           refNormal.hidden = true;

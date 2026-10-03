@@ -325,16 +325,16 @@ Arguments
             <span class="grid-product__price-now">
               {%- if on_sale -%}<span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>{%- endif -%}
               {%- if product.price_varies -%}
-                {%- assign price = product.price_min | money -%}
+                {%- capture price -%}{%- render 'sn-cena', kwota: product.price_min -%}{%- endcapture -%}
                 {{ 'products.general.from_text_html' | t: price: price }}
               {%- else -%}
-                {{ product.price | money }}
+                {%- render 'sn-cena', kwota: product.price -%}
               {%- endif -%}
             </span>
             {%- if on_sale -%}
               <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
               <span class="grid-product__price--original">
-                {{ 'products.general.was_price' | t }} {{ product.compare_at_price | money }}
+                {{ 'products.general.was_price' | t }} {%- render 'sn-cena', kwota: product.compare_at_price -%}
               </span>
 
               {%- comment -%}
@@ -346,7 +346,7 @@ Arguments
               {%- if najnizsza != blank and najnizsza.value != blank -%}
                 {%- assign najnizsza_gr = najnizsza.value | times: 100 -%}
                 <span class="grid-product__lowest">
-                  {{ 'products.general.lowest_30d' | t }} {{ najnizsza_gr | money }}
+                  {{ 'products.general.lowest_30d' | t }} {%- render 'sn-cena', kwota: najnizsza_gr -%}
                   {%- if najnizsza_gr > product.price -%}
                     {%- assign spadek = najnizsza_gr | minus: product.price | times: 100.0 | divided_by: najnizsza_gr | round -%}
                     <b>-{{ spadek }}%</b>
@@ -357,7 +357,7 @@ Arguments
             {%- if on_sale -%}
               {%- if settings.product_save_amount -%}
                 {%- if settings.product_save_type == 'dollar' -%}
-                  {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | money }}{%- endcapture -%}
+                  {%- assign sn_roznica = product.compare_at_price | minus: product.price -%}{%- capture saved_amount -%}{%- render 'sn-cena', kwota: sn_roznica -%}{%- endcapture -%}
                 {%- else -%}
                   {%- capture saved_amount -%}{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}%{%- endcapture -%}
                 {%- endif -%}
