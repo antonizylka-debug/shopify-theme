@@ -103,9 +103,10 @@
 
   @media only screen and (max-width: 768px) {
     {%- comment -%}
-      Na telefonie przyciski kategorii lamaly sie na dwa rzedy i razem z
-      tytulem spychaly pierwsze produkty do polowy ekranu. Teraz stoja w
-      jednym rzedzie przewijanym w bok, od krawedzi do krawedzi ekranu.
+      Pigulki z naglowka kolekcji (sekcja collection-header, ustawienie
+      pills_menu - dzis puste we wszystkich szablonach) w jednym rzedzie
+      przewijanym w bok. Widoczne przyciski ALL / DAME / HERRE to inny
+      element - .collection-links, nizej w bloku dla telefonu.
     {%- endcomment -%}
     .collection-pills {
       gap: 8px;
@@ -1115,17 +1116,30 @@
       margin-bottom: 18px;
     }
 
+    {%- comment -%}
+      Przyciski ALL / DAME / HERRE / HOME DECOR: jeden rzad przewijany w bok,
+      od krawedzi do krawedzi ekranu (17 px = margines strony). Wczesniej
+      HOME DECOR spadalo do drugiego rzedu i spychalo produkty o 64 px.
+    {%- endcomment -%}
     .template-collection .collection-links-row .collection-links {
       flex: 1 1 100%;
       gap: 10px;
-      margin: 0;
+      margin: 0 -17px;
+      padding: 0 17px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
+    .template-collection .collection-links-row .collection-links::-webkit-scrollbar { display: none; }
 
     .collection-links__item {
       padding: 12px 18px;
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.1em;
+      flex: 0 0 auto;
+      white-space: nowrap;
     }
 
     .collection-toolbar__filter,
