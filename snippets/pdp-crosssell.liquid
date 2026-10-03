@@ -16,24 +16,16 @@
 {%- endcomment -%}
 
 {%- comment -%}
-  Co pokazac. Wczesniej rzad bral produkty z tej samej kolekcji, wiec pod
-  sukienka staly kolejne sukienki - a naglowek "Style den med" obiecuje
-  rzeczy do stylizacji. Teraz trzy kolekcje, ktore ten produkt uzupelniaja,
-  dobrane wedlug plci (kolekcja mens/womens, rozlaczne) i rodzaju:
+  Co pokazac: bestsellery dla plci produktu - kolekcja Dame (womens) albo
+  Herre (mens), kolekcje sa w sklepie rozlaczne. Kolejnosc bierze sie z
+  ustawienia kolekcji w panelu: przy sortowaniu "Najlepiej sprzedajace
+  sie" to sa prawdziwe bestsellery, liczone przez Shopify ze sprzedazy.
+  Motyw nie ma dostepu do danych o sprzedazy, wiec sam ich nie policzy.
 
-    sukienka, komplet   -> buty, dodatki, kurtki
-    gora (bluzka, sweter, koszula) -> spodnie/spodnice, buty, dodatki
-    spodnie, spodnica   -> gora, buty, dodatki
-    kurtka, plaszcz     -> swetry, spodnie, buty
-    buty                -> sukienki (meskie: koszule), spodnie, dodatki
-    dodatek             -> sukienki (meskie: koszule), gora, buty
+  Wczesniej rzad dobieral rzeczy do stylizacji (buty, dodatki, kurtki) -
+  Antoni wolal bestsellery.
 
-  Produkty ida na przemian z trzech kolekcji (but, dodatek, kurtka, but...).
-  Punkt startu zalezy od produktu, zeby nie kazda sukienka pokazywala te
-  same trzy buty.
-
-  Kolekcja wybrana recznie w ustawieniach sekcji ("Collection") wygrywa -
-  wtedy rzad bierze tylko z niej, jak dawniej.
+  Kolekcja wybrana recznie w ustawieniach sekcji ("Collection") wygrywa.
 {%- endcomment -%}
 {%- liquid
   assign ile = ustawienia.cross_count
@@ -42,42 +34,14 @@
 
   if reczna != blank and reczna.products_count > 0
     assign lista = reczna.handle
+  elsif uchwyty contains 'mens'
+    assign lista = 'mens'
   else
-    if uchwyty contains 'mens'
-      assign prefiks = 'mens-'
-      assign gora_kol = 'mens-shirts'
-      assign sukienki_kol = 'mens-shirts'
-    else
-      assign prefiks = 'womens-'
-      assign gora_kol = 'womens-tops'
-      assign sukienki_kol = 'womens-dresses'
-    endif
-
-    assign buty = prefiks | append: 'footwear'
-    assign dodatki = prefiks | append: 'accessories'
-    assign kurtki = prefiks | append: 'jackets-and-coats'
-    assign doly = prefiks | append: 'bottoms'
-    assign swetry = prefiks | append: 'sweaters-and-knitwear'
-
-    assign lista = buty | append: ',' | append: dodatki | append: ',' | append: kurtki
-    if uchwyty contains buty
-      assign lista = sukienki_kol | append: ',' | append: doly | append: ',' | append: dodatki
-    elsif uchwyty contains dodatki
-      assign lista = sukienki_kol | append: ',' | append: gora_kol | append: ',' | append: buty
-    elsif uchwyty contains kurtki
-      assign lista = swetry | append: ',' | append: doly | append: ',' | append: buty
-    elsif uchwyty contains doly
-      assign lista = gora_kol | append: ',' | append: buty | append: ',' | append: dodatki
-    elsif uchwyty contains 'womens-tops' or uchwyty contains 'womens-shirts' or uchwyty contains 'womens-sweaters-and-knitwear' or uchwyty contains 'mens-tops' or uchwyty contains 'mens-shirts' or uchwyty contains 'mens-sweaters-and-knitwear'
-      assign lista = doly | append: ',' | append: buty | append: ',' | append: dodatki
-    endif
+    assign lista = 'womens'
   endif
 
   assign kolekcje_x = lista | split: ','
-  assign start = product.id | modulo: 12
-  if kolekcje_x.size == 1
-    assign start = 0
-  endif
+  assign start = 0
 
   assign jest_co = false
   for h in kolekcje_x
