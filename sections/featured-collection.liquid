@@ -154,6 +154,26 @@
       #CollectionSection-{{ section.id }} .section-header__link--plain:hover .section-header__arrow {
         transform: translateX(4px);
       }
+
+  {%- comment -%}
+    Telefon: naglowek 34 px lamal sie na dwie linie, a "Se alt til damer"
+    wciskal sie obok w trzy linijki. Na waskim ekranie link schodzi pod
+    naglowek, w jednej linijce, a naglowek maleje do ok. 70 procent.
+  {%- endcomment -%}
+  @media only screen and (max-width: 768px) {
+    #CollectionSection-{{ section.id }} .section-header--with-link {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    #CollectionSection-{{ section.id }} .section-header__title {
+      font-size: {{ section.settings.heading_size | default: 30 | times: 0.7 | round }}px;
+      line-height: 1.15;
+    }
+    #CollectionSection-{{ section.id }} .section-header__eyebrow { margin-bottom: 6px; font-size: 11px; }
+    #CollectionSection-{{ section.id }} .section-header__link--plain { white-space: nowrap; font-size: 11px; }
+  }
     </style>
 
     <div class="page-width">
