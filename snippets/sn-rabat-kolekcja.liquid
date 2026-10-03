@@ -1,10 +1,10 @@
 {%- comment -%}
   Rabat za ilosc na gorze kolekcji, zaraz pod tytulem - na telefonie
   pierwsza rzecz, ktora widac po wejsciu w kolekcje.
-  Zwarty: czerwony naglowek akcji (z licznikiem, gdy jest data), tytul,
-  progi w jednym rzedzie z cienkimi kreskami i jedna linijka na dole
-  (zasady szarym + haslo pogrubione). Na PC jeden poziomy pas: tekst po
-  lewej, progi po prawej. Wczesniejsze wersje mialy na telefonie 236-256 px.
+  Ten sam wyglad co ramka akcji na stronie produktu (.pdp__akcja w
+  ob-pdp): wysrodkowana, czerwony naglowek akcji (z licznikiem, gdy jest
+  data w Ustawieniach motywu > Campaign), tytul, progi w jednym rzedzie
+  z cienkimi kreskami, linijka zasad szarym i haslo pogrubione.
 
   Parametry: title, sub, text2 i note (opcjonalne), tiers ("2:10, 3:20, 4:25, 5:30").
   Progi musza sie zgadzac z rabatami automatycznymi w Shopify - sprawdzone
@@ -15,24 +15,18 @@
   <div class="snbund">
     <style>
       .snbund { margin: 0 0 24px; }
-      .snbund__box {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px 40px;
-        padding: 18px 28px;
-        background: #fdf6f4;
-      }
-      .snbund__tekst { min-width: 0; }
+      .snbund__box { padding: 14px 16px 13px; background: #fdf6f4; text-align: center; }
+      .snbund__in { max-width: 560px; margin: 0 auto; }
       .snbund__brw {
         display: flex;
         align-items: center;
+        justify-content: center;
         flex-wrap: wrap;
         gap: 2px 8px;
-        margin: 0 0 4px;
-        font-size: 12px;
+        margin: 0 0 3px;
+        font-size: 11px;
         font-weight: 700;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
         color: #c8102e;
       }
@@ -49,33 +43,24 @@
       @media (prefers-reduced-motion: reduce) { .snbund__dot::after { animation: none; } }
       .snbund__licznik[hidden] { display: none; }
       .snbund__licznik b { font-weight: 700; font-variant-numeric: tabular-nums; }
-      .snbund__tytul {
-        margin: 0;
-        font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
-        font-size: 22px;
-        font-weight: 600;
-        line-height: 1.2;
-        letter-spacing: 0.01em;
-        text-transform: none;
-        color: #1c1d1d;
-      }
-      .snbund__linia { margin: 4px 0 0; font-size: 13.5px; line-height: 1.4; color: #6e6b65; text-wrap: balance; }
-      .snbund__linia b { font-weight: 700; color: #1c1d1d; }
+      .snbund__tytul { margin: 0 0 8px; font-size: 16px; font-weight: 700; line-height: 1.3; text-transform: none; letter-spacing: 0; color: #1c1d1d; }
       .snbund__progi {
         display: grid;
         grid-auto-flow: column;
         grid-auto-columns: minmax(0, 1fr);
-        flex: 0 0 auto;
         margin: 0;
-        padding: 0;
+        padding: 7px 0 0;
         list-style: none;
+        border-top: 1px solid #e8d9d6;
       }
-      .snbund__prog { display: flex; flex-direction: column; align-items: center; gap: 2px; margin: 0; padding: 4px 18px; }
-      .snbund__prog + .snbund__prog { border-left: 1px solid #ead9d5; }
-      .snbund__ile { font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6e6b65; white-space: nowrap; }
-      .snbund__proc { font-size: 22px; font-weight: 700; line-height: 1.1; color: #1c1d1d; white-space: nowrap; font-variant-numeric: tabular-nums; }
+      .snbund__prog { display: flex; flex-direction: column; align-items: center; margin: 0; padding: 0 2px; }
+      .snbund__prog + .snbund__prog { border-left: 1px solid #e8d9d6; }
+      .snbund__ile { font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #6e6b65; white-space: nowrap; }
+      .snbund__proc { font-size: 18px; font-weight: 700; line-height: 1.15; color: #1c1d1d; white-space: nowrap; font-variant-numeric: tabular-nums; }
       .snbund__prog--max .snbund__ile,
       .snbund__prog--max .snbund__proc { color: #c8102e; }
+      .snbund__pod { margin: 8px 0 0; font-size: 12.5px; line-height: 1.4; color: #6e6b65; text-wrap: balance; }
+      .snbund__note { margin: 2px 0 0; font-size: 12.5px; font-weight: 700; line-height: 1.4; color: #1c1d1d; text-wrap: balance; }
       /* strzalki rzedu podkategorii (38 px) wisza 62 px nad nim - bez tego
          odstepu wchodzily na kafel. 72 = 62 + 10 px przerwy; marginesy
          sie nakladaja, wiec liczy sie wiekszy, nie suma z marginesem kafla */
@@ -84,55 +69,45 @@
       }
       @media only screen and (max-width: 768px) {
         .snbund { margin: 0 0 14px; }
-        .snbund__box { flex-direction: column; align-items: stretch; gap: 8px; padding: 12px 10px 10px; text-align: center; }
-        .snbund__brw { justify-content: center; margin-bottom: 2px; font-size: 10.5px; }
-        .snbund__tytul { font-size: 17px; }
-        .snbund__progi { order: 2; border-top: 1px solid #ead9d5; padding-top: 6px; }
-        .snbund__prog { padding: 0 2px; gap: 0; }
-        .snbund__ile { font-size: 10px; letter-spacing: 0.05em; }
-        .snbund__proc { font-size: 17px; }
-        .snbund__linia { order: 3; margin: 0; font-size: 12px; }
-        .snbund__sep { display: none; }
-        .snbund__linia b { display: block; }
-        .snbund__tekst { display: contents; }
-        .snbund__naglowek { order: 1; }
+        .snbund__box { padding: 12px 12px 11px; }
+        .snbund__tytul { font-size: 15px; }
       }
     </style>
     <div class="snbund__box">
-      <div class="snbund__tekst">
-        <div class="snbund__naglowek">
-          {%- if settings.campaign_name != blank -%}
-            <p class="snbund__brw">
-              <span class="snbund__dot" aria-hidden="true"></span>
-              {{ settings.campaign_name | escape }}
-              {%- if settings.campaign_end != blank -%}
-                <span class="snbund__licznik" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>slutter om</span> <b data-sn-czas></b></span>
-              {%- endif -%}
-            </p>
-          {%- endif -%}
-          <p class="snbund__tytul">{{ title | escape }}</p>
-        </div>
-        {%- if sub != blank or text2 != blank or note != blank -%}
-          <p class="snbund__linia">
-            {%- if sub != blank -%}{{ sub | escape }}{%- endif -%}
-            {%- if text2 != blank -%}{%- if sub != blank %}<span class="snbund__sep"> · </span>{% endif -%}{{ text2 | escape }}{%- endif -%}
-            {%- if note != blank -%}{%- if sub != blank or text2 != blank %}<span class="snbund__sep"> · </span>{% endif -%}<b>{{ note | escape }}</b>{%- endif -%}
+      <div class="snbund__in">
+        {%- if settings.campaign_name != blank -%}
+          <p class="snbund__brw">
+            <span class="snbund__dot" aria-hidden="true"></span>
+            {{ settings.campaign_name | escape }}
+            {%- if settings.campaign_end != blank -%}
+              <span class="snbund__licznik" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>slutter om</span> <b data-sn-czas></b></span>
+            {%- endif -%}
           </p>
         {%- endif -%}
+        <p class="snbund__tytul">{{ title | escape }}</p>
+        <ol class="snbund__progi">
+          {%- for prog in progi -%}
+            {%- assign czesci = prog | split: ':' -%}
+            {%- assign ile = czesci[0] | strip -%}
+            {%- assign proc = czesci[1] | strip -%}
+            {%- if ile != blank and proc != blank -%}
+              <li class="snbund__prog{% if forloop.last %} snbund__prog--max{% endif %}">
+                <span class="snbund__ile">{{ ile }}{% if forloop.last %}+{% endif %} stk.</span>
+                <span class="snbund__proc">−{{ proc }} %</span>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ol>
+        {%- if sub != blank -%}
+          <p class="snbund__pod">{{ sub | escape }}</p>
+        {%- endif -%}
+        {%- if text2 != blank -%}
+          <p class="snbund__pod">{{ text2 | escape }}</p>
+        {%- endif -%}
+        {%- if note != blank -%}
+          <p class="snbund__note">{{ note | escape }}</p>
+        {%- endif -%}
       </div>
-      <ol class="snbund__progi">
-        {%- for prog in progi -%}
-          {%- assign czesci = prog | split: ':' -%}
-          {%- assign ile = czesci[0] | strip -%}
-          {%- assign proc = czesci[1] | strip -%}
-          {%- if ile != blank and proc != blank -%}
-            <li class="snbund__prog{% if forloop.last %} snbund__prog--max{% endif %}">
-              <span class="snbund__ile">{{ ile }}{% if forloop.last %}+{% endif %} stk.</span>
-              <span class="snbund__proc">−{{ proc }} %</span>
-            </li>
-          {%- endif -%}
-        {%- endfor -%}
-      </ol>
     </div>
     {%- if settings.campaign_end != blank -%}{%- render 'sn-licznik' -%}{%- endif -%}
   </div>
