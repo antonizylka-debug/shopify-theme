@@ -68,6 +68,8 @@
         strony. Licznik tylko wtedy, gdy w ustawieniach jest data konca
         prawdziwej akcji; po tej chwili znika sam i wraca maly tekst.
       {%- endcomment -%}
+      {%- comment -%} data z ustawien menu, a gdy pusta - wspolna data akcji (Campaign) {%- endcomment -%}
+      {%- assign mnav_koniec = section.settings.mnav_bar_end | default: settings.campaign_end -%}
       {%- if section.settings.mnav_bar_show and section.settings.mnav_bar_title != blank -%}
         <a href="{{ section.settings.mnav_bar_link | default: routes.all_products_collection_url }}"
           class="mnav__oferta appear-animation appear-delay-1"
@@ -77,8 +79,8 @@
             {%- if section.settings.mnav_bar_text != blank -%}
               <span class="mnav__oferta-pod" data-mnav-pod>{{ section.settings.mnav_bar_text | escape }}</span>
             {%- endif -%}
-            {%- if section.settings.mnav_bar_end != blank -%}
-              <span class="mnav__oferta-pod mnav__oferta-licznik" data-mnav-licznik data-slut="{{ section.settings.mnav_bar_end | escape }}" hidden>Slutter om <b data-mnav-czas></b></span>
+            {%- if mnav_koniec != blank -%}
+              <span class="mnav__oferta-pod mnav__oferta-licznik" data-mnav-licznik data-slut="{{ mnav_koniec | escape }}" hidden>Slutter om <b data-mnav-czas></b></span>
             {%- endif -%}
           </span>
           {%- if section.settings.mnav_bar_cta != blank -%}
@@ -88,7 +90,7 @@
             </span>
           {%- endif -%}
         </a>
-        {%- if section.settings.mnav_bar_end != blank -%}
+        {%- if mnav_koniec != blank -%}
           <script>
             (function () {
               var el = document.querySelector('#NavDrawer [data-mnav-licznik]');

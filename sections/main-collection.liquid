@@ -47,6 +47,7 @@
         {%- render 'sn-rabat-kolekcja',
           title: section.settings.bundle_title,
           sub: section.settings.bundle_sub,
+          note: section.settings.bundle_note,
           tiers: section.settings.bundle_tiers
         -%}
       {%- endif -%}
@@ -424,7 +425,13 @@
       "type": "text",
       "id": "bundle_sub",
       "label": "Text",
-      "default": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens."
+      "default": "Ekstra rabat oven i udsalgspriserne – trækkes automatisk i kurven. Bland frit."
+    },
+    {
+      "type": "text",
+      "id": "bundle_note",
+      "label": "Extra line (bold)",
+      "info": "Optional, e.g. your own urgency line. Empty = hidden."
     },
     {
       "type": "text",

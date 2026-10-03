@@ -1133,5 +1133,26 @@
         "label": "t:settings_schema.extras.settings.disable_animations.label"
       }
     ]
+  },
+  {
+    "name": "Campaign",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "One end date for the whole store: the countdown shows in the collection discount box and in the phone menu, and disappears by itself after this moment. Set the same end date on the discounts in Shopify, Discounts - a countdown to an offer that keeps running is misleading."
+      },
+      {
+        "type": "text",
+        "id": "campaign_name",
+        "label": "Campaign name",
+        "default": "Sæsonudsalg"
+      },
+      {
+        "type": "text",
+        "id": "campaign_end",
+        "label": "Campaign ends at",
+        "info": "Format: 2026-10-31 23:59. Empty = no countdown."
+      }
+    ]
   }
 ]
