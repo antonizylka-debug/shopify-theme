@@ -92,6 +92,8 @@
         .snbund__ile { font-size: 10px; letter-spacing: 0.05em; }
         .snbund__proc { font-size: 17px; }
         .snbund__linia { order: 3; margin: 0; font-size: 12px; }
+        .snbund__sep { display: none; }
+        .snbund__linia b { display: block; }
         .snbund__tekst { display: contents; }
         .snbund__naglowek { order: 1; }
       }
@@ -113,8 +115,8 @@
         {%- if sub != blank or text2 != blank or note != blank -%}
           <p class="snbund__linia">
             {%- if sub != blank -%}{{ sub | escape }}{%- endif -%}
-            {%- if text2 != blank -%}{%- if sub != blank %} · {% endif -%}{{ text2 | escape }}{%- endif -%}
-            {%- if note != blank -%}{%- if sub != blank or text2 != blank %} · {% endif -%}<b>{{ note | escape }}</b>{%- endif -%}
+            {%- if text2 != blank -%}{%- if sub != blank %}<span class="snbund__sep"> · </span>{% endif -%}{{ text2 | escape }}{%- endif -%}
+            {%- if note != blank -%}{%- if sub != blank or text2 != blank %}<span class="snbund__sep"> · </span>{% endif -%}<b>{{ note | escape }}</b>{%- endif -%}
           </p>
         {%- endif -%}
       </div>
