@@ -106,7 +106,7 @@
               <span class="snbund__dot" aria-hidden="true"></span>
               {{ settings.campaign_name | escape }}
               {%- if settings.campaign_end != blank -%}
-                <span class="snbund__licznik" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· slutter om <b data-sn-czas></b></span>
+                <span class="snbund__licznik" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>slutter om</span> <b data-sn-czas></b></span>
               {%- endif -%}
             </p>
           {%- endif -%}
@@ -158,8 +158,14 @@
               var d = Math.floor(s / 86400); s -= d * 86400;
               var h = Math.floor(s / 3600); s -= h * 3600;
               var mi = Math.floor(s / 60); s -= mi * 60;
+              // w dniu konca: 'slutter i aften' (od 17:00 do konca dnia) albo
+              // 'slutter i dag' i sam licznik godzin; wczesniej 'slutter om X dage'
+              var teraz = new Date();
+              var dzis = koniec.toDateString() === teraz.toDateString();
+              var etykieta = el[i].querySelector('[data-sn-etykieta]');
+              if (etykieta) etykieta.textContent = dzis ? (koniec.getHours() >= 17 ? 'slutter i aften' : 'slutter i dag') : 'slutter om';
               var czas = el[i].querySelector('[data-sn-czas]');
-              if (czas) czas.textContent = (d > 0 ? d + (d === 1 ? ' dag ' : ' dage ') : '') + dwa(h) + ':' + dwa(mi) + ':' + dwa(s);
+              if (czas) czas.textContent = (!dzis && d > 0 ? d + (d === 1 ? ' dag ' : ' dage ') : '') + dwa(h + (dzis ? d * 24 : 0)) + ':' + dwa(mi) + ':' + dwa(s);
               el[i].hidden = false;
             }
           }
