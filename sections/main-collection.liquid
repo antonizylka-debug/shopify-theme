@@ -47,6 +47,7 @@
         {%- render 'sn-rabat-kolekcja',
           title: section.settings.bundle_title,
           sub: section.settings.bundle_sub,
+          text2: section.settings.bundle_text2,
           note: section.settings.bundle_note,
           tiers: section.settings.bundle_tiers
         -%}
@@ -425,13 +426,20 @@
       "type": "text",
       "id": "bundle_sub",
       "label": "Text",
-      "default": "Ekstra rabat oven i udsalgspriserne – trækkes automatisk i kurven. Bland frit."
+      "default": "Vi fejrer den nye sæson med op til 70 % rabat – plus ekstra mængderabat, der trækkes automatisk i kurven. Bland frit. 🤍"
+    },
+    {
+      "type": "text",
+      "id": "bundle_text2",
+      "label": "Second text",
+      "default": "Mange af vores mest populære styles sælger hurtigt, og når de er væk, kommer de måske ikke igen."
     },
     {
       "type": "text",
       "id": "bundle_note",
       "label": "Extra line (bold)",
-      "info": "Optional, e.g. your own urgency line. Empty = hidden."
+      "default": "Når de er væk, er de væk.",
+      "info": "Empty = hidden."
     },
     {
       "type": "text",

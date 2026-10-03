@@ -3,7 +3,7 @@
   Bundle Savings" u Iselle, ale zwiezle: tytul, jedno zdanie, progi.
   Na telefonie to pierwsza rzecz, ktora widac po wejsciu w kolekcje.
 
-  Parametry: title, sub, note (opcjonalny), tiers ("2:10, 3:20, 4:25, 5:30").
+  Parametry: title, sub, text2 i note (opcjonalne), tiers ("2:10, 3:20, 4:25, 5:30").
   Progi musza sie zgadzac z rabatami automatycznymi w Shopify - sprawdzone
   w koszyku 2026-10-03: 2 = 10 %, 3 = 20 %, 4 = 25 %, 5 i wiecej = 30 %.
 {%- endcomment -%}
@@ -58,7 +58,9 @@
         color: #1c1d1d;
       }
       .snbund__pod { margin: 0; font-size: 14px; line-height: 1.45; color: #5a5651; }
-      .snbund__note { margin: 4px 0 0; font-size: 14px; font-weight: 700; line-height: 1.4; color: #1c1d1d; }
+      .snbund__pod--2 { margin-top: 6px; }
+      .snbund__tekst { max-width: 760px; }
+      .snbund__note { margin: 6px 0 0; font-size: 14px; font-weight: 700; line-height: 1.4; color: #1c1d1d; }
       .snbund__progi { display: flex; gap: 8px; flex: 0 0 auto; margin: 0; padding: 0; list-style: none; }
       .snbund__prog {
         display: flex;
@@ -109,6 +111,9 @@
         <p class="snbund__tytul">{{ title | escape }}</p>
         {%- if sub != blank -%}
           <p class="snbund__pod">{{ sub | escape }}</p>
+        {%- endif -%}
+        {%- if text2 != blank -%}
+          <p class="snbund__pod snbund__pod--2">{{ text2 | escape }}</p>
         {%- endif -%}
         {%- if note != blank -%}
           <p class="snbund__note">{{ note | escape }}</p>
