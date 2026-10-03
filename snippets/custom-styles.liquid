@@ -754,9 +754,14 @@
   /* === wszystko, co przyklejone, zachowuje sie tak samo: bez animacji === */
 
 
-  /* stan "stuck" z JS motywu nie jest juz potrzebny - zero animacji i przeskokow */
+  /* stan "stuck" z JS motywu nie jest juz potrzebny - zero animacji i przeskokow.
+     position zostaje relative jak w stanie zwyklym (bylo static): mega menu
+     liczylo sie wtedy od opakowania, ktore zostaje na 73 px, gdy przewiniety
+     naglowek ma 63 px - panel wisial 10 px pod naglowkiem, a w szczelinie
+     bylo widac strone. z-index auto, bo przy static i tak sie nie liczyl. */
   .site-header--stuck {
-    position: static !important;
+    position: relative !important;
+    z-index: auto !important;
     transform: none !important;
     transition: none !important;
     top: auto !important;
