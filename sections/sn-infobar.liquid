@@ -10,6 +10,19 @@
 
 {%- liquid
   assign ile = section.blocks.size
+
+  # Na telefonie tyle kolumn, ile hasel zostaje po schowaniu tych z
+  # "Hide on phones" - inaczej dwa hasla stoja w miejscach dla trzech i
+  # ostatnie wciska sie w srodkowa trzecia czesc, lamiac na dwie linie.
+  assign ile_m = 0
+  for b in section.blocks
+    unless b.settings.hide_m
+      assign ile_m = ile_m | plus: 1
+    endunless
+  endfor
+  if ile_m == 0
+    assign ile_m = 1
+  endif
 -%}
 
 {%- if ile > 0 -%}
@@ -97,6 +110,7 @@
         na czytelny stopien.
       {%- endcomment -%}
       #shopify-section-{{ section.id }} .ub__item--bez-tel { display: none; }
+      #shopify-section-{{ section.id }} .ub__in { grid-template-columns: repeat({{ ile_m }}, minmax(0, 1fr)); }
     }
   </style>
 
