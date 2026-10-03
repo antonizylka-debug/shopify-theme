@@ -40,15 +40,28 @@
     <div class="drawer__scrollable">
       {%- comment -%}
         Podzial jak u Oliver & Blake: na gorze kategorie, pod kreska mniejsze
-        linki pomocnicze. Menu jest jedno (na PC logo dzieli je na pol), wiec
-        granica to ostatnia pozycja z podmenu - Shop all, Men's, Women's,
-        Home Decor na gorze, Track my order, Contact, FAQ pod kreska.
+        linki pomocnicze. Przy ukladzie "logo na srodku, menu podzielone"
+        granica jest ta sama co na PC - na gorze to, co stoi na lewo od logo
+        (ustawienie "Menu items left of logo"). W innych ukladach granica to
+        ostatnia pozycja z podmenu.
       {%- endcomment -%}
-      {%- assign ostatni_z_pod = 0 -%}
-      {%- for l in main_menu.links -%}
-        {%- if l.links != blank -%}{%- assign ostatni_z_pod = forloop.index -%}{%- endif -%}
-      {%- endfor -%}
-      {%- assign pierwszy_pomoc = ostatni_z_pod | plus: 1 -%}
+      {%- liquid
+        assign ile_glownych = 0
+        assign ile_pozycji = main_menu.links.size
+        if section.settings.main_menu_alignment == 'center-split'
+          assign ile_glownych = section.settings.split_menu_left | default: 0
+          if ile_glownych <= 0 or ile_glownych >= ile_pozycji
+            assign ile_glownych = ile_pozycji | divided_by: 2
+          endif
+        else
+          for l in main_menu.links
+            if l.links != blank
+              assign ile_glownych = forloop.index
+            endif
+          endfor
+        endif
+        assign pierwszy_pomoc = ile_glownych | plus: 1
+      -%}
 
       <ul class="mobile-nav{% if settings.type_navigation_style == 'heading' %} mobile-nav--heading-style{% endif %}" role="navigation" aria-label="Primary">
         {%- for link in main_menu.links -%}
@@ -59,7 +72,7 @@
             {%- assign has_dropdown = true -%}
           {%- endif -%}
 
-          <li class="mobile-nav__item appear-animation appear-delay-{{ animation_row }}{% if ostatni_z_pod > 0 and forloop.index > ostatni_z_pod %} mobile-nav__item--pomoc{% if forloop.index == pierwszy_pomoc %} mobile-nav__item--pomoc-pierwszy{% endif %}{% endif %}">
+          <li class="mobile-nav__item appear-animation appear-delay-{{ animation_row }}{% if ile_glownych > 0 and forloop.index > ile_glownych %} mobile-nav__item--pomoc{% if forloop.index == pierwszy_pomoc %} mobile-nav__item--pomoc-pierwszy{% endif %}{% endif %}">
             {%- if has_dropdown -%}
               <div class="mobile-nav__has-sublist">
                 {%- if link.url == '#' -%}
