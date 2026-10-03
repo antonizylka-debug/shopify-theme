@@ -33,6 +33,27 @@
   toolbar_menu: toolbar_menu,
   logo_alignment: logo_alignment
 -%}
+{%- comment -%}
+  Menu na telefonie renderuje sie tutaj, bo potrzebuje ustawien naglowka,
+  ale nie moze tu zostac. Wewnatrz przyklejonej grupy naglowka (z-index 26)
+  jego z-index 30 liczyl sie tylko w tej grupie, a przyciemnienie strony
+  (tez 26, pozniej w HTML) kladlo sie na otwartym menu - zmierzone: we
+  wszystkich trzech punktach na menu na wierzchu bylo przyciemnienie. Ten
+  sam blad co wczesniej z koszykiem.
+
+  Skrypt od razu przenosi menu bezposrednio do <body>, zanim motyw je
+  podlaczy (theme.js laduje sie z defer, wiec szuka go juz w nowym
+  miejscu). Stara kopia po przeladowaniu sekcji w edytorze jest usuwana.
+{%- endcomment -%}
+<script>
+  (function () {
+    var menu = document.getElementById('NavDrawer');
+    if (!menu || menu.parentElement === document.body) return;
+    var stare = document.querySelectorAll('body > #NavDrawer');
+    for (var i = 0; i < stare.length; i++) stare[i].parentNode.removeChild(stare[i]);
+    document.body.appendChild(menu);
+  })();
+</script>
 {%- render 'menu-highlight-styles', section: section -%}
 
 <style>

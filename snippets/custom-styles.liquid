@@ -1922,4 +1922,88 @@
      cala grupe naglowka, albo zdejmowaly jej kontekst ukladania, i za
      kazdym razem cos innego wychodzilo nie tak.
      ========================================================================== */
+
+  {%- comment -%}
+    Menu na telefonie w stylu Oliver & Blake: logo i krzyzyk u gory,
+    kategorie zwyklym pismem bez kresek miedzy pozycjami, cienki daszek przy
+    podmenu, kreska, mniejsze linki pomocnicze, kreska, "Folg os" z ikonami
+    w kwadratach. Wczesniej: wielkie litery 23 px z rozstrzelonym
+    odstepem, kreska pod kazda pozycja i pionowa przy strzalce.
+    Wszystko pod #NavDrawer, zeby wygrac ze stylami motywu i naglowka.
+  {%- endcomment -%}
+  #NavDrawer { background: #ffffff; color: #1c1d1d; }
+  #NavDrawer .drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 0;
+    padding: 18px 0 8px;
+    border-bottom: 0;
+  }
+  #NavDrawer .drawer__title { margin: 0; display: flex; align-items: center; }
+  #NavDrawer .mnav__logo { display: inline-flex; align-items: center; color: inherit; text-decoration: none; font-size: 18px; letter-spacing: 0.04em; }
+  #NavDrawer .mnav__logo-img { display: block; height: 32px; width: auto; max-width: 190px; object-fit: contain; }
+
+  #NavDrawer .mobile-nav__item:after { display: none; }
+  #NavDrawer .mobile-nav__link--top-level,
+  #NavDrawer .mobile-nav__faux-link {
+    font-family: var(--typeBasePrimary), var(--typeBaseFallback);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    line-height: 1.3;
+    padding-top: 13px;
+    padding-bottom: 13px;
+  }
+  #NavDrawer .mobile-nav__toggle button,
+  #NavDrawer .mobile-nav__toggle .faux-button { border-left: 0; padding: 0 var(--drawer-gutter) 0 20px; }
+  #NavDrawer .mobile-nav__toggle .icon { width: 14px; height: 8px; }
+
+  #NavDrawer .mobile-nav__sublist .mobile-nav__link,
+  #NavDrawer .mobile-nav__sublist .mobile-nav__faux-link {
+    font-size: 15px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    color: #4a4a4a;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  #NavDrawer .mobile-nav__item--pomoc-pierwszy {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e6e3de;
+  }
+  #NavDrawer .mobile-nav__item--pomoc-pierwszy,
+  #NavDrawer .mobile-nav__item--pomoc { margin-left: var(--drawer-gutter); margin-right: var(--drawer-gutter); }
+  #NavDrawer .mobile-nav__item--pomoc .mobile-nav__link--top-level {
+    font-size: 14.5px;
+    padding: 9px 0;
+    color: #3a3a3a;
+  }
+
+  #NavDrawer .mnav__folg {
+    margin: 22px 0 12px;
+    padding-top: 22px;
+    border-top: 1px solid #e6e3de;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6e6b65;
+  }
+  #NavDrawer .mobile-nav__social { justify-content: flex-start; gap: 10px; margin: 0 0 24px; }
+  #NavDrawer .mobile-nav__social-item { flex: 0 0 auto; border: 0; margin: 0; }
+  #NavDrawer .mobile-nav__social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid #d9d6d1;
+    color: #1c1d1d;
+  }
+  #NavDrawer .mobile-nav__social .icon { width: 18px; height: 18px; }
 </style>
