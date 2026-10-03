@@ -204,8 +204,24 @@
                   zeby zajmowal cala szerokosc kontenera strony.
                 {%- endcomment -%}
               {%- when 'product_grid' -%}
+                {%- liquid
+                  comment
+                    Karta z rabatem za ilosc tylko na pierwszej stronie - "Vis
+                    flere" dokleja kolejne strony do tej samej siatki.
+                  endcomment
+                  assign bundle_po = 0
+                  assign bundle_html = ''
+                  if section.settings.bundle_show and paginate.current_page == 1 and section.settings.bundle_tiers != blank
+                    assign bundle_po = section.settings.bundle_after
+                    capture bundle_html
+                      render 'sn-rabat-kolekcja', title: section.settings.bundle_title, sub: section.settings.bundle_sub, tiers: section.settings.bundle_tiers
+                    endcapture
+                  endif
+                -%}
                 <div data-scroll-to>
                   {% render 'collection-grid',
+                    bundle_po: bundle_po,
+                    bundle_html: bundle_html,
                     collection: collection,
                     items: collection.products,
                     enable_sidebar: section.settings.enable_sidebar,
@@ -391,6 +407,44 @@
       "id": "enable_sort",
       "label": "t:sections.main-collection.settings.enable_sort.label",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Quantity discount card"
+    },
+    {
+      "type": "checkbox",
+      "id": "bundle_show",
+      "label": "Show quantity discount card in the grid",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "bundle_after",
+      "label": "Show after product number",
+      "min": 1,
+      "max": 24,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "bundle_title",
+      "label": "Heading",
+      "default": "Køb flere – spar ekstra"
+    },
+    {
+      "type": "text",
+      "id": "bundle_sub",
+      "label": "Text",
+      "default": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens."
+    },
+    {
+      "type": "text",
+      "id": "bundle_tiers",
+      "label": "Steps (items:percent)",
+      "default": "2:10, 3:20, 4:25, 5:30",
+      "info": "Must match the automatic discounts in Shopify, Discounts. The last step also covers more items (5+)."
     }
   ],
   "blocks": [

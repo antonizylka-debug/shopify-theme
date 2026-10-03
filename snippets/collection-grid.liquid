@@ -9,6 +9,7 @@ Snippet Arguments
 - per_row
 - mobile_flush_grid
 - quick_shop_enable
+- bundle_po, bundle_html (opcjonalne): karta z rabatem za ilosc po tym produkcie
 {% endcomment %}
 
 {% liquid
@@ -90,6 +91,15 @@ Snippet Arguments
           item: item,
           per_row: per_row
         %}
+      {%- endif -%}
+      {%- comment -%}
+        Karta z rabatem za ilosc (tylko kolekcja, strona 1) po bundle_po-tym
+        produkcie; gdy produktow jest mniej - na koncu.
+      {%- endcomment -%}
+      {%- if bundle_po > 0 -%}
+        {%- if forloop.index == bundle_po or forloop.last and forloop.length < bundle_po -%}
+          {{ bundle_html }}
+        {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
   </div>

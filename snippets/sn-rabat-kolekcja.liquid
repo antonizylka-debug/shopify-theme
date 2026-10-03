@@ -1,0 +1,89 @@
+{%- comment -%}
+  Karta z rabatem za ilosc w siatce kolekcji - to samo, co "Fall Bundle
+  Savings" u Iselle, ale jako kafel na cala szerokosc rzedu po N-tym
+  produkcie, zeby pierwsze produkty zostaly na pierwszym ekranie telefonu.
+
+  Parametry: title, sub, tiers ("2:10, 3:20, 4:25, 5:30").
+  Progi musza sie zgadzac z rabatami automatycznymi w Shopify - sprawdzone
+  w koszyku 2026-10-03: 2 = 10 %, 3 = 20 %, 4 = 25 %, 5 i wiecej = 30 %.
+
+  Element <aside>, nie <div>: siatka motywu zaczyna nowy rzad przez
+  :nth-of-type liczone na divach, a inny znacznik nie przesuwa tego liczenia.
+{%- endcomment -%}
+{%- assign progi = tiers | split: ',' -%}
+{%- if progi.size > 0 -%}
+  <aside class="snbund" aria-label="{{ title | escape }}">
+    <style>
+      .snbund { float: left; clear: both; width: 100%; margin: 0 0 30px; padding-left: 4px; }
+      .snbund__box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px 32px;
+        padding: 22px 26px;
+        background: #fdf6f4;
+        border: 1px solid #e8d9d6;
+      }
+      .snbund__tekst { min-width: 0; }
+      .snbund__tytul {
+        margin: 0 0 5px;
+        font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
+        font-size: 21px;
+        font-weight: 600;
+        line-height: 1.25;
+        letter-spacing: 0.01em;
+        text-transform: none;
+        color: #1c1d1d;
+      }
+      .snbund__pod { margin: 0; font-size: 14px; line-height: 1.45; color: #5a5651; }
+      .snbund__progi { display: flex; gap: 8px; flex: 0 0 auto; margin: 0; padding: 0; list-style: none; }
+      .snbund__prog {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        min-width: 86px;
+        margin: 0;
+        padding: 10px 12px;
+        background: #ffffff;
+        border: 1px solid #ecdcd8;
+      }
+      .snbund__ile { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #6e6b65; white-space: nowrap; }
+      .snbund__proc { font-size: 20px; font-weight: 700; line-height: 1.15; color: #c8102e; white-space: nowrap; font-variant-numeric: tabular-nums; }
+      .snbund__prog--max { background: #c8102e; border-color: #c8102e; }
+      .snbund__prog--max .snbund__ile,
+      .snbund__prog--max .snbund__proc { color: #ffffff; }
+      @media only screen and (max-width: 768px) {
+        .snbund { margin-bottom: 26px; }
+        .snbund__box { flex-direction: column; align-items: stretch; gap: 14px; padding: 18px 16px; }
+        .snbund__tytul { font-size: 18px; }
+        .snbund__pod { font-size: 13.5px; }
+        .snbund__progi { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
+        .snbund__prog { min-width: 0; padding: 9px 4px; }
+        .snbund__ile { font-size: 11px; letter-spacing: 0.04em; }
+        .snbund__proc { font-size: 17px; }
+      }
+    </style>
+    <div class="snbund__box">
+      <div class="snbund__tekst">
+        <p class="snbund__tytul">{{ title | escape }}</p>
+        {%- if sub != blank -%}
+          <p class="snbund__pod">{{ sub | escape }}</p>
+        {%- endif -%}
+      </div>
+      <ol class="snbund__progi">
+        {%- for prog in progi -%}
+          {%- assign czesci = prog | split: ':' -%}
+          {%- assign ile = czesci[0] | strip -%}
+          {%- assign proc = czesci[1] | strip -%}
+          {%- if ile != blank and proc != blank -%}
+            <li class="snbund__prog{% if forloop.last %} snbund__prog--max{% endif %}">
+              <span class="snbund__ile">{{ ile }}{% if forloop.last %}+{% endif %} stk.</span>
+              <span class="snbund__proc">−{{ proc }} %</span>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ol>
+    </div>
+  </aside>
+{%- endif -%}
