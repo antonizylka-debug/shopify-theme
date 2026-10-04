@@ -1,10 +1,16 @@
+{%- liquid
+  assign tytul_menu = linklists[block.settings.menu].title
+  if tytul_menu == 'HELP' or tytul_menu == 'Help'
+    assign tytul_menu = 'Hjælp'
+  endif
+-%}
 {%- if linklists[block.settings.menu].links.size > 0 -%}
   {%- if block.settings.show_footer_title -%}
     <h2 class="h4 footer__title small--hide">
-      {{ linklists[block.settings.menu].title }}
+      {{ tytul_menu }}
     </h2>
     <button type="button" class="h4 footer__title collapsible-trigger collapsible-trigger-btn medium-up--hide" aria-controls="Footer-{{ block.id }}">
-      {{ linklists[block.settings.menu].title }}
+      {{ tytul_menu }}
       {%- render 'collapsible-icons' -%}
     </button>
   {%- endif -%}
@@ -15,9 +21,21 @@
     <div class="collapsible-content__inner">
       <div class="footer__collapsible{% unless block.settings.show_footer_title %} footer_collapsible--disabled{% endunless %}">
         <ul class="no-bullets site-footer__linklist">
-          {%- for link in linklists[block.settings.menu].links -%}
-            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-          {%- endfor -%}
+          {%- if block.settings.menu == 'customer-support-copy' -%}
+            {%- comment -%}
+              Menu polityk w panelu mialo pomieszane linki (Privatlivspolitik
+              prowadzil do wysylki). Stala lista = zawsze zgodna ze stronami polityk.
+            {%- endcomment -%}
+            <li><a href="/pages/vilkar-og-betingelser">Handelsbetingelser</a></li>
+            <li><a href="/pages/retur-og-refusionspolitik">Retur og refusion</a></li>
+            <li><a href="/pages/forsendelsespolitik">Fragt og levering</a></li>
+            <li><a href="/pages/payment-policy">Betaling</a></li>
+            <li><a href="/pages/betalingspolitik">Privatlivspolitik</a></li>
+          {%- else -%}
+            {%- for link in linklists[block.settings.menu].links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          {%- endif -%}
         </ul>
       </div>
     </div>

@@ -5,7 +5,24 @@
   </header>
 
   <div class="rte rte--nomargin">
-    {{ page.content }}
+    {%- comment -%}
+      Polityki maja tresc w motywie (snippets/sn-polityka-*), zeby byla spojna
+      i nie zalezala od tego, co wpisano w panelu. Pozostale strony bez zmian.
+    {%- endcomment -%}
+    {%- case page.handle -%}
+      {%- when 'vilkar-og-betingelser' -%}
+        {%- render 'sn-polityka-handel' -%}
+      {%- when 'retur-og-refusionspolitik' -%}
+        {%- render 'sn-polityka-retur' -%}
+      {%- when 'forsendelsespolitik' -%}
+        {%- render 'sn-polityka-fragt' -%}
+      {%- when 'payment-policy' -%}
+        {%- render 'sn-polityka-betaling' -%}
+      {%- when 'betalingspolitik' -%}
+        {%- render 'sn-polityka-privat' -%}
+      {%- else -%}
+        {{ page.content }}
+    {%- endcase -%}
   </div>
 </div>
 

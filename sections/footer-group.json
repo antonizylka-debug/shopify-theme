@@ -121,7 +121,7 @@
           "settings": {
             "logo": "shopify://shop_images/white_logo.png",
             "desktop_logo_height": 60,
-            "text": "<p>Modetøj og boligartikler i premium-klassen. Gennemtænkt design til den moderne garderobe og bolig.</p>",
+            "text": "<p>Mode til damer og herrer – gennemtænkt design til den moderne garderobe.</p>",
             "show_social": true,
             "container_width": 25
           }
@@ -172,9 +172,9 @@
           "settings": {
             "show_footer_title": true,
             "title": "Nyhedsbrev",
-            "text": "<p>Sign up for new arrivals and updates.</p>",
+            "text": "<p>Få besked om nyheder og tilbud før alle andre.</p>",
             "button_label": "Tilmeld",
-            "disclaimer": "<p>Ved at tilmelde dig accepterer du vores <a href=\"/policies/privacy-policy\">privatlivspolitik</a></p>",
+            "disclaimer": "<p>Ved at tilmelde dig accepterer du vores <a href=\"/pages/betalingspolitik\">privatlivspolitik</a></p>",
             "show_social": false,
             "container_width": 50
           }
@@ -202,7 +202,7 @@
         "show_locale_selector": false,
         "show_payment_icons": false,
         "show_copyright": true,
-        "copyright_text": ". Alle rettigheder forbeholdes.",
+        "copyright_text": " · Antoni Żyłka · NIP 7732509014. Alle rettigheder forbeholdes.",
         "hide_powered_by": true,
         "show_back_to_top": true,
         "back_to_top_label": "Til toppen",
