@@ -397,8 +397,8 @@
           "type": "review",
           "settings": {
             "rating": "5",
-            "title": "Perfekt oplevelse",
-            "text": "Alt gik nemt og hurtigt, og produktet lever fuldt ud op til mine forventninger.",
+            "title": "Jeg elsker det",
+            "text": "Så flot og behageligt. Jeg er virkelig glad for, at jeg valgte at bestille herfra.",
             "author": "Maria S.",
             "country": "DK",
             "date": "01.10.2026",
@@ -458,10 +458,10 @@
           "settings": {
             "rating": "5",
             "title": "Lige som forventet",
-            "text": "Camilla F.",
-            "author": "DK",
-            "country": "29.09.2026",
-            "date": "",
+            "text": "Produktet kom som beskrevet og føles som rigtig god kvalitet.",
+            "author": "Camilla F.",
+            "country": "DK",
+            "date": "29.09.2026",
             "verified": true
           }
         }
