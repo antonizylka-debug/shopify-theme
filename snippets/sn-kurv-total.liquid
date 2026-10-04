@@ -1,0 +1,32 @@
+{%- comment -%}
+  Suma w stopce szuflady: "Total:" + wartosc przed obnizkami (przekreslona),
+  kwota do zaplaty i czerwona plakietka z oszczednoscia. Wszystko z danych
+  koszyka: cena przed obnizka = compare_at wariantu (gdy wyzsza od ceny),
+  kwota = cart.total_price (po rabatach za ilosc).
+  Renderowane w cart-drawer i w sections/sn-kurv-dele (odswiezanie przez JS).
+{%- endcomment -%}
+{%- liquid
+  assign przed = 0
+  for item in cart.items
+    assign jedn = item.original_price
+    if item.variant.compare_at_price > jedn
+      assign jedn = item.variant.compare_at_price
+    endif
+    assign linia = jedn | times: item.quantity
+    assign przed = przed | plus: linia
+  endfor
+  assign teraz = cart.total_price
+  assign oszcz = przed | minus: teraz
+-%}
+<div class="snk-total" data-snk-total data-count="{{ cart.item_count }}">
+  <span class="snk-total__label">Total:</span>
+  <span class="snk-total__nums">
+    {%- if oszcz > 0 -%}
+      <s class="snk-total__was">{%- render 'sn-cena', kwota: przed -%}</s>
+    {%- endif -%}
+    <strong class="snk-total__now">{%- render 'sn-cena', kwota: teraz -%}</strong>
+    {%- if oszcz > 0 -%}
+      <span class="snk-total__save">−{%- render 'sn-cena', kwota: oszcz -%}</span>
+    {%- endif -%}
+  </span>
+</div>

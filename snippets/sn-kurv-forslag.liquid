@@ -1,0 +1,137 @@
+{%- comment -%}
+  "Gor looket komplet" w szufladzie koszyka - przewijany rzad kart jak
+  "Vaak samen gekocht" na icon-amsterdam: zdjecie, nazwa, cena, kolory,
+  rozmiary i przycisk "Tilfoj +". Produkty z kolekcji do kompletu dla
+  pierwszej rzeczy w koszyku (sn-komplet-lista), bez tych, ktore juz sa
+  w koszyku. Tytul i wlaczenie: Ustawienia motywu -> Koszyk -> Cart drawer.
+  Nie nazywamy tego "czesto kupowane razem" - nie mamy na to danych.
+{%- endcomment -%}
+{%- if settings.sn_kurv_upsell_show and cart.item_count > 0 -%}
+  {%- liquid
+    assign pierwszy = cart.items.first.product
+    capture lista
+      render 'sn-komplet-lista', produkt: pierwszy
+    endcapture
+    assign kolekcje = lista | strip | split: ','
+    assign w_koszyku = cart.items | map: 'product_id' | join: ','
+    assign w_koszyku = ',' | append: w_koszyku | append: ','
+    assign start = pierwszy.id | modulo: 20
+    assign ile = 6
+  -%}
+  <div class="snk-up" data-snk-up-wrap>
+    <div class="snk-up__head">
+      <p class="snk-up__title">{{ settings.sn_kurv_upsell_title }}</p>
+      <div class="snk-up__nav">
+        <button type="button" class="snk-up__arrow" data-snk-up-prev aria-label="{{ 'general.slider.previous_slide' | t }}">
+          <svg viewBox="0 0 8 14" width="7" height="12" aria-hidden="true" focusable="false"><path d="M7 1 1 7l6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </button>
+        <button type="button" class="snk-up__arrow" data-snk-up-next aria-label="{{ 'general.slider.next_slide' | t }}">
+          <svg viewBox="0 0 8 14" width="7" height="12" aria-hidden="true" focusable="false"><path d="m1 1 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="snk-up__track" data-snk-up-track>
+      {%- assign pokazane = 0 -%}
+      {%- assign uzyte = ',' -%}
+      {%- for i in (0..30) -%}
+        {%- if pokazane >= ile -%}{%- break -%}{%- endif -%}
+        {%- assign nr = i | plus: start -%}
+        {%- for h in kolekcje -%}
+          {%- if pokazane >= ile -%}{%- break -%}{%- endif -%}
+          {%- assign p = collections[h].products[nr] -%}
+          {%- if p == blank -%}{%- continue -%}{%- endif -%}
+          {%- unless p.available -%}{%- continue -%}{%- endunless -%}
+          {%- assign znak = ',' | append: p.id | append: ',' -%}
+          {%- if w_koszyku contains znak or uzyte contains znak -%}{%- continue -%}{%- endif -%}
+          {%- assign uzyte = uzyte | append: p.id | append: ',' -%}
+          {%- assign pokazane = pokazane | plus: 1 -%}
+
+          {%- liquid
+            assign i_kolor = 0
+            assign i_rozm = 0
+            for o in p.options_with_values
+              assign n = o.name | downcase
+              if n == 'farve' or n == 'color' or n == 'colour' or n == 'couleur'
+                assign i_kolor = forloop.index
+              elsif n == 'størrelse' or n == 'size'
+                assign i_rozm = forloop.index
+              endif
+            endfor
+            assign v0 = p.selected_or_first_available_variant
+          -%}
+          <div class="snk-card" data-snk-card data-kolor="{{ i_kolor }}" data-rozm="{{ i_rozm }}">
+            <a href="{{ p.url }}" class="snk-card__img" tabindex="-1" aria-hidden="true">
+              {%- if p.featured_image -%}
+                {{ p.featured_image | image_url: width: 240 | image_tag: loading: 'lazy', alt: p.title, sizes: '96px', widths: '120, 180, 240', data-snk-card-img: '' }}
+              {%- endif -%}
+            </a>
+            <div class="snk-card__info">
+              <a href="{{ p.url }}" class="snk-card__name">{{ p.title }}</a>
+              <div class="snk-card__price">
+                {%- if v0.compare_at_price > v0.price -%}
+                  <s>{%- render 'sn-cena', kwota: v0.compare_at_price -%}</s>
+                {%- endif -%}
+                <span>{%- render 'sn-cena', kwota: v0.price -%}</span>
+              </div>
+
+              {%- if i_kolor > 0 -%}
+                <div class="snk-card__colors" role="group" aria-label="{% render 'sn-da', tekst: 'Color' %}">
+                  {%- for o in p.options_with_values -%}
+                    {%- if forloop.index == i_kolor -%}
+                      {%- for wartosc in o.values -%}
+                        {%- liquid
+                          assign obraz = blank
+                          for v in p.variants
+                            if v.options contains wartosc and v.featured_image
+                              assign obraz = v.featured_image
+                              break
+                            endif
+                          endfor
+                        -%}
+                        <button type="button" class="snk-card__sw{% if forloop.first %} is-on{% endif %}" data-snk-sw="{{ wartosc | escape }}" title="{% render 'sn-da', tekst: wartosc %}" aria-label="{% render 'sn-da', tekst: wartosc %}">
+                          {%- if obraz != blank -%}
+                            {{ obraz | image_url: width: 60, height: 60, crop: 'center' | image_tag: loading: 'lazy', alt: '' }}
+                          {%- else -%}
+                            <span>{{ wartosc | slice: 0 }}</span>
+                          {%- endif -%}
+                        </button>
+                        {%- if forloop.index >= 6 -%}{%- break -%}{%- endif -%}
+                      {%- endfor -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+
+              <div class="snk-card__sizes" data-snk-sizes></div>
+              <p class="snk-card__err" data-snk-err hidden>Vælg en størrelse</p>
+              <button type="button" class="snk-card__add" data-snk-add>Tilføj +</button>
+            </div>
+
+            <script type="application/json" data-snk-json>
+              {
+                "v": [
+                  {%- for v in p.variants -%}
+                    {"id":{{ v.id }},"a":{{ v.available }},"o":[{{ v.option1 | json }},{{ v.option2 | json }},{{ v.option3 | json }}]{%- if v.featured_image -%},"img":{{ v.featured_image | image_url: width: 240 | json }}{%- endif -%}}{%- unless forloop.last -%},{%- endunless -%}
+                  {%- endfor -%}
+                ],
+                "l": {
+                  {%- if i_rozm > 0 -%}
+                    {%- for o in p.options_with_values -%}
+                      {%- if forloop.index == i_rozm -%}
+                        {%- for wartosc in o.values -%}
+                          {%- capture etykieta -%}{%- render 'size-label', label: wartosc, product: p -%}{%- endcapture -%}
+                          {{ wartosc | json }}:{{ etykieta | strip | json }}{%- unless forloop.last -%},{%- endunless -%}
+                        {%- endfor -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endif -%}
+                }
+              }
+            </script>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}

@@ -1,0 +1,38 @@
+{%- comment -%}
+  Wypisuje liste kolekcji "do kompletu" (uchwyty po przecinku) dla produktu:
+  do sukienki buty i dodatki, do spodni bluzki i buty itd. Ta sama logika
+  co w pdp-crosssell, uzywana przez koszyk (sections/sn-kurv-dele).
+  @param {object} produkt - produkt, do ktorego dobieramy reszte
+{%- endcomment -%}
+{%- liquid
+  assign uchwyty = produkt.collections | map: 'handle'
+  if uchwyty contains 'mens'
+    if uchwyty contains 'mens-footwear'
+      echo 'mens-accessories,mens-bottoms,mens-shirts'
+    elsif uchwyty contains 'mens-accessories'
+      echo 'mens-footwear,mens-shirts'
+    elsif uchwyty contains 'mens-bottoms'
+      echo 'mens-shirts,mens-footwear,mens-sweaters-and-knitwear'
+    elsif uchwyty contains 'mens-jackets-and-coats'
+      echo 'mens-sweaters-and-knitwear,mens-footwear,mens-bottoms'
+    else
+      echo 'mens-bottoms,mens-footwear,mens-accessories'
+    endif
+  else
+    if uchwyty contains 'womens-footwear'
+      echo 'womens-accessories,womens-dresses,womens-bottoms'
+    elsif uchwyty contains 'womens-accessories'
+      echo 'womens-footwear,womens-dresses'
+    elsif uchwyty contains 'womens-dresses'
+      echo 'womens-footwear,womens-accessories,womens-jackets-and-coats'
+    elsif uchwyty contains 'womens-sets-and-one-pieces'
+      echo 'womens-footwear,womens-accessories,womens-jackets-and-coats'
+    elsif uchwyty contains 'womens-bottoms'
+      echo 'womens-tops,womens-footwear,womens-sweaters-and-knitwear'
+    elsif uchwyty contains 'womens-jackets-and-coats'
+      echo 'womens-sweaters-and-knitwear,womens-footwear,womens-dresses'
+    else
+      echo 'womens-bottoms,womens-footwear,womens-accessories'
+    endif
+  endif
+-%}

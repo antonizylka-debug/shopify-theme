@@ -1,0 +1,367 @@
+{%- comment -%}
+  Wyglad i zachowanie szuflady koszyka w stylu icon-amsterdam.
+  Renderowane raz, w snippets/cart-drawer.liquid.
+
+  JS:
+  - po kazdej przebudowie listy produktow przez motyw ([data-products]
+    w #CartDrawer) i przy otwarciu szuflady pobiera sections/sn-kurv-dele
+    i podmienia sume (z oszczednoscia), "Gor looket komplet" i licznik,
+  - "Fjern" ustawia ilosc 0 przez QtySelector motywu,
+  - karty polecanych: kolor -> rozmiary -> "Tilfoj +" (cart/add.js, potem
+    zdarzenie ajaxProduct:added - motyw sam przebudowuje koszyk).
+{%- endcomment -%}
+<style>
+  /* ---------- szuflada ---------- */
+  #CartDrawer.drawer { width: 100%; max-width: 470px; background: #ffffff; color: #1c1d1d; }
+  @media only screen and (min-width: 769px) {
+    #CartDrawer.drawer { border-radius: 16px 0 0 16px; overflow: hidden; }
+  }
+  #CartDrawer .drawer__contents { background: #ffffff; }
+  #CartDrawer .drawer__fixed-header { padding: 0; background: #ffffff; }
+  #CartDrawer .drawer__header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 26px 26px 18px; border: 0; margin: 0;
+  }
+  #CartDrawer .drawer__title {
+    display: flex; align-items: center; gap: 12px; margin: 0;
+    font-size: 26px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1;
+  }
+  .snk-count {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 26px; height: 26px; padding: 0 7px; border-radius: 13px;
+    background: #1c1d1d; color: #ffffff;
+    font-size: 13px; font-weight: 600; letter-spacing: 0; line-height: 1;
+  }
+  .snk-count[hidden] { display: none; }
+  #CartDrawer .drawer__close-button { width: 40px; height: 40px; margin-right: -8px; }
+  #CartDrawer .drawer__close-button .icon { width: 30px; height: 30px; stroke-width: 3px; }
+  #CartDrawer .drawer__scrollable { padding: 2px 26px 24px; }
+  #CartDrawer .drawer__inner { border: 0; }
+
+  .snk-note {
+    margin: 0 0 18px; padding: 13px 16px; background: #f6f2ec;
+    font-size: 13px; line-height: 1.45; text-align: center; color: #1c1d1d;
+  }
+
+  /* ---------- pozycja (szuflada i strona koszyka) ---------- */
+  .snk-item {
+    display: grid; grid-template-columns: 106px 1fr; gap: 18px;
+    padding: 0 0 22px; margin: 0 0 22px; border-bottom: 1px solid #ece8e2;
+  }
+  .snk-item:last-child { border-bottom: 0; margin-bottom: 4px; }
+  .snk-item__img { display: block; aspect-ratio: 106 / 140; background: #f4f2ee; overflow: hidden; }
+  .snk-item__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .snk-item__info { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding-top: 4px; }
+  .snk-item__name {
+    font-size: 14px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase;
+    line-height: 1.35; color: #1c1d1d; text-decoration: none;
+  }
+  .snk-item__name:hover { text-decoration: underline; }
+  .snk-item__price { display: flex; align-items: baseline; gap: 8px; font-size: 15px; }
+  .snk-item__was { color: #8a857e; font-size: 14px; }
+  .snk-item__now { font-weight: 600; color: #1c1d1d; }
+  .snk-item__variant { font-size: 14px; color: #5f5b55; }
+  .snk-item__deal { font-size: 12px; color: #c8102e; }
+  .snk-item__row { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
+
+  .snk-qty.js-qty__wrapper {
+    position: relative; display: inline-flex; align-items: center; justify-content: space-between;
+    width: 92px; max-width: none; height: 38px; padding: 0 4px;
+    border: 1px solid #cfcac3; border-radius: 19px; background: #ffffff;
+  }
+  .snk-qty .snk-qty__btn {
+    position: static; display: flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; min-width: 0; padding: 0; margin: 0;
+    border: 0; border-radius: 50%; background: #f1eee9; color: #1c1d1d; cursor: pointer;
+    transform: none; top: auto; bottom: auto; left: auto; right: auto;
+  }
+  .snk-qty .snk-qty__btn:hover { background: #e4dfd7; }
+  .snk-qty .snk-qty__num {
+    width: 26px; height: 30px; min-width: 0; padding: 0; margin: 0; border: 0; background: none;
+    font-size: 14px; font-weight: 600; text-align: center; color: #1c1d1d;
+  }
+  .snk-item__remove {
+    padding: 8px 0; border: 0; background: none; cursor: pointer;
+    font-size: 13px; color: #5f5b55; text-decoration: underline; text-underline-offset: 3px;
+  }
+  .snk-item__remove:hover { color: #1c1d1d; }
+
+  /* ---------- Gor looket komplet ---------- */
+  .snk-up { margin: 10px 0 0; }
+  .snk-up[hidden] { display: none; }
+  .snk-up__head { display: flex; align-items: center; justify-content: space-between; margin: 0 0 14px; }
+  .snk-up__title { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; }
+  .snk-up__nav { display: flex; gap: 4px; }
+  .snk-up__arrow {
+    display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; padding: 0;
+    border: 0; background: none; color: #1c1d1d; cursor: pointer;
+  }
+  .snk-up__arrow[disabled] { color: #c3beb7; cursor: default; }
+  .snk-up__track {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+    border: 1px solid #e6e3de; scrollbar-width: none;
+  }
+  .snk-up__track::-webkit-scrollbar { display: none; }
+
+  .snk-card {
+    flex: 0 0 86%; display: grid; grid-template-columns: 92px 1fr; gap: 16px;
+    padding: 18px; scroll-snap-align: start; border-right: 1px solid #e6e3de;
+  }
+  .snk-card:last-child { border-right: 0; }
+  .snk-card__img { display: block; aspect-ratio: 92 / 124; background: #f4f2ee; overflow: hidden; }
+  .snk-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .snk-card__info { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; min-width: 0; }
+  .snk-card__name {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; line-height: 1.35;
+    color: #1c1d1d; text-decoration: none;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .snk-card__price { display: flex; gap: 8px; align-items: baseline; font-size: 14px; }
+  .snk-card__price s { color: #8a857e; font-size: 13px; }
+  .snk-card__price span { font-weight: 600; }
+  .snk-card__colors { display: flex; flex-wrap: wrap; gap: 6px; }
+  .snk-card__sw {
+    width: 28px; height: 28px; padding: 2px; border: 1px solid #d8d3cc; border-radius: 50%;
+    background: #ffffff; cursor: pointer; overflow: hidden;
+  }
+  .snk-card__sw img, .snk-card__sw span {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+    font-size: 11px; font-weight: 600; text-transform: uppercase; background: #f1eee9;
+  }
+  .snk-card__sw.is-on { border: 2px solid #1c1d1d; padding: 1px; }
+  .snk-card__sizes { display: flex; flex-wrap: wrap; gap: 5px; }
+  .snk-card__sizes:empty { display: none; }
+  .snk-card__size {
+    min-width: 34px; height: 30px; padding: 0 7px; border: 1px solid #d8d3cc; background: #ffffff;
+    font-size: 12px; font-weight: 600; color: #1c1d1d; cursor: pointer;
+  }
+  .snk-card__size.is-on { border-color: #1c1d1d; background: #1c1d1d; color: #ffffff; }
+  .snk-card__size[disabled] {
+    color: #b9b5ae; cursor: default;
+    background: linear-gradient(to top right, transparent calc(50% - 0.5px), #d8d3cc, transparent calc(50% + 0.5px));
+  }
+  .snk-card__err { margin: -3px 0 0; font-size: 12px; color: #c8102e; }
+  .snk-card__add {
+    height: 40px; padding: 0 20px; border: 0; background: #1c1d1d; color: #ffffff;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+  .snk-card__add:hover { opacity: 0.85; }
+  .snk-card__add[disabled] { opacity: 0.5; cursor: default; }
+
+  /* ---------- stopka ---------- */
+  #CartDrawer .drawer__footer {
+    padding: 20px 26px 22px; border-top: 1px solid #e6e3de; background: #ffffff; box-shadow: none;
+  }
+  .snk-hidden { display: none !important; }
+  .snk-total { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 16px; }
+  .snk-total__label { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; }
+  .snk-total__nums { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+  .snk-total__was { font-size: 16px; color: #8a857e; }
+  .snk-total__now { font-size: 18px; font-weight: 700; }
+  .snk-total__save {
+    padding: 4px 8px; background: #f2665a; color: #ffffff;
+    font-size: 13px; font-weight: 600; line-height: 1.2;
+  }
+  #CartDrawer .cart__checkout {
+    width: 100%; height: 60px; margin: 0; border-radius: 0;
+    background: #1c1d1d; color: #ffffff;
+    font-size: 15px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .snk-trust {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin: 14px 0 0; font-size: 13px; color: #5f5b55; text-align: center;
+  }
+  .snk-trust svg { flex: 0 0 auto; }
+
+  @media only screen and (max-width: 768px) {
+    #CartDrawer .drawer__header { padding: 20px 18px 14px; }
+    #CartDrawer .drawer__title { font-size: 22px; }
+    #CartDrawer .drawer__scrollable { padding: 2px 18px 20px; }
+    #CartDrawer .drawer__footer { padding: 16px 18px 18px; }
+    .snk-item { grid-template-columns: 92px 1fr; gap: 14px; }
+    .snk-card { flex-basis: 90%; padding: 14px; gap: 12px; grid-template-columns: 80px 1fr; }
+    #CartDrawer .cart__checkout { height: 54px; }
+  }
+</style>
+
+<script>
+  (function () {
+    if (window.__snKurv) return;
+    window.__snKurv = true;
+    var KORZEN = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+
+    function szuflada() { return document.getElementById('CartDrawer'); }
+
+    /* ---------- odswiezenie sumy, polecanych i licznika ---------- */
+    var czekam = null, w_toku = false;
+    function odswiez() {
+      clearTimeout(czekam);
+      czekam = setTimeout(function () {
+        if (w_toku) return;
+        w_toku = true;
+        fetch(KORZEN + '?sections=sn-kurv-dele&t=' + Date.now(), { credentials: 'same-origin' })
+          .then(function (o) { return o.json(); })
+          .then(function (j) {
+            var d = new DOMParser().parseFromString(j['sn-kurv-dele'] || '', 'text/html');
+            var sz = szuflada();
+            if (!sz) return;
+            var nowaSuma = d.querySelector('[data-snk-total]');
+            var staraSuma = sz.querySelector('[data-snk-total]');
+            if (nowaSuma && staraSuma) staraSuma.replaceWith(nowaSuma);
+            var ile = nowaSuma ? Number(nowaSuma.getAttribute('data-count')) : 0;
+            sz.querySelectorAll('[data-snk-count]').forEach(function (el) {
+              el.textContent = ile;
+              el.hidden = ile === 0;
+            });
+            var noweF = d.querySelector('[data-snk-forslag]');
+            var stareF = sz.querySelector('[data-snk-forslag]');
+            if (noweF && stareF) {
+              stareF.innerHTML = noweF.innerHTML;
+              przygotujKarty(stareF);
+            }
+          })
+          .catch(function () {})
+          .then(function () { w_toku = false; });
+      }, 150);
+    }
+
+    function obserwuj() {
+      var sz = szuflada();
+      var lista = sz && sz.querySelector('[data-products]');
+      if (!lista) return;
+      new MutationObserver(odswiez).observe(lista, { childList: true });
+      przygotujKarty(sz.querySelector('[data-snk-forslag]'));
+    }
+
+    document.addEventListener('drawerOpen', odswiez);
+    document.addEventListener('cart:updated', odswiez);
+
+    /* ---------- Fjern = ilosc 0 przez QtySelector motywu ---------- */
+    document.addEventListener('click', function (e) {
+      var usun = e.target.closest('[data-snk-remove]');
+      if (!usun) return;
+      var pole = usun.closest('.cart__item').querySelector('.js-qty__num');
+      if (!pole) return;
+      pole.value = 0;
+      pole.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+
+    /* ---------- karty "Gor looket komplet" ---------- */
+    function przygotujKarty(ramka) {
+      if (!ramka) return;
+      var karty = ramka.querySelectorAll('[data-snk-card]');
+      var wrap = ramka.querySelector('[data-snk-up-wrap]');
+      if (wrap) wrap.hidden = karty.length === 0;
+      karty.forEach(function (k) {
+        var dane;
+        try { dane = JSON.parse(k.querySelector('[data-snk-json]').textContent); } catch (err) { return; }
+        k.__snk = { dane: dane, kolor: null, rozmiar: null };
+        var sw = k.querySelector('.snk-card__sw.is-on');
+        if (sw) k.__snk.kolor = sw.getAttribute('data-snk-sw');
+        rysujRozmiary(k);
+      });
+      strzalki(ramka);
+    }
+
+    function warianty(k) {
+      var s = k.__snk, iK = Number(k.getAttribute('data-kolor')) - 1;
+      return s.dane.v.filter(function (v) { return iK < 0 || v.o[iK] === s.kolor; });
+    }
+
+    function rysujRozmiary(k) {
+      var s = k.__snk, iR = Number(k.getAttribute('data-rozm')) - 1;
+      var pole = k.querySelector('[data-snk-sizes]');
+      pole.innerHTML = '';
+      s.rozmiar = null;
+      if (iR < 0) return;
+      warianty(k).forEach(function (v) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'snk-card__size';
+        b.setAttribute('data-snk-size', v.o[iR]);
+        b.textContent = (s.dane.l && s.dane.l[v.o[iR]]) || v.o[iR];
+        if (!v.a) b.disabled = true;
+        pole.appendChild(b);
+      });
+      var dostepne = pole.querySelectorAll('.snk-card__size:not([disabled])');
+      if (dostepne.length === 1) { dostepne[0].classList.add('is-on'); s.rozmiar = dostepne[0].getAttribute('data-snk-size'); }
+    }
+
+    function wybranyWariant(k) {
+      var s = k.__snk, iR = Number(k.getAttribute('data-rozm')) - 1;
+      var lista = warianty(k).filter(function (v) { return v.a; });
+      if (iR < 0) return lista[0] || null;
+      return lista.filter(function (v) { return v.o[iR] === s.rozmiar; })[0] || null;
+    }
+
+    function strzalki(ramka) {
+      var tor = ramka.querySelector('[data-snk-up-track]');
+      if (!tor) return;
+      var prev = ramka.querySelector('[data-snk-up-prev]'), next = ramka.querySelector('[data-snk-up-next]');
+      function stan() {
+        prev.disabled = tor.scrollLeft < 4;
+        next.disabled = tor.scrollLeft + tor.clientWidth > tor.scrollWidth - 4;
+      }
+      tor.addEventListener('scroll', stan, { passive: true });
+      stan();
+    }
+
+    document.addEventListener('click', function (e) {
+      var strz = e.target.closest('[data-snk-up-prev], [data-snk-up-next]');
+      if (strz) {
+        var tor = strz.closest('[data-snk-up-wrap]').querySelector('[data-snk-up-track]');
+        var karta = tor.querySelector('[data-snk-card]');
+        var krok = karta ? karta.getBoundingClientRect().width : tor.clientWidth;
+        tor.scrollBy({ left: strz.hasAttribute('data-snk-up-next') ? krok : -krok, behavior: 'smooth' });
+        return;
+      }
+
+      var k = e.target.closest('[data-snk-card]');
+      if (!k || !k.__snk) return;
+
+      var sw = e.target.closest('[data-snk-sw]');
+      if (sw) {
+        k.querySelectorAll('[data-snk-sw]').forEach(function (b) { b.classList.toggle('is-on', b === sw); });
+        k.__snk.kolor = sw.getAttribute('data-snk-sw');
+        k.querySelector('[data-snk-err]').hidden = true;
+        rysujRozmiary(k);
+        var zObrazkiem = warianty(k).filter(function (v) { return v.img; })[0];
+        var img = k.querySelector('.snk-card__img img');
+        if (zObrazkiem && img) { img.removeAttribute('srcset'); img.src = zObrazkiem.img; }
+        return;
+      }
+
+      var rozm = e.target.closest('[data-snk-size]');
+      if (rozm && !rozm.disabled) {
+        k.querySelectorAll('[data-snk-size]').forEach(function (b) { b.classList.toggle('is-on', b === rozm); });
+        k.__snk.rozmiar = rozm.getAttribute('data-snk-size');
+        k.querySelector('[data-snk-err]').hidden = true;
+        return;
+      }
+
+      var dodaj = e.target.closest('[data-snk-add]');
+      if (dodaj && !dodaj.disabled) {
+        var v = wybranyWariant(k);
+        if (!v) { k.querySelector('[data-snk-err]').hidden = false; return; }
+        dodaj.disabled = true;
+        fetch(KORZEN + 'cart/add.js', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ items: [{ id: v.id, quantity: 1 }] })
+        })
+          .then(function (o) { if (!o.ok) throw new Error('odmowa'); return o.json(); })
+          .then(function () {
+            /* Motyw na to zdarzenie przebudowuje koszyk i licznik w naglowku. */
+            document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { addToCartBtn: dodaj } }));
+          })
+          .catch(function () { dodaj.disabled = false; });
+      }
+    });
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', obserwuj);
+    else obserwuj();
+  })();
+</script>

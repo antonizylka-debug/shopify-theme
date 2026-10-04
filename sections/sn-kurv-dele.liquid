@@ -1,0 +1,17 @@
+{%- comment -%}
+  Czesci szuflady koszyka, ktore zaleza od zawartosci koszyka, a ktorych
+  motyw sam nie przebudowuje: suma z oszczednoscia i "Gor looket komplet".
+  JS (sn-kurv-assets) pobiera je po kazdej zmianie koszyka przez Section
+  Rendering API: /?sections=sn-kurv-dele. Sekcji nie dodaje sie do szablonow.
+{%- endcomment -%}
+<div data-snk-parts>
+  {%- render 'sn-kurv-total' -%}
+  <div data-snk-forslag>{%- render 'sn-kurv-forslag' -%}</div>
+</div>
+
+{% schema %}
+{
+  "name": "Kurv - dele",
+  "settings": []
+}
+{% endschema %}
