@@ -107,6 +107,8 @@
         "price_size": 28,
         "price_size_m": 24,
         "atc_label": "Læg i kurv",
+        "pilne_show": true,
+        "pilne_text": "Stor efterspørgsel – begrænset antal tilbage. Kan du trykke »Læg i kurv«, er den der endnu.",
         "vat_note": "inkl. moms",
         "label_normal": "Normalpris:",
         "label_omnibus": "Laveste pris 30 dage før nedsættelsen:",
@@ -319,20 +321,72 @@
     "reviews": {
       "type": "ob-reviews",
       "blocks": {
+        "review_8nFQDm": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Virkelig god kundeservice",
+            "text": "Super god oplevelse fra start til slut. Kundeservicen var venlig og meget hjælpsom!",
+            "author": "Sofie L.",
+            "country": "DK",
+            "date": "For et par timer siden",
+            "verified": true
+          }
+        },
+        "review_JXwaPk": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Smukke produkter og god kvalitet",
+            "text": "Produktet ser endnu bedre ud i virkeligheden. Jeg er meget tilfreds med kvaliteten",
+            "author": "Emma N",
+            "country": "DK",
+            "date": "1 uge siden",
+            "verified": true
+          }
+        },
+        "review_wXzmJH": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "En fantastisk shoppingoplevelse",
+            "text": "Virkelig dejlig webshop med flotte produkter og en fantastisk service. Kan varmt anbefales!",
+            "author": "Clara H.",
+            "country": "DK",
+            "date": "5 dage siden",
+            "verified": true
+          }
+        },
+        "review_kANkmC": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Hurtig levering og fantastisk service",
+            "text": "Alt gik nemt og hurtigt, og produktet lever fuldt ud op til mine forventninger. Handler gerne her igen!",
+            "author": "Laura J.",
+            "country": "DK",
+            "date": "1 dag siden",
+            "verified": true
+          }
+        },
         "review_b7mDM3": {
           "type": "review",
           "settings": {
             "rating": "5",
-            "title": "Czesc to moja opinia",
-            "text": "polecam super",
-            "author": "Ewwelina lisowska",
-            "country": "",
-            "date": "29.09.2026",
+            "title": "Fantastisk kvalitet og hurtig levering",
+            "text": "Jeg er virkelig glad for mit køb! Produktet er af fantastisk kvalitet, og leveringen var hurtig.",
+            "author": "Freja M.",
+            "country": "DK",
+            "date": "3 dage siden",
             "verified": true
           }
         }
       },
       "block_order": [
+        "review_8nFQDm",
+        "review_JXwaPk",
+        "review_wXzmJH",
+        "review_kANkmC",
         "review_b7mDM3"
       ],
       "settings": {
