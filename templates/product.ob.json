@@ -130,7 +130,7 @@
         "flag_left": 0,
         "badge_radius": 4,
         "show_sale_flag": true,
-        "vat_note": "inkl. alle afgifter",
+        "vat_note": "inkl. moms",
         "before_label": "Normalpris:",
         "sale_flag_label": "UDSALG",
         "sale_flag_bg": "#d6332e",

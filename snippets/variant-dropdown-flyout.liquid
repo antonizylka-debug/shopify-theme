@@ -113,7 +113,7 @@
             <span class="sz-opt-right" data-sz-opt-right>
               {%- if row_variant.available -%}
                 <span class="sz-opt-price">{{ row_variant.price | money }}</span>
-                <span class="sz-opt-vat">inkl. alle afgifter</span>
+                <span class="sz-opt-vat">inkl. moms</span>
               {%- else -%}
                 <span class="sz-opt-note">Udsolgt</span>
               {%- endif -%}
@@ -453,7 +453,7 @@
             opt.removeAttribute('aria-disabled');
             right.innerHTML =
               '<span class="sz-opt-price">' + formatMoney(variant.price) + '</span>' +
-              '<span class="sz-opt-vat">inkl. alle afgifter</span>';
+              '<span class="sz-opt-vat">inkl. moms</span>';
           } else {
             opt.setAttribute('aria-disabled', 'true');
             right.innerHTML = '<span class="sz-opt-note">Udsolgt</span>';
