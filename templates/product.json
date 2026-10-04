@@ -496,6 +496,8 @@
         "empty_text": "Der er endnu ingen anmeldelser.",
         "show_distribution": false,
         "columns": 4,
+        "desktop_initial": 4,
+        "more_label": "Vis flere anmeldelser",
         "title_size": 19,
         "title_size_mobile": 17,
         "padding_top": 56,
