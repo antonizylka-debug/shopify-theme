@@ -1,0 +1,200 @@
+{%- comment -%}
+  Baner kampanii na stronie produktu (zamiast bloku tekstowego w stylu
+  Iselle, ktory wygladal jak wpis na blogu): zdjecie obok tresci,
+  czerwony naglowek akcji z licznikiem (Ustawienia motywu > Campaign),
+  duzy tytul, jedno zdanie, progi jako kafle (najwyzszy w czerni),
+  krotkie zasady z ptaszkami, przycisk i haslo.
+  Telefon: zdjecie na gorze, kafle w jednym rzedzie, przycisk na cala szerokosc.
+  Progi musza sie zgadzac z rabatami automatycznymi w Shopify.
+{%- endcomment -%}
+{%- liquid
+  assign progi = section.settings.tiers | split: ','
+  assign ma_foto = false
+  if section.settings.image != blank
+    assign ma_foto = true
+  endif
+-%}
+{%- style -%}
+  #shopify-section-{{ section.id }} .snk { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
+  #shopify-section-{{ section.id }} .snk__panel { display: grid; grid-template-columns: minmax(0, 1fr); background: {{ section.settings.color_bg }}; color: #1c1d1d; }
+  #shopify-section-{{ section.id }} .snk__panel--foto { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
+  #shopify-section-{{ section.id }} .snk__panel--right .snk__foto { order: 2; }
+  #shopify-section-{{ section.id }} .snk__foto { position: relative; min-height: 460px; overflow: hidden; }
+  #shopify-section-{{ section.id }} .snk__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: {{ section.settings.image_position }}; }
+  #shopify-section-{{ section.id }} .snk__tresc { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 52px 60px; min-width: 0; }
+  #shopify-section-{{ section.id }} .snk__panel:not(.snk__panel--foto) .snk__tresc { align-items: center; text-align: center; max-width: 680px; margin: 0 auto; }
+
+  #shopify-section-{{ section.id }} .snk__brw {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 2px 8px; margin: 0 0 12px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #c8102e;
+  }
+  #shopify-section-{{ section.id }} .snk__dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #c8102e; flex: 0 0 7px; }
+  #shopify-section-{{ section.id }} .snk__dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #c8102e; animation: snk-puls 1.6s ease-out infinite; }
+  @keyframes snk-puls { from { transform: scale(1); opacity: 0.6; } to { transform: scale(2.6); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { #shopify-section-{{ section.id }} .snk__dot::after { animation: none; } }
+  #shopify-section-{{ section.id }} .snk__czas[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .snk__czas b { font-variant-numeric: tabular-nums; }
+
+  #shopify-section-{{ section.id }} .snk__tytul {
+    margin: 0 0 12px; font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
+    font-size: {{ section.settings.title_size }}px; font-weight: 600; line-height: 1.12; letter-spacing: -0.01em;
+    text-transform: none; text-wrap: balance;
+  }
+  #shopify-section-{{ section.id }} .snk__tekst { margin: 0 0 24px; max-width: 46ch; font-size: 16px; line-height: 1.6; color: #56524c; text-wrap: pretty; }
+
+  #shopify-section-{{ section.id }} .snk__progi { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; width: 100%; max-width: 520px; margin: 0; padding: 0; list-style: none; }
+  #shopify-section-{{ section.id }} .snk__prog { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 0; padding: 15px 6px 14px; background: #ffffff; text-align: center; }
+  #shopify-section-{{ section.id }} .snk__ile { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6e6b65; white-space: nowrap; }
+  #shopify-section-{{ section.id }} .snk__proc { font-size: 27px; font-weight: 700; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  #shopify-section-{{ section.id }} .snk__prog--max { background: #1c1d1d; color: #ffffff; }
+  #shopify-section-{{ section.id }} .snk__prog--max .snk__ile { color: rgba(255, 255, 255, 0.82); }
+
+  #shopify-section-{{ section.id }} .snk__zasady { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 13.5px; color: #56524c; }
+  #shopify-section-{{ section.id }} .snk__panel:not(.snk__panel--foto) .snk__zasady { justify-content: center; }
+  #shopify-section-{{ section.id }} .snk__zasady li { display: inline-flex; align-items: center; gap: 6px; margin: 0; }
+  #shopify-section-{{ section.id }} .snk__zasady svg { width: 14px; height: 14px; flex: 0 0 14px; color: #1c1d1d; }
+
+  #shopify-section-{{ section.id }} .snk__btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    min-height: 52px; margin-top: 26px; padding: 0 34px;
+    background: #1c1d1d; color: #ffffff; text-decoration: none;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    transition: background-color 0.15s ease;
+  }
+  #shopify-section-{{ section.id }} .snk__btn:hover { background: #000000; }
+  #shopify-section-{{ section.id }} .snk__btn svg { width: 16px; height: 16px; }
+  #shopify-section-{{ section.id }} .snk__pilne { margin: 14px 0 0; font-size: 13.5px; font-weight: 700; }
+
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .snk { padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px; }
+    #shopify-section-{{ section.id }} .snk__panel--foto { grid-template-columns: minmax(0, 1fr); }
+    #shopify-section-{{ section.id }} .snk__panel--right .snk__foto { order: 0; }
+    #shopify-section-{{ section.id }} .snk__foto { min-height: 0; aspect-ratio: 4 / 3; }
+    #shopify-section-{{ section.id }} .snk__tresc { padding: 24px 18px 26px; }
+    #shopify-section-{{ section.id }} .snk__tytul { font-size: {{ section.settings.title_size_mobile }}px; }
+    #shopify-section-{{ section.id }} .snk__tekst { font-size: 15px; margin-bottom: 18px; }
+    #shopify-section-{{ section.id }} .snk__progi { gap: 6px; max-width: none; }
+    #shopify-section-{{ section.id }} .snk__prog { padding: 12px 2px 11px; gap: 3px; }
+    #shopify-section-{{ section.id }} .snk__ile { font-size: 12px; letter-spacing: 0.04em; }
+    #shopify-section-{{ section.id }} .snk__proc { font-size: 21px; }
+    #shopify-section-{{ section.id }} .snk__zasady { font-size: 13px; gap: 6px 14px; }
+    #shopify-section-{{ section.id }} .snk__btn { width: 100%; margin-top: 20px; }
+  }
+{%- endstyle -%}
+
+<div class="snk">
+  <div class="page-width">
+    <div class="snk__panel{% if ma_foto %} snk__panel--foto snk__panel--{{ section.settings.layout }}{% endif %}">
+      {%- if ma_foto -%}
+        <div class="snk__foto">
+          {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '500, 800, 1100, 1400', sizes: '(min-width: 769px) 46vw, 100vw', alt: section.settings.heading, class: 'snk__img' }}
+        </div>
+      {%- endif -%}
+
+      <div class="snk__tresc">
+        {%- if section.settings.show_campaign and settings.campaign_name != blank -%}
+          <p class="snk__brw">
+            <span class="snk__dot" aria-hidden="true"></span>
+            {{ settings.campaign_name | escape }}
+            {%- if settings.campaign_end != blank -%}
+              <span class="snk__czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>slutter om</span> <b data-sn-czas></b></span>
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="snk__tytul">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <p class="snk__tekst">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+
+        {%- if progi.size > 0 -%}
+          <ol class="snk__progi">
+            {%- for prog in progi -%}
+              {%- assign czesci = prog | split: ':' -%}
+              {%- assign ile = czesci[0] | strip -%}
+              {%- assign proc = czesci[1] | strip -%}
+              {%- if ile != blank and proc != blank -%}
+                <li class="snk__prog{% if forloop.last %} snk__prog--max{% endif %}">
+                  <span class="snk__ile">{{ ile }}{% if forloop.last %}+{% endif %} {{ section.settings.tier_word | escape }}</span>
+                  <span class="snk__proc">−{{ proc }} %</span>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ol>
+        {%- endif -%}
+
+        {%- if section.settings.rules != blank -%}
+          {%- assign zasady = section.settings.rules | split: '·' -%}
+          <ul class="snk__zasady">
+            {%- for z in zasady -%}
+              {%- assign zz = z | strip -%}
+              {%- if zz != blank -%}
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12 5 5L19 7"/></svg>{{ zz | escape }}</li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <a class="snk__btn" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+            {{ section.settings.button_label | escape }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.urgency != blank -%}
+          <p class="snk__pilne">{{ section.settings.urgency | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+{%- if section.settings.show_campaign and settings.campaign_end != blank -%}{%- render 'sn-licznik' -%}{%- endif -%}
+
+{% schema %}
+{
+  "name": "Campaign banner",
+  "tag": "section",
+  "class": "sn-kampagne",
+  "settings": [
+    { "type": "paragraph", "content": "Photo beside the offer. The red line on top is the campaign name and countdown from Theme settings, Campaign." },
+    { "type": "image_picker", "id": "image", "label": "Photo" },
+    {
+      "type": "select", "id": "layout", "label": "Photo position", "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select", "id": "image_position", "label": "Photo focus", "default": "center",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "left center", "label": "Left" },
+        { "value": "right center", "label": "Right" },
+        { "value": "center top", "label": "Top" }
+      ]
+    },
+    { "type": "checkbox", "id": "show_campaign", "label": "Show campaign name and countdown", "default": true },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Køb flere – spar op til 30 %" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Sæsonudsalget er i gang. Jo flere varer du lægger i kurven, jo mere sparer du – oven i udsalgspriserne." },
+    { "type": "text", "id": "tiers", "label": "Steps (items:percent)", "default": "2:10, 3:20, 4:25, 5:30", "info": "Must match the automatic discounts in Shopify, Discounts. The last step also covers more items." },
+    { "type": "text", "id": "tier_word", "label": "Word after the number", "default": "varer" },
+    { "type": "text", "id": "rules", "label": "Short rules", "default": "Bland frit · Trækkes automatisk i kurven · Ingen rabatkode", "info": "Separate with a middle dot (·). Each part gets a tick." },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Shop udsalget" },
+    { "type": "url", "id": "button_link", "label": "Button link", "default": "/collections/all" },
+    { "type": "text", "id": "urgency", "label": "Line under the button", "default": "Populære styles sælger hurtigt – når de er væk, er de væk." },
+    { "type": "header", "content": "Look" },
+    { "type": "color", "id": "color_bg", "label": "Background", "default": "#f3ede6" },
+    { "type": "range", "id": "title_size", "label": "Heading", "default": 38, "min": 24, "max": 56, "step": 1, "unit": "px" },
+    { "type": "range", "id": "title_size_mobile", "label": "Heading (phone)", "default": 27, "min": 18, "max": 40, "step": 1, "unit": "px" },
+    { "type": "range", "id": "padding_top", "label": "Space above", "default": 48, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "default": 48, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_top_mobile", "label": "Space above (phone)", "default": 28, "min": 0, "max": 80, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Space below (phone)", "default": 28, "min": 0, "max": 80, "step": 4, "unit": "px" }
+  ],
+  "presets": [{ "name": "Campaign banner" }]
+}
+{% endschema %}
