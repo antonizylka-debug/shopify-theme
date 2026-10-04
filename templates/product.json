@@ -291,6 +291,33 @@
         "color_add_ok": "#1f7a3d"
       }
     },
+    "kampania": {
+      "type": "sn-story",
+      "settings": {
+        "layout": "left",
+        "bleed": false,
+        "ratio": "4 / 3",
+        "title": "Sæsonudsalg hos Stilhuset Nord",
+        "text": "<p>Efteråret er her, og vi fejrer den nye sæson med et særligt udsalg hos <strong>Stilhuset Nord</strong>. I en begrænset periode får du ekstra rabat, når du køber flere varer fra vores kollektion.</p><p><strong>Ekstra mængderabat:</strong></p>",
+        "list": "Køb 2 varer → | spar ekstra 10 %\nKøb 3 varer → | spar ekstra 20 %\nKøb 4 varer → | spar ekstra 25 %\nKøb 5 eller flere → | spar ekstra 30 %",
+        "text_after": "<p>Rabatten trækkes automatisk i kurven, og varerne behøver ikke være ens.</p><p>Når udsalget slutter, forsvinder den ekstra rabat – og mange af vores mest populære styles kommer måske ikke igen.</p><p><strong>Gå ikke glip af det – når de er væk, er de væk.</strong></p><p>— <strong>Stilhuset Nord</strong></p>",
+        "note": "",
+        "image_width": 45,
+        "max_width": 760,
+        "gap": 48,
+        "gap_mobile": 20,
+        "title_size": 30,
+        "title_size_mobile": 22,
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#56524c",
+        "color_accent": "#1c1d1d"
+      }
+    },
     "guarantee": {
       "type": "sn-story",
       "settings": {
@@ -611,6 +638,7 @@
   },
   "order": [
     "main",
+    "kampania",
     "bestsellers",
     "guarantee",
     "reviews",
