@@ -291,7 +291,7 @@
         "color_add_ok": "#1f7a3d"
       }
     },
-    "kampania": {
+    "baner_kampanii": {
       "type": "sn-kampagne",
       "settings": {
         "image": "shopify://shop_images/stilhusetnord-homepage-hero.webp",
@@ -620,7 +620,7 @@
   },
   "order": [
     "main",
-    "kampania",
+    "baner_kampanii",
     "bestsellers",
     "guarantee",
     "reviews",
