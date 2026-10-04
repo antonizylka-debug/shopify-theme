@@ -1,0 +1,93 @@
+{%- comment -%}
+  Podpowiedz w koszyku: ile sztuk brakuje do nastepnego progu rabatu
+  za ilosc (2 = -10 %, 3 = -20 %, 4 = -25 %, 5+ = -30 %, rabaty
+  automatyczne w panelu). Serwer renderuje stan z chwili wejscia, JS
+  odswieza po kazdej zmianie koszyka (cart:updated, ajaxProduct:added,
+  drawerOpen) z /cart.js. Progi musza byc zgodne z rabatami w panelu.
+{%- endcomment -%}
+{%- liquid
+  assign ile = cart.item_count
+  assign nastepny = 10
+  assign brakuje = 2 | minus: ile
+  if ile >= 5
+    assign obecny = 30
+    assign nastepny = 0
+    assign brakuje = 0
+  elsif ile == 4
+    assign obecny = 25
+    assign nastepny = 30
+    assign brakuje = 1
+  elsif ile == 3
+    assign obecny = 20
+    assign nastepny = 25
+    assign brakuje = 1
+  elsif ile == 2
+    assign obecny = 10
+    assign nastepny = 20
+    assign brakuje = 1
+  endif
+  assign zapelnienie = ile | at_most: 5 | times: 20
+-%}
+<div class="snprog"{% if ile == 0 %} hidden{% endif %} data-sn-prog>
+  <p class="snprog__txt" data-sn-prog-txt>
+    {%- if nastepny == 0 -%}
+      Du får den højeste rabat: <strong>−30 %</strong> på hele kurven.
+    {%- else -%}
+      Tilføj {{ brakuje }} {% if brakuje == 1 %}vare{% else %}varer{% endif %} mere, og spar <strong>{{ nastepny }} %</strong> på hele kurven.
+    {%- endif -%}
+  </p>
+  <div class="snprog__bar" aria-hidden="true"><span class="snprog__fill" data-sn-prog-fill style="width: {{ zapelnienie }}%"></span></div>
+  <div class="snprog__steps" aria-hidden="true">
+    <span data-sn-prog-step="2"{% if ile >= 2 %} class="is-on"{% endif %}>2 stk. −10 %</span>
+    <span data-sn-prog-step="3"{% if ile >= 3 %} class="is-on"{% endif %}>3 stk. −20 %</span>
+    <span data-sn-prog-step="4"{% if ile >= 4 %} class="is-on"{% endif %}>4 stk. −25 %</span>
+    <span data-sn-prog-step="5"{% if ile >= 5 %} class="is-on"{% endif %}>5+ −30 %</span>
+  </div>
+</div>
+
+<style>
+  .snprog { margin: 0 0 16px; padding: 14px 16px 12px; background: #f6f2ec; color: #1c1d1d; }
+  .snprog[hidden] { display: none; }
+  .snprog__txt { margin: 0 0 10px; font-size: 14px; line-height: 1.45; }
+  .snprog__txt strong { color: #c8102e; font-weight: 700; }
+  .snprog__bar { height: 4px; background: #e2d9cc; border-radius: 2px; overflow: hidden; }
+  .snprog__fill { display: block; height: 100%; background: #1c1d1d; transition: width 0.3s ease; }
+  .snprog__steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 8px; }
+  .snprog__steps span { font-size: 12px; line-height: 1.3; color: #6e6b65; text-align: center; white-space: nowrap; }
+  .snprog__steps span.is-on { color: #1c1d1d; font-weight: 600; }
+</style>
+<script>
+  (function () {
+    if (window.__snProg) return;
+    window.__snProg = true;
+    var PROGI = [[5, 30], [4, 25], [3, 20], [2, 10]];
+    function rysuj(ile) {
+      var obecny = 0, nastepny = 10, brakuje = 2 - ile;
+      for (var i = 0; i < PROGI.length; i++) { if (ile >= PROGI[i][0]) { obecny = PROGI[i][1]; break; } }
+      if (ile >= 5) { nastepny = 0; brakuje = 0; }
+      else if (ile >= 2) { nastepny = { 2: 20, 3: 25, 4: 30 }[ile]; brakuje = 1; }
+      document.querySelectorAll('[data-sn-prog]').forEach(function (el) {
+        el.hidden = ile === 0;
+        var txt = el.querySelector('[data-sn-prog-txt]');
+        txt.innerHTML = nastepny === 0
+          ? 'Du får den højeste rabat: <strong>−30 %</strong> på hele kurven.'
+          : 'Tilføj ' + brakuje + ' ' + (brakuje === 1 ? 'vare' : 'varer') + ' mere, og spar <strong>' + nastepny + ' %</strong> på hele kurven.';
+        el.querySelector('[data-sn-prog-fill]').style.width = (Math.min(ile, 5) * 20) + '%';
+        el.querySelectorAll('[data-sn-prog-step]').forEach(function (s) {
+          s.classList.toggle('is-on', ile >= Number(s.getAttribute('data-sn-prog-step')));
+        });
+      });
+    }
+    function odswiez(e) {
+      var c = e && e.detail && e.detail.cart;
+      if (c && typeof c.item_count === 'number') { rysuj(c.item_count); return; }
+      fetch('/cart.js', { credentials: 'same-origin' })
+        .then(function (r) { return r.json(); })
+        .then(function (c) { rysuj(c.item_count); })
+        .catch(function () {});
+    }
+    ['cart:updated', 'ajaxProduct:added', 'drawerOpen'].forEach(function (n) {
+      document.addEventListener(n, function (e) { setTimeout(function () { odswiez(e); }, 150); });
+    });
+  })();
+</script>

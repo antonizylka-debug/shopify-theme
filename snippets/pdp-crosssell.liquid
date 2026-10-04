@@ -16,16 +16,15 @@
 {%- endcomment -%}
 
 {%- comment -%}
-  Co pokazac: bestsellery dla plci produktu - kolekcja Dame (womens) albo
-  Herre (mens), kolekcje sa w sklepie rozlaczne. Kolejnosc bierze sie z
-  ustawienia kolekcji w panelu: przy sortowaniu "Najlepiej sprzedajace
-  sie" to sa prawdziwe bestsellery, liczone przez Shopify ze sprzedazy.
-  Motyw nie ma dostepu do danych o sprzedazy, wiec sam ich nie policzy.
-
-  Wczesniej rzad dobieral rzeczy do stylizacji (buty, dodatki, kurtki) -
-  Antoni wolal bestsellery.
+  Co pokazac: rzeczy DO KOMPLETU z innych kategorii tej samej plci -
+  do sukienki buty i dodatki, do spodni bluzki i buty itd. Kafle z kilku
+  kolekcji ida na przemian. 04.10.2026 Antoni zmienil zdanie: zamiast
+  bestsellerow (ktore pokazywaly kolejne sukienki) chce pasujace buty
+  i torebki.
 
   Kolekcja wybrana recznie w ustawieniach sekcji ("Collection") wygrywa.
+  Start przesuniety o id produktu, zeby rozne produkty nie mialy
+  identycznego rzedu.
 {%- endcomment -%}
 {%- liquid
   assign ile = ustawienia.cross_count
@@ -35,13 +34,37 @@
   if reczna != blank and reczna.products_count > 0
     assign lista = reczna.handle
   elsif uchwyty contains 'mens'
-    assign lista = 'mens'
+    if uchwyty contains 'mens-footwear'
+      assign lista = 'mens-accessories,mens-bottoms,mens-shirts'
+    elsif uchwyty contains 'mens-accessories'
+      assign lista = 'mens-footwear,mens-shirts'
+    elsif uchwyty contains 'mens-bottoms'
+      assign lista = 'mens-shirts,mens-footwear,mens-sweaters-and-knitwear'
+    elsif uchwyty contains 'mens-jackets-and-coats'
+      assign lista = 'mens-sweaters-and-knitwear,mens-footwear,mens-bottoms'
+    else
+      assign lista = 'mens-bottoms,mens-footwear,mens-accessories'
+    endif
   else
-    assign lista = 'womens'
+    if uchwyty contains 'womens-footwear'
+      assign lista = 'womens-accessories,womens-dresses,womens-bottoms'
+    elsif uchwyty contains 'womens-accessories'
+      assign lista = 'womens-footwear,womens-dresses'
+    elsif uchwyty contains 'womens-dresses'
+      assign lista = 'womens-footwear,womens-accessories,womens-jackets-and-coats'
+    elsif uchwyty contains 'womens-sets-and-one-pieces'
+      assign lista = 'womens-footwear,womens-accessories,womens-jackets-and-coats'
+    elsif uchwyty contains 'womens-bottoms'
+      assign lista = 'womens-tops,womens-footwear,womens-sweaters-and-knitwear'
+    elsif uchwyty contains 'womens-jackets-and-coats'
+      assign lista = 'womens-sweaters-and-knitwear,womens-footwear,womens-dresses'
+    else
+      assign lista = 'womens-bottoms,womens-footwear,womens-accessories'
+    endif
   endif
 
   assign kolekcje_x = lista | split: ','
-  assign start = 0
+  assign start = product.id | modulo: 25
 
   assign jest_co = false
   for h in kolekcje_x
@@ -268,7 +291,7 @@
          Najpierw produkty uzupelniajace ustawione recznie w Search &
          Discovery, potem powiazane, ktore Shopify dobiera sam - az do
          pelnego rzedu, bez powtorzen. Gdy Shopify nic nie zwroci, zostaje
-         to, co wyrenderowal serwer (bestsellery Dame/Herre). */
+         to, co wyrenderowal serwer (rzeczy do kompletu). */
       var KORZEN = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
       var ID = ramka.getAttribute('data-snx-produkt');
       var ILE = Number(ramka.getAttribute('data-snx-ile')) || 8;
@@ -285,9 +308,12 @@
           .catch(function () { return []; });
       }
 
-      Promise.all([pobierz('complementary'), pobierz('related')]).then(function (wyniki) {
+      /* Tylko 'complementary' (reczne pary z Search & Discovery). 'related'
+         zwracal podobne produkty - do sukienki kolejne sukienki - wiec
+         odpada; bez recznych par zostaje rzad do kompletu z serwera. */
+      Promise.all([pobierz('complementary')]).then(function (wyniki) {
         var widziane = {}, wybrane = [];
-        wyniki[0].concat(wyniki[1]).forEach(function (el) {
+        wyniki[0].forEach(function (el) {
           var id = el.getAttribute('data-produkt');
           if (widziane[id] || wybrane.length >= ILE) return;
           widziane[id] = true;

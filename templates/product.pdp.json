@@ -107,7 +107,7 @@
         "price_size": 28,
         "price_size_m": 24,
         "atc_label": "Læg i kurv",
-        "vat_note": "inkl. moms",
+        "vat_note": "inkl. alle afgifter",
         "label_normal": "Normalpris:",
         "label_omnibus": "Laveste pris 30 dage før nedsættelsen:",
         "show_omnibus": true,

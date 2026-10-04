@@ -124,7 +124,9 @@
                 assign sort_name = ''
                 for option in collection.sort_options
                   if option.value == sort_by
-                    assign sort_name = option.name
+                    capture sort_name
+                      render 'sn-sortowanie-da', wartosc: option.value, nazwa: option.name
+                    endcapture
                   endif
                 endfor
               -%}
@@ -143,7 +145,7 @@
                 {%- for option in collection.sort_options -%}
                   <li role="option" aria-selected="{% if option.value == sort_by %}true{% else %}false{% endif %}">
                     <button type="button" class="sort-menu__item{% if option.value == sort_by %} is-current{% endif %}" data-sort-value="{{ option.value }}">
-                      <span>{{ option.name }}</span>
+                      <span>{% render 'sn-sortowanie-da', wartosc: option.value, nazwa: option.name %}</span>
                       <svg class="sort-menu__check" aria-hidden="true" focusable="false" viewBox="0 0 14 10" width="13" height="9"><path d="m1 5 4 4 8-8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
                     </button>
                   </li>
@@ -151,7 +153,7 @@
               </ul>
               <select name="SortBy" id="SortBy" data-default-sortby="{{ collection.default_sort_by }}">
                 {%- for option in collection.sort_options -%}
-                  <option value="{{ option.value }}"{% if option.value == sort_by %} selected="selected"{% endif %}>{{ option.name }}</option>
+                  <option value="{{ option.value }}"{% if option.value == sort_by %} selected="selected"{% endif %}>{% render 'sn-sortowanie-da', wartosc: option.value, nazwa: option.name %}</option>
                 {%- endfor -%}
               </select>
             </div>

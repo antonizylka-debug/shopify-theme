@@ -1,0 +1,18 @@
+{%- comment -%}
+  Duńska nazwa opcji sortowania. Sklep dziala na jezyku 'en', wiec Shopify
+  podaje nazwy po angielsku ("Best selling", "Price, low to high").
+  @param {string} wartosc - option.value (np. 'best-selling')
+  @param {string} nazwa - option.name, gdy wartosci nie ma na liscie
+{%- endcomment -%}
+{%- case wartosc -%}
+  {%- when 'manual' -%}Udvalgte
+  {%- when 'relevance' -%}Mest relevante
+  {%- when 'best-selling' -%}Mest populære
+  {%- when 'title-ascending' -%}Alfabetisk, A–Å
+  {%- when 'title-descending' -%}Alfabetisk, Å–A
+  {%- when 'price-ascending' -%}Pris, lav til høj
+  {%- when 'price-descending' -%}Pris, høj til lav
+  {%- when 'created-ascending' -%}Ældste først
+  {%- when 'created-descending' -%}Nyeste først
+  {%- else -%}{{ nazwa }}
+{%- endcase -%}
