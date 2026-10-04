@@ -1,0 +1,164 @@
+{%- comment -%}
+  Wyglad stron z politykami (regulamin, zwroty, dostawa, platnosci, prywatnosc, kontakt).
+  Dziala na tresci owinietej w <div class="snp">, wklejonej w Settings -> Policies
+  albo w Online Store -> Pages. Bez .snp strona wyglada jak dotad.
+{%- endcomment -%}
+{%- if template.name == 'page' or request.path contains '/policies/' -%}
+<style>
+  .snp {
+    --snp-ink: #1c1d1d;
+    --snp-muted: #5f5b55;
+    --snp-line: #e6e1da;
+    --snp-sand: #f6f2ec;
+    --snp-sand-2: #eee6da;
+    max-width: 760px;
+    margin: 0 auto;
+    color: var(--snp-ink);
+    font-family: var(--typeBasePrimary), sans-serif;
+  }
+  .snp p, .snp li, .snp td, .snp th { font-size: 16px; line-height: 1.7; color: var(--snp-ink); }
+  .snp p { margin: 0 0 14px; }
+  .snp p:last-child { margin-bottom: 0; }
+  .snp strong { font-weight: 600; }
+  .snp a { color: var(--snp-ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .snp h2, .snp h3 {
+    font-family: var(--typeHeaderPrimary), sans-serif;
+    text-transform: none;
+    color: var(--snp-ink);
+  }
+
+  /* tytul motywu znika - .snp ma wlasny naglowek */
+  .page-content:has(.snp) > .section-header,
+  .shopify-policy__container:has(.snp) .shopify-policy__title { display: none; }
+
+  /* --- naglowek --- */
+  .snp__head { text-align: center; padding: 4px 0 36px; margin-bottom: 36px; border-bottom: 1px solid var(--snp-line); }
+  .snp .snp__eyebrow {
+    margin: 0 0 14px; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--snp-muted);
+  }
+  .snp .snp__title {
+    margin: 0 0 16px; font-size: 40px; font-weight: 500; line-height: 1.12; letter-spacing: 0.005em;
+  }
+  .snp .snp__lead { max-width: 560px; margin: 0 auto 18px; font-size: 18px; line-height: 1.6; color: var(--snp-muted); }
+  .snp .snp__date { margin: 0; font-size: 13px; color: var(--snp-muted); }
+
+  /* --- kafle z najwazniejszym --- */
+  .snp__facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px; margin: 0 0 48px;
+  }
+  .snp__fact { background: var(--snp-sand); padding: 22px 16px 20px; text-align: center; }
+  .snp .snp__fact-val {
+    display: block; margin: 0 0 6px;
+    font-family: var(--typeHeaderPrimary), sans-serif; font-size: 26px; font-weight: 500; line-height: 1.1;
+  }
+  .snp .snp__fact-lbl { display: block; font-size: 13px; line-height: 1.4; color: var(--snp-muted); }
+
+  /* --- spis tresci --- */
+  .snp__toc { margin: 0 0 40px; padding: 24px 28px; border: 1px solid var(--snp-line); }
+  .snp .snp__toc-title {
+    margin: 0 0 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--snp-muted);
+  }
+  .snp .snp__toc ol { columns: 2; column-gap: 32px; margin: 0; padding: 0; list-style: none; counter-reset: snptoc; }
+  .snp .snp__toc li { counter-increment: snptoc; margin: 0 0 6px; padding: 0; font-size: 15px; break-inside: avoid; }
+  .snp .snp__toc li::before { content: counter(snptoc, decimal-leading-zero) "  "; color: var(--snp-muted); font-size: 13px; }
+  .snp .snp__toc a { text-decoration: none; }
+  .snp .snp__toc a:hover { text-decoration: underline; }
+
+  /* --- sekcje --- */
+  .snp__sec { padding: 32px 0; border-top: 1px solid var(--snp-line); scroll-margin-top: 140px; }
+  .snp__head + .snp__sec, .snp__facts + .snp__sec, .snp__toc + .snp__sec { border-top: 0; padding-top: 0; }
+  .snp .snp__sec h3 {
+    display: flex; align-items: baseline; gap: 16px;
+    margin: 0 0 16px; font-size: 22px; font-weight: 500; line-height: 1.3; letter-spacing: 0.005em;
+  }
+  .snp .snp__num {
+    flex: 0 0 26px; font-family: var(--typeBasePrimary), sans-serif;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: var(--snp-muted);
+  }
+  .snp__body { padding-left: 42px; }
+
+  /* lista z kreska zamiast kropki */
+  .snp .snp__body ul, .snp .snp__list { margin: 0 0 14px; padding: 0; list-style: none; }
+  .snp .snp__body ul li, .snp .snp__list li { position: relative; margin: 0 0 8px; padding-left: 22px; }
+  .snp .snp__body ul li::before, .snp .snp__list li::before {
+    content: ""; position: absolute; left: 0; top: 0.85em; width: 10px; height: 1px; background: var(--snp-ink);
+  }
+
+  /* kroki 1-2-3 */
+  .snp .snp__steps { margin: 4px 0 14px; padding: 0; list-style: none; counter-reset: snpstep; }
+  .snp .snp__steps li { position: relative; counter-increment: snpstep; margin: 0 0 16px; padding-left: 48px; min-height: 32px; }
+  .snp .snp__steps li::before {
+    content: counter(snpstep); position: absolute; left: 0; top: 0;
+    width: 32px; height: 32px; border-radius: 50%; background: var(--snp-ink); color: #fff;
+    font-size: 14px; font-weight: 600; line-height: 32px; text-align: center;
+  }
+
+  /* wyroznienie */
+  .snp__note { margin: 6px 0 16px; padding: 16px 20px; background: var(--snp-sand); border-left: 3px solid var(--snp-ink); }
+  .snp .snp__note p { font-size: 15px; }
+
+  /* tabela */
+  .snp__table { margin: 4px 0 16px; overflow-x: auto; }
+  .snp .snp__table table { width: 100%; min-width: 560px; border-collapse: collapse; border: 0; }
+  .snp .snp__table th {
+    padding: 0 12px 10px 0; border: 0; border-bottom: 1px solid var(--snp-ink);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; text-align: left; color: var(--snp-muted);
+  }
+  .snp .snp__table td { padding: 14px 12px 14px 0; border: 0; border-bottom: 1px solid var(--snp-line); font-size: 15px; line-height: 1.5; vertical-align: top; }
+  .snp .snp__table td:first-child { font-weight: 600; }
+
+  /* formularz odstapienia */
+  .snp__form { margin: 8px 0 0; padding: 24px 28px; border: 1px dashed #b9b2a8; }
+  .snp .snp__form ul { margin-bottom: 0; }
+
+  /* dane firmy / karta */
+  .snp__card { padding: 24px 28px; background: var(--snp-sand); }
+  .snp .snp__card p { margin-bottom: 6px; }
+
+  /* --- pomoc --- */
+  .snp__help { margin: 48px 0 0; padding: 40px 32px; background: var(--snp-sand-2); text-align: center; }
+  .snp .snp__help-title { margin: 0 0 8px; font-family: var(--typeHeaderPrimary), sans-serif; font-size: 24px; font-weight: 500; }
+  .snp .snp__help p { color: var(--snp-muted); }
+  .snp .snp__btn {
+    display: inline-block; margin: 14px 0 12px; padding: 15px 30px;
+    background: var(--snp-ink); color: #fff; border: 0;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+  .snp .snp__btn:hover { opacity: 0.85; color: #fff; }
+  .snp .snp__help-meta { margin: 0; font-size: 13px; }
+
+  /* --- pozostale polityki --- */
+  .snp__more { margin: 40px 0 0; text-align: center; }
+  .snp .snp__more-title {
+    margin: 0 0 14px; font-size: 12px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--snp-muted);
+  }
+  .snp__more-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .snp .snp__more-links a {
+    display: inline-block; padding: 10px 18px; border: 1px solid var(--snp-line); border-radius: 999px;
+    font-size: 14px; line-height: 1.2; text-decoration: none; transition: border-color 0.15s ease;
+  }
+  .snp .snp__more-links a:hover { border-color: var(--snp-ink); }
+  .snp .snp__more-links a.snp__cur { background: var(--snp-ink); border-color: var(--snp-ink); color: #fff; }
+
+  @media only screen and (max-width: 768px) {
+    .snp__head { padding-bottom: 28px; margin-bottom: 28px; }
+    .snp .snp__title { font-size: 30px; }
+    .snp .snp__lead { font-size: 16px; }
+    .snp__facts { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 36px; }
+    .snp__fact { padding: 18px 12px 16px; }
+    .snp .snp__fact-val { font-size: 22px; }
+    .snp__toc { padding: 20px; }
+    .snp .snp__toc ol { columns: 1; }
+    .snp__sec { padding: 26px 0; }
+    .snp .snp__sec h3 { font-size: 19px; gap: 12px; }
+    .snp__body { padding-left: 0; }
+    .snp__help { padding: 32px 20px; }
+    .snp__form, .snp__card { padding: 20px; }
+  }
+</style>
+{%- endif -%}
