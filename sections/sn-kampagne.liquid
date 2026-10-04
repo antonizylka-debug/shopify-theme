@@ -138,7 +138,7 @@
         {%- endif -%}
 
         {%- if section.settings.button_label != blank -%}
-          <a class="snk__btn" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+          <a class="snk__btn" href="{% if section.settings.button_action == 'scroll' %}#{% else %}{{ section.settings.button_link | default: routes.all_products_collection_url }}{% endif %}"{% if section.settings.button_action == 'scroll' %} data-snk-do-koszyka{% endif %}>
             {{ section.settings.button_label | escape }}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
@@ -152,6 +152,23 @@
   </div>
 </div>
 {%- if section.settings.show_campaign and settings.campaign_end != blank -%}{%- render 'sn-licznik' -%}{%- endif -%}
+{%- if section.settings.button_action == 'scroll' -%}
+<script>
+  // przycisk banera przewija do "Laeg i kurv" na tej stronie produktu
+  (function () {
+    var btn = document.querySelector('#shopify-section-{{ section.id }} [data-snk-do-koszyka]');
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
+      var cel = document.querySelector('[data-pdp-atc], .pdp__atc, form[action*="/cart/add"] [type="submit"]');
+      if (!cel) return;
+      e.preventDefault();
+      var blok = cel.closest('.pdp__opt') ? cel : (document.querySelector('.pdp__sizes') || cel);
+      blok.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(function () { cel.focus({ preventScroll: true }); }, 600);
+    });
+  })();
+</script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -183,7 +200,14 @@
     { "type": "text", "id": "tiers", "label": "Steps (items:percent)", "default": "2:10, 3:20, 4:25, 5:30", "info": "Must match the automatic discounts in Shopify, Discounts. The last step also covers more items." },
     { "type": "text", "id": "tier_word", "label": "Word after the number", "default": "varer" },
     { "type": "text", "id": "rules", "label": "Short rules", "default": "Bland frit · Trækkes automatisk i kurven · Ingen rabatkode", "info": "Separate with a middle dot (·). Each part gets a tick." },
-    { "type": "text", "id": "button_label", "label": "Button", "default": "Shop udsalget" },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Køb nu" },
+    {
+      "type": "select", "id": "button_action", "label": "Button does", "default": "scroll",
+      "options": [
+        { "value": "scroll", "label": "Scroll to Add to cart" },
+        { "value": "link", "label": "Open the link below" }
+      ]
+    },
     { "type": "url", "id": "button_link", "label": "Button link", "default": "/collections/all" },
     { "type": "text", "id": "urgency", "label": "Line under the button", "default": "Populære styles sælger hurtigt – når de er væk, er de væk." },
     { "type": "header", "content": "Look" },
