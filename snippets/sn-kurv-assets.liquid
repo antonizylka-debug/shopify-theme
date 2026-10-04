@@ -12,7 +12,7 @@
 {%- endcomment -%}
 <style>
   /* ---------- szuflada ---------- */
-  #CartDrawer.drawer { width: 100%; max-width: 470px; background: #ffffff; color: #1c1d1d; }
+  #CartDrawer.drawer { width: 100%; max-width: 600px; background: #ffffff; color: #1c1d1d; }
   @media only screen and (min-width: 769px) {
     #CartDrawer.drawer { border-radius: 16px 0 0 16px; overflow: hidden; }
   }
@@ -41,9 +41,16 @@
   #CartDrawer .drawer__inner { border: 0; }
 
   .snk-note {
-    margin: 0 0 18px; padding: 13px 16px; background: #f6f2ec;
-    font-size: 13px; line-height: 1.45; text-align: center; color: #1c1d1d;
+    margin: 0 0 18px; padding: 14px 16px; background: #dcfad3; border: 1px solid #a3d993;
+    font-size: 13px; line-height: 1.45; text-align: center; color: #1f3a17;
   }
+  .snk-note--timer {
+    font-size: 14px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+  .snk-note[hidden] { display: none; }
+  /* dziala licznik akcji - zdanie o rezerwacji schowane, zostaje jeden pasek */
+  .snk-note--timer:not([hidden]) + .snk-note { display: none; }
 
   /* ---------- pozycja (szuflada i strona koszyka) ---------- */
   .snk-item {
@@ -106,7 +113,7 @@
   .snk-up__track::-webkit-scrollbar { display: none; }
 
   .snk-card {
-    flex: 0 0 86%; display: grid; grid-template-columns: 92px 1fr; gap: 16px;
+    flex: 0 0 62%; display: grid; grid-template-columns: 92px 1fr; gap: 16px;
     padding: 18px; scroll-snap-align: start; border-right: 1px solid #e6e3de;
   }
   .snk-card:last-child { border-right: 0; }

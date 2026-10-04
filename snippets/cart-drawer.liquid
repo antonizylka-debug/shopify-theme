@@ -25,6 +25,17 @@
 
       <div class="drawer__inner">
         <div class="drawer__scrollable">
+          {%- comment -%}
+            Zielony pasek jak na icon-amsterdam, ale z prawdziwym czasem:
+            odliczanie do konca kampanii (Ustawienia motywu -> Campaign ->
+            Campaign ends at). Bez daty albo po terminie - zdanie z sn_kurv_note.
+          {%- endcomment -%}
+          {%- if settings.campaign_end != blank -%}
+            <p class="snk-note snk-note--timer" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>
+              {{ settings.campaign_name | split: '·' | first | strip }} <span data-sn-etykieta>slutter om</span> <span data-sn-czas></span>
+            </p>
+            {%- render 'sn-licznik' -%}
+          {%- endif -%}
           {%- if settings.sn_kurv_note != blank -%}
             <p class="snk-note">{{ settings.sn_kurv_note }}</p>
           {%- endif -%}
