@@ -60,6 +60,7 @@
   #shopify-section-{{ section.id }} .sns__text p { margin: 0 0 12px; }
   #shopify-section-{{ section.id }} .sns__text p:last-child { margin-bottom: 0; }
   #shopify-section-{{ section.id }} .sns__text strong { color: {{ section.settings.color_text }}; }
+  #shopify-section-{{ section.id }} .sns__text--po { margin-top: 18px; }
 
   {%- comment -%}
     Progi rabatu jako osobna lista, a nie w tresci - dzieki temu maja
@@ -106,6 +107,7 @@
     {%- endcomment -%}
     #shopify-section-{{ section.id }} .sns--bleed .sns__title,
     #shopify-section-{{ section.id }} .sns--bleed .sns__text,
+    #shopify-section-{{ section.id }} .sns--bleed .sns__text--po,
     #shopify-section-{{ section.id }} .sns--bleed .sns__list,
     #shopify-section-{{ section.id }} .sns--bleed .sns__note {
       max-width: 58ch;
@@ -172,6 +174,10 @@
           </ul>
         {%- endif -%}
 
+        {%- if section.settings.text_after != blank -%}
+          <div class="sns__text sns__text--po">{{ section.settings.text_after }}</div>
+        {%- endif -%}
+
         {%- if section.settings.note != blank -%}
           <p class="sns__note">{{ section.settings.note }}</p>
         {%- endif -%}
@@ -211,6 +217,7 @@
     { "type": "text", "id": "title", "label": "Heading", "default": "30 dages pengene-tilbage-garanti" },
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Vi står inde for kvaliteten af vores tøj. Derfor er hver ordre dækket af 30 dages returret uden bøvl.</p><p>Passer varen ikke, sender du den tilbage inden for 30 dage og får pengene retur.</p>" },
     { "type": "textarea", "id": "list", "label": "List", "info": "One row per line. Køb 2 varer → | Spar 10%" },
+    { "type": "richtext", "id": "text_after", "label": "Text under the list" },
     { "type": "text", "id": "note", "label": "Line at the bottom" },
 
     { "type": "header", "content": "Size" },
