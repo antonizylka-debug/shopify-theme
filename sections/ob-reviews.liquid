@@ -152,8 +152,46 @@
       padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
     }
     #shopify-section-{{ section.id }} .obr__verdict-word { font-size: 18px; }
-    #shopify-section-{{ section.id }} .obr__list { grid-template-columns: minmax(0, 1fr); }
     #shopify-section-{{ section.id }} .obr__card { padding: 15px 16px 17px; }
+  }
+
+  {%- comment -%}
+    PC: najpierw N opinii, reszta pod przyciskiem "Vis flere anmeldelser".
+    Telefon: poziomy rzad przesuwany palcem (karta 86 % szerokosci, wiec
+    widac skraj nastepnej), pod spodem strzalki 44 px i licznik 1 / 12.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .obr__more { display: flex; justify-content: center; margin-top: 26px; }
+  #shopify-section-{{ section.id }} .obr__more[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .obr__more-btn {
+    min-height: 48px; padding: 0 30px; cursor: pointer;
+    border: 1px solid var(--obr-text); background: transparent; color: var(--obr-text);
+    font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  #shopify-section-{{ section.id }} .obr__more-btn:hover { background: var(--obr-text); color: #ffffff; }
+  #shopify-section-{{ section.id }} .obr__nav { display: none; }
+  @media only screen and (min-width: 769px) {
+    #shopify-section-{{ section.id }} .obr__card--wiecej:not(.is-pokazana) { display: none; }
+  }
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .obr__list {
+      display: flex; gap: 12px;
+      overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 17px;
+      margin: 0 -17px; padding: 0 17px 4px;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    }
+    #shopify-section-{{ section.id }} .obr__list::-webkit-scrollbar { display: none; }
+    #shopify-section-{{ section.id }} .obr__card { flex: 0 0 86%; scroll-snap-align: start; }
+    #shopify-section-{{ section.id }} .obr__more { display: none; }
+    #shopify-section-{{ section.id }} .obr__nav { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 14px; }
+    #shopify-section-{{ section.id }} .obr__nav-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; padding: 0; cursor: pointer;
+      border: 1px solid var(--obr-line); background: #ffffff; color: var(--obr-text);
+    }
+    #shopify-section-{{ section.id }} .obr__nav-btn svg { width: 9px; height: 15px; }
+    #shopify-section-{{ section.id }} .obr__nav-btn[disabled] { opacity: 0.35; cursor: default; }
+    #shopify-section-{{ section.id }} .obr__nav-count { min-width: 56px; text-align: center; font-size: 13px; color: var(--obr-muted); font-variant-numeric: tabular-nums; }
   }
 {%- endstyle -%}
 
@@ -217,10 +255,11 @@
         </div>
       {%- endif -%}
 
-      <div class="obr__list">
+      {%- assign na_start = section.settings.desktop_initial | default: 6 -%}
+      <div class="obr__list" data-obr-list aria-label="{{ section.settings.reviews_word | capitalize }}">
         {%- for block in opinie -%}
           {%- assign oc = block.settings.rating | plus: 0 -%}
-          <div class="obr__card" {{ block.shopify_attributes }}>
+          <div class="obr__card{% if forloop.index > na_start %} obr__card--wiecej{% endif %}" {{ block.shopify_attributes }}>
             <div class="obr__card-top">
               <span class="obr__tiles obr__tiles--sm">
                 {%- for i in (1..5) -%}
@@ -259,6 +298,78 @@
           </div>
         {%- endfor -%}
       </div>
+
+      {%- assign reszta = ile | minus: na_start -%}
+      {%- if reszta > 0 and section.settings.more_label != blank -%}
+        <div class="obr__more">
+          <button type="button" class="obr__more-btn" data-obr-more>{{ section.settings.more_label }} (<span data-obr-ile>{{ reszta }}</span>)</button>
+        </div>
+      {%- endif -%}
+      {%- if ile > 1 -%}
+        <div class="obr__nav">
+          <button type="button" class="obr__nav-btn" data-obr-prev aria-label="Forrige anmeldelse" disabled>
+            <svg viewBox="0 0 8 14" aria-hidden="true" focusable="false"><path d="M7 1 1 7l6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+          <span class="obr__nav-count"><span data-obr-nr>1</span> / {{ ile }}</span>
+          <button type="button" class="obr__nav-btn" data-obr-next aria-label="Næste anmeldelse">
+            <svg viewBox="0 0 8 14" aria-hidden="true" focusable="false"><path d="m1 1 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+        </div>
+      {%- endif -%}
+
+      <script>
+        (function () {
+          var root = document.getElementById('shopify-section-{{ section.id }}');
+          var lista = root && root.querySelector('[data-obr-list]');
+          if (!lista) return;
+          var KROK = {{ na_start }};
+
+          // PC: "Vis flere anmeldelser" - kolejne opinie partiami
+          var btn = root.querySelector('[data-obr-more]');
+          function ukryte() { return lista.querySelectorAll('.obr__card--wiecej:not(.is-pokazana)'); }
+          function przycisk() {
+            if (!btn) return;
+            var n = ukryte().length;
+            if (!n) { btn.parentNode.hidden = true; return; }
+            var licz = btn.querySelector('[data-obr-ile]');
+            if (licz) licz.textContent = n;
+          }
+          if (btn) btn.addEventListener('click', function () {
+            var h = ukryte(), pierwsza = null;
+            for (var i = 0; i < h.length && i < KROK; i++) {
+              h[i].classList.add('is-pokazana');
+              if (!pierwsza) pierwsza = h[i];
+            }
+            // klawiatura: fokus na pierwsza nowa opinie, zeby nie zgubic miejsca
+            if (pierwsza) { pierwsza.setAttribute('tabindex', '-1'); pierwsza.focus({ preventScroll: true }); }
+            przycisk();
+          });
+          przycisk();
+
+          // telefon: przewijany rzad ze strzalkami i licznikiem
+          var karty = lista.querySelectorAll('.obr__card');
+          var nr = root.querySelector('[data-obr-nr]');
+          var prev = root.querySelector('[data-obr-prev]');
+          var next = root.querySelector('[data-obr-next]');
+          function szer() {
+            var k = karty[0];
+            var gap = parseFloat(getComputedStyle(lista).columnGap) || 12;
+            return k ? k.getBoundingClientRect().width + gap : 1;
+          }
+          function biezaca() { return Math.max(0, Math.min(karty.length - 1, Math.round(lista.scrollLeft / szer()))); }
+          function stan() {
+            var i = biezaca();
+            if (nr) nr.textContent = i + 1;
+            if (prev) prev.disabled = i === 0;
+            if (next) next.disabled = i >= karty.length - 1;
+          }
+          function idz(o) { lista.scrollTo({ left: (biezaca() + o) * szer(), behavior: 'smooth' }); }
+          if (prev) prev.addEventListener('click', function () { idz(-1); });
+          if (next) next.addEventListener('click', function () { idz(1); });
+          var czekaj;
+          lista.addEventListener('scroll', function () { clearTimeout(czekaj); czekaj = setTimeout(stan, 60); }, { passive: true });
+        })();
+      </script>
 {%- else -%}
       <div class="obr__empty">{{ section.settings.empty_text }}</div>
     {%- endif -%}
@@ -289,6 +400,8 @@
 
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "columns", "label": "Columns", "default": 3, "min": 1, "max": 4, "step": 1 },
+    { "type": "range", "id": "desktop_initial", "label": "Reviews before the Load more button (computer)", "default": 6, "min": 2, "max": 12, "step": 1, "info": "Each click shows this many more. On phones all reviews are in a swipeable row." },
+    { "type": "text", "id": "more_label", "label": "Load more button", "default": "Vis flere anmeldelser" },
     { "type": "range", "id": "title_size", "label": "Heading size", "default": 19, "min": 14, "max": 34, "step": 1, "unit": "px" },
     { "type": "range", "id": "title_size_mobile", "label": "Heading size (mobile)", "default": 17, "min": 12, "max": 28, "step": 1, "unit": "px" },
     { "type": "range", "id": "padding_top", "label": "Padding top", "default": 56, "min": 0, "max": 120, "step": 4, "unit": "px" },
