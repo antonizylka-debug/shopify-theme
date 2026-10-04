@@ -53,7 +53,7 @@
     margin-top: 6px;
     font-size: 13px;
     letter-spacing: 0.02em;
-    opacity: 0.65;
+    color: #6e6b65;
   }
 
   /* --- pole sortowania jako ramka, nie goly select --- */
@@ -156,10 +156,10 @@
 
   #CollectionSidebar .size-group__title {
     margin: 14px 0 8px;
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    opacity: 0.6;
+    color: #6e6b65;
   }
 
   #CollectionSidebar .size-group__title:first-child {
@@ -393,7 +393,7 @@
 
   #CollectionSidebar .tag-list:not(.tag-list--chips):not(.tag-list--swatches) .tag__count {
     display: inline;
-    opacity: 0.5;
+    color: #6e6b65;
   }
 
   /* --- rzad podkolekcji nad siatka --- */
@@ -480,7 +480,7 @@
 
   .subrow__count {
     flex: 0 0 auto;
-    opacity: 0.45;
+    color: #6e6b65;
     font-variant-numeric: tabular-nums;
   }
 
@@ -585,12 +585,12 @@
 
   .breadcrumb a {
     text-decoration: none;
-    opacity: 0.55;
-    transition: opacity 0.15s ease;
+    color: #6e6b65;
+    transition: color 0.15s ease;
   }
 
   .breadcrumb a:hover {
-    opacity: 1;
+    color: inherit;
   }
 
   .breadcrumb__divider {
@@ -1099,7 +1099,7 @@
     }
 
     .breadcrumb a {
-      opacity: 0.6;
+      color: #6e6b65;
     }
 
     .template-collection .section-header__title {
@@ -2081,4 +2081,33 @@
   #NavDrawer .mnav__usp-item { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 14px; line-height: 1.35; color: #1c1d1d; }
   #NavDrawer .mnav__usp-item svg { flex: 0 0 22px; width: 22px; height: 22px; }
   #NavDrawer .mnav__usp + .mnav__folg { margin-top: 24px; padding-top: 0; border-top: 0; }
+
+  {%- comment -%}
+    ===== Dostepnosc (WCAG 2.2 AA), przeglad 2026-10-04 =====
+    Obwodka fokusu: motyw chowal ja do pierwszego Tab, potem zostawala
+    cienka domyslna przegladarki - na czarnym "Laeg i kurv" prawie niewidoczna.
+    Teraz 3 px z odstepem 2 px, na ciemnych paskach biala.
+  {%- endcomment -%}
+  :focus-visible { outline: 3px solid #1c1d1d !important; outline-offset: 2px !important; }
+  [id*="__announcement"] :focus-visible,
+  [id*="__infobar"] :focus-visible,
+  #NavDrawer .mnav__oferta:focus-visible { outline-color: #ffffff !important; }
+
+  {%- comment -%} Teksty 10-11 px podniesione do 12 px (klientki 40-60 lat). {%- endcomment -%}
+  .collection-pills__link,
+  #CollectionSidebar .tag-list--chips .tag__checkbox-wrapper,
+  #CollectionSidebar .tag-list--swatches .tag__text,
+  #CollectionSidebar .filter-toggle,
+  .obr__eyebrow { font-size: 12px; }
+  #CollectionSidebar .filter-badge { font-size: 11px; }
+
+  {%- comment -%}
+    Pola klikniecia min. 24 px (WCAG 2.5.8). Bylo: okruszki 14 px, wiersze
+    filtrow kolorow 17 px, "Vis alle" 15 px, "Til toppen" 17 px, mail w stopce 21 px.
+  {%- endcomment -%}
+  .breadcrumb a { display: inline-block; padding: 5px 0; }
+  #CollectionSidebar .tag__checkbox-wrapper { min-height: 26px; }
+  #CollectionSidebar .filter-toggle { padding-top: 5px; padding-bottom: 5px; }
+  .footer__bottom .footer__to-top { min-height: 28px; padding-top: 5px; padding-bottom: 5px; }
+  .footer__contact-row a { display: inline-block; padding: 3px 0; }
 </style>

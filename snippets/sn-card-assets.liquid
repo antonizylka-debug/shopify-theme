@@ -90,7 +90,7 @@
     padding: 5px 9px 4px;
     background: #d6332e;
     color: #ffffff;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.02em;
     line-height: 1;
@@ -181,6 +181,9 @@
     .snc:hover .snc__plus,
     .snc:hover .snc__kropki,
     .snc:hover .snc__strz,
+    .snc:focus-within .snc__strz,
+    .snc:focus-within .snc__kropki,
+    .snc__strz:focus-visible,
     .snc__plus:focus-visible,
     .snc__plus.is-ok,
     .snc__plus.is-busy { opacity: 1; }
@@ -225,7 +228,7 @@
     padding: 2px 7px 1px;
     border-radius: 10px;
     background: #fbe9e8;
-    color: #d6332e;
+    color: #c8102e;
     font-size: 12px;
     font-weight: 600;
     line-height: 1.35;
@@ -258,7 +261,7 @@
     przygasza przekreslona cene do 45 procent krycia, wiec kolor wprost.
   {%- endcomment -%}
   .snc__jest { font-weight: 500; color: #1c1d1d; }
-  .snc__bylo { font-size: 13px; color: #8a867f; opacity: 1; text-decoration: line-through; }
+  .snc__bylo { font-size: 13px; color: #6e6b65; opacity: 1; text-decoration: line-through; }
   .snc__od { color: #6e6b65; font-size: 13px; font-weight: 400; }
 
   /* ---------- kolka kolorow (wariant 09) ---------- */

@@ -44,7 +44,7 @@
         "bar_size": 12,
         "arrow_gap": 14,
         "bar_height_m": 30,
-        "bar_size_m": 11,
+        "bar_size_m": 12,
         "announcement_separator": "dash",
         "announcement_gap": 18
       }
@@ -191,7 +191,7 @@
       "settings": {
         "bg": "#000000",
         "fg": "#ffffff",
-        "size": 11,
+        "size": 12,
         "weight": 600,
         "tracking": 0.7,
         "caps": true,

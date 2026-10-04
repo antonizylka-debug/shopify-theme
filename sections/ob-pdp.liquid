@@ -324,7 +324,7 @@
   #shopify-section-{{ section.id }} .pdp__akcja-brw {
     display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2px 8px;
     margin: 0 0 3px;
-    font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #c8102e;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #c8102e;
   }
   #shopify-section-{{ section.id }} .pdp__akcja-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #c8102e; flex: 0 0 7px; }
   #shopify-section-{{ section.id }} .pdp__akcja-dot::after {
@@ -343,7 +343,7 @@
   }
   #shopify-section-{{ section.id }} .pdp__akcja-prog { display: flex; flex-direction: column; align-items: center; margin: 0; padding: 0 2px; }
   #shopify-section-{{ section.id }} .pdp__akcja-prog + .pdp__akcja-prog { border-left: 1px solid {{ section.settings.promo_border }}; }
-  #shopify-section-{{ section.id }} .pdp__akcja-prog span { font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pdp-muted); white-space: nowrap; }
+  #shopify-section-{{ section.id }} .pdp__akcja-prog span { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--pdp-muted); white-space: nowrap; }
   #shopify-section-{{ section.id }} .pdp__akcja-prog b { font-size: 18px; font-weight: 700; line-height: 1.15; white-space: nowrap; font-variant-numeric: tabular-nums; }
   #shopify-section-{{ section.id }} .pdp__akcja-prog--max span,
   #shopify-section-{{ section.id }} .pdp__akcja-prog--max b { color: #c8102e; }
@@ -622,7 +622,7 @@
       gap: 0; padding-top: 10px;
     }
     #shopify-section-{{ section.id }} .pdp__dot {
-      flex: 0 0 22px; width: 22px; height: 22px;
+      flex: 0 0 28px; width: 28px; height: 28px;
       border: 0; background: none; padding: 0; cursor: pointer;
       position: relative;
     }
@@ -746,7 +746,7 @@
           <div class="pdp__dots" data-pdp-dots>
             {%- for media in product.media -%}
               <button type="button" class="pdp__dot{% if forloop.first %} is-on{% endif %}"
-                      data-pdp-dot="{{ forloop.index0 }}" aria-label="{{ forloop.index }}"></button>
+                      data-pdp-dot="{{ forloop.index0 }}" aria-label="Billede {{ forloop.index }} af {{ product.media.size }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -826,8 +826,8 @@
             {%- assign idx0 = forloop.index | minus: 1 -%}
             {%- assign nazwa_opcji = opt.name -%}
             {%- assign wybrana_wartosc = opt.selected_value -%}
-            <div class="pdp__optlabel">{% render 'ob-da', mapa: mapa, tekst: nazwa_opcji %}: <span data-pdp-optval>{% render 'ob-da', mapa: mapa, tekst: wybrana_wartosc %}</span></div>
-            <div class="pdp__swatches" data-pdp-opt="{{ forloop.index }}">
+            <div class="pdp__optlabel" id="PdpOpt-{{ section.id }}-{{ forloop.index }}">{% render 'ob-da', mapa: mapa, tekst: nazwa_opcji %}: <span data-pdp-optval>{% render 'ob-da', mapa: mapa, tekst: wybrana_wartosc %}</span></div>
+            <div class="pdp__swatches" data-pdp-opt="{{ forloop.index }}" role="group" aria-labelledby="PdpOpt-{{ section.id }}-{{ forloop.index }}">
               {%- for val in opt.values -%}
                 {%- liquid
                   assign zdj = blank
@@ -844,7 +844,7 @@
                   koloru nie wstawial z powrotem angielskiej wartosci.
                 {%- endcomment -%}
                 {%- capture val_da -%}{% render 'ob-da', mapa: mapa, tekst: val %}{%- endcapture -%}
-                <button type="button" class="pdp__swatch{% if val == opt.selected_value %} is-on{% endif %}"
+                <button type="button" class="pdp__swatch{% if val == opt.selected_value %} is-on{% endif %}" aria-pressed="{% if val == opt.selected_value %}true{% else %}false{% endif %}"
                         data-pdp-val="{{ val | escape }}" data-pdp-label="{{ val_da | strip | escape }}"
                         aria-label="{{ val_da | strip | escape }}">
                   {%- if zdj != blank -%}
@@ -994,14 +994,14 @@
             <div class="pdp__opt" data-pdp-opt="{{ forloop.index }}">
               <div class="pdp__sizehead">
                 {%- assign nazwa_tej_opcji = opt.name -%}
-                <span class="pdp__optlabel" style="margin:0;">{% render 'ob-da', mapa: mapa, tekst: nazwa_tej_opcji %}</span>
+                <span class="pdp__optlabel" style="margin:0;" id="PdpOpt-{{ section.id }}-{{ forloop.index }}">{% render 'ob-da', mapa: mapa, tekst: nazwa_tej_opcji %}</span>
                 {%- if malo and section.settings.last_label != blank -%}
                   <span class="pdp__last">{{ section.settings.last_label }}</span>
                 {%- endif -%}
               </div>
-              <div class="pdp__sizes">
+              <div class="pdp__sizes" role="group" aria-labelledby="PdpOpt-{{ section.id }}-{{ forloop.index }}">
                 {%- for val in opt.values -%}
-                  <button type="button" class="pdp__size{% if val == opt.selected_value %} is-on{% endif %}"
+                  <button type="button" class="pdp__size{% if val == opt.selected_value %} is-on{% endif %}" aria-pressed="{% if val == opt.selected_value %}true{% else %}false{% endif %}"
                           data-pdp-val="{{ val | escape }}">{{ val }}</button>
                 {%- endfor -%}
               </div>
@@ -1187,6 +1187,8 @@
           proba[gi] = b.dataset.pdpVal;
           var k = znajdz(proba);
           b.classList.toggle('is-out', !(k && k.available));
+          b.setAttribute('aria-pressed', b.classList.contains('is-on') ? 'true' : 'false');
+          if (b.classList.contains('is-out')) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled');
         });
       });
 
@@ -1261,7 +1263,9 @@
 
       function zaznacz(i) {
         kropki.forEach(function (d) {
-          d.classList.toggle('is-on', parseInt(d.dataset.pdpDot, 10) === i);
+          var on = parseInt(d.dataset.pdpDot, 10) === i;
+          d.classList.toggle('is-on', on);
+          if (on) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
         });
       }
 
