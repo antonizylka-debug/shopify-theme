@@ -179,6 +179,7 @@
       overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 17px;
       margin: 0 -17px; padding: 0 17px 4px;
       scrollbar-width: none; -webkit-overflow-scrolling: touch;
+      scroll-behavior: auto;
     }
     #shopify-section-{{ section.id }} .obr__list::-webkit-scrollbar { display: none; }
     #shopify-section-{{ section.id }} .obr__card { flex: 0 0 86%; scroll-snap-align: start; }
@@ -255,7 +256,7 @@
         </div>
       {%- endif -%}
 
-      {%- assign na_start = section.settings.desktop_initial | default: 6 -%}
+      {%- assign na_start = section.settings.desktop_initial | default: 3 -%}
       <div class="obr__list" data-obr-list aria-label="{{ section.settings.reviews_word | capitalize }}">
         {%- for block in opinie -%}
           {%- assign oc = block.settings.rating | plus: 0 -%}
@@ -307,7 +308,7 @@
       {%- endif -%}
       {%- if ile > 1 -%}
         <div class="obr__nav">
-          <button type="button" class="obr__nav-btn" data-obr-prev aria-label="Forrige anmeldelse" disabled>
+          <button type="button" class="obr__nav-btn" data-obr-prev aria-label="Forrige anmeldelse">
             <svg viewBox="0 0 8 14" aria-hidden="true" focusable="false"><path d="M7 1 1 7l6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
           </button>
           <span class="obr__nav-count"><span data-obr-nr>1</span> / {{ ile }}</span>
@@ -346,28 +347,64 @@
           });
           przycisk();
 
-          // telefon: przewijany rzad ze strzalkami i licznikiem
-          var karty = lista.querySelectorAll('.obr__card');
+          // telefon: rzad bez konca. Przed i za oryginalami stoja kopie (ukryte
+          // przed czytnikami i klawiatura). Gdy rzad stanie na kopii, pozycja
+          // przeskakuje niezauwazalnie na ten sam oryginal - kopie sa identyczne,
+          // wiec przewijanie za ostatnia opinia plynnie przechodzi w pierwsza.
+          var oryg = [].slice.call(lista.querySelectorAll('.obr__card'));
+          var N = oryg.length;
           var nr = root.querySelector('[data-obr-nr]');
           var prev = root.querySelector('[data-obr-prev]');
           var next = root.querySelector('[data-obr-next]');
+          var mq = window.matchMedia('(max-width: 768px)');
           function szer() {
-            var k = karty[0];
             var gap = parseFloat(getComputedStyle(lista).columnGap) || 12;
-            return k ? k.getBoundingClientRect().width + gap : 1;
+            return oryg[0].getBoundingClientRect().width + gap;
           }
-          function biezaca() { return Math.max(0, Math.min(karty.length - 1, Math.round(lista.scrollLeft / szer()))); }
+          function pozycja() { return Math.round(lista.scrollLeft / szer()); }
+          function zbuduj() {
+            if (lista.dataset.petla || N < 2) return;
+            var przed = document.createDocumentFragment(), za = document.createDocumentFragment();
+            oryg.forEach(function (karta) {
+              [przed, za].forEach(function (cel) {
+                var c = karta.cloneNode(true);
+                c.classList.add('obr__card--klon');
+                c.setAttribute('aria-hidden', 'true');
+                c.setAttribute('inert', '');
+                c.removeAttribute('tabindex');
+                c.removeAttribute('data-shopify-editor-block');
+                cel.appendChild(c);
+              });
+            });
+            lista.insertBefore(przed, lista.firstChild);
+            lista.appendChild(za);
+            lista.dataset.petla = '1';
+            lista.scrollLeft = N * szer();
+          }
+          function rozbierz() {
+            [].slice.call(lista.querySelectorAll('.obr__card--klon')).forEach(function (c) { c.remove(); });
+            delete lista.dataset.petla;
+            lista.scrollLeft = 0;
+          }
+          function wyrownaj() {
+            if (!lista.dataset.petla) return;
+            var i = pozycja();
+            if (i < N) lista.scrollLeft += N * szer();
+            else if (i >= 2 * N) lista.scrollLeft -= N * szer();
+          }
           function stan() {
-            var i = biezaca();
-            if (nr) nr.textContent = i + 1;
-            if (prev) prev.disabled = i === 0;
-            if (next) next.disabled = i >= karty.length - 1;
+            wyrownaj();
+            var i = lista.dataset.petla ? ((pozycja() - N) % N + N) % N : pozycja();
+            if (nr) nr.textContent = Math.min(N, i + 1);
           }
-          function idz(o) { lista.scrollTo({ left: (biezaca() + o) * szer(), behavior: 'smooth' }); }
+          function idz(o) { lista.scrollTo({ left: (pozycja() + o) * szer(), behavior: 'smooth' }); }
           if (prev) prev.addEventListener('click', function () { idz(-1); });
           if (next) next.addEventListener('click', function () { idz(1); });
           var czekaj;
-          lista.addEventListener('scroll', function () { clearTimeout(czekaj); czekaj = setTimeout(stan, 60); }, { passive: true });
+          lista.addEventListener('scroll', function () { clearTimeout(czekaj); czekaj = setTimeout(stan, 120); }, { passive: true });
+          function tryb() { if (mq.matches) zbuduj(); else rozbierz(); stan(); }
+          if (mq.addEventListener) mq.addEventListener('change', tryb); else if (mq.addListener) mq.addListener(tryb);
+          tryb();
         })();
       </script>
 {%- else -%}
@@ -400,7 +437,7 @@
 
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "columns", "label": "Columns", "default": 3, "min": 1, "max": 4, "step": 1 },
-    { "type": "range", "id": "desktop_initial", "label": "Reviews before the Load more button (computer)", "default": 6, "min": 2, "max": 12, "step": 1, "info": "Each click shows this many more. On phones all reviews are in a swipeable row." },
+    { "type": "range", "id": "desktop_initial", "label": "Reviews before the Load more button (computer)", "default": 3, "min": 2, "max": 12, "step": 1, "info": "Each click shows this many more. On phones all reviews are in a swipeable row." },
     { "type": "text", "id": "more_label", "label": "Load more button", "default": "Vis flere anmeldelser" },
     { "type": "range", "id": "title_size", "label": "Heading size", "default": 19, "min": 14, "max": 34, "step": 1, "unit": "px" },
     { "type": "range", "id": "title_size_mobile", "label": "Heading size (mobile)", "default": 17, "min": 12, "max": 28, "step": 1, "unit": "px" },
