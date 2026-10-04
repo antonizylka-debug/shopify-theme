@@ -273,7 +273,7 @@
       spar: {{ t_oszczedzasz | json }}
     };
     var WALUTA = {{ cart.currency.iso_code | json }};
-    var JEZYK = {{ request.locale.iso_code | json }};
+    var JEZYK = 'da-DK';
     var FORMAT = {{ shop.money_format | json }};
 
     /* Kwoty przez formater motywu i format sklepu - ten sam, ktorym

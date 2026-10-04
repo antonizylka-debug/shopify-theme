@@ -1,0 +1,26 @@
+{%- comment -%}
+  Duński odpowiednik nazwy lub wartości opcji do WYŚWIETLANIA poza stroną
+  produktu (koszyk). Ten sam słownik co domyślne ustawienie "Dictionary"
+  w ob-pdp. Dane produktów zostają angielskie, więc filtry działają dalej.
+  Brak wpisu = tekst bez zmian.
+
+  @param {string} tekst
+
+  @example
+    {% render 'sn-da', tekst: option.name %}
+{%- endcomment -%}
+{%- liquid
+  assign slownik = 'Color=Farve, Colour=Farve, Size=Størrelse, Black=Sort, White=Hvid, Grey=Grå, Gray=Grå, Brown=Brun, Blue=Blå, Navy=Marineblå, Green=Grøn, Red=Rød, Pink=Rosa, Purple=Lilla, Yellow=Gul, Orange=Orange, Beige=Beige, Khaki=Khaki, Gold=Guld, Silver=Sølv, Multi=Flerfarvet, Burgundy=Bordeaux, Wine Red=Vinrød, Cream=Creme, Ivory=Elfenben, Apricot=Abrikos, Camel=Kamel, Dark Grey=Mørkegrå, Light Grey=Lysegrå, Dark Blue=Mørkeblå, Light Blue=Lyseblå, Sky Blue=Himmelblå, Dark Green=Mørkegrøn, Army Green=Armygrøn, Olive=Oliven, Coffee=Kaffe, Rose=Rosa, Light Pink=Lyserød, Material=Materiale, Style=Stil, Pattern=Mønster'
+  assign wynik = tekst
+  assign szukany = tekst | strip | downcase
+  assign pary = slownik | split: ', '
+  for para in pary
+    assign kv = para | split: '='
+    assign k = kv[0] | strip | downcase
+    if k == szukany
+      assign wynik = kv[1] | strip
+      break
+    endif
+  endfor
+  echo wynik
+-%}
