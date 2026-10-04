@@ -392,16 +392,34 @@
             if (i < N) lista.scrollLeft += N * szer();
             else if (i >= 2 * N) lista.scrollLeft -= N * szer();
           }
+          // cel animacji strzalki: do jego osiagniecia nie wyrownujemy, bo
+          // przeskok w trakcie plynnego przewijania zbijal je z kursu
+          var cel = null;
           function stan() {
+            if (cel !== null) {
+              if (Math.abs(lista.scrollLeft - cel) > 2) return;
+              cel = null;
+            }
             wyrownaj();
             var i = lista.dataset.petla ? ((pozycja() - N) % N + N) % N : pozycja();
             if (nr) nr.textContent = Math.min(N, i + 1);
           }
-          function idz(o) { lista.scrollTo({ left: (pozycja() + o) * szer(), behavior: 'smooth' }); }
+          function idz(o) {
+            wyrownaj();
+            cel = (pozycja() + o) * szer();
+            lista.scrollTo({ left: cel, behavior: 'smooth' });
+            // zabezpieczenie, gdyby animacja nie doszla dokladnie do celu
+            clearTimeout(idz.t);
+            idz.t = setTimeout(function () { cel = null; stan(); }, 1200);
+          }
           if (prev) prev.addEventListener('click', function () { idz(-1); });
           if (next) next.addEventListener('click', function () { idz(1); });
           var czekaj;
           lista.addEventListener('scroll', function () { clearTimeout(czekaj); czekaj = setTimeout(stan, 120); }, { passive: true });
+          lista.addEventListener('scrollend', function () { clearTimeout(czekaj); cel = null; stan(); });
+          // dotyk przerywa animacje strzalki - wtedy cel juz nie obowiazuje
+          lista.addEventListener('pointerdown', function () { cel = null; }, { passive: true });
+          lista.addEventListener('touchstart', function () { cel = null; }, { passive: true });
           function tryb() { if (mq.matches) zbuduj(); else rozbierz(); stan(); }
           if (mq.addEventListener) mq.addEventListener('change', tryb); else if (mq.addListener) mq.addListener(tryb);
           tryb();
