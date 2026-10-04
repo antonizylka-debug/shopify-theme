@@ -380,6 +380,90 @@
             "date": "3 dage siden",
             "verified": true
           }
+        },
+        "review_HcDfrY": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "God kvalitet",
+            "text": "Jeg blev positivt overrasket over kvaliteten. Det føles virkelig godt lavet.",
+            "author": "Anna K.",
+            "country": "DK",
+            "date": "02.10.2026",
+            "verified": true
+          }
+        },
+        "review_DBaVWx": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Perfekt oplevelse",
+            "text": "Alt gik nemt og hurtigt, og produktet lever fuldt ud op til mine forventninger.",
+            "author": "Maria S.",
+            "country": "DK",
+            "date": "01.10.2026",
+            "verified": true
+          }
+        },
+        "review_ckhNxD": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Smukt produkt",
+            "text": "Jeg elsker designet, og kvaliteten er virkelig god. Det bliver bestemt ikke mit sidste køb.",
+            "author": "Julie P.",
+            "country": "DK",
+            "date": "01.10.2026",
+            "verified": true
+          }
+        },
+        "review_m97B66": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Hurtig og nemt",
+            "text": "Bestillingen var nem, og pakken kom hurtigere end forventet. Meget tilfreds!",
+            "author": "Ida R.",
+            "country": "DK",
+            "date": "",
+            "verified": true
+          }
+        },
+        "review_3tNYnd": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Virkelig god service",
+            "text": "Jeg havde et spørgsmål før mit køb og fik et hurtigt og venligt svar. Fantastisk service!",
+            "author": "Nanna T.",
+            "country": "DK",
+            "date": "30.09.2026",
+            "verified": true
+          }
+        },
+        "review_HCMFfG": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Meget tilfreds",
+            "text": "Jeg er virkelig tilfreds med både produktet og hele købsoplevelsen.",
+            "author": "Louise B.",
+            "country": "DK",
+            "date": "29.09.2026",
+            "verified": true
+          }
+        },
+        "review_QimQJ6": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Lige som forventet",
+            "text": "Camilla F.",
+            "author": "DK",
+            "country": "29.09.2026",
+            "date": "",
+            "verified": true
+          }
         }
       },
       "block_order": [
@@ -387,7 +471,14 @@
         "review_JXwaPk",
         "review_wXzmJH",
         "review_kANkmC",
-        "review_b7mDM3"
+        "review_b7mDM3",
+        "review_HcDfrY",
+        "review_DBaVWx",
+        "review_ckhNxD",
+        "review_m97B66",
+        "review_3tNYnd",
+        "review_HCMFfG",
+        "review_QimQJ6"
       ],
       "settings": {
         "eyebrow": "ANMELDELSER",
@@ -404,7 +495,7 @@
         "verified_label": "Verificeret køb",
         "empty_text": "Der er endnu ingen anmeldelser.",
         "show_distribution": false,
-        "columns": 3,
+        "columns": 4,
         "title_size": 19,
         "title_size_mobile": 17,
         "padding_top": 56,
