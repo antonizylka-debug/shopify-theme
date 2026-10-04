@@ -33,7 +33,9 @@
     font-size: 13px; font-weight: 600; letter-spacing: 0; line-height: 1;
   }
   .snk-count[hidden] { display: none; }
-  #CartDrawer .drawer__close-button { width: 40px; height: 40px; margin-right: -8px; }
+  /* motyw daje kontenerowi krzyzyka width: 1% - w ukladzie flex kurczy sie do 3 px */
+  #CartDrawer .drawer__close { width: auto; flex: 0 0 auto; }
+  #CartDrawer .drawer__close-button { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin-right: -8px; padding: 0; }
   #CartDrawer .drawer__close-button .icon { width: 30px; height: 30px; stroke-width: 3px; }
   #CartDrawer .drawer__scrollable { padding: 2px 26px 24px; }
   #CartDrawer .drawer__inner { border: 0; }
