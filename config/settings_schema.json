@@ -945,8 +945,7 @@
       { "type": "header", "content": "Cart drawer" },
       { "type": "text", "id": "sn_kurv_note", "label": "Note under the heading", "default": "Varerne i kurven er ikke reserveret – bestil nu, så du er sikker på din størrelse.", "info": "Leave empty to hide. Keep it true - the cart does not hold stock." },
       { "type": "checkbox", "id": "sn_kurv_upsell_show", "label": "Show products to complete the look", "default": true },
-      { "type": "text", "id": "sn_kurv_upsell_title", "label": "Heading above those products", "default": "Gør looket komplet" },
-      { "type": "text", "id": "sn_kurv_trust", "label": "Line under the checkout button", "default": "Sikker betaling · Gratis fragt · 30 dages returret" }
+      { "type": "text", "id": "sn_kurv_upsell_title", "label": "Heading above those products", "default": "Gør looket komplet" }
     ]
   },
   {

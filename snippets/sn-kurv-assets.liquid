@@ -193,11 +193,18 @@
     background: #1c1d1d; color: #ffffff;
     font-size: 15px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
   }
-  .snk-trust {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    margin: 14px 0 0; font-size: 13px; color: #5f5b55; text-align: center;
+  .snk-trust { display: grid; grid-template-columns: repeat(3, 1fr); margin: 14px 0 0; padding: 12px 0 2px; border-top: 1px solid #e6e3de; }
+  .snk-trust__i { display: flex; align-items: center; justify-content: center; gap: 9px; padding: 0 6px; color: #1c1d1d; }
+  .snk-trust__i + .snk-trust__i { border-left: 1px solid #e6e3de; }
+  .snk-trust__i svg { flex: 0 0 auto; }
+  .snk-trust__i span { display: flex; flex-direction: column; font-size: 11px; line-height: 1.3; color: #8a857e; }
+  .snk-trust__i b { font-size: 12.5px; font-weight: 600; color: #1c1d1d; }
+  @media only screen and (max-width: 768px) {
+    .snk-trust { margin-top: 10px; padding-top: 10px; }
+    .snk-trust__i { flex-direction: column; gap: 4px; text-align: center; }
+    .snk-trust__i span { font-size: 10px; }
+    .snk-trust__i b { font-size: 11px; }
   }
-  .snk-trust svg { flex: 0 0 auto; }
 
   @media only screen and (max-width: 768px) {
     #CartDrawer .drawer__header { padding: 20px 18px 14px; }
