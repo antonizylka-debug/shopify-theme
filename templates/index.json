@@ -89,7 +89,13 @@
         "text_position": "bottom",
         "full_width": false,
         "heading_size": 26,
+        "heading_size_mobile": 22,
+        "text_size": 15,
+        "text_size_mobile": 14,
+        "button_size": "medium",
+        "button_size_mobile": "small",
         "content_padding": 40,
+        "content_padding_mobile": 20,
         "padding_top": 40,
         "padding_bottom": 40
       }
@@ -207,7 +213,13 @@
         "text_position": "middle",
         "full_width": false,
         "heading_size": 34,
+        "heading_size_mobile": 22,
+        "text_size": 15,
+        "text_size_mobile": 14,
+        "button_size": "medium",
+        "button_size_mobile": "small",
         "content_padding": 44,
+        "content_padding_mobile": 20,
         "padding_top": 40,
         "padding_bottom": 40
       }
@@ -236,7 +248,7 @@
         "m3": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/menspants_1.webp",
+            "image": "shopify://shop_images/menssweater_1.webp",
             "collection": "mens-sweaters-and-knitwear",
             "title": "",
             "focal_point": "center center"
@@ -245,6 +257,7 @@
         "m4": {
           "type": "collection",
           "settings": {
+            "image": "shopify://shop_images/menspants_1.webp",
             "collection": "mens-bottoms",
             "title": "",
             "focal_point": "center center"
