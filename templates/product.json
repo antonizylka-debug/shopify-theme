@@ -165,6 +165,31 @@
         "c_button": "#000000"
       }
     },
+    "baner_kampanii": {
+      "type": "sn-kampagne",
+      "settings": {
+        "image": "shopify://shop_images/stilhusetnord-homepage-hero.webp",
+        "layout": "left",
+        "image_position": "center",
+        "show_campaign": true,
+        "heading": "Køb flere – spar op til 30 %",
+        "text": "Sæsonudsalget er i gang. Jo flere varer du lægger i kurven, jo mere sparer du – oven i udsalgspriserne.",
+        "tiers": "2:10, 3:20, 4:25, 5:30",
+        "tier_word": "varer",
+        "rules": "Bland frit · Trækkes automatisk i kurven · Ingen rabatkode",
+        "button_label": "Køb nu",
+        "button_action": "scroll",
+        "button_link": "shopify://collections/all",
+        "urgency": "Populære styles sælger hurtigt – når de er væk, er de væk.",
+        "color_bg": "#f3ede6",
+        "title_size": 38,
+        "title_size_mobile": 27,
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "padding_top_mobile": 28,
+        "padding_bottom_mobile": 28
+      }
+    },
     "bestsellers": {
       "type": "sn-bestsellers",
       "blocks": {
@@ -291,15 +316,6 @@
         "color_add_ok": "#1f7a3d"
       }
     },
-    "baner_kampanii": {
-      "type": "sn-kampagne",
-      "settings": {
-        "image": "shopify://shop_images/stilhusetnord-homepage-hero.webp",
-        "layout": "left",
-        "image_position": "center",
-        "show_campaign": true
-      }
-    },
     "guarantee": {
       "type": "sn-story",
       "settings": {
@@ -310,6 +326,7 @@
         "title": "30 dages pengene-tilbage-garanti",
         "text": "<p>Vi står inde for det tøj, vi sælger. Derfor er hver eneste ordre dækket af 30 dages returret — regnet fra den dag pakken lander hos dig, ikke fra den dag du bestiller.</p><p>Passer den ikke, eller er den ikke, som du havde forestillet dig, skriver du til os med dit ordrenummer. Du får returadressen i svaret, og pengene er tilbage på din konto, så snart varen er nået frem til os.</p>",
         "list": "",
+        "text_after": "",
         "note": "Ingen formularer og ingen forklaringer. En mail er nok.",
         "image_width": 40,
         "max_width": 900,
