@@ -16,6 +16,10 @@
   if cena_przed > cena_teraz
     assign obnizka = true
   endif
+  assign procent = 0
+  if obnizka
+    assign procent = cena_przed | minus: cena_teraz | times: 100 | divided_by: cena_przed
+  endif
 -%}
 <div class="cart__item snk-item" data-key="{{ product.key }}">
   <a href="{{ product.url }}" class="snk-item__img" tabindex="-1" aria-hidden="true">
@@ -34,6 +38,7 @@
         <span class="visually-hidden">{{ 'products.general.sale_price' | t }}</span>
       {%- endif -%}
       <span class="snk-item__now">{%- render 'sn-cena', kwota: cena_teraz -%}</span>
+      {%- if procent > 0 -%}<span class="snk-item__save">Spar {{ procent }} %</span>{%- endif -%}
     </div>
 
     {%- unless product.product.has_only_default_variant -%}

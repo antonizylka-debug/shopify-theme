@@ -1,0 +1,109 @@
+{%- comment -%}
+  Progi rabatu za ilosc w trzech wersjach (wzor: Areleon). Styl i JS:
+  snippets/sn-progi-assets (raz w theme.liquid). Stan liczy JS z koszyka.
+
+  @param {string} wariant - 'pasek' (pod naglowkiem), 'kurv' (szuflada koszyka), 'kolekcja' (karty)
+  @param {string} progi - "2:10, 3:20, 4:25, 5:30" - zgodnie z rabatami w panelu
+  @param {string} [tytul] - naglowek (domyslnie "Køb flere, spar mere")
+  @param {string} [podtytul] - linijka pod naglowkiem (tylko kolekcja)
+{%- endcomment -%}
+{%- liquid
+  assign pary = progi | split: ','
+  assign czyste = ''
+  for para in pary
+    assign p = para | strip | split: ':'
+    assign ile_p = p[0] | strip
+    assign proc_p = p[1] | strip
+    if ile_p != blank and proc_p != blank
+      assign czyste = czyste | append: ile_p | append: ':' | append: proc_p | append: ','
+    endif
+  endfor
+  assign czyste = czyste | remove_last: ','
+  assign lista = czyste | split: ','
+  assign wezly = lista.size
+  assign tytul_k = tytul | default: 'Køb flere, spar mere'
+  assign nazwy = 'DUO,TRIO,KVARTET,VIP' | split: ','
+  assign id_k = 'snp-' | append: wariant
+-%}
+{%- if lista.size > 0 -%}
+  {%- capture tor -%}
+    <div class="snp-track" aria-hidden="true">
+      <span class="snp-track__line"><span class="snp-track__fill" data-snp-fill></span></span>
+      <span class="snp-track__dot is-on" style="left: 0%"></span>
+      {%- for para in lista -%}
+        {%- assign p = para | split: ':' -%}
+        {%- assign poz = forloop.index | times: 100.0 | divided_by: wezly -%}
+        <span class="snp-track__dot" data-snp-step="{{ p[0] }}" style="left: {{ poz }}%"></span>
+        {%- if wariant == 'kurv' -%}
+          <span class="snp-track__lbl{% if forloop.last %} is-last{% endif %}" style="left: {{ poz }}%">{{ p[0] }}{% if forloop.last %}+{% endif %} stk.<small>Ekstra {{ p[1] }} %</small></span>
+        {%- elsif wariant == 'kolekcja' -%}
+          <span class="snp-track__lbl{% if forloop.last %} is-last{% endif %}" style="left: {{ poz }}%"><small>{{ p[0] }}{% if forloop.last %}+{% endif %}</small></span>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endcapture -%}
+
+  {%- case wariant -%}
+    {%- when 'pasek' -%}
+      <div class="snp-bar" id="{{ id_k }}" data-snp data-snp-bar data-progi="{{ czyste }}" data-count="{{ cart.item_count }}" role="region" aria-label="{{ tytul_k }}">
+        <div class="snp-bar__in">
+          <div class="snp-bar__left">
+            <span>{{ tytul_k }}</span>
+            <span>Din kurv: <b data-snp-count>{{ cart.item_count }}</b> <span data-snp-unit>varer</span></span>
+          </div>
+          <div class="snp-bar__mid">
+            {{ tor }}
+            <p class="snp-msg" data-snp-msg aria-live="polite"></p>
+          </div>
+          {%- if settings.campaign_end != blank -%}
+            <div class="snp-bar__timer" data-snp-timer data-slut="{{ settings.campaign_end | escape }}" hidden>
+              <span class="snp-bar__tl">{{ settings.campaign_name | split: '·' | first | strip }} slutter om</span>
+              <span class="snp-bar__tv" data-snp-tv></span>
+            </div>
+          {%- else -%}
+            <div></div>
+          {%- endif -%}
+          <button type="button" class="snp-bar__x" data-snp-close aria-label="Luk">
+            <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" focusable="false"><path d="m1 1 10 10M11 1 1 11" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          </button>
+        </div>
+      </div>
+
+    {%- when 'kurv' -%}
+      <div class="snp-box" id="{{ id_k }}" data-snp data-progi="{{ czyste }}" data-count="{{ cart.item_count }}">
+        <p class="snp-box__title">{{ tytul_k }}</p>
+        <p class="snp-box__cart">Din kurv: <b data-snp-count>{{ cart.item_count }}</b> <span data-snp-unit>varer</span></p>
+        {{ tor }}
+        <p class="snp-msg" data-snp-msg aria-live="polite"></p>
+      </div>
+
+    {%- when 'kolekcja' -%}
+      <div class="snp-col" id="{{ id_k }}" data-snp data-progi="{{ czyste }}" data-count="{{ cart.item_count }}">
+        <p class="snp-col__title">{{ tytul_k }}</p>
+        {%- if podtytul != blank -%}<p class="snp-col__sub">{{ podtytul }}</p>{%- endif -%}
+        <div class="snp-col__status">
+          <span>Din kurv: <b data-snp-count>{{ cart.item_count }}</b> <span data-snp-unit>varer</span></span>
+          <span class="snp-msg" data-snp-msg aria-live="polite"></span>
+        </div>
+        {{ tor }}
+        <div class="snp-col__cards">
+          {%- for para in lista -%}
+            {%- assign p = para | split: ':' -%}
+            {%- assign idx = forloop.index0 -%}
+            {%- if forloop.last -%}{%- assign nazwa = 'VIP' -%}{%- else -%}{%- assign nazwa = nazwy[idx] | default: 'VIP' -%}{%- endif -%}
+            <div class="snp-card" data-snp-card="{{ p[0] }}">
+              <span class="snp-card__ribbon">Låst op</span>
+              <p class="snp-card__name">{{ nazwa }}</p>
+              <p class="snp-card__qty">{{ p[0] }}{% if forloop.last %}+{% endif %} stk.</p>
+              <div class="snp-card__sep"></div>
+              <p class="snp-card__extra">Ekstra</p>
+              <p class="snp-card__pct">{{ p[1] }}%</p>
+              <p class="snp-card__off">rabat</p>
+            </div>
+          {%- endfor -%}
+        </div>
+        <p class="snp-col__foot">Rabatten trækkes automatisk i kurven</p>
+      </div>
+  {%- endcase -%}
+  <script>window.snProgi && window.snProgi.init(document.getElementById({{ id_k | json }}));</script>
+{%- endif -%}

@@ -31,6 +31,7 @@
   {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
   {%- render 'custom-styles' -%}
   {%- render 'sn-polityki' -%}
+  {%- render 'sn-progi-assets' -%}
   {%- render 'custom-scripts' -%}
   {%- render 'css-variables' -%}
 
@@ -344,6 +345,9 @@
     <div class="transition-body">
 
     {%- sections 'header-group' -%}
+    {%- if settings.sn_bar_show -%}
+      {%- render 'sn-progi', wariant: 'pasek', progi: settings.sn_progi -%}
+    {%- endif -%}
     {%- sections 'popup-group' -%}
 
       <main class="main-content" id="MainContent">

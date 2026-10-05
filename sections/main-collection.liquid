@@ -44,12 +44,16 @@
         widac po wejsciu na telefonie.
       {%- endcomment -%}
       {%- if section.settings.bundle_show and section.settings.bundle_tiers != blank -%}
-        {%- render 'sn-rabat-kolekcja',
-          title: section.settings.bundle_title,
-          sub: section.settings.bundle_sub,
-          text2: section.settings.bundle_text2,
-          note: section.settings.bundle_note,
-          tiers: section.settings.bundle_tiers
+        {%- comment -%}
+          Karty progow wzorowane na Areleon (snippets/sn-progi). Poprzednia
+          ramka (sn-rabat-kolekcja) zostaje w motywie jako zapas.
+        {%- endcomment -%}
+        {%- assign podtytul_k = section.settings.bundle_text2 | default: 'Bland frit på tværs af hele butikken – jo flere varer, jo større rabat.' -%}
+        {%- render 'sn-progi',
+          wariant: 'kolekcja',
+          progi: section.settings.bundle_tiers,
+          tytul: section.settings.bundle_title,
+          podtytul: podtytul_k
         -%}
       {%- endif -%}
 
