@@ -179,58 +179,34 @@
     padding: 20px 26px 22px; border-top: 1px solid #e6e3de; background: #ffffff; box-shadow: none;
   }
   .snk-hidden { display: none !important; }
-  /* podsumowanie (wzor: Areleon) */
-  .snk-total { margin: 0 0 14px; }
-  .snk-total__rows { display: flex; flex-direction: column; gap: 7px; padding: 0 0 12px; margin: 0 0 12px; border-bottom: 1px solid #e6e3de; }
-  .snk-total__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 14px; color: #5f5b55; }
-  .snk-total__row small { display: block; font-size: 11px; color: #8a857e; }
-  .snk-total__row--b > span:first-child { font-weight: 600; color: #1c1d1d; }
-  .snk-total__minus { font-weight: 600; color: #c8102e; }
-  .snk-total__hint { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #1c1d1d; }
-  .snk-total__sum { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-  .snk-total__label { font-family: var(--typeHeaderPrimary), sans-serif; font-size: 26px; font-weight: 500; }
-  .snk-total__now { font-size: 24px; font-weight: 700; }
+  .snk-total { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 16px; }
+  .snk-total__label { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; }
+  .snk-total__nums { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+  .snk-total__was { font-size: 16px; color: #8a857e; }
+  .snk-total__now { font-size: 18px; font-weight: 700; }
   .snk-total__save {
-    display: flex; align-items: center; justify-content: center; gap: 7px;
-    margin: 12px 0 0; padding: 9px 12px; border: 1px solid #e6e1da; border-radius: 6px; background: #f6f2ec;
-    font-size: 13px; color: #5f5b55;
+    padding: 4px 8px; background: #f2665a; color: #ffffff;
+    font-size: 13px; font-weight: 600; line-height: 1.2;
   }
-  .snk-total__save b { color: #1c1d1d; }
   #CartDrawer .cart__checkout {
-    display: flex; align-items: center; justify-content: center; gap: 14px;
-    width: 100%; height: 58px; margin: 0; border-radius: 6px;
+    width: 100%; height: 60px; margin: 0; border-radius: 0;
     background: #1c1d1d; color: #ffffff;
-    font-size: 14px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    font-size: 15px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
   }
-  #CartDrawer .cart__checkout svg { flex: 0 0 auto; }
-  .snk-trust { display: grid; grid-template-columns: repeat(3, 1fr); margin: 14px 0 0; padding: 12px 0 0; border-top: 1px solid #e6e3de; }
-  .snk-trust__i { display: flex; align-items: center; justify-content: center; gap: 9px; padding: 0 6px; color: #1c1d1d; }
-  .snk-trust__i + .snk-trust__i { border-left: 1px solid #e6e3de; }
-  .snk-trust__i svg { flex: 0 0 auto; }
-  .snk-trust__i span { display: flex; flex-direction: column; font-size: 11px; line-height: 1.3; color: #8a857e; }
-  .snk-trust__i b { font-size: 12.5px; font-weight: 600; color: #1c1d1d; }
-  .snk-item__save {
-    padding: 3px 7px; border-radius: 4px; background: #b5565a; color: #ffffff;
-    font-size: 11px; font-weight: 600; line-height: 1.2; white-space: nowrap;
+  .snk-trust {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin: 14px 0 0; font-size: 13px; color: #5f5b55; text-align: center;
   }
+  .snk-trust svg { flex: 0 0 auto; }
 
   @media only screen and (max-width: 768px) {
     #CartDrawer .drawer__header { padding: 20px 18px 14px; }
     #CartDrawer .drawer__title { font-size: 22px; }
     #CartDrawer .drawer__scrollable { padding: 2px 18px 20px; }
-    #CartDrawer .drawer__footer { padding: 14px 18px 16px; }
+    #CartDrawer .drawer__footer { padding: 16px 18px 18px; }
     .snk-item { grid-template-columns: 92px 1fr; gap: 14px; }
     .snk-card { flex-basis: 90%; padding: 14px; gap: 12px; grid-template-columns: 80px 1fr; }
-    /* na telefonie stopka nie moze zjesc ekranu - bez rozbicia, zostaje Total i "Du sparer" */
-    .snk-total__rows { display: none; }
-    .snk-total__label { font-size: 22px; }
-    .snk-total__now { font-size: 20px; }
-    .snk-total__save { margin-top: 8px; padding: 6px 10px; }
-    #CartDrawer .cart__checkout { height: 52px; }
-    .snk-trust { margin-top: 10px; padding-top: 10px; }
-    .snk-trust__i { flex-direction: column; gap: 4px; text-align: center; }
-    .snk-trust__i span { font-size: 10px; }
-    .snk-trust__i b { font-size: 11px; }
+    #CartDrawer .cart__checkout { height: 54px; }
   }
 </style>
 

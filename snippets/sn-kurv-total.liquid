@@ -1,9 +1,8 @@
 {%- comment -%}
-  Podsumowanie w stopce szuflady (wzor: Areleon): subtotal przed obnizkami,
-  rabat na produktach (cena przekreslona -> cena), dodatkowy rabat za ilosc
-  (rabaty automatyczne), Total i "Du sparer". Wszystko z danych koszyka:
-  cena przed obnizka = compare_at wariantu (gdy wyzsza od ceny),
-  rabat za ilosc = cart.original_total_price - cart.total_price.
+  Suma w stopce szuflady: "Total:" + wartosc przed obnizkami (przekreslona),
+  kwota do zaplaty i czerwona plakietka z oszczednoscia. Wszystko z danych
+  koszyka: cena przed obnizka = compare_at wariantu (gdy wyzsza od ceny),
+  kwota = cart.total_price (po rabatach za ilosc).
   Renderowane w cart-drawer i w sections/sn-kurv-dele (odswiezanie przez JS).
 {%- endcomment -%}
 {%- liquid
@@ -17,44 +16,17 @@
     assign przed = przed | plus: linia
   endfor
   assign teraz = cart.total_price
-  assign rabat_produkt = przed | minus: cart.original_total_price
-  assign rabat_ilosc = cart.original_total_price | minus: cart.total_price
   assign oszcz = przed | minus: teraz
-
-  assign pierwszy_prog = settings.sn_progi | split: ',' | first | split: ':' | first | strip | plus: 0
-  assign brakuje = pierwszy_prog | minus: cart.item_count
 -%}
 <div class="snk-total" data-snk-total data-count="{{ cart.item_count }}">
-  <div class="snk-total__rows">
-    <div class="snk-total__row">
-      <span>Subtotal <small>{{ cart.item_count }} {% if cart.item_count == 1 %}vare{% else %}varer{% endif %}</small></span>
-      <span>{%- render 'sn-cena', kwota: przed -%}</span>
-    </div>
-    {%- if rabat_produkt > 0 -%}
-      <div class="snk-total__row snk-total__row--b">
-        <span>Rabat på varer</span>
-        <span class="snk-total__minus">−{%- render 'sn-cena', kwota: rabat_produkt -%}</span>
-      </div>
+  <span class="snk-total__label">Total:</span>
+  <span class="snk-total__nums">
+    {%- if oszcz > 0 -%}
+      <s class="snk-total__was">{%- render 'sn-cena', kwota: przed -%}</s>
     {%- endif -%}
-    <div class="snk-total__row snk-total__row--b">
-      <span>Ekstra mængderabat</span>
-      {%- if rabat_ilosc > 0 -%}
-        <span class="snk-total__minus">−{%- render 'sn-cena', kwota: rabat_ilosc -%}</span>
-      {%- elsif brakuje > 0 -%}
-        <span class="snk-total__hint">Tilføj {{ brakuje }} {% if brakuje == 1 %}vare{% else %}varer{% endif %} mere</span>
-      {%- else -%}
-        <span>—</span>
-      {%- endif -%}
-    </div>
-  </div>
-  <div class="snk-total__sum">
-    <span class="snk-total__label">Total</span>
     <strong class="snk-total__now">{%- render 'sn-cena', kwota: teraz -%}</strong>
-  </div>
-  {%- if oszcz > 0 -%}
-    <p class="snk-total__save">
-      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M8.6 1.5H14.5V7.4L7.4 14.5 1.5 8.6z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="11.2" cy="4.8" r="1.1" fill="currentColor"/></svg>
-      Du sparer <b>{%- render 'sn-cena', kwota: oszcz -%}</b>
-    </p>
-  {%- endif -%}
+    {%- if oszcz > 0 -%}
+      <span class="snk-total__save">−{%- render 'sn-cena', kwota: oszcz -%}</span>
+    {%- endif -%}
+  </span>
 </div>
