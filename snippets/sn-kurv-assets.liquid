@@ -24,17 +24,18 @@
   #CartDrawer .drawer__fixed-header { padding: 0; background: #ffffff; }
   #CartDrawer .drawer__header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 26px 26px 18px; border: 0; margin: 0;
+    padding: 18px 26px 16px; border: 0; border-bottom: 1px solid #ece8e2; margin: 0 0 18px;
   }
+  /* maly naglowek jak w minimalistycznym koszyku */
   #CartDrawer .drawer__title {
-    display: flex; align-items: center; gap: 12px; margin: 0;
-    font-size: 26px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1;
+    display: flex; align-items: center; gap: 9px; margin: 0;
+    font-size: 19px; font-weight: 600; letter-spacing: 0.01em; text-transform: none; line-height: 1;
   }
   .snk-count {
     display: inline-flex; align-items: center; justify-content: center;
-    min-width: 26px; height: 26px; padding: 0 7px; border-radius: 13px;
+    min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px;
     background: #1c1d1d; color: #ffffff;
-    font-size: 13px; font-weight: 600; letter-spacing: 0; line-height: 1;
+    font-size: 11px; font-weight: 600; letter-spacing: 0; line-height: 1;
   }
   .snk-count[hidden] { display: none; }
   /* motyw daje kontenerowi krzyzyka width: 1% - w ukladzie flex kurczy sie do 3 px */
@@ -70,6 +71,13 @@
     line-height: 1.35; color: #1c1d1d; text-decoration: none;
   }
   .snk-item__name:hover { text-decoration: underline; }
+  .snk-item__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .snk-item__trash {
+    flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; margin: -7px -8px 0 0; padding: 0;
+    border: 0; background: none; color: #1c1d1d; cursor: pointer; opacity: 0.75;
+  }
+  .snk-item__trash:hover { opacity: 1; }
   .snk-item__price { display: flex; align-items: baseline; gap: 8px; font-size: 15px; }
   .snk-item__was { color: #8a857e; font-size: 14px; }
   .snk-item__now { font-weight: 600; color: #1c1d1d; }
@@ -99,8 +107,30 @@
   }
   .snk-item__remove:hover { color: #1c1d1d; }
 
-  /* ---------- Gor looket komplet ---------- */
-  .snk-up { margin: 10px 0 0; }
+  /* ---------- Gor looket komplet: siatka 2 kolumny ---------- */
+  .snk-up { margin: 10px 0 0; padding: 18px 0 0; border-top: 1px solid #ece8e2; }
+  .snk-up > .snk-up__title { margin: 0 0 14px; }
+  .snk-up__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 12px; }
+  .snk-g { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+  .snk-g__img { display: block; aspect-ratio: 4 / 5; background: #f4f2ee; overflow: hidden; }
+  .snk-g__img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .snk-g__img:hover img { transform: scale(1.03); }
+  .snk-g__name {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; line-height: 1.35;
+    color: #1c1d1d; text-decoration: none;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .snk-g__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; font-size: 13px; }
+  .snk-g__price s { color: #8a857e; font-size: 12px; }
+  .snk-g__price span { font-weight: 600; }
+  .snk-g__add {
+    width: 100%; height: 40px; margin-top: 2px; padding: 0 10px;
+    border: 1px solid #1c1d1d; background: #ffffff; color: #1c1d1d;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .snk-g__add:hover { background: #1c1d1d; color: #ffffff; }
+  .snk-g__add[disabled] { opacity: 0.5; cursor: default; }
   .snk-up[hidden] { display: none; }
   .snk-up__head { display: flex; align-items: center; justify-content: space-between; margin: 0 0 14px; }
   .snk-up__title { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; }
@@ -208,7 +238,7 @@
 
   @media only screen and (max-width: 768px) {
     #CartDrawer .drawer__header { padding: 20px 18px 14px; }
-    #CartDrawer .drawer__title { font-size: 22px; }
+    #CartDrawer .drawer__title { font-size: 18px; }
     #CartDrawer .drawer__scrollable { padding: 2px 18px 20px; }
     #CartDrawer .drawer__footer { padding: 16px 18px 18px; }
     .snk-item { grid-template-columns: 92px 1fr; gap: 14px; }
@@ -282,7 +312,7 @@
     /* ---------- karty "Gor looket komplet" ---------- */
     function przygotujKarty(ramka) {
       if (!ramka) return;
-      var karty = ramka.querySelectorAll('[data-snk-card]');
+      var karty = ramka.querySelectorAll('[data-snk-card], [data-snk-g]');
       var wrap = ramka.querySelector('[data-snk-up-wrap]');
       if (wrap) wrap.hidden = karty.length === 0;
       karty.forEach(function (k) {
@@ -377,6 +407,22 @@
         var karta = tor.querySelector('[data-snk-card]');
         var krok = karta ? karta.getBoundingClientRect().width : tor.clientWidth;
         tor.scrollBy({ left: strz.hasAttribute('data-snk-up-next') ? krok : -krok, behavior: 'smooth' });
+        return;
+      }
+
+      /* siatka: produkt z jednym wariantem - od razu do koszyka */
+      var jeden = e.target.closest('[data-snk-add-id]');
+      if (jeden && !jeden.disabled) {
+        jeden.disabled = true;
+        fetch(KORZEN + 'cart/add.js', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ items: [{ id: Number(jeden.getAttribute('data-snk-add-id')), quantity: 1 }] })
+        })
+          .then(function (o) { if (!o.ok) throw new Error('odmowa'); return o.json(); })
+          .then(function () { document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { addToCartBtn: jeden } })); })
+          .catch(function () { jeden.disabled = false; });
         return;
       }
 
