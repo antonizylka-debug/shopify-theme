@@ -45,12 +45,13 @@
       {%- endcomment -%}
       {%- if section.settings.bundle_show and section.settings.bundle_tiers != blank -%}
         {%- comment -%}
-          Karty progow wzorowane na Areleon (snippets/sn-progi). Poprzednia
-          ramka (sn-rabat-kolekcja) zostaje w motywie jako zapas.
+          Progi jako spokojna linijka (snippets/sn-progi, wariant linje). Karty
+          w stylu Areleon (wariant kolekcja) i stara ramka (sn-rabat-kolekcja)
+          zostaja w motywie jako zapas.
         {%- endcomment -%}
         {%- assign podtytul_k = section.settings.bundle_text2 | default: 'Bland frit på tværs af hele butikken – jo flere varer, jo større rabat.' -%}
         {%- render 'sn-progi',
-          wariant: 'kolekcja',
+          wariant: 'linje',
           progi: section.settings.bundle_tiers,
           tytul: section.settings.bundle_title,
           podtytul: podtytul_k

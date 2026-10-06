@@ -2,7 +2,7 @@
   Progi rabatu za ilosc w trzech wersjach (wzor: Areleon). Styl i JS:
   snippets/sn-progi-assets (raz w theme.liquid). Stan liczy JS z koszyka.
 
-  @param {string} wariant - 'pasek' (pod naglowkiem), 'kurv' (szuflada koszyka), 'kolekcja' (karty)
+  @param {string} wariant - 'pasek' (pod naglowkiem), 'kurv' (szuflada koszyka), 'linje' (linijka w kolekcji), 'kolekcja' (karty)
   @param {string} progi - "2:10, 3:20, 4:25, 5:30" - zgodnie z rabatami w panelu
   @param {string} [tytul] - naglowek (domyslnie "Køb flere, spar mere")
   @param {string} [podtytul] - linijka pod naglowkiem (tylko kolekcja)
@@ -75,6 +75,16 @@
         <p class="snp-box__cart">Din kurv: <b data-snp-count>{{ cart.item_count }}</b> <span data-snp-unit>varer</span></p>
         {{ tor }}
         <p class="snp-msg" data-snp-msg aria-live="polite"></p>
+      </div>
+
+    {%- when 'linje' -%}
+      {%- comment -%} Spokojna linijka w kolekcji (06.10.2026: karty byly 'nie w stylu sklepu'). {%- endcomment -%}
+      <div class="snp-line" id="{{ id_k }}" data-snp data-progi="{{ czyste }}" data-count="{{ cart.item_count }}">
+        <span class="snp-line__lbl">{{ tytul_k }}</span>
+        {%- for para in lista -%}
+          {%- assign p = para | split: ':' -%}
+          <span class="snp-line__t" data-snp-card="{{ p[0] }}">{{ p[0] }}{% if forloop.last %}+{% endif %} stk. <b>−{{ p[1] }} %</b></span>
+        {%- endfor -%}
       </div>
 
     {%- when 'kolekcja' -%}

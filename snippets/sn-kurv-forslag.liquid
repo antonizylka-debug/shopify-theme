@@ -1,70 +1,73 @@
 {%- comment -%}
-  "Gor looket komplet" w szufladzie koszyka - siatka 2 kolumny z duzymi
-  zdjeciami i przyciskiem "Tilfoj" (wzor: minimalistyczny koszyk od Antoniego),
-  przewijana w dol razem z koszykiem. Produkty z kolekcji do kompletu dla
-  pierwszej rzeczy w koszyku (sn-komplet-lista), bez tych, ktore juz sa
-  w koszyku.
+  "Gor looket komplet" w szufladzie koszyka - siatka 2 kolumny, duze zdjecia,
+  "Tilfoj" (wzor: minimalistyczny koszyk od Antoniego).
 
-  "Tilfoj": produkt z jednym wariantem idzie od razu do koszyka
-  (data-snk-add-id, sn-kurv-assets), z wieloma - otwiera okno wyboru
-  rozmiaru i koloru (data-snq-otworz, sn-quickadd).
+  Dobieranie pod to, co klientka wybrala:
+  1. Z koszyka bierze "glowna" rzecz - sukienka wazniejsza od plaszcza,
+     plaszcz od spodni, spodnie od gory, gora od butow, buty od dodatkow -
+     i jej dzial (tag Department: Women / Men).
+  2. sn-komplet-typy podaje typy do kompletu (do sukienki: szpilki,
+     sandaly, torebki, bizuteria, marynarka).
+  3. Dla kazdego typu adres kolekcji damskiej/meskiej przefiltrowanej po
+     tagu "Product Type: ..." - JS (sn-kurv-assets) pobiera z nich karty
+     (sections/sn-kurv-kort), uklada na przemian i pomija to, co juz jest
+     w koszyku.
 
   Tytul i wlaczenie: Ustawienia motywu -> Koszyk -> Cart drawer.
   Nie nazywamy tego "czesto kupowane razem" - nie mamy na to danych.
 {%- endcomment -%}
 {%- if settings.sn_kurv_upsell_show and cart.item_count > 0 -%}
   {%- liquid
-    assign pierwszy = cart.items.first.product
-    capture lista
-      render 'sn-komplet-lista', produkt: pierwszy
+    assign kolejnosc = 'Dresses,Jumpsuits,Matching Sets,Playsuits & Rompers,Coats,Jackets,Blazers,Suits,Pants,Jeans,Skirts,Shorts,Sweaters,Cardigans,Hoodies & Sweatshirts,Blouses,Shirts,Polo Shirts,T-Shirts & Tops,Bodysuits,Tunics,Vests,Capes & Ponchos,Swimwear,Heels,Sandals,Mules,Espadrilles,Loafers,Sneakers,Boots,Dress Shoes,Slides,Clogs,Bags,Jewelry,Sunglasses,Belts,Underwear,Sleepwear & Loungewear' | split: ','
+    assign typ = ''
+    assign dzial = 'womens'
+    assign najlepszy = 999
+    assign ziarno = 0
+    assign wyklucz = ','
+
+    for item in cart.items
+      assign wyklucz = wyklucz | append: item.product_id | append: ','
+      assign t_item = ''
+      assign d_item = ''
+      for tag in item.product.tags
+        if tag contains 'Product Type: '
+          assign t_item = tag | remove: 'Product Type: ' | strip
+        elsif tag == 'Department: Men'
+          assign d_item = 'mens'
+        elsif tag == 'Department: Women'
+          assign d_item = 'womens'
+        endif
+      endfor
+      assign poz = 900
+      for k in kolejnosc
+        if k == t_item
+          assign poz = forloop.index
+          break
+        endif
+      endfor
+      if poz < najlepszy
+        assign najlepszy = poz
+        assign typ = t_item
+        if d_item != blank
+          assign dzial = d_item
+        endif
+        assign ziarno = item.product_id | modulo: 7
+      endif
+    endfor
+
+    capture cele
+      render 'sn-komplet-typy', typ: typ, dzial: dzial
     endcapture
-    assign kolekcje = lista | strip | split: ','
-    assign w_koszyku = cart.items | map: 'product_id' | join: ','
-    assign w_koszyku = ',' | append: w_koszyku | append: ','
-    assign start = pierwszy.id | modulo: 20
-    assign ile = 6
+    assign cele = cele | strip | split: ','
+
+    assign zrodla = ''
+    for c in cele
+      assign tag_c = 'Product Type: ' | append: c | handle
+      assign zrodla = zrodla | append: routes.collections_url | append: '/' | append: dzial | append: '/' | append: tag_c | append: '|'
+    endfor
   -%}
-  <div class="snk-up" data-snk-up-wrap>
+  <div class="snk-up" data-snk-up-wrap data-snk-zrodla="{{ zrodla | escape }}" data-snk-wyklucz="{{ wyklucz }}" data-snk-ziarno="{{ ziarno }}" hidden>
     <p class="snk-up__title">{{ settings.sn_kurv_upsell_title }}</p>
-
-    <div class="snk-up__grid">
-      {%- assign pokazane = 0 -%}
-      {%- assign uzyte = ',' -%}
-      {%- for i in (0..30) -%}
-        {%- if pokazane >= ile -%}{%- break -%}{%- endif -%}
-        {%- assign nr = i | plus: start -%}
-        {%- for h in kolekcje -%}
-          {%- if pokazane >= ile -%}{%- break -%}{%- endif -%}
-          {%- assign p = collections[h].products[nr] -%}
-          {%- if p == blank -%}{%- continue -%}{%- endif -%}
-          {%- unless p.available -%}{%- continue -%}{%- endunless -%}
-          {%- assign znak = ',' | append: p.id | append: ',' -%}
-          {%- if w_koszyku contains znak or uzyte contains znak -%}{%- continue -%}{%- endif -%}
-          {%- assign uzyte = uzyte | append: p.id | append: ',' -%}
-          {%- assign pokazane = pokazane | plus: 1 -%}
-          {%- assign v0 = p.selected_or_first_available_variant -%}
-
-          <div class="snk-g" data-snk-g>
-            <a href="{{ p.url }}" class="snk-g__img" tabindex="-1" aria-hidden="true">
-              {%- if p.featured_image -%}
-                {{ p.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: p.title, sizes: '(max-width: 768px) 45vw, 270px', widths: '250, 360, 500' }}
-              {%- endif -%}
-            </a>
-            <a href="{{ p.url }}" class="snk-g__name">{{ p.title }}</a>
-            <div class="snk-g__price">
-              {%- if v0.compare_at_price > v0.price -%}
-                <s>{%- render 'sn-cena', kwota: v0.compare_at_price -%}</s>
-              {%- endif -%}
-              <span>{%- render 'sn-cena', kwota: v0.price -%}</span>
-            </div>
-            {%- if p.has_only_default_variant or p.variants.size == 1 -%}
-              <button type="button" class="snk-g__add" data-snk-add-id="{{ v0.id }}">Tilføj</button>
-            {%- else -%}
-              <button type="button" class="snk-g__add" data-snq-otworz="{{ p.handle }}">Tilføj</button>
-            {%- endif -%}
-          </div>
-        {%- endfor -%}
-      {%- endfor -%}
-    </div>
+    <div class="snk-up__grid" data-snk-up-grid></div>
   </div>
 {%- endif -%}

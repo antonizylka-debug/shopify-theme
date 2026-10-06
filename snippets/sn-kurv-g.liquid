@@ -1,0 +1,26 @@
+{%- comment -%}
+  Jedna karta w "Gor looket komplet" (siatka 2 kolumny w szufladzie koszyka).
+  "Tilfoj": jeden wariant - od razu do koszyka (data-snk-add-id, sn-kurv-assets),
+  kilka - okno wyboru rozmiaru i koloru (data-snq-otworz, sn-quickadd).
+  @param {object} p - produkt
+{%- endcomment -%}
+{%- assign v0 = p.selected_or_first_available_variant -%}
+<div class="snk-g" data-snk-g data-snk-pid="{{ p.id }}">
+  <a href="{{ p.url }}" class="snk-g__img" tabindex="-1" aria-hidden="true">
+    {%- if p.featured_image -%}
+      {{ p.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: p.title, sizes: '(max-width: 768px) 45vw, 270px', widths: '250, 360, 500' }}
+    {%- endif -%}
+  </a>
+  <a href="{{ p.url }}" class="snk-g__name">{{ p.title }}</a>
+  <div class="snk-g__price">
+    {%- if v0.compare_at_price > v0.price -%}
+      <s>{%- render 'sn-cena', kwota: v0.compare_at_price -%}</s>
+    {%- endif -%}
+    <span>{%- render 'sn-cena', kwota: v0.price -%}</span>
+  </div>
+  {%- if p.has_only_default_variant or p.variants.size == 1 -%}
+    <button type="button" class="snk-g__add" data-snk-add-id="{{ v0.id }}">Tilføj</button>
+  {%- else -%}
+    <button type="button" class="snk-g__add" data-snq-otworz="{{ p.handle }}">Tilføj</button>
+  {%- endif -%}
+</div>

@@ -1,0 +1,25 @@
+{%- comment -%}
+  Karty do "Gor looket komplet" z jednej kolekcji przefiltrowanej po tagu,
+  np. /collections/womens/product-type-heels?section_id=sn-kurv-kort.
+  JS koszyka (sn-kurv-assets) pobiera kilka takich zestawow (szpilki,
+  torebki, bizuteria...) i uklada je na przemian. Sekcji nie dodaje sie do
+  szablonow - dziala tylko przez Section Rendering API na adresie kolekcji.
+{%- endcomment -%}
+<div data-snk-kort>
+  {%- assign n = 0 -%}
+  {%- if collection != blank -%}
+    {%- for p in collection.products -%}
+      {%- if n >= 12 -%}{%- break -%}{%- endif -%}
+      {%- unless p.available -%}{%- continue -%}{%- endunless -%}
+      {%- assign n = n | plus: 1 -%}
+      {%- render 'sn-kurv-g', p: p -%}
+    {%- endfor -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Kurv - kort",
+  "settings": []
+}
+{% endschema %}

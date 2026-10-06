@@ -1,0 +1,46 @@
+{%- comment -%}
+  Wypisuje typy produktow (po przecinku) pasujace do kompletu z "glowna"
+  rzecza w koszyku. Typy to wartosci z tagow "Product Type: ..." (tagi nie
+  sa tlumaczone, wiec dzialaja tak samo w kazdym jezyku sklepu).
+  Do sukienki - szpilki, sandaly, torebka, bizuteria, marynarka; nigdy
+  loafersy czy sneakersy (06.10.2026 Antoni: "kjole a mi loafery dodaje").
+  @param {string} typ - typ glownej rzeczy, np. 'Dresses'
+  @param {string} dzial - 'womens' albo 'mens'
+{%- endcomment -%}
+{%- liquid
+  if dzial == 'mens'
+    case typ
+      when 'Shirts', 'Polo Shirts', 'T-Shirts & Tops', 'Sweaters', 'Cardigans', 'Hoodies & Sweatshirts'
+        echo 'Pants,Jeans,Loafers,Belts'
+      when 'Pants', 'Jeans', 'Shorts'
+        echo 'Shirts,Polo Shirts,Loafers,Belts'
+      when 'Coats', 'Jackets', 'Blazers', 'Vests', 'Suits'
+        echo 'Sweaters,Pants,Boots'
+      when 'Sneakers', 'Loafers', 'Boots', 'Dress Shoes', 'Sandals', 'Slides', 'Clogs', 'Mules'
+        echo 'Pants,Shirts,Belts'
+      else
+        echo 'Shirts,Pants,Loafers'
+    endcase
+  else
+    case typ
+      when 'Dresses', 'Jumpsuits', 'Matching Sets', 'Playsuits & Rompers', 'Swimwear'
+        echo 'Heels,Sandals,Bags,Jewelry,Blazers'
+      when 'Skirts', 'Pants', 'Jeans', 'Shorts'
+        echo 'Blouses,T-Shirts & Tops,Loafers,Bags'
+      when 'Blouses', 'T-Shirts & Tops', 'Shirts', 'Bodysuits', 'Tunics'
+        echo 'Pants,Jeans,Skirts,Jewelry'
+      when 'Sweaters', 'Cardigans', 'Hoodies & Sweatshirts'
+        echo 'Pants,Jeans,Boots,Bags'
+      when 'Coats', 'Jackets', 'Blazers', 'Vests', 'Capes & Ponchos', 'Suits'
+        echo 'Sweaters,Pants,Boots'
+      when 'Heels', 'Sandals', 'Mules', 'Espadrilles'
+        echo 'Dresses,Bags,Jewelry'
+      when 'Loafers', 'Sneakers', 'Boots', 'Dress Shoes', 'Slides', 'Clogs'
+        echo 'Pants,Jeans,Bags'
+      when 'Bags', 'Jewelry', 'Sunglasses', 'Belts'
+        echo 'Dresses,Blouses,Heels'
+      else
+        echo 'Dresses,Bags,Heels'
+    endcase
+  endif
+-%}

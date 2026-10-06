@@ -310,11 +310,57 @@
     });
 
     /* ---------- karty "Gor looket komplet" ---------- */
+    /* ---------- Gor looket komplet: karty z kolekcji po typie ----------
+       sn-kurv-forslag podaje adresy (np. /collections/womens/product-type-heels),
+       tu pobieramy z kazdego sections/sn-kurv-kort, ukladamy na przemian
+       (szpilki, torebka, bizuteria, sandaly...) i pomijamy to, co jest w koszyku.
+       Odpowiedzi trzymamy w pamieci - kolejna zmiana koszyka nie pyta sklepu od nowa. */
+    var pamiecKart = {};
+    function zaladujPolecane(wrap) {
+      var zrodla = (wrap.getAttribute('data-snk-zrodla') || '').split('|').filter(Boolean);
+      if (!zrodla.length) { wrap.hidden = true; return; }
+      var wyklucz = wrap.getAttribute('data-snk-wyklucz') || ',';
+      var ziarno = Number(wrap.getAttribute('data-snk-ziarno')) || 0;
+      Promise.all(zrodla.map(function (u) {
+        if (!pamiecKart[u]) {
+          pamiecKart[u] = fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 'section_id=sn-kurv-kort', { credentials: 'same-origin' })
+            .then(function (o) { return o.ok ? o.text() : ''; })
+            .catch(function () { return ''; });
+        }
+        return pamiecKart[u];
+      })).then(function (teksty) {
+        var grupy = teksty.map(function (t) {
+          var d = new DOMParser().parseFromString(t, 'text/html');
+          var g = Array.prototype.slice.call(d.querySelectorAll('[data-snk-g]')).filter(function (el) {
+            return wyklucz.indexOf(',' + el.getAttribute('data-snk-pid') + ',') < 0;
+          });
+          var o = g.length ? ziarno % g.length : 0;
+          return g.slice(o).concat(g.slice(0, o));
+        });
+        var wynik = [], widziane = {};
+        for (var i = 0; i < 12 && wynik.length < 6; i++) {
+          grupy.forEach(function (g) {
+            if (wynik.length >= 6 || !g[i]) return;
+            var id = g[i].getAttribute('data-snk-pid');
+            if (widziane[id]) return;
+            widziane[id] = true;
+            wynik.push(g[i]);
+          });
+        }
+        if (!wrap.isConnected) return;
+        var siatka = wrap.querySelector('[data-snk-up-grid]');
+        siatka.innerHTML = '';
+        wynik.forEach(function (el) { siatka.appendChild(document.importNode(el, true)); });
+        wrap.hidden = wynik.length === 0;
+      });
+    }
+
     function przygotujKarty(ramka) {
       if (!ramka) return;
       var karty = ramka.querySelectorAll('[data-snk-card], [data-snk-g]');
       var wrap = ramka.querySelector('[data-snk-up-wrap]');
-      if (wrap) wrap.hidden = karty.length === 0;
+      if (wrap && wrap.hasAttribute('data-snk-zrodla')) zaladujPolecane(wrap);
+      else if (wrap) wrap.hidden = karty.length === 0;
       karty.forEach(function (k) {
         var dane;
         try { dane = JSON.parse(k.querySelector('[data-snk-json]').textContent); } catch (err) { return; }
