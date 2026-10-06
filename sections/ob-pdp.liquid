@@ -1189,6 +1189,22 @@
     var pole = root.querySelector('[data-pdp-id]');
     var atc = root.querySelector('[data-pdp-atc]');
     var atcTxt = root.querySelector('[data-pdp-atc-txt]');
+
+    /* "Laeg i kurv" przez AJAX motywu (06.10.2026). Bez tego formularz wysylal sie
+       zwyczajnie i przenosil na /cart - szuflada koszyka (progi, komplet) sie nie
+       otwierala. theme.js jest defer, wiec w razie potrzeby czekamy na DOMContentLoaded. */
+    (function () {
+      var formularz = atc && atc.closest('form');
+      if (!formularz) return;
+      function podepnij() {
+        if (formularz.__snAjax || !window.theme || !theme.AjaxProduct) return;
+        if (!theme.settings || theme.settings.cartType !== 'drawer') return;
+        formularz.__snAjax = true;
+        new theme.AjaxProduct(formularz, '[data-pdp-atc]');
+      }
+      if (window.theme && theme.AjaxProduct) podepnij();
+      else document.addEventListener('DOMContentLoaded', podepnij);
+    })();
     var blokCeny = root.querySelector('[data-pdp-price]');
     var teraz = root.querySelector('[data-pdp-now]');
     var refNormal = root.querySelector('[data-pdp-ref-normal]');
