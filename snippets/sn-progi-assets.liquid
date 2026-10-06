@@ -67,41 +67,54 @@
   .snp-box .snp-track { margin-bottom: 38px; }
   .snp-box .snp-msg { font-size: 11px; }
 
-  /* ---------- pasek w kolekcji: czarny jak pasek USP pod menu ---------- */
+  /* ---------- baner w kolekcji: czarny jak pasek USP pod menu ---------- */
   .snp-line {
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 22px;
-    margin: 0 0 26px; padding: 14px 16px; background: #1c1d1d; color: #cfcac3;
-    font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase;
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 14px 40px;
+    margin: 0 0 26px; padding: 20px 28px 0; background: #1c1d1d; color: #ffffff;
   }
-  .snp-line__kamp { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: #ffffff; }
-  .snp-line__dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #e0263c; }
+  .snp-line__head { display: flex; flex-direction: column; gap: 5px; }
+  .snp-line__kamp {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #ff6b78;
+  }
+  .snp-line__dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #e0263c; }
   .snp-line__dot::after {
     content: ""; position: absolute; inset: 0; border-radius: 50%; background: #e0263c;
     animation: snp-puls 1.6s ease-out infinite;
   }
   @keyframes snp-puls { from { transform: scale(1); opacity: 0.7; } to { transform: scale(2.8); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .snp-line__dot::after { animation: none; } }
-  .snp-line__lbl { font-weight: 600; color: #ffffff; }
-  .snp-line__t b { font-weight: 700; color: #ffffff; }
-  .snp-line__t.is-on { color: #ffffff; }
-  .snp-line__t.is-on b { padding: 2px 6px; background: #e0263c; }
-  .snp-line__timer { color: #ffffff; font-variant-numeric: tabular-nums; }
+  .snp-line__lbl { font-size: 20px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.2; }
+  .snp-line__auto { font-size: 12px; letter-spacing: 0.06em; color: #b8b2a9; }
+  .snp-line__timer { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #ffffff; font-variant-numeric: tabular-nums; }
   .snp-line__timer b { font-weight: 700; }
   .snp-line__timer[hidden] { display: none; }
-  .snp-line__info {
-    flex: 0 0 100%; display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 16px;
-    margin-top: 2px; padding-top: 9px; border-top: 1px solid #3a3b3b;
-    font-size: 11px; letter-spacing: 0.08em; color: #b8b2a9;
+  .snp-line__tiers { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(84px, 1fr); }
+  .snp-line__t { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 18px; }
+  .snp-line__t + .snp-line__t { border-left: 1px solid #3a3b3b; }
+  .snp-line__t small { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #b8b2a9; }
+  .snp-line__t b { font-size: 22px; font-weight: 700; line-height: 1.1; white-space: nowrap; }
+  .snp-line__t.is-on b { color: #ff6b78; }
+  .snp-line__t.is-on small { color: #ffffff; }
+  .snp-line__note {
+    grid-column: 1 / -1; margin: 0; padding: 11px 0 13px; border-top: 1px solid #3a3b3b;
+    font-size: 13px; font-style: italic; text-align: center; color: #e6e1da;
   }
-  .snp-line__note { text-transform: none; letter-spacing: 0.02em; font-size: 12.5px; font-style: italic; color: #ffffff; }
-  /* strzalki rzedu kategorii (.subrow__nav-wrap) siedza 62 px nad rzedem - bez odstepu wchodza na pasek */
+  .snp-line:not(:has(.snp-line__note)) { padding-bottom: 20px; }
+  /* strzalki rzedu kategorii (.subrow__nav-wrap) siedza 62 px nad rzedem - bez odstepu wchodza na baner */
   @media only screen and (min-width: 769px) {
     .snp-line ~ .subrow { margin-top: 56px; }
   }
   @media only screen and (max-width: 768px) {
-    .snp-line { gap: 6px 14px; margin-bottom: 18px; padding: 11px 10px; font-size: 11px; letter-spacing: 0.06em; }
-    .snp-line__kamp, .snp-line__lbl { flex: 0 0 auto; }
-    .snp-line__timer { flex: 0 0 100%; text-align: center; }
+    .snp-line { grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px; padding: 16px 12px 0; text-align: center; }
+    .snp-line__head { align-items: center; gap: 4px; }
+    .snp-line__lbl { font-size: 16px; }
+    .snp-line__auto { font-size: 11px; }
+    .snp-line__tiers { grid-auto-columns: 1fr; }
+    .snp-line__t { padding: 2px 4px; }
+    .snp-line__t small { font-size: 10px; letter-spacing: 0.06em; }
+    .snp-line__t b { font-size: 17px; }
+    .snp-line__note { font-size: 12px; padding: 10px 4px 12px; }
   }
 
   /* ---------- karty w kolekcji ---------- */

@@ -79,23 +79,27 @@
       </div>
 
     {%- when 'linje' -%}
-      {%- comment -%} Spokojna linijka w kolekcji (06.10.2026: karty byly 'nie w stylu sklepu'). {%- endcomment -%}
+      {%- comment -%}
+        Czarny baner w kolekcji: po lewej akcja + zasada, po prawej progi,
+        na dole zdanie z ustawienia bundle_note. (06.10.2026: jedna dluga
+        linia byla chaotyczna - teraz wyrazna hierarchia.)
+      {%- endcomment -%}
       <div class="snp-line" id="{{ id_k }}" data-snp data-progi="{{ czyste }}" data-count="{{ cart.item_count }}">
-        <span class="snp-line__kamp"><span class="snp-line__dot" aria-hidden="true"></span>{{ settings.campaign_name | split: '·' | first | strip }}</span>
-        <span class="snp-line__lbl">{{ tytul_k }}</span>
-        {%- for para in lista -%}
-          {%- assign p = para | split: ':' -%}
-          <span class="snp-line__t" data-snp-card="{{ p[0] }}">{{ p[0] }}{% if forloop.last %}+{% endif %} stk. <b>−{{ p[1] }} %</b></span>
-        {%- endfor -%}
-        {%- if settings.campaign_end != blank -%}
-          <span class="snp-line__timer" data-snp-timer data-slut="{{ settings.campaign_end | escape }}" hidden>Slutter om <b data-snp-tv></b></span>
-        {%- endif -%}
-        {%- if podtytul != blank or notka != blank -%}
-          <span class="snp-line__info">
-            {%- if podtytul != blank -%}<span class="snp-line__auto">{{ podtytul }}</span>{%- endif -%}
-            {%- if notka != blank -%}<span class="snp-line__note">{{ notka }}</span>{%- endif -%}
-          </span>
-        {%- endif -%}
+        <div class="snp-line__head">
+          <span class="snp-line__kamp"><span class="snp-line__dot" aria-hidden="true"></span>{{ settings.campaign_name | split: '·' | first | strip }}</span>
+          <span class="snp-line__lbl">{{ tytul_k }}</span>
+          {%- if podtytul != blank -%}<span class="snp-line__auto">{{ podtytul }}</span>{%- endif -%}
+          {%- if settings.campaign_end != blank -%}
+            <span class="snp-line__timer" data-snp-timer data-slut="{{ settings.campaign_end | escape }}" hidden>Slutter om <b data-snp-tv></b></span>
+          {%- endif -%}
+        </div>
+        <div class="snp-line__tiers">
+          {%- for para in lista -%}
+            {%- assign p = para | split: ':' -%}
+            <span class="snp-line__t" data-snp-card="{{ p[0] }}"><small>{{ p[0] }}{% if forloop.last %}+{% endif %} stk.</small><b>−{{ p[1] }} %</b></span>
+          {%- endfor -%}
+        </div>
+        {%- if notka != blank -%}<p class="snp-line__note">{{ notka }}</p>{%- endif -%}
       </div>
 
     {%- when 'kolekcja' -%}
