@@ -73,6 +73,20 @@
             </div>
           {% endif %}
 
+          {%- comment -%}
+            Godzina graniczna (06.10.2026): do niej w dni robocze zamowienie jest
+            przekazywane do realizacji tego samego dnia. Liczy do prawdziwej godziny
+            z ustawien (czas dunski), po niej podaje nastepny dzien roboczy. Nie mowi
+            "wyslemy dzis" - wysylka trwa 3-4 dni robocze.
+          {%- endcomment -%}
+          {%- if settings.sn_cutoff_show -%}
+            <p class="snk-cutoff" data-sn-cutoff data-godz="{{ settings.sn_cutoff_hour }}"
+               data-tekst="{{ settings.sn_cutoff_text | escape }}" data-tekst-nast="{{ settings.sn_cutoff_text_next | escape }}" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              <span data-sn-cutoff-txt></span>
+            </p>
+          {%- endif -%}
+
           <div class="cart__checkout-wrapper">
             <button type="submit" name="checkout" data-terms-required="{{ settings.cart_terms_conditions_enable }}" class="btn cart__checkout">
               {{ 'cart.general.checkout' | t }}
