@@ -182,7 +182,67 @@
         "mobile_scrollable": true,
         "view_all": true,
         "divider": false
-      }
+      },
+      "blocks": {
+        "dame_1": {
+          "type": "product",
+          "settings": {
+            "product": "women-s-floral-v-neck-maxi-dress-flowing-silhouette"
+          }
+        },
+        "dame_2": {
+          "type": "product",
+          "settings": {
+            "product": "womens-satin-feel-halter-neck-maxi-dress-sculpted-evening-gown"
+          }
+        },
+        "dame_3": {
+          "type": "product",
+          "settings": {
+            "product": "women-s-sleeveless-bandage-cocktail-mini-dress-scoop-neck-style"
+          }
+        },
+        "dame_4": {
+          "type": "product",
+          "settings": {
+            "product": "women-s-sleeveless-a-line-mini-dress-structured-fit"
+          }
+        },
+        "dame_5": {
+          "type": "product",
+          "settings": {
+            "product": "thalia-lace-midi-dress"
+          }
+        },
+        "dame_6": {
+          "type": "product",
+          "settings": {
+            "product": "women-s-strappy-summer-maxi-dress-flowing-silhouette"
+          }
+        },
+        "dame_7": {
+          "type": "product",
+          "settings": {
+            "product": "womens-draped-satin-feel-maxi-dress-ruched-waist-evening-gown"
+          }
+        },
+        "dame_8": {
+          "type": "product",
+          "settings": {
+            "product": "women-s-corset-midi-dress-with-full-skirt-elegant-occasion-style"
+          }
+        }
+      },
+      "block_order": [
+        "dame_1",
+        "dame_2",
+        "dame_3",
+        "dame_4",
+        "dame_5",
+        "dame_6",
+        "dame_7",
+        "dame_8"
+      ]
     },
     "wide_banner": {
       "type": "collection-banners",
@@ -306,7 +366,67 @@
         "mobile_scrollable": true,
         "view_all": true,
         "divider": false
-      }
+      },
+      "blocks": {
+        "herre_1": {
+          "type": "product",
+          "settings": {
+            "product": "men-s-belted-trench-coat-classic-tailored-style"
+          }
+        },
+        "herre_2": {
+          "type": "product",
+          "settings": {
+            "product": "men-s-tailored-classic-coat-structured-smart-casual-outerwear"
+          }
+        },
+        "herre_3": {
+          "type": "product",
+          "settings": {
+            "product": "stellan-herringbone-waistcoat"
+          }
+        },
+        "herre_4": {
+          "type": "product",
+          "settings": {
+            "product": "mens-slim-fit-dress-shirt-long-sleeve-smart-formal-shirt"
+          }
+        },
+        "herre_5": {
+          "type": "product",
+          "settings": {
+            "product": "emilio-striped-blazer"
+          }
+        },
+        "herre_6": {
+          "type": "product",
+          "settings": {
+            "product": "men-s-lightweight-zip-jacket-smart-casual-british-style"
+          }
+        },
+        "herre_7": {
+          "type": "product",
+          "settings": {
+            "product": "men-s-tweed-waistcoat-tailored-smart-casual-vest"
+          }
+        },
+        "herre_8": {
+          "type": "product",
+          "settings": {
+            "product": "men-s-long-sleeve-polo-shirt-smart-casual-style"
+          }
+        }
+      },
+      "block_order": [
+        "herre_1",
+        "herre_2",
+        "herre_3",
+        "herre_4",
+        "herre_5",
+        "herre_6",
+        "herre_7",
+        "herre_8"
+      ]
     },
     "bestsellers": {
       "type": "sn-bestsellers",
