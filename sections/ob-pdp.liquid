@@ -1303,7 +1303,7 @@
     // ---------- przyklejony "Laeg i kurv" (telefon) ----------
     (function () {
       var pasek = root.querySelector('[data-pdp-stick]');
-      if (!pasek || !atc || !('IntersectionObserver' in window)) return;
+      if (!pasek || !atc) return;
       var btn = pasek.querySelector('[data-pdp-stick-btn]');
       var cena = pasek.querySelector('[data-pdp-stick-price]');
       var opis = pasek.querySelector('[data-pdp-stick-opt]');
@@ -1341,15 +1341,25 @@
         atc.click();
       });
 
-      new IntersectionObserver(function (wpisy) {
-        var widac = wpisy[0].isIntersecting;
+      // zwykle przewijanie zamiast IntersectionObserver - dziala tez w tle i w podgladach
+      var klatka = 0, poprzednio = null;
+      function sprawdz() {
+        klatka = 0;
+        var r = atc.getBoundingClientRect();
+        var widac = window.innerWidth > 768 || (r.bottom > 0 && r.top < window.innerHeight);
+        if (widac === poprzednio) return;
+        poprzednio = widac;
         pasek.classList.toggle('is-on', !widac);
         pasek.setAttribute('aria-hidden', widac ? 'true' : 'false');
         btn.tabIndex = widac ? -1 : 0;
         document.body.classList.toggle('pdp-stick-on', !widac);
-      }).observe(atc);
+      }
+      function zaplanuj() { if (!klatka) klatka = requestAnimationFrame(sprawdz); }
+      window.addEventListener('scroll', zaplanuj, { passive: true });
+      window.addEventListener('resize', zaplanuj);
 
       stan();
+      sprawdz();
     })();
 
     // ---------- kropki karuzeli (telefon) ----------
