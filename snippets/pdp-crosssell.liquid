@@ -66,6 +66,44 @@
   assign kolekcje_x = lista | split: ','
   assign start = product.id | modulo: 25
 
+  comment
+    06.10.2026: dobieranie po TYPIE, jak w koszyku (sn-komplet-typy) - do sukienki
+    szpilki, sandaly, torebka, bizuteria, marynarka; nie loafersy, kurtki z kapturem
+    ani buty ortopedyczne (tag komfortsko). Serwer pokazuje z kolekcji tylko rzeczy
+    tych typow, a JS dociaga pelne zestawy z kolekcji filtrowanych po tagu.
+  endcomment
+  assign typ = ''
+  assign dzial = 'womens'
+  if uchwyty contains 'mens'
+    unless uchwyty contains 'womens'
+      assign dzial = 'mens'
+    endunless
+  endif
+  for tag in product.tags
+    if tag contains 'Product Type: '
+      assign typ = tag | remove: 'Product Type: ' | strip
+      break
+    endif
+  endfor
+  if product.tags contains 'Department: Men'
+    unless product.tags contains 'Department: Women'
+      assign dzial = 'mens'
+    endunless
+  elsif product.tags contains 'Department: Women'
+    assign dzial = 'womens'
+  endif
+  capture cele
+    render 'sn-komplet-typy', typ: typ, dzial: dzial
+  endcapture
+  assign cele = cele | strip | split: ','
+  assign zrodla = ''
+  if reczna == blank or reczna.products_count == 0
+    for c in cele
+      assign tag_c = 'Product Type: ' | append: c | handle
+      assign zrodla = zrodla | append: routes.collections_url | append: '/' | append: dzial | append: '/' | append: tag_c | append: '|'
+    endfor
+  endif
+
   assign jest_co = false
   for h in kolekcje_x
     if collections[h].products_count > 0
@@ -141,7 +179,7 @@
     }
   </style>
 
-  <div class="snx" data-snx data-snx-produkt="{{ product.id }}" data-snx-ile="{{ ile }}">
+  <div class="snx" data-snx data-snx-produkt="{{ product.id }}" data-snx-ile="{{ ile }}" data-snx-zrodla="{{ zrodla | escape }}">
     <div class="snx__head">
       <p class="snx__title">{{ ustawienia.cross_title }}</p>
       <div class="snx__nav">
@@ -165,6 +203,14 @@
           {%- assign p = collections[h].products[nr] -%}
           {%- if p == blank or p.id == product.id -%}{%- continue -%}{%- endif -%}
           {%- unless p.available -%}{%- continue -%}{%- endunless -%}
+          {%- if p.tags contains 'komfortsko' or p.tags contains 'orthopedic shoes' -%}{%- continue -%}{%- endif -%}
+          {%- if zrodla != blank -%}
+            {%- assign typ_p = '' -%}
+            {%- for tag in p.tags -%}
+              {%- if tag contains 'Product Type: ' -%}{%- assign typ_p = tag | remove: 'Product Type: ' | strip -%}{%- break -%}{%- endif -%}
+            {%- endfor -%}
+            {%- unless cele contains typ_p -%}{%- continue -%}{%- endunless -%}
+          {%- endif -%}
           {%- assign znak = ',' | append: p.id | append: ',' -%}
           {%- if uzyte contains znak -%}{%- continue -%}{%- endif -%}
           {%- assign uzyte = uzyte | append: p.id | append: ',' -%}
@@ -311,6 +357,54 @@
       /* Tylko 'complementary' (reczne pary z Search & Discovery). 'related'
          zwracal podobne produkty - do sukienki kolejne sukienki - wiec
          odpada; bez recznych par zostaje rzad do kompletu z serwera. */
+      function wstaw(wybrane) {
+        tor.innerHTML = '';
+        wybrane.forEach(function (el) { tor.appendChild(document.importNode(el, true)); });
+        tor.scrollLeft = 0;
+        stan();
+      }
+
+      /* Rzeczy do kompletu po typie (06.10.2026) - te same adresy co w koszyku,
+         np. /collections/womens/product-type-heels, karty z sections/sn-kurv-kort.
+         Typy ida na przemian: szpilki, sandaly, torebka, bizuteria, marynarka... */
+      function poTypie() {
+        var zrodla = (ramka.getAttribute('data-snx-zrodla') || '').split('|').filter(Boolean);
+        if (!zrodla.length) return;
+        var ziarno = Number(ID.slice(-3)) || 0;
+        Promise.all(zrodla.map(function (u) {
+          return fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 'section_id=sn-kurv-kort', { credentials: 'same-origin' })
+            .then(function (o) { return o.ok ? o.text() : ''; })
+            .catch(function () { return ''; });
+        })).then(function (teksty) {
+          var grupy = teksty.map(function (t) {
+            var d = new DOMParser().parseFromString(t, 'text/html');
+            var g = Array.prototype.slice.call(d.querySelectorAll('[data-snk-g]')).filter(function (el) {
+              return el.getAttribute('data-snk-pid') !== ID;
+            });
+            var o = g.length ? ziarno % g.length : 0;
+            return g.slice(o).concat(g.slice(0, o));
+          });
+          var wybrane = [], widziane = {};
+          for (var i = 0; i < 12 && wybrane.length < ILE; i++) {
+            grupy.forEach(function (g) {
+              if (wybrane.length >= ILE || !g[i]) return;
+              var id = g[i].getAttribute('data-snk-pid');
+              if (widziane[id]) return;
+              widziane[id] = true;
+              var el = document.createElement('div');
+              el.className = 'snx__item';
+              el.setAttribute('data-produkt', id);
+              var karta = g[i].querySelector('.snc');
+              if (karta) karta.classList.add('snc--round');
+              while (g[i].firstChild) el.appendChild(g[i].firstChild);
+              wybrane.push(el);
+            });
+          }
+          if (wybrane.length) wstaw(wybrane);
+          else if (!tor.children.length) ramka.hidden = true;
+        });
+      }
+
       Promise.all([pobierz('complementary')]).then(function (wyniki) {
         var widziane = {}, wybrane = [];
         wyniki[0].forEach(function (el) {
@@ -319,11 +413,8 @@
           widziane[id] = true;
           wybrane.push(el);
         });
-        if (!wybrane.length) return;
-        tor.innerHTML = '';
-        wybrane.forEach(function (el) { tor.appendChild(document.importNode(el, true)); });
-        tor.scrollLeft = 0;
-        stan();
+        if (wybrane.length) wstaw(wybrane);
+        else poTypie();
       });
     })();
   </script>

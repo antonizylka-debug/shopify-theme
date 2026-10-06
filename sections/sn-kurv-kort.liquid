@@ -12,6 +12,8 @@
     {%- for p in collection.products -%}
       {%- if n >= 12 -%}{%- break -%}{%- endif -%}
       {%- unless p.available -%}{%- continue -%}{%- endunless -%}
+      {%- comment -%} Buty ortopedyczne nie pasuja do kompletu (06.10.2026, Antoni). {%- endcomment -%}
+      {%- if p.tags contains 'komfortsko' or p.tags contains 'orthopedic shoes' -%}{%- continue -%}{%- endif -%}
       {%- assign n = n | plus: 1 -%}
       <div class="snk-g" data-snk-g data-snk-pid="{{ p.id }}">
         {%- render 'sn-card', product: p, grid_item: false -%}
