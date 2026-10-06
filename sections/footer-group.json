@@ -202,7 +202,7 @@
         "show_locale_selector": false,
         "show_payment_icons": false,
         "show_copyright": true,
-        "copyright_text": ". Alle rettigheder forbeholdes.",
+        "copyright_text": "· Alle rettigheder forbeholdes.",
         "hide_powered_by": true,
         "show_back_to_top": true,
         "back_to_top_label": "Til toppen",
