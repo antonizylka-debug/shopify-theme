@@ -643,6 +643,9 @@
 {%- capture gwiazdka -%}<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>{%- endcapture -%}
 {%- capture gwiazdka_pusta -%}<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>{%- endcapture -%}
 
+{%- comment -%} Dane strukturalne Product dla Google (06.10.2026) - wczesniej ich brakowalo. {%- endcomment -%}
+{%- render 'product-template-variables', product: product -%}
+
 <div class="pdp">
   <div class="page-width">
 

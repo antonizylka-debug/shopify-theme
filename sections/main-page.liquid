@@ -20,6 +20,8 @@
         {%- render 'sn-polityka-betaling' -%}
       {%- when 'betalingspolitik' -%}
         {%- render 'sn-polityka-privat' -%}
+      {%- when 'track-order' -%}
+        {%- render 'sn-spor-ordre' -%}
       {%- else -%}
         {{ page.content }}
     {%- endcase -%}

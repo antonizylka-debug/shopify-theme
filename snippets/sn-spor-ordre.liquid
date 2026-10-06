@@ -1,0 +1,46 @@
+{%- comment -%}
+  Strona /pages/track-order (06.10.2026). Wczesniej byla pusta ("Track your order" bez
+  formularza), a linkuja do niej stopka, polityka dostawy i FAQ. Bez aplikacji do sledzenia:
+  prowadzi do konta klienta (Shopify pokazuje tam status i sledzenie) i do maila z wysylki.
+  Styl z sn-polityki (.snp).
+{%- endcomment -%}
+<div class="snp">
+  <div class="snp__head">
+    <p class="snp__eyebrow">Hjælp</p>
+    <h2 class="snp__title">Spor din ordre</h2>
+    <p class="snp__lead">Sådan ser du, hvor din pakke er – og hvad du gør, hvis den ikke dukker op.</p>
+  </div>
+
+  <div class="snp__facts">
+    <div class="snp__fact"><span class="snp__fact-val">3–4</span><span class="snp__fact-lbl">hverdage til afsendelse</span></div>
+    <div class="snp__fact"><span class="snp__fact-val">3–6</span><span class="snp__fact-lbl">hverdage med levering</span></div>
+    <div class="snp__fact"><span class="snp__fact-val">Sporing</span><span class="snp__fact-lbl">på hver eneste pakke</span></div>
+  </div>
+
+  <div class="snp__sec">
+    <h3><span class="snp__num">01</span>Find din pakke</h3>
+    <div class="snp__body">
+      <ol class="snp__steps">
+        <li><strong>Tjek din indbakke.</strong> Når ordren er afsendt, får du en mail med dit sporingsnummer og et link, du kan følge pakken med.</li>
+        <li><strong>Eller log ind på din konto.</strong> Brug den e-mail, du bestilte med – du får en kode tilsendt, og under ordren kan du se status og sporing.</li>
+        <li><strong>Ingen mail?</strong> Kig i spam- eller reklamemappen, før du skriver til os.</li>
+      </ol>
+      <a class="snp__btn" href="{{ routes.account_url }}">Log ind og se din ordre</a>
+    </div>
+  </div>
+
+  <div class="snp__sec">
+    <h3><span class="snp__num">02</span>Flere pakker til én ordre</h3>
+    <div class="snp__body">
+      <p>Varerne ligger ikke altid samme sted, så en ordre kan komme i flere pakker med hvert sit sporingsnummer. Du betaler ikke ekstra for det.</p>
+      <div class="snp__note"><p>Er den sidste pakke ikke kommet inden for en uge efter den første, så skriv til os – så rykker vi for den.</p></div>
+    </div>
+  </div>
+
+  <div class="snp__help">
+    <p class="snp__help-title">Kan du ikke finde din ordre?</p>
+    <p>Skriv dit ordrenummer, så finder vi den for dig.</p>
+    <a class="snp__btn" href="/pages/contact">Kontakt os</a>
+    <p class="snp__help-meta">kontakt@stilhusetnord.dk · man–fre 9.00–18.00 · svar inden for 1–2 hverdage</p>
+  </div>
+</div>

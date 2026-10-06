@@ -21,8 +21,8 @@
           "type": "intro",
           "settings": {
             "eyebrow": "Om Stilhuset Nord",
-            "heading": "Considered pieces for everyday wear.",
-            "text": "<p>Stilhuset Nord is a small online shop for women’s clothing, built around one idea: pieces that look like the photos, arrive when we say they will, and still look right after a season of wear.</p><p>We sell across Denmark and the wider Nordics, with prices in Danish kroner and tracking on every parcel we send.</p>"
+            "heading": "Gennemtænkt tøj til hverdagen.",
+            "text": "<p>Stilhuset Nord er en lille webshop med tøj til damer og herrer, bygget op om én idé: tøj, der ligner billederne, kommer, når vi siger det, og stadig ser rigtigt ud efter en sæson i brug.</p><p>Vi sælger i hele Danmark med priser i danske kroner og sporing på hver pakke, vi sender.</p>"
           }
         },
         "row-why": {
@@ -87,7 +87,7 @@
         "row-support": {
           "type": "row",
           "settings": {
-            "eyebrow": "We are here for you",
+            "eyebrow": "Vi er her for dig",
             "heading": "Du kan altid få fat i et menneske.",
             "text": "<p>Har du et spørgsmål om en vare, brug for hjælp til at spore en pakke, eller vil du bare sige hej, er vi kun en mail væk.</p><p><strong>E-mail:</strong> kontakt@stilhusetnord.dk<br/><strong>Åbningstider:</strong> mandag til fredag, 9.00-18.00</p><p>Vi svarer på alle mails, typisk inden for 1-2 hverdage.</p>",
             "image": "shopify://shop_images/about_us_image_1.webp",
@@ -98,7 +98,7 @@
           "type": "cta",
           "settings": {
             "heading": "Start med den nye sæson.",
-            "text": "<p>Browse the full collection and find the pieces you will actually reach for.</p>",
+            "text": "<p>Se hele kollektionen, og find det tøj, du faktisk ender med at tage på igen og igen.</p>",
             "button_label": "Se kollektionen",
             "button_link": "/collections/all"
           }

@@ -299,7 +299,7 @@
         "image_shape": "portrait",
         "image_height": 500,
         "image_height_mobile": 200,
-        "home_featured_products": "womens-favorites",
+        "home_featured_products": "mens",
         "sort": "collection",
         "per_row": 4,
         "rows": 2,
