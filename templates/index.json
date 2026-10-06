@@ -54,6 +54,7 @@
           "type": "banner",
           "settings": {
             "collection": "womens",
+            "image": "shopify://shop_images/Shop_womens_homepage_image_1_dde46446-913a-461f-92b6-bfa291b1386d.webp",
             "eyebrow": "",
             "heading": "SHOP DAME",
             "text": "Stilsikkert design, skabt til at blive båret.",
@@ -66,6 +67,7 @@
           "type": "banner",
           "settings": {
             "collection": "mens",
+            "image": "shopify://shop_images/shop_mens_homepage_image_1_6a85e41c-21ef-4114-8779-6fbde1cfd4dd.webp",
             "eyebrow": "",
             "heading": "SHOP HERRE",
             "text": "Gennemtænkte basics til den moderne garderobe.",
@@ -82,7 +84,7 @@
       "settings": {
         "title": "",
         "columns": 2,
-        "gap": 30,
+        "gap": 26,
         "image_ratio": "3 / 2",
         "banner_height": 0,
         "banner_height_mobile": 0,
@@ -164,25 +166,6 @@
     },
     "featured_picks": {
       "type": "featured-collection",
-      "settings": {
-        "title": "UDVALGT TIL DAMER",
-        "eyebrow": "VORES FAVORITTER",
-        "heading_size": 34,
-        "heading_bold": true,
-        "view_all_plain": true,
-        "view_all_text": "SE ALT TIL DAMER",
-        "image_crop": true,
-        "image_shape": "portrait",
-        "image_height": 500,
-        "image_height_mobile": 200,
-        "home_featured_products": "womens",
-        "sort": "collection",
-        "per_row": 4,
-        "rows": 2,
-        "mobile_scrollable": true,
-        "view_all": true,
-        "divider": false
-      },
       "blocks": {
         "dame_1": {
           "type": "product",
@@ -242,7 +225,26 @@
         "dame_6",
         "dame_7",
         "dame_8"
-      ]
+      ],
+      "settings": {
+        "title": "UDVALGT TIL DAMER",
+        "eyebrow": "VORES FAVORITTER",
+        "heading_size": 34,
+        "heading_bold": true,
+        "view_all_plain": true,
+        "view_all_text": "SE ALT TIL DAMER",
+        "image_crop": true,
+        "image_shape": "portrait",
+        "image_height": 500,
+        "image_height_mobile": 200,
+        "home_featured_products": "womens",
+        "sort": "collection",
+        "per_row": 4,
+        "rows": 2,
+        "mobile_scrollable": true,
+        "view_all": true,
+        "divider": false
+      }
     },
     "wide_banner": {
       "type": "collection-banners",
@@ -348,25 +350,6 @@
     },
     "featured_men": {
       "type": "featured-collection",
-      "settings": {
-        "title": "UDVALGT TIL HERRER",
-        "eyebrow": "VORES FAVORITTER",
-        "heading_size": 34,
-        "heading_bold": true,
-        "view_all_plain": true,
-        "view_all_text": "SE ALT TIL HERRER",
-        "image_crop": true,
-        "image_shape": "portrait",
-        "image_height": 500,
-        "image_height_mobile": 200,
-        "home_featured_products": "mens",
-        "sort": "collection",
-        "per_row": 4,
-        "rows": 2,
-        "mobile_scrollable": true,
-        "view_all": true,
-        "divider": false
-      },
       "blocks": {
         "herre_1": {
           "type": "product",
@@ -426,7 +409,26 @@
         "herre_6",
         "herre_7",
         "herre_8"
-      ]
+      ],
+      "settings": {
+        "title": "UDVALGT TIL HERRER",
+        "eyebrow": "VORES FAVORITTER",
+        "heading_size": 34,
+        "heading_bold": true,
+        "view_all_plain": true,
+        "view_all_text": "SE ALT TIL HERRER",
+        "image_crop": true,
+        "image_shape": "portrait",
+        "image_height": 500,
+        "image_height_mobile": 200,
+        "home_featured_products": "mens",
+        "sort": "collection",
+        "per_row": 4,
+        "rows": 2,
+        "mobile_scrollable": true,
+        "view_all": true,
+        "divider": false
+      }
     },
     "bestsellers": {
       "type": "sn-bestsellers",
