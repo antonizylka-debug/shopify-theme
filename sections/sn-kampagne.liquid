@@ -26,10 +26,10 @@
 
   #shopify-section-{{ section.id }} .snk__brw {
     display: flex; align-items: center; flex-wrap: wrap; gap: 2px 8px; margin: 0 0 12px;
-    font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #c8102e;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #d6332e;
   }
-  #shopify-section-{{ section.id }} .snk__dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #c8102e; flex: 0 0 7px; }
-  #shopify-section-{{ section.id }} .snk__dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #c8102e; animation: snk-puls 1.6s ease-out infinite; }
+  #shopify-section-{{ section.id }} .snk__dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #d6332e; flex: 0 0 7px; }
+  #shopify-section-{{ section.id }} .snk__dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #d6332e; animation: snk-puls 1.6s ease-out infinite; }
   @keyframes snk-puls { from { transform: scale(1); opacity: 0.6; } to { transform: scale(2.6); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { #shopify-section-{{ section.id }} .snk__dot::after { animation: none; } }
   #shopify-section-{{ section.id }} .snk__czas[hidden] { display: none; }
@@ -44,7 +44,7 @@
 
   #shopify-section-{{ section.id }} .snk__progi { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; width: 100%; max-width: 520px; margin: 0; padding: 0; list-style: none; }
   #shopify-section-{{ section.id }} .snk__prog { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 0; padding: 15px 6px 14px; background: #ffffff; text-align: center; }
-  #shopify-section-{{ section.id }} .snk__ile { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6e6b65; white-space: nowrap; }
+  #shopify-section-{{ section.id }} .snk__ile { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6b6f76; white-space: nowrap; }
   #shopify-section-{{ section.id }} .snk__proc { font-size: 27px; font-weight: 700; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
   #shopify-section-{{ section.id }} .snk__prog--max { background: #1c1d1d; color: #ffffff; }
   #shopify-section-{{ section.id }} .snk__prog--max .snk__ile { color: rgba(255, 255, 255, 0.82); }
