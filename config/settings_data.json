@@ -80,6 +80,7 @@
     "show_breadcrumbs": true,
     "show_breadcrumbs_collection_link": false,
     "breadcrumb_menu": "new-menu",
+    "campaign_end": "2026-10-10",
     "checkout_accent_color": "#111111",
     "checkout_body_background_color": "#ffffff",
     "checkout_button_color": "#111111",
