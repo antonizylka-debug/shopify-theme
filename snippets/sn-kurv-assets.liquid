@@ -567,3 +567,69 @@
     setInterval(tik, 1000);
   })();
 </script>
+
+{%- comment -%}
+  Licznik 10 minut w koszyku (06.10.2026). Start zapisany w localStorage,
+  wiec przejscie na inna strone go nie zeruje. Pusty koszyk = licznik od
+  nowa przy nastepnym produkcie. Po zejsciu do 0 znika i NIE startuje
+  ponownie, dopoki koszyk nie zostanie oprozniony. Liczbe produktow bierze
+  z [data-snk-count], ktory odswieza skrypt szuflady wyzej.
+{%- endcomment -%}
+<style>
+  .snk-rez {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin: 0 0 18px; padding: 12px 16px; background: #fdf3f2; border: 1px solid #f1d4d1;
+    font-size: 13px; line-height: 1.4; text-align: center; color: #1c1d1d;
+  }
+  .snk-rez[hidden] { display: none; }
+  .snk-rez svg { width: 16px; height: 16px; flex: 0 0 16px; color: #b3261e; }
+  .snk-rez b { font-weight: 700; color: #b3261e; font-variant-numeric: tabular-nums; }
+</style>
+<script>
+  (function () {
+    if (window.__snRez) return;
+    window.__snRez = true;
+    var KLUCZ = 'snKurvStart', pamiec = null;
+    function czytaj() { try { return Number(localStorage.getItem(KLUCZ)) || null; } catch (e) { return pamiec; } }
+    function zapisz(v) {
+      pamiec = v;
+      try { v ? localStorage.setItem(KLUCZ, String(v)) : localStorage.removeItem(KLUCZ); } catch (e) {}
+    }
+    function ileWKoszyku() {
+      var el = document.querySelector('[data-snk-count]');
+      return el && !el.hidden ? Number(el.textContent) || 0 : 0;
+    }
+    function dwa(n) { return (n < 10 ? '0' : '') + n; }
+    function wstaw(cel, szablon, wartosc) {
+      var cz = szablon.split('{tid}');
+      cel.textContent = '';
+      cel.appendChild(document.createTextNode(cz[0]));
+      if (cz.length > 1) {
+        var b = document.createElement('b');
+        b.textContent = wartosc;
+        cel.appendChild(b);
+        cel.appendChild(document.createTextNode(cz.slice(1).join('{tid}')));
+      }
+    }
+    function tik() {
+      var els = document.querySelectorAll('[data-sn-rez]');
+      if (!els.length) return;
+      if (!ileWKoszyku()) {
+        zapisz(null);
+        Array.prototype.forEach.call(els, function (el) { el.hidden = true; });
+        return;
+      }
+      var start = czytaj();
+      if (!start) { start = Date.now(); zapisz(start); }
+      Array.prototype.forEach.call(els, function (el) {
+        var txt = el.querySelector('[data-sn-rez-txt]');
+        var r = Math.ceil((Number(el.getAttribute('data-min')) * 60000 - (Date.now() - start)) / 1000);
+        if (!txt || r <= 0) { el.hidden = true; return; }
+        wstaw(txt, el.getAttribute('data-tekst') || '', dwa(Math.floor(r / 60)) + ':' + dwa(r % 60));
+        el.hidden = false;
+      });
+    }
+    tik();
+    setInterval(tik, 1000);
+  })();
+</script>

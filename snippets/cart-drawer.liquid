@@ -40,6 +40,19 @@
           {%- if settings.sn_kurv_note != blank -%}
             <p class="snk-note">{{ settings.sn_kurv_note }}</p>
           {%- endif -%}
+          {%- comment -%}
+            Licznik 10 minut (06.10.2026, na prosbe Antoniego - strona demo).
+            Startuje przy pierwszym produkcie w koszyku, przy 0 znika. Niczego
+            nie usuwa i nie rezerwuje - tekst nie moze mowic o rezerwacji.
+            Wlasna klasa, bo .snk-note chowa sie, gdy dziala licznik akcji.
+            Styl i JS: koniec sn-kurv-assets.
+          {%- endcomment -%}
+          {%- if settings.sn_rez_show -%}
+            <p class="snk-rez" data-sn-rez data-min="{{ settings.sn_rez_minutes }}" data-tekst="{{ settings.sn_rez_text | escape }}" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 1.5M9.5 2.5h5"/></svg>
+              <span data-sn-rez-txt></span>
+            </p>
+          {%- endif -%}
           {%- render 'sn-prog-rabatu', kompakt: true -%}
 
           <div data-products class="appear-animation appear-delay-2"></div>
