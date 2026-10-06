@@ -5,7 +5,8 @@
   @param {string} wariant - 'pasek' (pod naglowkiem), 'kurv' (szuflada koszyka), 'linje' (linijka w kolekcji), 'kolekcja' (karty)
   @param {string} progi - "2:10, 3:20, 4:25, 5:30" - zgodnie z rabatami w panelu
   @param {string} [tytul] - naglowek (domyslnie "Køb flere, spar mere")
-  @param {string} [podtytul] - linijka pod naglowkiem (tylko kolekcja)
+  @param {string} [podtytul] - linijka pod naglowkiem (kolekcja, linje)
+  @param {string} [notka] - zdanie pod progami (tylko linje)
 {%- endcomment -%}
 {%- liquid
   assign pary = progi | split: ','
@@ -88,6 +89,12 @@
         {%- endfor -%}
         {%- if settings.campaign_end != blank -%}
           <span class="snp-line__timer" data-snp-timer data-slut="{{ settings.campaign_end | escape }}" hidden>Slutter om <b data-snp-tv></b></span>
+        {%- endif -%}
+        {%- if podtytul != blank or notka != blank -%}
+          <span class="snp-line__info">
+            {%- if podtytul != blank -%}<span class="snp-line__auto">{{ podtytul }}</span>{%- endif -%}
+            {%- if notka != blank -%}<span class="snp-line__note">{{ notka }}</span>{%- endif -%}
+          </span>
         {%- endif -%}
       </div>
 
