@@ -1192,7 +1192,7 @@
 
     /* "Laeg i kurv" przez AJAX motywu (06.10.2026). Bez tego formularz wysylal sie
        zwyczajnie i przenosil na /cart - szuflada koszyka (progi, komplet) sie nie
-       otwierala. theme.js jest defer, wiec w razie potrzeby czekamy na DOMContentLoaded. */
+       otwierala. theme.js jest defer, wiec w razie potrzeby czekamy na DOMContentLoaded (ponowienie). */
     (function () {
       var formularz = atc && atc.closest('form');
       if (!formularz) return;
