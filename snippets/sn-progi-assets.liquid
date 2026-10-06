@@ -88,6 +88,10 @@
   .snp-line__timer { color: #ffffff; font-variant-numeric: tabular-nums; }
   .snp-line__timer b { font-weight: 700; }
   .snp-line__timer[hidden] { display: none; }
+  /* strzalki rzedu kategorii (.subrow__nav-wrap) siedza 62 px nad rzedem - bez odstepu wchodza na pasek */
+  @media only screen and (min-width: 769px) {
+    .snp-line ~ .subrow { margin-top: 56px; }
+  }
   @media only screen and (max-width: 768px) {
     .snp-line { gap: 6px 14px; margin-bottom: 18px; padding: 11px 10px; font-size: 11px; letter-spacing: 0.06em; }
     .snp-line__kamp, .snp-line__lbl { flex: 0 0 auto; }
