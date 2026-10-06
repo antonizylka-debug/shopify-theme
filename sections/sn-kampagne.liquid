@@ -1,5 +1,7 @@
 {%- comment -%}
-  Baner kampanii na stronie produktu (zamiast bloku tekstowego w stylu
+  Baner kampanii na stronie produktu. Od 06.10.2026 wersja luksusowa: czarny panel,
+  biale napisy, cienkie linie (tlo z ustawienia musi byc ciemne). Pierwotnie
+  (zamiast bloku tekstowego w stylu
   Iselle, ktory wygladal jak wpis na blogu): zdjecie obok tresci,
   czerwony naglowek akcji z licznikiem (Ustawienia motywu > Campaign),
   duzy tytul, jedno zdanie, progi jako kafle (najwyzszy w czerni),
@@ -15,70 +17,87 @@
   endif
 -%}
 {%- style -%}
+  /* Wersja luksusowa (06.10.2026): czarny panel jak baner w kolekcji, duzo powietrza,
+     cienkie linie zamiast kafli, czerwien tylko w kropce, bialy przycisk. */
   #shopify-section-{{ section.id }} .snk { padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px; }
-  #shopify-section-{{ section.id }} .snk__panel { display: grid; grid-template-columns: minmax(0, 1fr); background: {{ section.settings.color_bg }}; color: #1c1d1d; }
+  #shopify-section-{{ section.id }} .snk__panel { display: grid; grid-template-columns: minmax(0, 1fr); background: {{ section.settings.color_bg }}; color: #ffffff; }
   #shopify-section-{{ section.id }} .snk__panel--foto { grid-template-columns: minmax(0, 46fr) minmax(0, 54fr); }
   #shopify-section-{{ section.id }} .snk__panel--right .snk__foto { order: 2; }
-  #shopify-section-{{ section.id }} .snk__foto { position: relative; min-height: 460px; overflow: hidden; }
+  #shopify-section-{{ section.id }} .snk__foto { position: relative; min-height: 520px; overflow: hidden; }
   #shopify-section-{{ section.id }} .snk__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: {{ section.settings.image_position }}; }
-  #shopify-section-{{ section.id }} .snk__tresc { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 52px 60px; min-width: 0; }
-  #shopify-section-{{ section.id }} .snk__panel:not(.snk__panel--foto) .snk__tresc { align-items: center; text-align: center; max-width: 680px; margin: 0 auto; }
+  #shopify-section-{{ section.id }} .snk__tresc { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 64px 76px; min-width: 0; }
+  #shopify-section-{{ section.id }} .snk__panel:not(.snk__panel--foto) .snk__tresc { align-items: center; text-align: center; max-width: 720px; margin: 0 auto; }
 
   #shopify-section-{{ section.id }} .snk__brw {
-    display: flex; align-items: center; flex-wrap: wrap; gap: 2px 8px; margin: 0 0 12px;
-    font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #d6332e;
+    display: flex; align-items: center; gap: 10px; margin: 0;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255, 255, 255, 0.78);
   }
-  #shopify-section-{{ section.id }} .snk__dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #d6332e; flex: 0 0 7px; }
-  #shopify-section-{{ section.id }} .snk__dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #d6332e; animation: snk-puls 1.6s ease-out infinite; }
-  @keyframes snk-puls { from { transform: scale(1); opacity: 0.6; } to { transform: scale(2.6); opacity: 0; } }
+  #shopify-section-{{ section.id }} .snk__dot { position: relative; width: 6px; height: 6px; border-radius: 50%; background: #d6332e; flex: 0 0 6px; }
+  #shopify-section-{{ section.id }} .snk__dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #d6332e; animation: snk-puls 1.8s ease-out infinite; }
+  @keyframes snk-puls { from { transform: scale(1); opacity: 0.7; } to { transform: scale(3); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { #shopify-section-{{ section.id }} .snk__dot::after { animation: none; } }
+  #shopify-section-{{ section.id }} .snk__czas { display: block; margin: 10px 0 0; font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #ffffff; }
   #shopify-section-{{ section.id }} .snk__czas[hidden] { display: none; }
-  #shopify-section-{{ section.id }} .snk__czas b { font-variant-numeric: tabular-nums; }
+  #shopify-section-{{ section.id }} .snk__czas b { font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0.12em; }
+  #shopify-section-{{ section.id }} .snk__kreska { width: 44px; height: 1px; margin: 26px 0 24px; background: rgba(255, 255, 255, 0.35); }
+  #shopify-section-{{ section.id }} .snk__panel:not(.snk__panel--foto) .snk__kreska { margin-left: auto; margin-right: auto; }
 
   #shopify-section-{{ section.id }} .snk__tytul {
-    margin: 0 0 12px; font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
-    font-size: {{ section.settings.title_size }}px; font-weight: 600; line-height: 1.12; letter-spacing: -0.01em;
-    text-transform: none; text-wrap: balance;
+    margin: 0 0 18px; font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
+    font-size: {{ section.settings.title_size }}px; font-weight: 400; line-height: 1.08; letter-spacing: -0.015em;
+    text-transform: none; text-wrap: balance; color: #ffffff;
   }
-  #shopify-section-{{ section.id }} .snk__tekst { margin: 0 0 24px; max-width: 46ch; font-size: 16px; line-height: 1.6; color: #56524c; text-wrap: pretty; }
+  #shopify-section-{{ section.id }} .snk__tekst { margin: 0 0 36px; max-width: 42ch; font-size: 15.5px; line-height: 1.7; color: rgba(255, 255, 255, 0.7); text-wrap: pretty; }
 
-  #shopify-section-{{ section.id }} .snk__progi { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; width: 100%; max-width: 520px; margin: 0; padding: 0; list-style: none; }
-  #shopify-section-{{ section.id }} .snk__prog { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 0; padding: 15px 6px 14px; background: #ffffff; text-align: center; }
-  #shopify-section-{{ section.id }} .snk__ile { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6b6f76; white-space: nowrap; }
-  #shopify-section-{{ section.id }} .snk__proc { font-size: 27px; font-weight: 700; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  #shopify-section-{{ section.id }} .snk__prog--max { background: #1c1d1d; color: #ffffff; }
-  #shopify-section-{{ section.id }} .snk__prog--max .snk__ile { color: rgba(255, 255, 255, 0.82); }
+  #shopify-section-{{ section.id }} .snk__progi {
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+    width: 100%; max-width: 540px; margin: 0; padding: 18px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.18); border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    list-style: none;
+  }
+  #shopify-section-{{ section.id }} .snk__prog { display: flex; flex-direction: column; align-items: center; gap: 6px; margin: 0; padding: 0 6px; background: none; text-align: center; }
+  #shopify-section-{{ section.id }} .snk__prog + .snk__prog { border-left: 1px solid rgba(255, 255, 255, 0.18); }
+  #shopify-section-{{ section.id }} .snk__ile { font-size: 10.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); white-space: nowrap; }
+  #shopify-section-{{ section.id }} .snk__proc { font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback); font-size: 30px; font-weight: 400; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; color: #ffffff; }
+  #shopify-section-{{ section.id }} .snk__prog--max { background: none; color: #ffffff; }
+  #shopify-section-{{ section.id }} .snk__prog--max .snk__ile { color: #ffffff; }
 
-  #shopify-section-{{ section.id }} .snk__zasady { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 13.5px; color: #56524c; }
+  #shopify-section-{{ section.id }} .snk__zasady {
+    display: flex; flex-wrap: wrap; gap: 6px 0; margin: 18px 0 0; padding: 0; list-style: none;
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55);
+  }
   #shopify-section-{{ section.id }} .snk__panel:not(.snk__panel--foto) .snk__zasady { justify-content: center; }
-  #shopify-section-{{ section.id }} .snk__zasady li { display: inline-flex; align-items: center; gap: 6px; margin: 0; }
-  #shopify-section-{{ section.id }} .snk__zasady svg { width: 14px; height: 14px; flex: 0 0 14px; color: #1c1d1d; }
+  #shopify-section-{{ section.id }} .snk__zasady li { display: inline-flex; align-items: center; margin: 0; }
+  #shopify-section-{{ section.id }} .snk__zasady li + li::before { content: ""; width: 3px; height: 3px; margin: 0 12px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); }
+  #shopify-section-{{ section.id }} .snk__zasady svg { display: none; }
 
   #shopify-section-{{ section.id }} .snk__btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-    min-height: 52px; margin-top: 26px; padding: 0 34px;
-    background: #1c1d1d; color: #ffffff; text-decoration: none;
-    font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-    transition: background-color 0.15s ease;
+    display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+    min-height: 54px; margin-top: 38px; padding: 0 40px;
+    border: 1px solid #ffffff; background: #ffffff; color: #1c1d1d; text-decoration: none;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
-  #shopify-section-{{ section.id }} .snk__btn:hover { background: #000000; }
-  #shopify-section-{{ section.id }} .snk__btn svg { width: 16px; height: 16px; }
-  #shopify-section-{{ section.id }} .snk__pilne { margin: 14px 0 0; font-size: 13.5px; font-weight: 700; }
+  #shopify-section-{{ section.id }} .snk__btn:hover { background: transparent; color: #ffffff; }
+  #shopify-section-{{ section.id }} .snk__btn svg { width: 15px; height: 15px; transition: transform 0.25s ease; }
+  #shopify-section-{{ section.id }} .snk__btn:hover svg { transform: translateX(4px); }
+  #shopify-section-{{ section.id }} .snk__pilne { margin: 18px 0 0; font-size: 13.5px; font-style: italic; font-weight: 400; color: rgba(255, 255, 255, 0.62); }
 
   @media only screen and (max-width: 768px) {
     #shopify-section-{{ section.id }} .snk { padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px; }
     #shopify-section-{{ section.id }} .snk__panel--foto { grid-template-columns: minmax(0, 1fr); }
     #shopify-section-{{ section.id }} .snk__panel--right .snk__foto { order: 0; }
     #shopify-section-{{ section.id }} .snk__foto { min-height: 0; aspect-ratio: 4 / 3; }
-    #shopify-section-{{ section.id }} .snk__tresc { padding: 24px 18px 26px; }
-    #shopify-section-{{ section.id }} .snk__tytul { font-size: {{ section.settings.title_size_mobile }}px; }
-    #shopify-section-{{ section.id }} .snk__tekst { font-size: 15px; margin-bottom: 18px; }
-    #shopify-section-{{ section.id }} .snk__progi { gap: 6px; max-width: none; }
-    #shopify-section-{{ section.id }} .snk__prog { padding: 12px 2px 11px; gap: 3px; }
-    #shopify-section-{{ section.id }} .snk__ile { font-size: 12px; letter-spacing: 0.04em; }
-    #shopify-section-{{ section.id }} .snk__proc { font-size: 21px; }
-    #shopify-section-{{ section.id }} .snk__zasady { font-size: 13px; gap: 6px 14px; }
-    #shopify-section-{{ section.id }} .snk__btn { width: 100%; margin-top: 20px; }
+    #shopify-section-{{ section.id }} .snk__tresc { padding: 36px 22px 34px; }
+    #shopify-section-{{ section.id }} .snk__kreska { margin: 20px 0 18px; }
+    #shopify-section-{{ section.id }} .snk__tytul { font-size: {{ section.settings.title_size_mobile }}px; margin-bottom: 14px; }
+    #shopify-section-{{ section.id }} .snk__tekst { font-size: 15px; margin-bottom: 26px; }
+    #shopify-section-{{ section.id }} .snk__progi { max-width: none; padding: 14px 0; }
+    #shopify-section-{{ section.id }} .snk__ile { font-size: 9.5px; letter-spacing: 0.1em; }
+    #shopify-section-{{ section.id }} .snk__proc { font-size: 22px; }
+    #shopify-section-{{ section.id }} .snk__zasady { font-size: 9.5px; letter-spacing: 0.12em; }
+    #shopify-section-{{ section.id }} .snk__zasady li + li::before { margin: 0 8px; }
+    #shopify-section-{{ section.id }} .snk__btn { width: 100%; margin-top: 28px; }
   }
 {%- endstyle -%}
 
@@ -97,9 +116,12 @@
             <span class="snk__dot" aria-hidden="true"></span>
             {{ settings.campaign_name | escape }}
             {%- if settings.campaign_end != blank -%}
-              <span class="snk__czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>slutter om</span> <b data-sn-czas></b></span>
             {%- endif -%}
           </p>
+          {%- if settings.campaign_end != blank -%}
+            <p class="snk__czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden><span data-sn-etykieta>slutter om</span> <b data-sn-czas></b></p>
+          {%- endif -%}
+          <div class="snk__kreska" aria-hidden="true"></div>
         {%- endif -%}
 
         {%- if section.settings.heading != blank -%}
@@ -211,7 +233,7 @@
     { "type": "url", "id": "button_link", "label": "Button link", "default": "/collections/all" },
     { "type": "text", "id": "urgency", "label": "Line under the button", "default": "Populære styles sælger hurtigt – når de er væk, er de væk." },
     { "type": "header", "content": "Look" },
-    { "type": "color", "id": "color_bg", "label": "Background", "default": "#f2f3f5" },
+    { "type": "color", "id": "color_bg", "label": "Background (dark - text is white)", "default": "#1c1d1d" },
     { "type": "range", "id": "title_size", "label": "Heading", "default": 38, "min": 24, "max": 56, "step": 1, "unit": "px" },
     { "type": "range", "id": "title_size_mobile", "label": "Heading (phone)", "default": 27, "min": 18, "max": 40, "step": 1, "unit": "px" },
     { "type": "range", "id": "padding_top", "label": "Space above", "default": 48, "min": 0, "max": 100, "step": 4, "unit": "px" },
