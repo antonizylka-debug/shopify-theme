@@ -165,30 +165,9 @@
         "c_button": "#000000"
       }
     },
-    "baner_kampanii": {
-      "type": "sn-kampagne",
-      "settings": {
-        "image": "shopify://shop_images/stilhusetnord-homepage-hero.webp",
-        "layout": "left",
-        "image_position": "center",
-        "show_campaign": true,
-        "heading": "Køb flere – spar op til 30 %",
-        "text": "Sæsonudsalget er i gang. Jo flere varer du lægger i kurven, jo mere sparer du – oven i udsalgspriserne.",
-        "tiers": "2:10, 3:20, 4:25, 5:30",
-        "tier_word": "varer",
-        "rules": "Bland frit · Trækkes automatisk i kurven · Ingen rabatkode",
-        "button_label": "Køb nu",
-        "button_action": "scroll",
-        "button_link": "shopify://collections/all",
-        "urgency": "Populære styles sælger hurtigt – når de er væk, er de væk.",
-        "color_bg": "#1c1d1d",
-        "title_size": 38,
-        "title_size_mobile": 27,
-        "padding_top": 48,
-        "padding_bottom": 48,
-        "padding_top_mobile": 28,
-        "padding_bottom_mobile": 28
-      }
+    "edytorial_kampanii": {
+      "type": "sn-edytorial",
+      "settings": {}
     },
     "bestsellers": {
       "type": "sn-bestsellers",
@@ -637,7 +616,7 @@
   },
   "order": [
     "main",
-    "baner_kampanii",
+    "edytorial_kampanii",
     "bestsellers",
     "guarantee",
     "reviews",
