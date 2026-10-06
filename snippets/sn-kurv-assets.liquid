@@ -302,6 +302,8 @@
       var zrodla = (wrap.getAttribute('data-snk-zrodla') || '').split('|').filter(Boolean);
       if (!zrodla.length) { wrap.hidden = true; return; }
       var wyklucz = wrap.getAttribute('data-snk-wyklucz') || ',';
+      /* Do sukienki bez koturnow i platform (data-snk-casual z sn-kurv-kort). */
+      var elegancko = wrap.hasAttribute('data-snk-elegancko');
       var ziarno = Number(wrap.getAttribute('data-snk-ziarno')) || 0;
       Promise.all(zrodla.map(function (u) {
         if (!pamiecKart[u]) {
@@ -314,6 +316,7 @@
         var grupy = teksty.map(function (t) {
           var d = new DOMParser().parseFromString(t, 'text/html');
           var g = Array.prototype.slice.call(d.querySelectorAll('[data-snk-g]')).filter(function (el) {
+            if (elegancko && el.hasAttribute('data-snk-casual')) return false;
             return wyklucz.indexOf(',' + el.getAttribute('data-snk-pid') + ',') < 0;
           });
           var o = g.length ? ziarno % g.length : 0;

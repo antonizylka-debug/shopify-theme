@@ -66,7 +66,7 @@
       assign zrodla = zrodla | append: routes.collections_url | append: '/' | append: dzial | append: '/' | append: tag_c | append: '|'
     endfor
   -%}
-  <div class="snk-up" data-snk-up-wrap data-snk-zrodla="{{ zrodla | escape }}" data-snk-wyklucz="{{ wyklucz }}" data-snk-ziarno="{{ ziarno }}" hidden>
+  <div class="snk-up" data-snk-up-wrap data-snk-zrodla="{{ zrodla | escape }}" data-snk-wyklucz="{{ wyklucz }}" data-snk-ziarno="{{ ziarno }}"{% if dzial == 'womens' %}{% case typ %}{% when 'Dresses', 'Jumpsuits', 'Matching Sets', 'Playsuits & Rompers' %} data-snk-elegancko{% endcase %}{% endif %} hidden>
     <p class="snk-up__title">{{ settings.sn_kurv_upsell_title }}</p>
     <div class="snk-up__grid" data-snk-up-grid></div>
   </div>

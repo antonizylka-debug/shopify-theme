@@ -10,12 +10,20 @@
   {%- assign n = 0 -%}
   {%- if collection != blank -%}
     {%- for p in collection.products -%}
-      {%- if n >= 12 -%}{%- break -%}{%- endif -%}
+      {%- if n >= 16 -%}{%- break -%}{%- endif -%}
       {%- unless p.available -%}{%- continue -%}{%- endunless -%}
       {%- comment -%} Buty ortopedyczne nie pasuja do kompletu (06.10.2026, Antoni). {%- endcomment -%}
       {%- if p.tags contains 'komfortsko' or p.tags contains 'orthopedic shoes' -%}{%- continue -%}{%- endif -%}
       {%- assign n = n | plus: 1 -%}
-      <div class="snk-g" data-snk-g data-snk-pid="{{ p.id }}">
+      {%- comment -%}
+        Koturny, platformy i "wygodne" buty sa w tagach jako Heels/Sandals, ale do
+        sukienki nie pasuja - JS pomija je, gdy dobiera do sukienki (data-snk-casual).
+      {%- endcomment -%}
+      {%- assign casual = false -%}
+      {%- if p.handle contains 'wedge' or p.handle contains 'platform' or p.handle contains 'comfort' or p.tags contains 'plateausko' or p.tags contains 'platform shoes' -%}
+        {%- assign casual = true -%}
+      {%- endif -%}
+      <div class="snk-g" data-snk-g data-snk-pid="{{ p.id }}"{% if casual %} data-snk-casual{% endif %}>
         {%- render 'sn-card', product: p, grid_item: false -%}
       </div>
     {%- endfor -%}

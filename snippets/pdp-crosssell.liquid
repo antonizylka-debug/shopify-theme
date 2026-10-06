@@ -96,6 +96,13 @@
     render 'sn-komplet-typy', typ: typ, dzial: dzial
   endcapture
   assign cele = cele | strip | split: ','
+  assign elegancko = false
+  if dzial == 'womens'
+    case typ
+      when 'Dresses', 'Jumpsuits', 'Matching Sets', 'Playsuits & Rompers'
+        assign elegancko = true
+    endcase
+  endif
   assign zrodla = ''
   if reczna == blank or reczna.products_count == 0
     for c in cele
@@ -179,7 +186,7 @@
     }
   </style>
 
-  <div class="snx" data-snx data-snx-produkt="{{ product.id }}" data-snx-ile="{{ ile }}" data-snx-zrodla="{{ zrodla | escape }}">
+  <div class="snx" data-snx data-snx-produkt="{{ product.id }}" data-snx-ile="{{ ile }}" data-snx-zrodla="{{ zrodla | escape }}"{% if elegancko %} data-snx-elegancko{% endif %}>
     <div class="snx__head">
       <p class="snx__title">{{ ustawienia.cross_title }}</p>
       <div class="snx__nav">
@@ -204,6 +211,9 @@
           {%- if p == blank or p.id == product.id -%}{%- continue -%}{%- endif -%}
           {%- unless p.available -%}{%- continue -%}{%- endunless -%}
           {%- if p.tags contains 'komfortsko' or p.tags contains 'orthopedic shoes' -%}{%- continue -%}{%- endif -%}
+          {%- if elegancko -%}
+            {%- if p.handle contains 'wedge' or p.handle contains 'platform' or p.handle contains 'comfort' or p.tags contains 'plateausko' or p.tags contains 'platform shoes' -%}{%- continue -%}{%- endif -%}
+          {%- endif -%}
           {%- if zrodla != blank -%}
             {%- assign typ_p = '' -%}
             {%- for tag in p.tags -%}
@@ -371,6 +381,7 @@
         var zrodla = (ramka.getAttribute('data-snx-zrodla') || '').split('|').filter(Boolean);
         if (!zrodla.length) return;
         var ziarno = Number(ID.slice(-3)) || 0;
+        var elegancko = ramka.hasAttribute('data-snx-elegancko');
         Promise.all(zrodla.map(function (u) {
           return fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 'section_id=sn-kurv-kort', { credentials: 'same-origin' })
             .then(function (o) { return o.ok ? o.text() : ''; })
@@ -379,6 +390,7 @@
           var grupy = teksty.map(function (t) {
             var d = new DOMParser().parseFromString(t, 'text/html');
             var g = Array.prototype.slice.call(d.querySelectorAll('[data-snk-g]')).filter(function (el) {
+              if (elegancko && el.hasAttribute('data-snk-casual')) return false;
               return el.getAttribute('data-snk-pid') !== ID;
             });
             var o = g.length ? ziarno % g.length : 0;
