@@ -416,6 +416,37 @@
   #shopify-section-{{ section.id }} .pdp__atc[disabled] { opacity: 0.45; cursor: not-allowed; }
 
   {%- comment -%}
+    Przyklejony "Laeg i kurv" na telefonie (06.10.2026). Pojawia sie tylko, gdy
+    prawdziwego przycisku nie widac. Bez wybranego rozmiaru przewija do rozmiarow
+    zamiast dodawac domyslny S.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp__stick { display: none; }
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .pdp__stick {
+      display: flex; align-items: center; gap: 14px;
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 25;
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+      background: #ffffff; border-top: 1px solid #e4e6ea;
+      box-shadow: 0 -6px 18px rgba(28, 29, 29, 0.08);
+      transform: translateY(110%); transition: transform 0.25s ease;
+    }
+    #shopify-section-{{ section.id }} .pdp__stick.is-on { transform: translateY(0); }
+    #shopify-section-{{ section.id }} .pdp__stick-info { display: flex; flex-direction: column; min-width: 0; flex: 0 1 auto; }
+    #shopify-section-{{ section.id }} .pdp__stick-price { font-size: 17px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+    #shopify-section-{{ section.id }} .pdp__stick.is-sale .pdp__stick-price { color: #d6332e; }
+    #shopify-section-{{ section.id }} .pdp__stick-opt { font-size: 12.5px; color: var(--pdp-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #shopify-section-{{ section.id }} .pdp__stick-btn {
+      flex: 1 1 auto; height: 48px; border: 0; cursor: pointer;
+      background: var(--pdp-btn); color: #fff; font-size: 15px; font-weight: 600;
+      border-radius: {{ section.settings.radius }}px;
+    }
+    #shopify-section-{{ section.id }} .pdp__stick-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+    body.pdp-stick-on { padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
+    #shopify-section-{{ section.id }} .pdp__sizes.is-flash { animation: pdp-flash 1.2s ease; }
+    @keyframes pdp-flash { 0%, 100% { box-shadow: 0 0 0 0 rgba(28, 29, 29, 0); } 30% { box-shadow: 0 0 0 4px rgba(28, 29, 29, 0.18); } }
+  }
+
+  {%- comment -%}
     Wiersze z obietnicami.
 
     Wiersze z obietnicami. Zadnego pudelka i zadnych przegrod - tylko
@@ -1026,6 +1057,17 @@
             </span>
           </button>
         {%- endform -%}
+        {%- if section.settings.show_sticky_atc -%}
+          <div class="pdp__stick{% if war.compare_at_price > war.price %} is-sale{% endif %}" data-pdp-stick aria-hidden="true">
+            <div class="pdp__stick-info">
+              <span class="pdp__stick-price" data-pdp-stick-price>{%- render 'sn-cena', kwota: war.price -%}</span>
+              <span class="pdp__stick-opt" data-pdp-stick-opt></span>
+            </div>
+            <button type="button" class="pdp__stick-btn" data-pdp-stick-btn tabindex="-1" {% unless war.available %}disabled{% endunless %}>
+              {%- if war.available -%}{{ section.settings.atc_label }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}
+            </button>
+          </div>
+        {%- endif -%}
         {%- assign wiersze = section.blocks | where: 'type', 'row' -%}
         {%- if wiersze.size > 0 -%}
           <div class="pdp__rows">
@@ -1258,6 +1300,58 @@
       fab.addEventListener('click', function () { atc.click(); });
     })();
 
+    // ---------- przyklejony "Laeg i kurv" (telefon) ----------
+    (function () {
+      var pasek = root.querySelector('[data-pdp-stick]');
+      if (!pasek || !atc || !('IntersectionObserver' in window)) return;
+      var btn = pasek.querySelector('[data-pdp-stick-btn]');
+      var cena = pasek.querySelector('[data-pdp-stick-price]');
+      var opis = pasek.querySelector('[data-pdp-stick-opt]');
+      var rozmiary = root.querySelector('.pdp__sizes');
+      var ileRozmiarow = rozmiary ? rozmiary.querySelectorAll('[data-pdp-val]').length : 0;
+      // przy jednym rozmiarze (albo bez rozmiarow) nie ma czego wybierac
+      var wybrany = ileRozmiarow < 2;
+      var WYBIERZ = 'Vælg størrelse';
+
+      function stan() {
+        cena.innerHTML = teraz ? teraz.innerHTML : '';
+        pasek.classList.toggle('is-sale', blokCeny ? blokCeny.classList.contains('pdp__price--sale') : false);
+        var r = rozmiary ? rozmiary.querySelector('.is-on') : null;
+        opis.textContent = (wybrany && r) ? 'Størrelse: ' + r.textContent.trim() : '';
+        if (atc.disabled && wybrany) { btn.disabled = true; btn.textContent = BRAK; return; }
+        btn.disabled = false;
+        btn.textContent = wybrany ? DODAJ : WYBIERZ;
+      }
+
+      root.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-pdp-val]');
+        if (b && rozmiary && rozmiary.contains(b) && !b.classList.contains('is-out')) wybrany = true;
+        // po odswiez() motywu, ktory slucha wczesniej
+        setTimeout(stan, 0);
+      });
+
+      btn.addEventListener('click', function () {
+        if (!wybrany && rozmiary) {
+          rozmiary.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          rozmiary.classList.remove('is-flash');
+          void rozmiary.offsetWidth;
+          rozmiary.classList.add('is-flash');
+          return;
+        }
+        atc.click();
+      });
+
+      new IntersectionObserver(function (wpisy) {
+        var widac = wpisy[0].isIntersecting;
+        pasek.classList.toggle('is-on', !widac);
+        pasek.setAttribute('aria-hidden', widac ? 'true' : 'false');
+        btn.tabIndex = widac ? -1 : 0;
+        document.body.classList.toggle('pdp-stick-on', !widac);
+      }).observe(atc);
+
+      stan();
+    })();
+
     // ---------- kropki karuzeli (telefon) ----------
     (function () {
       var siatka = root.querySelector('[data-pdp-photos]');
@@ -1473,6 +1567,7 @@
     { "type": "color", "id": "note_bg", "label": "Its background", "default": "#f4f3f1" },
     { "type": "color", "id": "note_text", "label": "Its text", "default": "#1c1d1d" },
     { "type": "checkbox", "id": "show_fab", "label": "Small cart button on the photo (mobile)", "default": true },
+    { "type": "checkbox", "id": "show_sticky_atc", "label": "Sticky add to cart bar (mobile)", "default": true },
 
     { "type": "header", "content": "Promise rows" },
     { "type": "color", "id": "row_accent", "label": "Line at the first row", "default": "#d6332e" },
