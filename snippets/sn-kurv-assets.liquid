@@ -55,7 +55,7 @@
   }
   .snk-note[hidden] { display: none; }
   /* dziala licznik akcji: zdanie o rezerwacji schowane, zostaje jeden pasek */
-  .snk-note--timer:not([hidden]) + .snk-note { display: none; }
+  .snk-note--timer:not([hidden]) ~ .snk-note { display: none; }
 
   /* ---------- pozycja (szuflada i strona koszyka) ---------- */
   .snk-item {
