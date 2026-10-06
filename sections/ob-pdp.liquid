@@ -1354,7 +1354,7 @@
         btn.tabIndex = widac ? -1 : 0;
         document.body.classList.toggle('pdp-stick-on', !widac);
       }
-      function zaplanuj() { if (!klatka) klatka = requestAnimationFrame(sprawdz); }
+      function zaplanuj() { if (!klatka) klatka = setTimeout(sprawdz, 60); }
       window.addEventListener('scroll', zaplanuj, { passive: true });
       window.addEventListener('resize', zaplanuj);
 
