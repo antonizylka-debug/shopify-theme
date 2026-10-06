@@ -4,6 +4,7 @@
   JS koszyka (sn-kurv-assets) pobiera kilka takich zestawow (szpilki,
   torebki, bizuteria...) i uklada je na przemian. Sekcji nie dodaje sie do
   szablonow - dziala tylko przez Section Rendering API na adresie kolekcji.
+  Kafel to ten sam sn-card co w kolekcjach (styl sklepu, "+" do okna wyboru).
 {%- endcomment -%}
 <div data-snk-kort>
   {%- assign n = 0 -%}
@@ -12,7 +13,9 @@
       {%- if n >= 12 -%}{%- break -%}{%- endif -%}
       {%- unless p.available -%}{%- continue -%}{%- endunless -%}
       {%- assign n = n | plus: 1 -%}
-      {%- render 'sn-kurv-g', p: p -%}
+      <div class="snk-g" data-snk-g data-snk-pid="{{ p.id }}">
+        {%- render 'sn-card', product: p, grid_item: false -%}
+      </div>
     {%- endfor -%}
   {%- endif -%}
 </div>

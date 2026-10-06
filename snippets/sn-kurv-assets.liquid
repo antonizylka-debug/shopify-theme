@@ -110,27 +110,9 @@
   /* ---------- Gor looket komplet: siatka 2 kolumny ---------- */
   .snk-up { margin: 10px 0 0; padding: 18px 0 0; border-top: 1px solid #ece8e2; }
   .snk-up > .snk-up__title { margin: 0 0 14px; }
-  .snk-up__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 12px; }
-  .snk-g { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
-  .snk-g__img { display: block; aspect-ratio: 4 / 5; background: #f4f2ee; overflow: hidden; }
-  .snk-g__img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
-  .snk-g__img:hover img { transform: scale(1.03); }
-  .snk-g__name {
-    font-size: 12px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; line-height: 1.35;
-    color: #1c1d1d; text-decoration: none;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .snk-g__price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; font-size: 13px; }
-  .snk-g__price s { color: #8a857e; font-size: 12px; }
-  .snk-g__price span { font-weight: 600; }
-  .snk-g__add {
-    width: 100%; height: 40px; margin-top: 2px; padding: 0 10px;
-    border: 1px solid #1c1d1d; background: #ffffff; color: #1c1d1d;
-    font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-  .snk-g__add:hover { background: #1c1d1d; color: #ffffff; }
-  .snk-g__add[disabled] { opacity: 0.5; cursor: default; }
+  .snk-up__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
+  /* karty to kafle sklepu (sn-card) - wyglad bierze sie z sn-card-assets */
+  .snk-g { min-width: 0; }
   .snk-up[hidden] { display: none; }
   .snk-up__head { display: flex; align-items: center; justify-content: space-between; margin: 0 0 14px; }
   .snk-up__title { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; }
