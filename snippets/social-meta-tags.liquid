@@ -1,5 +1,7 @@
 {%- liquid
-  assign og_title = page_title
+  capture og_title
+    render 'sn-tytul-strony', fallback: page_title
+  endcapture
   assign og_url = canonical_url
   assign og_type = 'website'
   assign og_description = page_description | default: shop.description | default: shop.name

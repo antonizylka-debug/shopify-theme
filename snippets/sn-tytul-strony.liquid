@@ -1,0 +1,26 @@
+{%- comment -%}
+  Dunski tytul podstrony (06.10.2026). Tytuly stron w panelu sa po angielsku
+  (About Us, Contact, FAQ...) i trafialy do zakladki przegladarki, okruszkow
+  i Google. Tu podmieniamy je po handle; inne strony bez zmian.
+  @param {string} fallback - tytul, gdy strona nie jest na liscie (zwykle page_title)
+{%- endcomment -%}
+{%- liquid
+  assign t = fallback
+  if request.page_type == 'page'
+    case page.handle
+      when 'about-us'
+        assign t = 'Om os'
+      when 'contact'
+        assign t = 'Kontakt os'
+      when 'faq'
+        assign t = 'Spørgsmål og svar'
+      when 'track-order'
+        assign t = 'Spor din ordre'
+      when 'payment-policy'
+        assign t = 'Betaling'
+      when 'size-guide'
+        assign t = 'Størrelsesguide'
+    endcase
+  endif
+  echo t
+-%}

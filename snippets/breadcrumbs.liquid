@@ -102,7 +102,7 @@
     {% elsif template.name == 'page' %}
 
       <span class="breadcrumb__divider" aria-hidden="true">/</span>
-      <span>{{ page.title }}</span>
+      <span>{%- render 'sn-tytul-strony', fallback: page.title -%}</span>
 
     {% elsif template.name == 'search' %}
 
