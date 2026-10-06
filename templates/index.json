@@ -253,11 +253,12 @@
           "type": "banner",
           "settings": {
             "collection": "",
+            "image": "shopify://shop_images/Best_seller_homepage_section_image_01436b2e-6070-4599-8fa0-f87425ed8396.webp",
             "eyebrow": "UDVALGT",
             "heading": "LAG PÅ LAG TIL DE KØLIGE MÅNEDER.",
             "text": "Varm strik, frakker og jakker – lavet til efteråret.",
             "button_label": "SHOP NU",
-            "link": "/collections/all",
+            "link": "https://www.stilhusetnord.dk/products/thomas-knit-blazer?variant=57627347026293",
             "text_color": "#ffffff"
           }
         }
