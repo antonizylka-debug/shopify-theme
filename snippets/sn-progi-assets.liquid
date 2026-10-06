@@ -101,10 +101,9 @@
     font-size: 13px; font-style: italic; text-align: center; color: #e6e1da;
   }
   .snp-line:not(:has(.snp-line__note)) { padding-bottom: 20px; }
-  /* strzalki rzedu kategorii (.subrow__nav-wrap) siedza 62 px nad rzedem - bez odstepu wchodza na baner */
-  @media only screen and (min-width: 769px) {
-    .snp-line ~ .subrow { margin-top: 56px; }
-  }
+  /* strzalki rzedu kategorii (.subrow__nav-wrap) siedza 62 px nad rzedem. Marginesy
+     banera i rzedu NIE sumuja sie (liczy sie wiekszy), wiec rzad dostaje caly odstep. */
+  .snp-line ~ .subrow:has(.subrow__nav-wrap) { margin-top: 96px; }
   @media only screen and (max-width: 768px) {
     .snp-line { grid-template-columns: 1fr; gap: 12px; margin-bottom: 18px; padding: 16px 12px 0; text-align: center; }
     .snp-line__head { align-items: center; gap: 4px; }
