@@ -941,7 +941,6 @@
       },
       { "type": "header", "content": "Buy more, save more" },
       { "type": "text", "id": "sn_progi", "label": "Discount tiers (items:percent)", "default": "2:10, 3:20, 4:25, 5:30", "info": "Must match the automatic discounts in Shopify admin. Used by the bar under the header and the cart." },
-      { "type": "checkbox", "id": "sn_bar_show", "label": "Show the bar under the header", "default": true },
       { "type": "header", "content": "Cart drawer" },
       { "type": "text", "id": "sn_kurv_note", "label": "Note under the heading", "default": "Varerne i kurven er ikke reserveret – bestil nu, så du er sikker på din størrelse.", "info": "Leave empty to hide. Keep it true - the cart does not hold stock." },
       { "type": "checkbox", "id": "sn_kurv_upsell_show", "label": "Show products to complete the look", "default": true },
