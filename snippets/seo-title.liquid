@@ -1,5 +1,6 @@
+{%- capture sn_tytul -%}{%- render 'sn-tytul-strony', fallback: page_title -%}{%- endcapture -%}
 {%- capture seo_title -%}
-  {%- render 'sn-tytul-strony', fallback: page_title %}
+  {{ sn_tytul }}
   {%- if current_tags -%}
     {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
   {%- endif -%}
