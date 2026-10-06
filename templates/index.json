@@ -386,15 +386,15 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6e6b65",
-        "color_line": "#e6e3de",
+        "color_line": "#e4e6ea",
         "color_accent": "#d6332e",
-        "color_tab_on": "#f4f2ee",
+        "color_tab_on": "#f2f3f5",
         "color_photo_bg": "#f1efec",
         "color_sale_bg": "#ffffff",
         "color_sale_text": "#1c1d1d",
         "color_sale_price": "#d6332e",
         "color_add_bg": "#ffffff",
-        "color_add_hover": "#f4f2ee",
+        "color_add_hover": "#f2f3f5",
         "color_add_icon": "#1c1d1d",
         "color_add_ok": "#1f7a3d"
       }

@@ -24,7 +24,7 @@
   #CartDrawer .drawer__fixed-header { padding: 0; background: #ffffff; }
   #CartDrawer .drawer__header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 26px 16px; border: 0; border-bottom: 1px solid #ece8e2; margin: 0 0 18px;
+    padding: 18px 26px 16px; border: 0; border-bottom: 1px solid #e7e9ec; margin: 0 0 18px;
   }
   /* maly naglowek jak w minimalistycznym koszyku */
   #CartDrawer .drawer__title {
@@ -60,10 +60,10 @@
   /* ---------- pozycja (szuflada i strona koszyka) ---------- */
   .snk-item {
     display: grid; grid-template-columns: 106px 1fr; gap: 18px;
-    padding: 0 0 22px; margin: 0 0 22px; border-bottom: 1px solid #ece8e2;
+    padding: 0 0 22px; margin: 0 0 22px; border-bottom: 1px solid #e7e9ec;
   }
   .snk-item:last-child { border-bottom: 0; margin-bottom: 4px; }
-  .snk-item__img { display: block; aspect-ratio: 106 / 140; background: #f4f2ee; overflow: hidden; }
+  .snk-item__img { display: block; aspect-ratio: 106 / 140; background: #f2f3f5; overflow: hidden; }
   .snk-item__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .snk-item__info { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding-top: 4px; }
   .snk-item__name {
@@ -88,15 +88,15 @@
   .snk-qty.js-qty__wrapper {
     position: relative; display: inline-flex; align-items: center; justify-content: space-between;
     width: 92px; max-width: none; height: 38px; padding: 0 4px;
-    border: 1px solid #cfcac3; border-radius: 19px; background: #ffffff;
+    border: 1px solid #cdd0d6; border-radius: 19px; background: #ffffff;
   }
   .snk-qty .snk-qty__btn {
     position: static; display: flex; align-items: center; justify-content: center;
     width: 28px; height: 28px; min-width: 0; padding: 0; margin: 0;
-    border: 0; border-radius: 50%; background: #f1eee9; color: #1c1d1d; cursor: pointer;
+    border: 0; border-radius: 50%; background: #f2f3f5; color: #1c1d1d; cursor: pointer;
     transform: none; top: auto; bottom: auto; left: auto; right: auto;
   }
-  .snk-qty .snk-qty__btn:hover { background: #e4dfd7; }
+  .snk-qty .snk-qty__btn:hover { background: #e4e6ea; }
   .snk-qty .snk-qty__num {
     width: 26px; height: 30px; min-width: 0; padding: 0; margin: 0; border: 0; background: none;
     font-size: 14px; font-weight: 600; text-align: center; color: #1c1d1d;
@@ -108,7 +108,7 @@
   .snk-item__remove:hover { color: #1c1d1d; }
 
   /* ---------- Gor looket komplet: siatka 2 kolumny ---------- */
-  .snk-up { margin: 10px 0 0; padding: 18px 0 0; border-top: 1px solid #ece8e2; }
+  .snk-up { margin: 10px 0 0; padding: 18px 0 0; border-top: 1px solid #e7e9ec; }
   .snk-up > .snk-up__title { margin: 0 0 14px; }
   .snk-up__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; }
   /* karty to kafle sklepu (sn-card) - wyglad bierze sie z sn-card-assets */
@@ -124,16 +124,16 @@
   .snk-up__arrow[disabled] { color: #c3beb7; cursor: default; }
   .snk-up__track {
     display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
-    border: 1px solid #e6e3de; scrollbar-width: none;
+    border: 1px solid #e4e6ea; scrollbar-width: none;
   }
   .snk-up__track::-webkit-scrollbar { display: none; }
 
   .snk-card {
     flex: 0 0 62%; display: grid; grid-template-columns: 92px 1fr; gap: 16px;
-    padding: 18px; scroll-snap-align: start; border-right: 1px solid #e6e3de;
+    padding: 18px; scroll-snap-align: start; border-right: 1px solid #e4e6ea;
   }
   .snk-card:last-child { border-right: 0; }
-  .snk-card__img { display: block; aspect-ratio: 92 / 124; background: #f4f2ee; overflow: hidden; }
+  .snk-card__img { display: block; aspect-ratio: 92 / 124; background: #f2f3f5; overflow: hidden; }
   .snk-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .snk-card__info { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; min-width: 0; }
   .snk-card__name {
@@ -146,13 +146,13 @@
   .snk-card__price span { font-weight: 600; }
   .snk-card__colors { display: flex; flex-wrap: wrap; gap: 6px; }
   .snk-card__sw {
-    width: 28px; height: 28px; padding: 2px; border: 1px solid #d8d3cc; border-radius: 50%;
+    width: 28px; height: 28px; padding: 2px; border: 1px solid #d5d8dd; border-radius: 50%;
     background: #ffffff; cursor: pointer; overflow: hidden;
   }
   .snk-card__sw img, .snk-card__sw span {
     display: flex; align-items: center; justify-content: center;
     width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
-    font-size: 11px; font-weight: 600; text-transform: uppercase; background: #f1eee9;
+    font-size: 11px; font-weight: 600; text-transform: uppercase; background: #f2f3f5;
   }
   .snk-card__sw.is-on { border: 2px solid #1c1d1d; padding: 1px; }
   .snk-card__sizes { display: flex; flex-wrap: nowrap; gap: 5px; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
@@ -160,7 +160,7 @@
   .snk-card__sizes .snk-card__size { flex: 0 0 auto; }
   .snk-card__select {
     width: 100%; max-width: 190px; height: 34px; padding: 0 30px 0 10px; margin: 0;
-    border: 1px solid #d8d3cc; border-radius: 0; background-color: #ffffff; color: #1c1d1d;
+    border: 1px solid #d5d8dd; border-radius: 0; background-color: #ffffff; color: #1c1d1d;
     font-size: 13px; font-weight: 500; cursor: pointer;
     -webkit-appearance: none; appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='m1 1.5 5 5 5-5' fill='none' stroke='%231c1d1d' stroke-width='1.6'/%3E%3C/svg%3E");
@@ -169,13 +169,13 @@
   .snk-card__select:focus-visible { outline: 2px solid #1c1d1d; outline-offset: 1px; }
   .snk-card__sizes:empty { display: none; }
   .snk-card__size {
-    min-width: 34px; height: 30px; padding: 0 7px; border: 1px solid #d8d3cc; background: #ffffff;
+    min-width: 34px; height: 30px; padding: 0 7px; border: 1px solid #d5d8dd; background: #ffffff;
     font-size: 12px; font-weight: 600; color: #1c1d1d; cursor: pointer;
   }
   .snk-card__size.is-on { border-color: #1c1d1d; background: #1c1d1d; color: #ffffff; }
   .snk-card__size[disabled] {
-    color: #b9b5ae; cursor: default;
-    background: linear-gradient(to top right, transparent calc(50% - 0.5px), #d8d3cc, transparent calc(50% + 0.5px));
+    color: #b4b8bf; cursor: default;
+    background: linear-gradient(to top right, transparent calc(50% - 0.5px), #d5d8dd, transparent calc(50% + 0.5px));
   }
   .snk-card__err { margin: -3px 0 0; font-size: 12px; color: #c8102e; }
   .snk-card__add {
@@ -188,7 +188,7 @@
 
   /* ---------- stopka ---------- */
   #CartDrawer .drawer__footer {
-    padding: 20px 26px 22px; border-top: 1px solid #e6e3de; background: #ffffff; box-shadow: none;
+    padding: 20px 26px 22px; border-top: 1px solid #e4e6ea; background: #ffffff; box-shadow: none;
   }
   .snk-hidden { display: none !important; }
   .snk-total { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 16px; }
@@ -205,9 +205,9 @@
     background: #1c1d1d; color: #ffffff;
     font-size: 15px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
   }
-  .snk-trust { display: grid; grid-template-columns: repeat(3, 1fr); margin: 14px 0 0; padding: 12px 0 2px; border-top: 1px solid #e6e3de; }
+  .snk-trust { display: grid; grid-template-columns: repeat(3, 1fr); margin: 14px 0 0; padding: 12px 0 2px; border-top: 1px solid #e4e6ea; }
   .snk-trust__i { display: flex; align-items: center; justify-content: center; gap: 9px; padding: 0 6px; color: #1c1d1d; }
-  .snk-trust__i + .snk-trust__i { border-left: 1px solid #e6e3de; }
+  .snk-trust__i + .snk-trust__i { border-left: 1px solid #e4e6ea; }
   .snk-trust__i svg { flex: 0 0 auto; }
   .snk-trust__i span { display: flex; flex-direction: column; font-size: 11px; line-height: 1.3; color: #8a857e; }
   .snk-trust__i b { font-size: 12.5px; font-weight: 600; color: #1c1d1d; }

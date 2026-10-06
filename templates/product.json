@@ -123,8 +123,8 @@
         "promo_head2": "Rabat for flere varer",
         "promo_buy_word": "Køb",
         "promo_off_word": "rabat",
-        "promo_border": "#e8d9d6",
-        "promo_bg": "#fdf6f4",
+        "promo_border": "#e4e6ea",
+        "promo_bg": "#f2f3f5",
         "promo_accent": "#23213a",
         "size_cols": 5,
         "size_cols_m": 4,
@@ -181,7 +181,7 @@
         "button_action": "scroll",
         "button_link": "shopify://collections/all",
         "urgency": "Populære styles sælger hurtigt – når de er væk, er de væk.",
-        "color_bg": "#f3ede6",
+        "color_bg": "#f2f3f5",
         "title_size": 38,
         "title_size_mobile": 27,
         "padding_top": 48,
@@ -303,15 +303,15 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6e6b65",
-        "color_line": "#e6e3de",
+        "color_line": "#e4e6ea",
         "color_accent": "#d6332e",
-        "color_tab_on": "#f4f2ee",
+        "color_tab_on": "#f2f3f5",
         "color_photo_bg": "#f1efec",
         "color_sale_bg": "#ffffff",
         "color_sale_text": "#1c1d1d",
         "color_sale_price": "#d6332e",
         "color_add_bg": "#ffffff",
-        "color_add_hover": "#f4f2ee",
+        "color_add_hover": "#f2f3f5",
         "color_add_icon": "#1c1d1d",
         "color_add_ok": "#1f7a3d"
       }
@@ -533,7 +533,7 @@
         "color_bg": "#f7f6f4",
         "color_text": "#1c1d1d",
         "color_muted": "#6e6b65",
-        "color_line": "#e6e3de",
+        "color_line": "#e4e6ea",
         "color_star": "#00b67a",
         "color_star_off": "#dcdce6",
         "color_bar": "#1c1d1d"
@@ -615,7 +615,7 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6e6b65",
-        "color_line": "#e6e3de"
+        "color_line": "#e4e6ea"
       }
     },
     "product-recommendations": {

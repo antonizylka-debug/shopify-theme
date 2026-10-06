@@ -159,7 +159,7 @@
         "pay_align": "center",
         "color_text": "#1c1d1d",
         "color_muted": "#6e6b65",
-        "color_line": "#e6e3de",
+        "color_line": "#e4e6ea",
         "color_rule": "#808080",
         "color_button": "#1c1d1d",
         "color_button_text": "#ffffff",
@@ -244,7 +244,7 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6e6b65",
-        "color_line": "#e6e3de"
+        "color_line": "#e4e6ea"
       }
     },
     "product-recommendations": {
@@ -293,7 +293,7 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6e6b65",
-        "color_line": "#e6e3de",
+        "color_line": "#e4e6ea",
         "color_star": "#1c1d1d",
         "color_bar": "#1c1d1d"
       }
