@@ -145,6 +145,7 @@
         "note_bg": "#ffffff",
         "note_text": "#1c1d1d",
         "show_fab": true,
+        "show_sticky_atc": true,
         "row_accent": "#d6332e",
         "row_hi": "#1f7a3d",
         "cross_show": true,
@@ -167,7 +168,21 @@
     },
     "edytorial_kampanii": {
       "type": "sn-edytorial",
-      "settings": {}
+      "settings": {
+        "image_position": "center",
+        "ratio": "21 / 9",
+        "overline": "",
+        "timer_label": "Slutter om",
+        "heading": "Køb flere, spar op til 30 %",
+        "text": "Bland frit – rabatten trækkes automatisk i kurven.",
+        "link_label": "Køb nu",
+        "button_action": "scroll",
+        "link": "",
+        "space_top": 48,
+        "space_bottom": 48,
+        "space_top_mobile": 28,
+        "space_bottom_mobile": 28
+      }
     },
     "bestsellers": {
       "type": "sn-bestsellers",
