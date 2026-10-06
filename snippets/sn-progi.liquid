@@ -80,11 +80,15 @@
     {%- when 'linje' -%}
       {%- comment -%} Spokojna linijka w kolekcji (06.10.2026: karty byly 'nie w stylu sklepu'). {%- endcomment -%}
       <div class="snp-line" id="{{ id_k }}" data-snp data-progi="{{ czyste }}" data-count="{{ cart.item_count }}">
+        <span class="snp-line__kamp"><span class="snp-line__dot" aria-hidden="true"></span>{{ settings.campaign_name | split: '·' | first | strip }}</span>
         <span class="snp-line__lbl">{{ tytul_k }}</span>
         {%- for para in lista -%}
           {%- assign p = para | split: ':' -%}
           <span class="snp-line__t" data-snp-card="{{ p[0] }}">{{ p[0] }}{% if forloop.last %}+{% endif %} stk. <b>−{{ p[1] }} %</b></span>
         {%- endfor -%}
+        {%- if settings.campaign_end != blank -%}
+          <span class="snp-line__timer" data-snp-timer data-slut="{{ settings.campaign_end | escape }}" hidden>Slutter om <b data-snp-tv></b></span>
+        {%- endif -%}
       </div>
 
     {%- when 'kolekcja' -%}

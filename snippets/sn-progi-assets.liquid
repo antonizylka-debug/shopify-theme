@@ -67,19 +67,31 @@
   .snp-box .snp-track { margin-bottom: 38px; }
   .snp-box .snp-msg { font-size: 11px; }
 
-  /* ---------- linijka w kolekcji ---------- */
+  /* ---------- pasek w kolekcji: czarny jak pasek USP pod menu ---------- */
   .snp-line {
-    display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 6px 22px;
-    margin: 0 0 26px; padding: 13px 12px; border-top: 1px solid #ebe6df; border-bottom: 1px solid #ebe6df;
-    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #6e6b65;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 22px;
+    margin: 0 0 26px; padding: 14px 16px; background: #1c1d1d; color: #cfcac3;
+    font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase;
   }
-  .snp-line__lbl { font-weight: 600; color: #1c1d1d; }
-  .snp-line__t b { font-weight: 600; color: #1c1d1d; }
-  .snp-line__t.is-on { color: #1c1d1d; }
-  .snp-line__t.is-on b { padding-bottom: 2px; border-bottom: 1px solid #1c1d1d; }
+  .snp-line__kamp { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: #ffffff; }
+  .snp-line__dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #e0263c; }
+  .snp-line__dot::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%; background: #e0263c;
+    animation: snp-puls 1.6s ease-out infinite;
+  }
+  @keyframes snp-puls { from { transform: scale(1); opacity: 0.7; } to { transform: scale(2.8); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .snp-line__dot::after { animation: none; } }
+  .snp-line__lbl { font-weight: 600; color: #ffffff; }
+  .snp-line__t b { font-weight: 700; color: #ffffff; }
+  .snp-line__t.is-on { color: #ffffff; }
+  .snp-line__t.is-on b { padding: 2px 6px; background: #e0263c; }
+  .snp-line__timer { color: #ffffff; font-variant-numeric: tabular-nums; }
+  .snp-line__timer b { font-weight: 700; }
+  .snp-line__timer[hidden] { display: none; }
   @media only screen and (max-width: 768px) {
-    .snp-line { gap: 4px 14px; margin-bottom: 18px; padding: 10px 6px; font-size: 11px; letter-spacing: 0.06em; }
-    .snp-line__lbl { flex: 0 0 100%; text-align: center; }
+    .snp-line { gap: 6px 14px; margin-bottom: 18px; padding: 11px 10px; font-size: 11px; letter-spacing: 0.06em; }
+    .snp-line__kamp, .snp-line__lbl { flex: 0 0 auto; }
+    .snp-line__timer { flex: 0 0 100%; text-align: center; }
   }
 
   /* ---------- karty w kolekcji ---------- */
