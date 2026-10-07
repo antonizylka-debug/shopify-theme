@@ -243,7 +243,7 @@
         var h = Math.floor(s / 3600); s -= h * 3600;
         var mi = Math.floor(s / 60); s -= mi * 60;
         var v = t.querySelector('[data-snp-tv]');
-        if (v) v.textContent = dwa(d) + 'D : ' + dwa(h) + 'T : ' + dwa(mi) + 'M : ' + dwa(s) + 'S';
+        if (v) v.textContent = dwa(d) + 'D : ' + dwa(h) + 'H : ' + dwa(mi) + 'M : ' + dwa(s) + 'S';
         t.hidden = false;
       });
     }

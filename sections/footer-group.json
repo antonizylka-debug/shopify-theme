@@ -65,7 +65,7 @@
           "type": "item",
           "settings": {
             "icon": "box",
-            "title": "Hurtig afsendelse",
+            "title": "Fast dispatch",
             "text": "Ships within 3–4 business days"
           }
         },
@@ -73,7 +73,7 @@
           "type": "item",
           "settings": {
             "icon": "return",
-            "title": "Nem returnering",
+            "title": "Easy returns",
             "text": "Within 30 days of delivery"
           }
         },

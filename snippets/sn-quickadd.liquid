@@ -273,7 +273,7 @@
       spar: {{ t_oszczedzasz | json }}
     };
     var WALUTA = {{ cart.currency.iso_code | json }};
-    var JEZYK = 'da-DK';
+    var JEZYK = WALUTA === 'DKK' ? 'da-DK' : 'en-CA';
     var FORMAT = {{ shop.money_format | json }};
 
     /* Kwoty przez formater motywu i format sklepu - ten sam, ktorym
@@ -283,14 +283,14 @@
        Intl zostaje tylko na wypadek, gdyby motyw formatera nie mial. */
     function pieniadze(grosze) {
       if (window.snCena && WALUTA === 'DKK') return window.snCena(grosze);
-      if (window.theme && window.theme.Currency && window.theme.Currency.formatMoney) {
+      if (WALUTA === 'DKK' && window.theme && window.theme.Currency && window.theme.Currency.formatMoney) {
         try { return window.theme.Currency.formatMoney(grosze, FORMAT); } catch (e) {}
       }
       try {
         return new Intl.NumberFormat(JEZYK, {
           style: 'currency',
           currency: WALUTA,
-          minimumFractionDigits: grosze % 100 === 0 ? 0 : 2
+          minimumFractionDigits: WALUTA === 'DKK' && grosze % 100 === 0 ? 0 : 2
         }).format(grosze / 100);
       } catch (e) {
         return (grosze / 100).toFixed(2);
@@ -302,7 +302,7 @@
        i do koszyka idzie oryginalna wartosc z produktu, bo po niej
        Shopify szuka wariantu. */
     var SLOWNIK = {
-      'colour': 'Color'
+      'colour': 'Color', 'farve': 'Color', 'størrelse': 'Size'
     };
     function poDunsku(tekst) {
       var klucz = String(tekst).toLowerCase().trim();

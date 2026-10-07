@@ -10,7 +10,7 @@
     {% render 'sn-da', tekst: option.name %}
 {%- endcomment -%}
 {%- liquid
-  assign slownik = 'Colour=Color'
+  assign slownik = 'Colour=Color, Farve=Color, Størrelse=Size'
   assign wynik = tekst
   assign szukany = tekst | strip | downcase
   assign pary = slownik | split: ', '

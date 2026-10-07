@@ -69,7 +69,7 @@
         "acc-3": {
           "type": "acc",
           "settings": {
-            "title": "Kundeservice",
+            "title": "Customer service",
             "use_desc": false,
             "text": "<p>Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number.</p><p>Monday to Friday, 9:00–18:00 CET. We usually reply within 1–2 business days.</p>",
             "open": false
@@ -86,7 +86,7 @@
         "acc-3"
       ],
       "settings": {
-        "dictionary": "Colour=Color",
+        "dictionary": "Colour=Color, Farve=Color, Størrelse=Size",
         "show_crumbs": true,
         "media_w": 54,
         "info_w": 42,
@@ -132,7 +132,7 @@
         "low_stock": "all",
         "low_stock_tag": "Few left",
         "show_flag": true,
-        "flag_label": "Udsalg",
+        "flag_label": "Sale",
         "flag_top": 90,
         "flag_left": 0,
         "flag_inset": 14,
@@ -177,7 +177,7 @@
         "t2": {
           "type": "tab",
           "settings": {
-            "label": "Toppe",
+            "label": "Tops",
             "collection": "womens-tops",
             "audience": "women"
           }
@@ -209,7 +209,7 @@
         "m2": {
           "type": "tab",
           "settings": {
-            "label": "Skjorter",
+            "label": "Shirts",
             "collection": "mens-shirts",
             "audience": "men"
           }

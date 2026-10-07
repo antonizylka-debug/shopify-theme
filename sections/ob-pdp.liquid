@@ -929,7 +929,7 @@
 
         <div class="pdp__refs">
           <span class="pdp__ref" data-pdp-ref-normal{% unless na_przecenie %} hidden{% endunless %}>
-            {{ section.settings.label_normal }}<s>{%- render 'sn-cena', kwota: war.compare_at_price -%}</s><b>−{{ rabat }} %</b>
+            {{ section.settings.label_normal }} <s>{%- render 'sn-cena', kwota: war.compare_at_price -%}</s><b>−{{ rabat }} %</b>
           </span>
 
           {%- liquid
@@ -1217,6 +1217,9 @@
     function kwota(gr) {
       /* Wspolny zapis cen z custom-scripts: "549,95 kr", "1.099 kr". */
       if (window.snCena && {{ cart.currency.iso_code | json }} === 'DKK') return window.snCena(gr);
+      if ({{ cart.currency.iso_code | json }} !== 'DKK') {
+        try { return new Intl.NumberFormat('en-CA', { style: 'currency', currency: {{ cart.currency.iso_code | json }} }).format(gr / 100); } catch (e) {}
+      }
       if (window.theme && window.theme.Currency && window.theme.Currency.formatMoney) return window.theme.Currency.formatMoney(gr, FORMAT);
       if (window.Shopify && window.Shopify.formatMoney) return window.Shopify.formatMoney(gr, FORMAT);
       return (gr / 100).toFixed(2).replace('.', ',') + ' kr';
@@ -1269,7 +1272,7 @@
       var p = przecena ? Math.round((w.compare_at_price - w.price) / w.compare_at_price * 100) : 0;
       if (refNormal) {
         if (przecena) {
-          refNormal.innerHTML = ETYKIETA + '<s>' + kwota(w.compare_at_price) + '</s><b>−' + p + ' %</b>';
+          refNormal.innerHTML = ETYKIETA + ' <s>' + kwota(w.compare_at_price) + '</s><b>−' + p + ' %</b>';
           refNormal.hidden = false;
         } else {
           refNormal.hidden = true;
@@ -1496,7 +1499,7 @@
   "settings": [
     { "type": "header", "content": "Danish wording" },
     { "type": "paragraph", "content": "Your product data is English — option names, colours and product types. This only changes what the shopper sees; the data stays as it is, so the collection filters keep matching. Pairs english=dansk, separated by commas. Anything not listed shows unchanged." },
-    { "type": "textarea", "id": "dictionary", "label": "Dictionary", "default": "Colour=Color" },
+    { "type": "textarea", "id": "dictionary", "label": "Dictionary", "default": "Colour=Color, Farve=Color, Størrelse=Size" },
 
     { "type": "header", "content": "Layout" },
     { "type": "checkbox", "id": "show_crumbs", "label": "Breadcrumbs", "default": true },
@@ -1542,7 +1545,7 @@
     { "type": "checkbox", "id": "pilne_show", "label": "Sale text in the discount box", "info": "Heading = campaign name, countdown = campaign end (Theme settings, Campaign).", "default": true },
     { "type": "text", "id": "pilne_text", "label": "Sale notice text", "default": "High demand – limited quantities left. If you can tap »Add to cart«, it's still available." },
     { "type": "text", "id": "vat_note", "label": "Next to the price", "default": "inkl. moms" },
-    { "type": "text", "id": "label_normal", "label": "Before the normal price", "default": "Normalpris:" },
+    { "type": "text", "id": "label_normal", "label": "Before the normal price", "default": "Regular price:" },
     { "type": "text", "id": "label_omnibus", "label": "Before the 30-day price", "default": "Lowest price in the 30 days before the discount:" },
     { "type": "checkbox", "id": "show_omnibus", "label": "Show the 30-day price", "info": "Reads custom.lowest_price_30d", "default": true },
 
