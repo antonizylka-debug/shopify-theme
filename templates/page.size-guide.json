@@ -169,7 +169,7 @@
         "title": "Find your size",
         "intro": "Check the key measurements for each category before you order. Switch between centimetres and inches, and find notes on fit, care and measuring under each table.",
         "default_unit": "cm",
-        "notes": "<p>These are body measurements, not garment measurements. If a product page lists its own measurements, those apply – the cut varies from style to style.</p><p>Still unsure? Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with the product name and we'll check it for you before you order.</p>",
+        "notes": "<p>These are body measurements, not garment measurements. If a product page lists its own measurements, those apply – the cut varies from style to style.</p><p>Still unsure? Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with the product name and we'll check it for you before you order.</p>",
         "unit_label": "Units",
         "note_cm": "Measurements shown in centimetres.",
         "note_in": "Measurements shown in inches.",

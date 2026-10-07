@@ -62,7 +62,7 @@
           "settings": {
             "title": "Shipping and returns",
             "use_desc": false,
-            "text": "<p><strong>Shipping</strong></p><p>We pack and ship within 3–4 business days. Delivery then takes another 3–6 business days. Shipping is free on every order, and you'll get a tracking number by email as soon as your package ships.</p><p><strong>Returns</strong></p><p>You have 30 days from delivery. Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number and we'll send you the return address.</p>",
+            "text": "<p><strong>Shipping</strong></p><p>We pack and ship within 3–4 business days. Delivery then takes another 3–6 business days. Shipping is free on every order, and you'll get a tracking number by email as soon as your package ships.</p><p><strong>Returns</strong></p><p>You have 30 days from delivery. Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number and we'll send you the return address.</p>",
             "open": false
           }
         },
@@ -71,7 +71,7 @@
           "settings": {
             "title": "Customer service",
             "use_desc": false,
-            "text": "<p>Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number.</p><p>Monday to Friday, 9:00–18:00 CET. We usually reply within 1–2 business days.</p>",
+            "text": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number.</p><p>Monday to Friday, 9:00–18:00 CET. We usually reply within 1–2 business days.</p>",
             "open": false
           }
         }
@@ -381,7 +381,7 @@
           "type": "question",
           "settings": {
             "question": "Hvordan starter jeg en returnering?",
-            "answer": "<p>Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number and the item you'd like to return, within 30 days of receiving it. We'll reply with the return address and short instructions.</p><p>Please wait for our reply before sending anything – packages sent back on your own often end up at a warehouse that can't process them.</p>",
+            "answer": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number and the item you'd like to return, within 30 days of receiving it. We'll reply with the return address and short instructions.</p><p>Please wait for our reply before sending anything – packages sent back on your own often end up at a warehouse that can't process them.</p>",
             "open_by_default": false
           }
         },

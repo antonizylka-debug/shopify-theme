@@ -50,7 +50,7 @@
           "settings": {
             "title": "Fragt og returnering",
             "use_description": false,
-            "text": "<p><strong>Levering</strong></p><p>Vi pakker og sender inden for 3-4 hverdage. Derefter tager leveringen 3-6 hverdage mere. Fragten er gratis på alle ordrer, og du får et sporingsnummer på mail, så snart pakken er afsendt.</p><p><strong>Returnering</strong></p><p>Du har 30 dage fra levering. Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer, så sender vi returadressen.</p><p><strong>Ændring af ordre</strong></p><p>Skriv til os hurtigst muligt. Når ordren først er afsendt, går det hurtigst at tage imod pakken og sende den tilbage.</p>",
+            "text": "<p><strong>Levering</strong></p><p>Vi pakker og sender inden for 3-4 hverdage. Derefter tager leveringen 3-6 hverdage mere. Fragten er gratis på alle ordrer, og du får et sporingsnummer på mail, så snart pakken er afsendt.</p><p><strong>Returnering</strong></p><p>Du har 30 dage fra levering. Skriv til <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> med dit ordrenummer, så sender vi returadressen.</p><p><strong>Ændring af ordre</strong></p><p>Skriv til os hurtigst muligt. Når ordren først er afsendt, går det hurtigst at tage imod pakken og sende den tilbage.</p>",
             "open_by_default": false
           }
         },
@@ -59,7 +59,7 @@
           "settings": {
             "title": "Kundeservice",
             "use_description": false,
-            "text": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer.</p><p>Mandag til fredag, 9.00-18.00. Vi svarer på alle beskeder, typisk inden for 1-2 hverdage.</p>",
+            "text": "<p>Skriv til <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> med dit ordrenummer.</p><p>Mandag til fredag, 9.00-18.00. Vi svarer på alle beskeder, typisk inden for 1-2 hverdage.</p>",
             "open_by_default": false
           }
         }
@@ -191,7 +191,7 @@
           "type": "question",
           "settings": {
             "question": "Hvordan starter jeg en returnering?",
-            "answer": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer og den vare, du vil sende tilbage, inden 30 dage efter du har modtaget den. Vi svarer med returadressen og en kort vejledning.</p><p>Vent på vores svar, før du sender noget af sted – pakker, der sendes tilbage på egen hånd, ender ofte på et lager, der ikke kan behandle dem.</p>",
+            "answer": "<p>Skriv til <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> med dit ordrenummer og den vare, du vil sende tilbage, inden 30 dage efter du har modtaget den. Vi svarer med returadressen og en kort vejledning.</p><p>Vent på vores svar, før du sender noget af sted – pakker, der sendes tilbage på egen hånd, ender ofte på et lager, der ikke kan behandle dem.</p>",
             "open_by_default": false
           }
         },

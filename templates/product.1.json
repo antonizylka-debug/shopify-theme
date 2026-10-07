@@ -353,7 +353,7 @@
           "type": "question",
           "settings": {
             "title": "Modtager jeg en bekræftelsesmail efter at have afgivet en ordre?",
-            "text": "<p>Ja, når du har afgivet din ordre, vil du modtage en bekræftelse på din e-mail. Hvis du ikke kan se den, er du velkommen til at kontakte vores kundeservice, som gerne hjælper dig med det samme.</p><p>E-mail: <a href=\"mailto:kontakt@stilhusetnord.dk\" title=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.d</a>k</p>"
+            "text": "<p>Ja, når du har afgivet din ordre, vil du modtage en bekræftelse på din e-mail. Hvis du ikke kan se den, er du velkommen til at kontakte vores kundeservice, som gerne hjælper dig med det samme.</p><p>E-mail: <a href=\"mailto:support@daltonpierce.com\" title=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a></p>"
           }
         }
       },
