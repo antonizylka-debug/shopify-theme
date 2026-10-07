@@ -312,7 +312,7 @@
             <svg viewBox="0 0 8 14" aria-hidden="true" focusable="false"><path d="M7 1 1 7l6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
           </button>
           <span class="obr__nav-count"><span data-obr-nr>1</span> / {{ ile }}</span>
-          <button type="button" class="obr__nav-btn" data-obr-next aria-label="Næste anmeldelse">
+          <button type="button" class="obr__nav-btn" data-obr-next aria-label="Next review">
             <svg viewBox="0 0 8 14" aria-hidden="true" focusable="false"><path d="m1 1 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
           </button>
         </div>
@@ -439,24 +439,24 @@
   "settings": [
     { "type": "paragraph", "content": "The score, the count and the bars are all worked out from the reviews you add below. You never type the average yourself, so it cannot drift away from what is on the page." },
     { "type": "text", "id": "eyebrow", "label": "Small heading above", "default": "ANMELDELSER" },
-    { "type": "text", "id": "title", "label": "Heading", "default": "Det siger vores kunder" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "What our customers say" },
     { "type": "text", "id": "anchor", "label": "Anchor, for the link from the stars", "default": "anmeldelser" },
-    { "type": "text", "id": "count_label", "label": "Before the number of reviews", "default": "Baseret på" },
+    { "type": "text", "id": "count_label", "label": "Before the number of reviews", "default": "Based on" },
     { "type": "text", "id": "verdict_high", "label": "Word at 4.3 and above", "default": "Fremragende" },
     { "type": "text", "id": "verdict_mid", "label": "Word from 3.5 to 4.2", "default": "Godt" },
     { "type": "text", "id": "verdict_low", "label": "Word below 3.5", "default": "Middel" },
-    { "type": "text", "id": "rated_label", "label": "Before the score", "default": "Bedømt" },
-    { "type": "text", "id": "based_label", "label": "Between the score and the count", "default": "ud fra" },
+    { "type": "text", "id": "rated_label", "label": "Before the score", "default": "Rated" },
+    { "type": "text", "id": "based_label", "label": "Between the score and the count", "default": "from" },
     { "type": "text", "id": "reviews_word", "label": "After the count", "default": "anmeldelser" },
     { "type": "text", "id": "star_word", "label": "Word next to each bar", "default": "stjerner" },
-    { "type": "text", "id": "verified_label", "label": "Verified buyer label", "default": "Verificeret køb" },
-    { "type": "text", "id": "empty_text", "label": "Text when there are no reviews yet", "default": "Der er endnu ingen anmeldelser af denne vare." },
+    { "type": "text", "id": "verified_label", "label": "Verified buyer label", "default": "Verified purchase" },
+    { "type": "text", "id": "empty_text", "label": "Text when there are no reviews yet", "default": "There are no reviews for this item yet." },
     { "type": "checkbox", "id": "show_distribution", "label": "Show the bar chart", "default": true },
 
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "columns", "label": "Columns", "default": 3, "min": 1, "max": 4, "step": 1 },
     { "type": "range", "id": "desktop_initial", "label": "Reviews before the Load more button (computer)", "default": 3, "min": 2, "max": 12, "step": 1, "info": "Each click shows this many more. On phones all reviews are in a swipeable row." },
-    { "type": "text", "id": "more_label", "label": "Load more button", "default": "Vis flere anmeldelser" },
+    { "type": "text", "id": "more_label", "label": "Load more button", "default": "Show more reviews" },
     { "type": "range", "id": "title_size", "label": "Heading size", "default": 19, "min": 14, "max": 34, "step": 1, "unit": "px" },
     { "type": "range", "id": "title_size_mobile", "label": "Heading size (mobile)", "default": 17, "min": 12, "max": 28, "step": 1, "unit": "px" },
     { "type": "range", "id": "padding_top", "label": "Padding top", "default": 56, "min": 0, "max": 120, "step": 4, "unit": "px" },

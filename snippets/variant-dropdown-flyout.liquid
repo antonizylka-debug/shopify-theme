@@ -23,8 +23,8 @@
     </label>
 
     <a class="sz-guide" href="/pages/storrelsesguide">
-      <span class="sz-guide-q">Usikker på din størrelse?</span>
-      <span class="sz-guide-a">Brug <u>Størrelsesguiden ↓</u></span>
+      <span class="sz-guide-q">Not sure about your size?</span>
+      <span class="sz-guide-a">Use the <u>size guide ↓</u></span>
     </a>
   </div>
 
@@ -51,7 +51,7 @@
 
     <button type="button" class="sz-opener" data-sz-opener aria-expanded="false" aria-haspopup="listbox">
       <span class="sz-opener-text" data-sz-current>
-        {%- if product.selected_variant -%}{%- render 'size-label', label: selected_value, product: product -%}{%- else -%}Vælg størrelse{%- endif -%}
+        {%- if product.selected_variant -%}{%- render 'size-label', label: selected_value, product: product -%}{%- else -%}Select size{%- endif -%}
       </span>
       <svg class="sz-caret" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M3.5 6l4.5 4.5L12.5 6" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -115,7 +115,7 @@
                 <span class="sz-opt-price">{{ row_variant.price | money }}</span>
                 <span class="sz-opt-vat">inkl. moms</span>
               {%- else -%}
-                <span class="sz-opt-note">Udsolgt</span>
+                <span class="sz-opt-note">Sold out</span>
               {%- endif -%}
             </span>
           </span>
@@ -456,7 +456,7 @@
               '<span class="sz-opt-vat">inkl. moms</span>';
           } else {
             opt.setAttribute('aria-disabled', 'true');
-            right.innerHTML = '<span class="sz-opt-note">Udsolgt</span>';
+            right.innerHTML = '<span class="sz-opt-note">Sold out</span>';
           }
         });
       }

@@ -22,10 +22,10 @@
   data-mode="{{ mode }}"
   data-section-id="{{ section_id }}"
   {% if paginate.next %}data-next-url="{{ paginate.next.url }}"{% endif %}>
-  <p class="load-more__count">Viser {{ shown }} af {{ paginate.items }} produkter</p>
+  <p class="load-more__count">Showing {{ shown }} of {{ paginate.items }} products</p>
   {%- if paginate.next -%}
     <button type="button" class="btn btn--secondary load-more__btn" data-load-more>
-      <span class="load-more__label">Vis flere</span>
+      <span class="load-more__label">Show more</span>
       <span class="load-more__spinner" aria-hidden="true"></span>
     </button>
     <noscript>{%- render 'pagination', paginate: paginate -%}</noscript>

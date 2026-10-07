@@ -887,19 +887,19 @@
         "type": "text",
         "id": "cart_empty_title",
         "label": "Heading",
-        "default": "Din kurv er tom"
+        "default": "Your cart is empty"
       },
       {
         "type": "text",
         "id": "cart_empty_sub",
         "label": "Line under the heading",
-        "default": "Opdag vores nyeste kollektioner"
+        "default": "Discover our latest collections"
       },
       {
         "type": "text",
         "id": "cart_empty_btn",
         "label": "Button",
-        "default": "Se alt"
+        "default": "Shop all"
       },
       {
         "type": "url",
@@ -916,7 +916,7 @@
         "type": "text",
         "id": "cart_empty_c1_label",
         "label": "First tile, text",
-        "default": "Kjoler"
+        "default": "Dresses"
       },
       {
         "type": "image_picker",
@@ -932,7 +932,7 @@
         "type": "text",
         "id": "cart_empty_c2_label",
         "label": "Second tile, text",
-        "default": "Se alt"
+        "default": "Shop all"
       },
       {
         "type": "image_picker",
@@ -942,18 +942,18 @@
       { "type": "header", "content": "Buy more, save more" },
       { "type": "text", "id": "sn_progi", "label": "Discount tiers (items:percent)", "default": "2:10, 3:20, 4:25, 5:30", "info": "Must match the automatic discounts in Shopify admin. Used by the bar under the header and the cart." },
       { "type": "header", "content": "Cart drawer" },
-      { "type": "text", "id": "sn_kurv_note", "label": "Note under the heading", "default": "Varerne i kurven er ikke reserveret – bestil nu, så du er sikker på din størrelse.", "info": "Leave empty to hide. Keep it true - the cart does not hold stock." },
+      { "type": "text", "id": "sn_kurv_note", "label": "Note under the heading", "default": "Items in your cart aren't reserved – order now to make sure you get your size.", "info": "Leave empty to hide. Keep it true - the cart does not hold stock." },
       { "type": "checkbox", "id": "sn_kurv_upsell_show", "label": "Show products to complete the look", "default": true },
-      { "type": "text", "id": "sn_kurv_upsell_title", "label": "Heading above those products", "default": "Gør looket komplet" },
+      { "type": "text", "id": "sn_kurv_upsell_title", "label": "Heading above those products", "default": "Complete the look" },
       { "type": "header", "content": "Order cutoff" },
       { "type": "checkbox", "id": "sn_cutoff_show", "label": "Show order cutoff timer in cart", "default": true, "info": "Only if orders placed before this hour really are processed the same day." },
       { "type": "range", "id": "sn_cutoff_hour", "label": "Cutoff hour, Danish time, Mon-Fri", "min": 8, "max": 22, "step": 1, "unit": "h", "default": 14 },
-      { "type": "text", "id": "sn_cutoff_text", "label": "Text before the cutoff", "default": "Bestil inden {tid}, så behandler vi din ordre i dag.", "info": "{tid} = countdown to the cutoff hour." },
-      { "type": "text", "id": "sn_cutoff_text_next", "label": "Text after the cutoff", "default": "Bestil nu – vi behandler din ordre {dag}.", "info": "{dag} = i morgen / på mandag." },
+      { "type": "text", "id": "sn_cutoff_text", "label": "Text before the cutoff", "default": "Order within {tid} and we'll process your order today.", "info": "{tid} = countdown to the cutoff hour." },
+      { "type": "text", "id": "sn_cutoff_text_next", "label": "Text after the cutoff", "default": "Order now – we'll process your order {dag}.", "info": "{dag} = tomorrow / on Monday." },
       { "type": "header", "content": "Cart timer" },
       { "type": "checkbox", "id": "sn_rez_show", "label": "Show countdown timer in cart", "default": true, "info": "Starts when the first product goes into the cart, hides at 0. Nothing is removed from the cart and stock is not reserved." },
       { "type": "range", "id": "sn_rez_minutes", "label": "Countdown length", "min": 5, "max": 30, "step": 1, "unit": "min", "default": 10 },
-      { "type": "text", "id": "sn_rez_text", "label": "Timer text", "default": "Gennemfør din bestilling inden for {tid}", "info": "{tid} = remaining time (mm:ss). Don't write that items are reserved - the cart does not hold stock." }
+      { "type": "text", "id": "sn_rez_text", "label": "Timer text", "default": "Complete your order within {tid}", "info": "{tid} = remaining time (mm:ss). Don't write that items are reserved - the cart does not hold stock." }
     ]
   },
   {
@@ -1160,7 +1160,7 @@
         "type": "text",
         "id": "campaign_name",
         "label": "Campaign name",
-        "default": "Sæsonudsalg · op til 50 %"
+        "default": "Seasonal sale · up to 50% off"
       },
       {
         "type": "text",

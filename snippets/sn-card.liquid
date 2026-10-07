@@ -104,7 +104,7 @@
         class="snc__plus"
         {% if jeden %}data-snc-dodaj="{{ product.variants.first.id }}"{% else %}data-snq-otworz="{{ product.handle }}"{% endif %}
         data-snq-nazwa="{{ krotka_nazwa }}"
-        aria-label="{% if jeden %}Læg i kurv{% else %}Vælg størrelse og farve{% endif %}">
+        aria-label="{% if jeden %}Add to cart{% else %}Select size and color{% endif %}">
         <svg class="snc__ikona" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>
         <svg class="snc__ikona-ok" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5 10 17.5 19 7"/></svg>
       </button>
@@ -123,7 +123,7 @@
             <span class="snc__jest">{%- render 'sn-cena', kwota: product.price -%}</span>
             <span class="snc__bylo">{%- render 'sn-cena', kwota: product.compare_at_price -%}</span>
           {%- else -%}
-            <span class="snc__jest">{% if product.price_varies %}<span class="snc__od">Fra</span> {% endif %}{%- render 'sn-cena', kwota: product.price -%}</span>
+            <span class="snc__jest">{% if product.price_varies %}<span class="snc__od">From</span> {% endif %}{%- render 'sn-cena', kwota: product.price -%}</span>
           {%- endif -%}
         </span>
       </span>

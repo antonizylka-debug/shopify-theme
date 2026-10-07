@@ -33,9 +33,9 @@
               var teraz = new Date();
               var dzis = koniec.toDateString() === teraz.toDateString();
               var etykieta = el[i].querySelector('[data-sn-etykieta]');
-              if (etykieta) etykieta.textContent = dzis ? (koniec.getHours() >= 17 ? 'slutter i aften' : 'slutter i dag') : 'slutter om';
+              if (etykieta) etykieta.textContent = dzis ? (koniec.getHours() >= 17 ? 'ends tonight' : 'ends today') : 'ends in';
               var czas = el[i].querySelector('[data-sn-czas]');
-              if (czas) czas.textContent = (!dzis && d > 0 ? d + (d === 1 ? ' dag ' : ' dage ') : '') + dwa(h + (dzis ? d * 24 : 0)) + ':' + dwa(mi) + ':' + dwa(s);
+              if (czas) czas.textContent = (!dzis && d > 0 ? d + (d === 1 ? ' day ' : ' days ') : '') + dwa(h + (dzis ? d * 24 : 0)) + ':' + dwa(mi) + ':' + dwa(s);
               el[i].hidden = false;
             }
           }

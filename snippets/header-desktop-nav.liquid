@@ -13,7 +13,7 @@
   if section.settings.megamenu_show_counts == false
     assign mm_counts = false
   endif
-  assign mm_view_all_label = section.settings.megamenu_view_all_label | default: 'Se alle'
+  assign mm_view_all_label = section.settings.megamenu_view_all_label | default: 'View all'
 -%}
 
 <ul
@@ -64,9 +64,15 @@
 
             for block in section.blocks
               if block.type == 'megamenu_promo' and block.settings.menu_title != blank
-                assign block_title = block.settings.menu_title | downcase | strip
-                if block_title == current_title
-                  assign promo_block = block
+                assign block_titles = block.settings.menu_title | downcase | split: ','
+                for block_title in block_titles
+                  assign block_title_clean = block_title | strip
+                  if block_title_clean == current_title
+                    assign promo_block = block
+                    break
+                  endif
+                endfor
+                if promo_block != blank
                   break
                 endif
               endif

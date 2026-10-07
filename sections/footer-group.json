@@ -19,8 +19,8 @@
           "settings": {
             "enable_image": true,
             "image_mask": "none",
-            "title": "Gratis fragt",
-            "text": "<p>Vi tilbyder gratis fragt for maksimal bekvemmelighed. Din tilfredshed er vigtig for os, derfor tilbyder vi nem og gratis levering.</p>",
+            "title": "Free shipping",
+            "text": "<p>We offer free shipping for maximum convenience. Your satisfaction matters to us, which is why delivery is easy and free.</p>",
             "button_label": "",
             "button_link": ""
           }
@@ -30,8 +30,8 @@
           "settings": {
             "enable_image": true,
             "image_mask": "none",
-            "title": "30 dages returret",
-            "text": "<p>Din tilfredshed er vores fokus. Vores 30 dages returret giver dig maksimal fleksibilitet og den bedste shoppingoplevelse.</p>",
+            "title": "30-day returns",
+            "text": "<p>Your satisfaction is our focus. Our 30-day returns give you maximum flexibility and the best shopping experience.</p>",
             "button_label": "",
             "button_link": ""
           }
@@ -41,8 +41,8 @@
           "settings": {
             "enable_image": true,
             "image_mask": "none",
-            "title": "100% sikker betaling",
-            "text": "<p>Vi tilbyder flere sikre betalingsmuligheder. Betal nemt og nyd en tryg og sikker shoppingoplevelse.</p>",
+            "title": "100% secure checkout",
+            "text": "<p>We offer several secure payment options. Pay easily and enjoy a safe, secure shopping experience.</p>",
             "button_label": "",
             "button_link": ""
           }
@@ -66,7 +66,7 @@
           "settings": {
             "icon": "box",
             "title": "Hurtig afsendelse",
-            "text": "Afsendes inden for 3-4 hverdage"
+            "text": "Ships within 3–4 business days"
           }
         },
         "returns": {
@@ -74,23 +74,23 @@
           "settings": {
             "icon": "return",
             "title": "Nem returnering",
-            "text": "Inden 30 dage efter levering"
+            "text": "Within 30 days of delivery"
           }
         },
         "tracking": {
           "type": "item",
           "settings": {
             "icon": "truck",
-            "title": "Sporbar levering",
-            "text": "Sporing på hver pakke"
+            "title": "Tracked delivery",
+            "text": "Tracking on every package"
           }
         },
         "help": {
           "type": "item",
           "settings": {
             "icon": "chat",
-            "title": "Vi er her for dig",
-            "text": "Mandag til fredag"
+            "title": "We're here for you",
+            "text": "Monday to Friday"
           }
         }
       },
@@ -121,7 +121,7 @@
           "settings": {
             "logo": "shopify://shop_images/white_logo.png",
             "desktop_logo_height": 60,
-            "text": "<p>Mode til damer og herrer – gennemtænkt design til den moderne garderobe.</p>",
+            "text": "<p>Fashion for women and men – considered design for the modern wardrobe.</p>",
             "show_social": true,
             "container_width": 25
           }
@@ -159,10 +159,10 @@
         "contact": {
           "type": "contact",
           "settings": {
-            "title": "Kontakt",
+            "title": "Contact",
             "email": "kontakt@stilhusetnord.dk",
             "phone": "",
-            "hours": "Man-fre, 9.00-18.00",
+            "hours": "Mon–Fri, 9:00–18:00 CET",
             "address": "",
             "container_width": 50
           }
@@ -171,10 +171,10 @@
           "type": "newsletter",
           "settings": {
             "show_footer_title": true,
-            "title": "Nyhedsbrev",
-            "text": "<p>Få besked om nyheder og tilbud før alle andre.</p>",
-            "button_label": "Tilmeld",
-            "disclaimer": "<p>Ved at tilmelde dig accepterer du vores <a href=\"/pages/betalingspolitik\">privatlivspolitik</a></p>",
+            "title": "Newsletter",
+            "text": "<p>Hear about new arrivals and offers before anyone else.</p>",
+            "button_label": "Subscribe",
+            "disclaimer": "<p>By subscribing you accept our <a href=\"/pages/betalingspolitik\">privacy policy</a></p>",
             "show_social": false,
             "container_width": 50
           }
@@ -202,10 +202,10 @@
         "show_locale_selector": false,
         "show_payment_icons": false,
         "show_copyright": true,
-        "copyright_text": "· Alle rettigheder forbeholdes.",
+        "copyright_text": "· All rights reserved.",
         "hide_powered_by": true,
         "show_back_to_top": true,
-        "back_to_top_label": "Til toppen",
+        "back_to_top_label": "Back to top",
         "divider_color": "#2b2c2c",
         "divider_spacing": 10,
         "padding_top": 60,

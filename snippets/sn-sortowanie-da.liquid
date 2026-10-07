@@ -5,14 +5,14 @@
   @param {string} nazwa - option.name, gdy wartosci nie ma na liscie
 {%- endcomment -%}
 {%- case wartosc -%}
-  {%- when 'manual' -%}Udvalgte
-  {%- when 'relevance' -%}Mest relevante
-  {%- when 'best-selling' -%}Mest populære
-  {%- when 'title-ascending' -%}Alfabetisk, A–Å
-  {%- when 'title-descending' -%}Alfabetisk, Å–A
-  {%- when 'price-ascending' -%}Pris, lav til høj
-  {%- when 'price-descending' -%}Pris, høj til lav
-  {%- when 'created-ascending' -%}Ældste først
-  {%- when 'created-descending' -%}Nyeste først
+  {%- when 'manual' -%}Featured
+  {%- when 'relevance' -%}Most relevant
+  {%- when 'best-selling' -%}Best selling
+  {%- when 'title-ascending' -%}Alphabetically, A–Z
+  {%- when 'title-descending' -%}Alphabetically, Z–A
+  {%- when 'price-ascending' -%}Price, low to high
+  {%- when 'price-descending' -%}Price, high to low
+  {%- when 'created-ascending' -%}Date, old to new
+  {%- when 'created-descending' -%}Date, new to old
   {%- else -%}{{ nazwa }}
 {%- endcase -%}

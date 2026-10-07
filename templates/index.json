@@ -16,14 +16,14 @@
           "type": "image",
           "settings": {
             "top_subheading": "",
-            "title": "OP TIL 50 % RABAT",
+            "title": "UP TO 50% OFF",
             "title_size": 80,
-            "subheading": "SLUTTER SØNDAG – RABATTEN TRÆKKES AUTOMATISK, INGEN KODE NØDVENDIG",
+            "subheading": "ENDS SUNDAY – DISCOUNT APPLIED AUTOMATICALLY, NO CODE NEEDED",
             "subheading_caps": true,
             "title_bold": true,
             "link_arrow": true,
             "link": "/collections/all",
-            "link_text": "SHOP UDSALGET",
+            "link_text": "SHOP THE SALE",
             "link_2": "",
             "link_text_2": "",
             "color_accent": "#ffffff",
@@ -56,9 +56,9 @@
             "collection": "womens",
             "image": "shopify://shop_images/Shop_womens_homepage_image_1_dde46446-913a-461f-92b6-bfa291b1386d.webp",
             "eyebrow": "",
-            "heading": "SHOP DAME",
-            "text": "Stilsikkert design, skabt til at blive båret.",
-            "button_label": "SHOP DAME",
+            "heading": "SHOP WOMEN",
+            "text": "Confident design, made to be worn.",
+            "button_label": "SHOP WOMEN",
             "link": "",
             "text_color": "#ffffff"
           }
@@ -69,9 +69,9 @@
             "collection": "mens",
             "image": "shopify://shop_images/shop_mens_homepage_image_1_6a85e41c-21ef-4114-8779-6fbde1cfd4dd.webp",
             "eyebrow": "",
-            "heading": "SHOP HERRE",
-            "text": "Gennemtænkte basics til den moderne garderobe.",
-            "button_label": "SHOP HERRE",
+            "heading": "SHOP MEN",
+            "text": "Considered basics for the modern wardrobe.",
+            "button_label": "SHOP MEN",
             "link": "",
             "text_color": "#ffffff"
           }
@@ -149,12 +149,12 @@
         "c4"
       ],
       "settings": {
-        "title": "POPULÆRT TIL DAMER",
-        "eyebrow": "MEST EFTERSPURGTE",
+        "title": "POPULAR FOR WOMEN",
+        "eyebrow": "MOST WANTED",
         "heading_size": 34,
         "heading_bold": true,
         "view_all_link": "/collections/womens",
-        "view_all_text": "SE ALT TIL DAMER",
+        "view_all_text": "SHOP ALL WOMEN",
         "image_crop": true,
         "image_height": 350,
         "image_height_mobile": 200,
@@ -227,12 +227,12 @@
         "dame_8"
       ],
       "settings": {
-        "title": "UDVALGT TIL DAMER",
-        "eyebrow": "VORES FAVORITTER",
+        "title": "SELECTED FOR WOMEN",
+        "eyebrow": "OUR FAVOURITES",
         "heading_size": 34,
         "heading_bold": true,
         "view_all_plain": true,
-        "view_all_text": "SE ALT TIL DAMER",
+        "view_all_text": "SHOP ALL WOMEN",
         "image_crop": true,
         "image_shape": "portrait",
         "image_height": 500,
@@ -254,10 +254,10 @@
           "settings": {
             "collection": "",
             "image": "shopify://shop_images/Best_seller_homepage_section_image_01436b2e-6070-4599-8fa0-f87425ed8396.webp",
-            "eyebrow": "UDVALGT",
-            "heading": "LAG PÅ LAG TIL DE KØLIGE MÅNEDER.",
-            "text": "Varm strik, frakker og jakker – lavet til efteråret.",
-            "button_label": "SHOP NU",
+            "eyebrow": "SELECTED",
+            "heading": "LAYERS FOR THE COOLER MONTHS.",
+            "text": "Warm knits, coats and jackets – made for autumn.",
+            "button_label": "SHOP NOW",
             "link": "https://www.stilhusetnord.dk/products/thomas-knit-blazer?variant=57627347026293",
             "text_color": "#ffffff"
           }
@@ -334,12 +334,12 @@
         "m4"
       ],
       "settings": {
-        "title": "POPULÆRT TIL HERRER",
-        "eyebrow": "MEST EFTERSPURGTE",
+        "title": "POPULAR FOR MEN",
+        "eyebrow": "MOST WANTED",
         "heading_size": 35,
         "heading_bold": true,
         "view_all_link": "/collections/mens",
-        "view_all_text": "SE ALT TIL HERRER",
+        "view_all_text": "SHOP ALL MEN",
         "image_crop": true,
         "image_height": 350,
         "image_height_mobile": 200,
@@ -412,12 +412,12 @@
         "herre_8"
       ],
       "settings": {
-        "title": "UDVALGT TIL HERRER",
-        "eyebrow": "VORES FAVORITTER",
+        "title": "SELECTED FOR MEN",
+        "eyebrow": "OUR FAVOURITES",
         "heading_size": 34,
         "heading_bold": true,
         "view_all_plain": true,
-        "view_all_text": "SE ALT TIL HERRER",
+        "view_all_text": "SHOP ALL MEN",
         "image_crop": true,
         "image_shape": "portrait",
         "image_height": 500,
@@ -437,7 +437,7 @@
         "t1": {
           "type": "tab",
           "settings": {
-            "label": "Kjoler",
+            "label": "Dresses",
             "collection": "womens-dresses",
             "audience": "all"
           }
@@ -445,7 +445,7 @@
         "t2": {
           "type": "tab",
           "settings": {
-            "label": "Toppe",
+            "label": "Tops",
             "collection": "womens-tops",
             "audience": "all"
           }
@@ -453,7 +453,7 @@
         "t3": {
           "type": "tab",
           "settings": {
-            "label": "Sko",
+            "label": "Shoes",
             "collection": "womens-footwear",
             "audience": "all"
           }
@@ -461,7 +461,7 @@
         "t4": {
           "type": "tab",
           "settings": {
-            "label": "Se alt",
+            "label": "Shop all",
             "collection": "womens",
             "audience": "all"
           }
@@ -475,9 +475,9 @@
       ],
       "disabled": true,
       "settings": {
-        "title": "OPDAG\nVORES BESTSELLERE",
-        "accent_word": "BESTSELLERE",
-        "subtitle": "Se de styles, vores kunder vender tilbage til.",
+        "title": "DISCOVER\nOUR BESTSELLERS",
+        "accent_word": "BESTSELLERS",
+        "subtitle": "The styles our customers keep coming back to.",
         "audience_default": "women",
         "women_handle": "womens",
         "men_handle": "mens",
@@ -488,10 +488,10 @@
         "ratio": "3 / 4",
         "hover_photo": true,
         "show_sale": true,
-        "sale_label": "Tilbud",
+        "sale_label": "Sale",
         "add_where": "hover",
-        "add_label": "Læg i kurv",
-        "pick_label": "Vælg størrelse",
+        "add_label": "Add to cart",
+        "pick_label": "Select size",
         "show_dots": true,
         "dots_max": 4,
         "dots_size": 22,

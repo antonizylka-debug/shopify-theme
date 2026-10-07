@@ -780,7 +780,7 @@
           <div class="pdp__dots" data-pdp-dots>
             {%- for media in product.media -%}
               <button type="button" class="pdp__dot{% if forloop.first %} is-on{% endif %}"
-                      data-pdp-dot="{{ forloop.index0 }}" aria-label="Billede {{ forloop.index }} af {{ product.media.size }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
+                      data-pdp-dot="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }} of {{ product.media.size }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -975,9 +975,9 @@
             {%- if pokaz_tekst -%}
               <p class="pdp__akcja-brw">
                 <span class="pdp__akcja-dot" aria-hidden="true"></span>
-                {{ settings.campaign_name | default: 'Sæsonudsalg' | escape }}
+                {{ settings.campaign_name | default: 'Seasonal sale' | escape }}
                 {%- if settings.campaign_end != blank -%}
-                  <span class="pdp__akcja-czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>slutter om</span> <b data-sn-czas></b></span>
+                  <span class="pdp__akcja-czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>ends in</span> <b data-sn-czas></b></span>
                 {%- endif -%}
               </p>
             {%- endif -%}
@@ -995,7 +995,7 @@
                   -%}
                   {%- if ile != blank and proc != blank -%}
                     <li class="pdp__akcja-prog{% if forloop.last %} pdp__akcja-prog--max{% endif %}">
-                      <span>{{ ile }}{% if forloop.last %}+{% endif %} stk.</span>
+                      <span>{{ ile }}{% if forloop.last %}+{% endif %} items</span>
                       <b>−{{ proc }} %</b>
                     </li>
                   {%- endif -%}
@@ -1327,13 +1327,13 @@
       var ileRozmiarow = rozmiary ? rozmiary.querySelectorAll('[data-pdp-val]').length : 0;
       // przy jednym rozmiarze (albo bez rozmiarow) nie ma czego wybierac
       var wybrany = ileRozmiarow < 2;
-      var WYBIERZ = 'Vælg størrelse';
+      var WYBIERZ = 'Select size';
 
       function stan() {
         cena.innerHTML = teraz ? teraz.innerHTML : '';
         pasek.classList.toggle('is-sale', blokCeny ? blokCeny.classList.contains('pdp__price--sale') : false);
         var r = rozmiary ? rozmiary.querySelector('.is-on') : null;
-        opis.textContent = (wybrany && r) ? 'Størrelse: ' + r.textContent.trim() : '';
+        opis.textContent = (wybrany && r) ? 'Size: ' + r.textContent.trim() : '';
         if (atc.disabled && wybrany) { btn.disabled = true; btn.textContent = BRAK; return; }
         btn.disabled = false;
         btn.textContent = wybrany ? DODAJ : WYBIERZ;
@@ -1496,7 +1496,7 @@
   "settings": [
     { "type": "header", "content": "Danish wording" },
     { "type": "paragraph", "content": "Your product data is English — option names, colours and product types. This only changes what the shopper sees; the data stays as it is, so the collection filters keep matching. Pairs english=dansk, separated by commas. Anything not listed shows unchanged." },
-    { "type": "textarea", "id": "dictionary", "label": "Dictionary", "default": "Color=Farve, Colour=Farve, Size=Størrelse, Black=Sort, White=Hvid, Grey=Grå, Gray=Grå, Brown=Brun, Blue=Blå, Navy=Marineblå, Green=Grøn, Red=Rød, Pink=Rosa, Purple=Lilla, Yellow=Gul, Orange=Orange, Beige=Beige, Khaki=Khaki, Gold=Guld, Multi=Flerfarvet, Burgundy=Bordeaux, Cream=Creme, Ivory=Elfenben, Dresses=Kjoler, Jackets=Jakker, Coats=Frakker, Sweaters=Sweatre, Cardigans=Cardigans, Pants=Bukser, Jeans=Jeans, Shorts=Shorts, Skirts=Nederdele, Shirts=Skjorter, Blouses=Bluser, Polo Shirts=Poloshirts, T-Shirts & Tops=T-shirts og toppe, Hoodies & Sweatshirts=Hættetrøjer, Vests=Veste, Blazers=Blazere, Jumpsuits=Buksedragter, Matching Sets=Sæt, Sneakers=Sneakers, Loafers=Loafers, Boots=Støvler, Dress Shoes=Pæne sko, Sandals=Sandaler, Heels=Hæle, Belts=Bælter, Jewelry=Smykker, Sunglasses=Solbriller, Underwear=Undertøj, Bags=Tasker" },
+    { "type": "textarea", "id": "dictionary", "label": "Dictionary", "default": "Colour=Color" },
 
     { "type": "header", "content": "Layout" },
     { "type": "checkbox", "id": "show_crumbs", "label": "Breadcrumbs", "default": true },
@@ -1526,7 +1526,7 @@
       ]
     },
     { "type": "range", "id": "photo_visible", "label": "Photos shown before the button", "default": 5, "min": 2, "max": 20, "step": 1 },
-    { "type": "text", "id": "more_label", "label": "Show more button", "default": "Vis flere billeder" },
+    { "type": "text", "id": "more_label", "label": "Show more button", "default": "Show more images" },
     { "type": "range", "id": "photo_gap", "label": "Gap between photos", "default": 6, "min": 0, "max": 20, "step": 1, "unit": "px" },
     { "type": "text", "id": "photo_ratio", "label": "Photo shape", "default": "3 / 4" },
     { "type": "paragraph", "content": "Model note under the photos, split by department because the models differ in height and size. A product's own custom.model_size metafield wins over both — that is also where you clear it for a product photographed without a model. Leave a field empty and nothing shows." },
@@ -1538,26 +1538,26 @@
     { "type": "range", "id": "title_size_m", "label": "Title (mobile)", "default": 22, "min": 16, "max": 32, "step": 1, "unit": "px" },
     { "type": "range", "id": "price_size", "label": "Price", "default": 28, "min": 18, "max": 44, "step": 1, "unit": "px" },
     { "type": "range", "id": "price_size_m", "label": "Price (mobile)", "default": 24, "min": 16, "max": 36, "step": 1, "unit": "px" },
-    { "type": "text", "id": "atc_label", "label": "Button", "default": "Læg i kurv" },
+    { "type": "text", "id": "atc_label", "label": "Button", "default": "Add to cart" },
     { "type": "checkbox", "id": "pilne_show", "label": "Sale text in the discount box", "info": "Heading = campaign name, countdown = campaign end (Theme settings, Campaign).", "default": true },
-    { "type": "text", "id": "pilne_text", "label": "Sale notice text", "default": "Stor efterspørgsel – begrænset antal tilbage. Kan du trykke »Læg i kurv«, er den der endnu." },
+    { "type": "text", "id": "pilne_text", "label": "Sale notice text", "default": "High demand – limited quantities left. If you can tap »Add to cart«, it's still available." },
     { "type": "text", "id": "vat_note", "label": "Next to the price", "default": "inkl. moms" },
     { "type": "text", "id": "label_normal", "label": "Before the normal price", "default": "Normalpris:" },
-    { "type": "text", "id": "label_omnibus", "label": "Before the 30-day price", "default": "Laveste pris 30 dage før nedsættelsen:" },
+    { "type": "text", "id": "label_omnibus", "label": "Before the 30-day price", "default": "Lowest price in the 30 days before the discount:" },
     { "type": "checkbox", "id": "show_omnibus", "label": "Show the 30-day price", "info": "Reads custom.lowest_price_30d", "default": true },
 
     { "type": "header", "content": "Badges next to the price" },
-    { "type": "text", "id": "pb_sale_label", "label": "On a discounted product", "default": "TILBUD" },
+    { "type": "text", "id": "pb_sale_label", "label": "On a discounted product", "default": "SALE" },
     { "type": "text", "id": "pb_extra_label", "label": "Second badge", "info": "Left empty it is hidden. A product's own custom.price_badge metafield wins over this." },
 
     { "type": "header", "content": "Buy more, pay less" },
     { "type": "checkbox", "id": "show_promo", "label": "Show the box", "default": true },
-    { "type": "text", "id": "promo_title", "label": "Heading", "default": "Køb flere — spar mere" },
-    { "type": "textarea", "id": "promo_sub", "label": "Line below", "default": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens." },
+    { "type": "text", "id": "promo_title", "label": "Heading", "default": "Buy more — save more" },
+    { "type": "textarea", "id": "promo_sub", "label": "Line below", "default": "The discount is applied automatically in the cart. Items don't have to match." },
     { "type": "text", "id": "promo_tiers", "label": "Steps", "info": "quantity:percent, separated by commas", "default": "2:10, 3:20, 4:25" },
-    { "type": "text", "id": "promo_qty_word", "label": "Word after the quantity", "default": "stk." },
-    { "type": "text", "id": "promo_head2", "label": "Heading above the steps", "default": "Rabat for flere varer" },
-    { "type": "text", "id": "promo_buy_word", "label": "Before the quantity", "default": "Køb" },
+    { "type": "text", "id": "promo_qty_word", "label": "Word after the quantity", "default": "items" },
+    { "type": "text", "id": "promo_head2", "label": "Heading above the steps", "default": "Multi-buy discount" },
+    { "type": "text", "id": "promo_buy_word", "label": "Before the quantity", "default": "Buy" },
     { "type": "text", "id": "promo_off_word", "label": "After the percentage", "default": "rabat" },
     { "type": "color", "id": "promo_border", "label": "Border", "default": "#e4e6ea" },
     { "type": "color", "id": "promo_bg", "label": "Background", "default": "#f4f3f1" },
@@ -1566,8 +1566,8 @@
     { "type": "header", "content": "Sizes" },
     { "type": "range", "id": "size_cols", "label": "Size tiles per row", "default": 5, "min": 3, "max": 8, "step": 1 },
     { "type": "range", "id": "size_cols_m", "label": "Per row (mobile)", "default": 4, "min": 2, "max": 6, "step": 1 },
-    { "type": "textarea", "id": "help_text", "label": "Size help box", "default": "Ikke sikker på størrelsen? Gå efter målene frem for den størrelse, du plejer at tage." },
-    { "type": "text", "id": "help_link_label", "label": "Link in the help box", "default": "Se målene" },
+    { "type": "textarea", "id": "help_text", "label": "Size help box", "default": "Not sure about your size? Go by the measurements rather than the size you usually wear." },
+    { "type": "text", "id": "help_link_label", "label": "Link in the help box", "default": "See measurements" },
     { "type": "url", "id": "help_link", "label": "Help box target" },
 
     { "type": "header", "content": "Low stock" },
@@ -1579,9 +1579,9 @@
         { "value": "tag", "label": "Products with a tag" }
       ]
     },
-    { "type": "text", "id": "low_stock_tag", "label": "Tag", "default": "Få tilbage" },
+    { "type": "text", "id": "low_stock_tag", "label": "Tag", "default": "Few left" },
     { "type": "checkbox", "id": "show_flag", "label": "Flag on the photos", "default": true },
-    { "type": "text", "id": "flag_label", "label": "Flag text", "default": "Udsalg" },
+    { "type": "text", "id": "flag_label", "label": "Flag text", "default": "Sale" },
     { "type": "range", "id": "flag_top", "label": "Badge distance from the top while scrolling", "default": 90, "min": 0, "max": 200, "step": 5, "unit": "px" },
     { "type": "range", "id": "flag_left", "label": "Badge distance from the left edge", "default": 0, "min": 0, "max": 40, "step": 2, "unit": "px" },
     { "type": "range", "id": "flag_inset", "label": "Badge distance from the top of the photo", "default": 14, "min": 0, "max": 60, "step": 2, "unit": "px" },
@@ -1589,7 +1589,7 @@
     { "type": "range", "id": "flag_gap", "label": "Gap between the two badges", "default": 7, "min": 0, "max": 20, "step": 1, "unit": "px" },
     { "type": "text", "id": "last_label", "label": "Next to the size heading", "default": "Sidste stykker" },
     { "type": "paragraph", "content": "Second badge on the photo, the one you write yourself — nothing reads it from stock levels. A product's own custom.stock_note metafield wins over this." },
-    { "type": "text", "id": "note_label", "label": "Badge you write yourself", "default": "Kun 3 stk. tilbage" },
+    { "type": "text", "id": "note_label", "label": "Badge you write yourself", "default": "Only 3 left" },
     { "type": "color", "id": "note_bg", "label": "Its background", "default": "#f4f3f1" },
     { "type": "color", "id": "note_text", "label": "Its text", "default": "#1c1d1d" },
     { "type": "checkbox", "id": "show_fab", "label": "Small cart button on the photo (mobile)", "default": true },
@@ -1601,8 +1601,8 @@
 
     { "type": "header", "content": "Suggestion under the accordions" },
     { "type": "checkbox", "id": "cross_show", "label": "Show it", "default": true },
-    { "type": "text", "id": "cross_title", "label": "Heading", "default": "Style den med" },
-    { "type": "text", "id": "cross_add", "label": "Button (no longer shown)", "default": "Læg i kurv", "info": "Kept because saved templates still hold this value. The row now adds through the + on each card." },
+    { "type": "text", "id": "cross_title", "label": "Heading", "default": "Style it with" },
+    { "type": "text", "id": "cross_add", "label": "Button (no longer shown)", "default": "Add to cart", "info": "Kept because saved templates still hold this value. The row now adds through the + on each card." },
     { "type": "collection", "id": "cross_collection", "label": "Collection", "info": "Left empty it uses the one this product sits in." },
     { "type": "range", "id": "cross_count", "label": "How many to offer", "default": 8, "min": 2, "max": 20, "step": 1 },
 
@@ -1611,7 +1611,7 @@
     { "type": "checkbox", "id": "show_rating", "label": "Show rating", "default": true },
     { "type": "range", "id": "rating_min", "label": "Hide below this many reviews", "default": 5, "min": 1, "max": 20, "step": 1 },
     { "type": "text", "id": "rating_anchor", "label": "Anchor of the reviews section", "default": "anmeldelser" },
-    { "type": "text", "id": "rating_link_label", "label": "Link text", "default": "Se anmeldelser" },
+    { "type": "text", "id": "rating_link_label", "label": "Link text", "default": "See reviews" },
 
     { "type": "header", "content": "Colours" },
     { "type": "color", "id": "c_text", "label": "Text", "default": "#1c1d1d" },
@@ -1639,9 +1639,9 @@
             { "value": "chat", "label": "Support" }
           ]
         },
-        { "type": "text", "id": "text", "label": "Heading", "default": "Gratis fragt på alle ordrer" },
+        { "type": "text", "id": "text", "label": "Heading", "default": "Free shipping on every order" },
         { "type": "text", "id": "hi", "label": "Highlighted part of the heading", "info": "Added after the heading in the accent colour, e.g. a delivery date" },
-        { "type": "text", "id": "sub", "label": "Line underneath", "info": "A link works here: <a href=\"/pages/faq\">Se mere</a>" }
+        { "type": "text", "id": "sub", "label": "Line underneath", "info": "A link works here: <a href=\"/pages/faq\">Learn more</a>" }
       ]
     },
     {
@@ -1659,11 +1659,11 @@
     {
       "name": "Product page v2",
       "blocks": [
-        { "type": "row", "settings": { "icon": "truck", "text": "Gratis fragt på alle ordrer" } },
-        { "type": "row", "settings": { "icon": "clock", "text": "Afsendes inden for 3-4 hverdage" } },
-        { "type": "row", "settings": { "icon": "return", "text": "30 dages returret" } },
+        { "type": "row", "settings": { "icon": "truck", "text": "Free shipping on every order" } },
+        { "type": "row", "settings": { "icon": "clock", "text": "Ships within 3-4 business days" } },
+        { "type": "row", "settings": { "icon": "return", "text": "30-day returns" } },
         { "type": "acc", "settings": { "title": "Produktinformation", "use_desc": true, "open": true } },
-        { "type": "acc", "settings": { "title": "Fragt og returnering" } }
+        { "type": "acc", "settings": { "title": "Shipping and returns" } }
       ]
     }
   ]

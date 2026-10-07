@@ -80,7 +80,7 @@
               <span class="mnav__oferta-pod" data-mnav-pod>{{ section.settings.mnav_bar_text | escape }}</span>
             {%- endif -%}
             {%- if mnav_koniec != blank -%}
-              <span class="mnav__oferta-pod mnav__oferta-licznik" data-mnav-licznik data-slut="{{ mnav_koniec | escape }}" hidden>Slutter om <b data-mnav-czas></b></span>
+              <span class="mnav__oferta-pod mnav__oferta-licznik" data-mnav-licznik data-slut="{{ mnav_koniec | escape }}" hidden>Ends in <b data-mnav-czas></b></span>
             {%- endif -%}
           </span>
           {%- if section.settings.mnav_bar_cta != blank -%}
@@ -113,7 +113,7 @@
                 var d = Math.floor(s / 86400); s -= d * 86400;
                 var h = Math.floor(s / 3600); s -= h * 3600;
                 var mi = Math.floor(s / 60); s -= mi * 60;
-                czas.textContent = (d > 0 ? d + (d === 1 ? ' dag ' : ' dage ') : '') + dwa(h) + ':' + dwa(mi) + ':' + dwa(s);
+                czas.textContent = (d > 0 ? d + (d === 1 ? ' day ' : ' days ') : '') + dwa(h) + ':' + dwa(mi) + ':' + dwa(s);
                 el.hidden = false;
                 if (pod) pod.hidden = true;
                 return true;
@@ -318,7 +318,7 @@
         {%- endif -%}
       {%- endif -%}
       {%- if settings.social_instagram_link != blank or settings.social_facebook_link != blank or settings.social_tiktok_link != blank or settings.social_pinterest_link != blank or settings.social_youtube_link != blank -%}
-        <p class="mnav__folg appear-animation appear-delay-{{ animation_row }}">Følg os</p>
+        <p class="mnav__folg appear-animation appear-delay-{{ animation_row }}">Follow us</p>
       {%- endif -%}
       <ul class="mobile-nav__social appear-animation appear-delay-{{ animation_row }}">
         {%- if settings.social_instagram_link != blank -%}

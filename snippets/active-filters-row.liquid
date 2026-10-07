@@ -67,11 +67,11 @@
 
     {%- if chip_count > visible_count -%}
       {%- assign hidden_count = chip_count | minus: visible_count -%}
-      <button type="button" class="active-filters__more" data-active-filters-more data-less="Vis færre">
+      <button type="button" class="active-filters__more" data-active-filters-more data-less="Show less">
         +{{ hidden_count }} flere
       </button>
     {%- endif -%}
 
-    <a href="{{ collection.url }}" class="active-filters__clear">Ryd alle</a>
+    <a href="{{ collection.url }}" class="active-filters__clear">Clear all</a>
   </div>
 {%- endif -%}

@@ -120,7 +120,7 @@
             {%- endif -%}
           </p>
           {%- if settings.campaign_end != blank -%}
-            <p class="snk__czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden><span data-sn-etykieta>slutter om</span> <b data-sn-czas></b></p>
+            <p class="snk__czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden><span data-sn-etykieta>ends in</span> <b data-sn-czas></b></p>
           {%- endif -%}
           <div class="snk__kreska" aria-hidden="true"></div>
         {%- endif -%}
@@ -218,12 +218,12 @@
       ]
     },
     { "type": "checkbox", "id": "show_campaign", "label": "Show campaign name and countdown", "default": true },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Køb flere – spar op til 30 %" },
-    { "type": "text", "id": "text", "label": "Text", "default": "Sæsonudsalget er i gang. Jo flere varer du lægger i kurven, jo mere sparer du – oven i udsalgspriserne." },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Buy more – save up to 30%" },
+    { "type": "text", "id": "text", "label": "Text", "default": "The seasonal sale is on. The more items you add to your cart, the more you save – on top of the sale prices." },
     { "type": "text", "id": "tiers", "label": "Steps (items:percent)", "default": "2:10, 3:20, 4:25, 5:30", "info": "Must match the automatic discounts in Shopify, Discounts. The last step also covers more items." },
-    { "type": "text", "id": "tier_word", "label": "Word after the number", "default": "varer" },
-    { "type": "text", "id": "rules", "label": "Short rules", "default": "Bland frit · Trækkes automatisk i kurven · Ingen rabatkode", "info": "Separate with a middle dot (·). Each part gets a tick." },
-    { "type": "text", "id": "button_label", "label": "Button", "default": "Køb nu" },
+    { "type": "text", "id": "tier_word", "label": "Word after the number", "default": "items" },
+    { "type": "text", "id": "rules", "label": "Short rules", "default": "Mix and match · Applied automatically in the cart · No discount code", "info": "Separate with a middle dot (·). Each part gets a tick." },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Shop now" },
     {
       "type": "select", "id": "button_action", "label": "Button does", "default": "scroll",
       "options": [
@@ -232,7 +232,7 @@
       ]
     },
     { "type": "url", "id": "button_link", "label": "Button link", "default": "/collections/all" },
-    { "type": "text", "id": "urgency", "label": "Line under the button", "default": "Populære styles sælger hurtigt – når de er væk, er de væk." },
+    { "type": "text", "id": "urgency", "label": "Line under the button", "default": "Popular styles sell fast – once they're gone, they're gone." },
     { "type": "header", "content": "Look" },
     { "type": "color", "id": "color_bg", "label": "Background (dark - text is white)", "default": "#1c1d1d" },
     { "type": "range", "id": "title_size", "label": "Heading", "default": 38, "min": 24, "max": 56, "step": 1, "unit": "px" },

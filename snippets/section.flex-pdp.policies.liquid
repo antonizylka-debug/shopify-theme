@@ -20,7 +20,7 @@
     {% assign info_shipping_policy_html = 'info.shipping_policy_html' | t: link: shop.shipping_policy.url %}
     
     {%- capture fallback_info_shipping_policy_html -%}
-      <a href='{{ shop.shipping_policy.url }}'>Fragt</a> calculated at checkout.
+      <a href='{{ shop.shipping_policy.url }}'>Shipping</a> calculated at checkout.
     {%- endcapture -%}
 
     {% capture info_shipping_policy_text %}

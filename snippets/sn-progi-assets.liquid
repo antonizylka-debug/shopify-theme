@@ -180,7 +180,7 @@
         var p = x.split(':'); return [Number(p[0]), Number(p[1])];
       }).filter(function (p) { return p[0] > 0 && p[1] > 0; }).sort(function (a, b) { return a[0] - b[0]; });
     }
-    function sztuk(n) { return n === 1 ? 'vare' : 'varer'; }
+    function sztuk(n) { return n === 1 ? 'item' : 'items'; }
 
     function rysuj(el, n) {
       var P = progi(el);
@@ -189,9 +189,9 @@
       P.forEach(function (p) { if (n >= p[0]) osiagniety = p; else if (!nastepny) nastepny = p; });
 
       var msg;
-      if (!nastepny) msg = 'Du har den højeste rabat: <b>ekstra ' + osiagniety[1] + ' %</b>';
-      else if (!osiagniety) msg = 'Tilføj ' + (nastepny[0] - n) + ' ' + sztuk(nastepny[0] - n) + (n ? ' mere' : '') + ' for <b>ekstra ' + nastepny[1] + ' %</b>';
-      else msg = 'Ekstra ' + osiagniety[1] + ' % låst op · Tilføj ' + (nastepny[0] - n) + ' ' + sztuk(nastepny[0] - n) + ' mere for <b>ekstra ' + nastepny[1] + ' %</b>';
+      if (!nastepny) msg = 'You have the highest discount: <b>extra ' + osiagniety[1] + '% off</b>';
+      else if (!osiagniety) msg = 'Add ' + (nastepny[0] - n) + (n ? ' more ' : ' ') + sztuk(nastepny[0] - n) + ' for <b>extra ' + nastepny[1] + '% off</b>';
+      else msg = 'Extra ' + osiagniety[1] + '% unlocked · Add ' + (nastepny[0] - n) + ' more ' + sztuk(nastepny[0] - n) + ' for <b>extra ' + nastepny[1] + '% off</b>';
       el.querySelectorAll('[data-snp-msg]').forEach(function (m) { m.innerHTML = msg; });
       el.querySelectorAll('[data-snp-count]').forEach(function (m) { m.textContent = n; });
       el.querySelectorAll('[data-snp-unit]').forEach(function (m) { m.textContent = sztuk(n); });

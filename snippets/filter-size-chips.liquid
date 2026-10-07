@@ -141,20 +141,20 @@
   endfor
   assign numeric_sorted = numeric_rows | strip | split: ' ' | sort
 
-  assign clothes_title = 'Tøj (EU)'
+  assign clothes_title = 'Clothing (EU)'
   if ctx contains 'bottoms'
-    assign clothes_title = 'Talje'
+    assign clothes_title = 'Waist'
   elsif ctx contains 'accessories'
-    assign clothes_title = 'Numre'
+    assign clothes_title = 'Sizes'
   endif
 
   case size_mode
     when 'bottoms'
-      assign clothes_title = 'Talje'
+      assign clothes_title = 'Waist'
     when 'accessories'
-      assign clothes_title = 'Numre'
+      assign clothes_title = 'Sizes'
     when 'womens_department', 'mens_department', 'womens_clothing', 'mens_clothing', 'footwear'
-      assign clothes_title = 'Tøj (EU)'
+      assign clothes_title = 'Clothing (EU)'
   endcase
 
   assign render_mode = mode | default: 'list'
@@ -327,11 +327,11 @@
     najpierw litery, potem numery EU
   {%- endcomment -%}
   {%- if clothing_chips contains 'data-group-label' -%}
-    <p class="size-group__title">Tøj</p>
+    <p class="size-group__title">Clothing</p>
     <ul class="no-bullets tag-list tag-list--chips">{{ clothing_chips }}</ul>
   {%- endif -%}
   {%- if shoe_chips contains 'data-group-label' -%}
-    <p class="size-group__title">Sko</p>
+    <p class="size-group__title">Shoes</p>
     <ul class="no-bullets tag-list tag-list--chips">{{ shoe_chips }}</ul>
   {%- endif -%}
 {%- endif -%}

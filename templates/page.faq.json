@@ -20,204 +20,204 @@
         "group-1": {
           "type": "group",
           "settings": {
-            "title": "Returnering, bytte og penge tilbage",
-            "nav_label": "Returnering og penge tilbage"
+            "title": "Returns, exchanges and refunds",
+            "nav_label": "Returns and refunds"
           }
         },
         "q-2": {
           "type": "question",
           "settings": {
-            "title": "Hvordan starter jeg en returnering?",
-            "text": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer og den vare, du vil sende tilbage, inden 30 dage efter du har modtaget den. Vi svarer med returadressen og en kort vejledning.</p><p>Vent på vores svar, før du sender noget af sted – pakker, der sendes tilbage på egen hånd, ender ofte på et lager, der ikke kan behandle dem.</p>"
+            "title": "How do I start a return?",
+            "text": "<p>Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number and the item you'd like to return, within 30 days of receiving it. We'll reply with the return address and short instructions.</p><p>Please wait for our reply before sending anything – packages sent back on your own often end up at a warehouse that can't process them.</p>"
           }
         },
         "q-3": {
           "type": "question",
           "settings": {
-            "title": "Hvad kan jeg returnere?",
-            "text": "<p>Alt, der er ubrugt og uvasket, i original stand og med mærkerne stadig på, inden 30 dage efter levering.</p><p>Af hygiejniske grunde kan vi ikke tage smykker til piercing retur, når forseglingen er brudt. Defekte varer håndterer vi for sig – se nedenfor.</p>"
+            "title": "What can I return?",
+            "text": "<p>Anything unworn and unwashed, in original condition with the tags still attached, within 30 days of delivery.</p><p>For hygiene reasons we can't accept piercing jewellery once the seal is broken. Faulty items are handled separately – see below.</p>"
           }
         },
         "q-4": {
           "type": "question",
           "settings": {
-            "title": "Den passer ikke. Kan jeg bytte størrelse?",
-            "text": "<p>Vi bytter ikke størrelser direkte. Send varen tilbage og få pengene retur, og læg en ny ordre i den størrelse, du vil have – så bliver størrelsen ikke solgt til en anden, mens din pakke er undervejs.</p>"
+            "title": "It doesn't fit. Can I exchange the size?",
+            "text": "<p>We don't exchange sizes directly. Send the item back for a refund and place a new order in the size you want – that way the size isn't sold to someone else while your package is on its way.</p>"
           }
         },
         "q-5": {
           "type": "question",
           "settings": {
-            "title": "Hvem betaler returfragten?",
-            "text": "<p>Det gør du selv – medmindre varen var defekt, beskadiget eller ikke den, du bestilte. Så betaler vi.</p><p>Brug en sporbar forsendelse. Indtil pakken er hos os, er den dit ansvar.</p>"
+            "title": "Who pays for return shipping?",
+            "text": "<p>You do – unless the item was faulty, damaged or not what you ordered. Then we pay.</p><p>Use a tracked shipping service. Until the package reaches us, it's your responsibility.</p>"
           }
         },
         "q-6": {
           "type": "question",
           "settings": {
-            "title": "Hvor skal returneringen sendes til?",
-            "text": "<p>Til den adresse, vi sender dig, når du opretter returneringen – ikke til afsenderadressen på pakken. Den er typisk et lager, der ikke kan håndtere returneringer, og pakker sendt dertil er svære at få tilbage.</p>"
+            "title": "Where should I send my return?",
+            "text": "<p>To the address we send you when you start your return – not to the sender address on the package. That's usually a warehouse that can't handle returns, and packages sent there are hard to recover.</p>"
           }
         },
         "q-7": {
           "type": "question",
           "settings": {
-            "title": "Min vare er beskadiget eller forkert. Hvad nu?",
-            "text": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> inden 30 dage efter levering med dit ordrenummer og et par billeder. Vi sender en ny vare eller betaler pengene tilbage – og vi betaler returfragten.</p>"
+            "title": "My item is damaged or wrong. What now?",
+            "text": "<p>Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> within 30 days of delivery with your order number and a few photos. We'll send a replacement or refund you – and we pay for the return shipping.</p>"
           }
         },
         "q-8": {
           "type": "question",
           "settings": {
-            "title": "Hvorfor skal I have billeder?",
-            "text": "<p>Med billeder kan vi oftest afslutte sagen med det samme, uden at du skal sende noget tilbage. De er også det, vi sender videre, når vi rejser sagen hos producenten eller fragtfirmaet.</p>"
+            "title": "Why do you need photos?",
+            "text": "<p>With photos we can usually resolve it straight away, without you having to send anything back. They're also what we pass on when we raise the issue with the maker or the carrier.</p>"
           }
         },
         "q-9": {
           "type": "question",
           "settings": {
-            "title": "Hvor lang tid går der, før jeg får pengene?",
-            "text": "<p>Vi sender pengene tilbage inden 14 dage efter, vi har modtaget din returnering. Derefter går der typisk 3-5 hverdage, før din bank viser beløbet.</p>"
+            "title": "How long until I get my money back?",
+            "text": "<p>We refund you within 14 days of receiving your return. After that it usually takes 3–5 business days for your bank to show the amount.</p>"
           }
         },
         "q-10": {
           "type": "question",
           "settings": {
-            "title": "Får jeg pengene tilbage?",
-            "text": "<p>Ja – til den betalingsmetode, du brugte, og for den fulde pris på de returnerede varer. Returnerer du en hel ordre, får du også den almindelige fragt tilbage.</p>"
+            "title": "Do I get my money back?",
+            "text": "<p>Yes – to the payment method you used, for the full price of the returned items. If you return a whole order, you also get the standard shipping cost back.</p>"
           }
         },
         "group-11": {
           "type": "group",
           "settings": {
-            "title": "Levering og sporing",
-            "nav_label": "Levering og sporing"
+            "title": "Shipping and tracking",
+            "nav_label": "Shipping and tracking"
           }
         },
         "q-12": {
           "type": "question",
           "settings": {
-            "title": "Hvor lang tid tager leveringen?",
-            "text": "<p>Vi pakker og sender ordrer inden for 3-4 hverdage. Derefter tager leveringen 3-6 hverdage mere.</p><p>Bestiller du i weekenden eller på en helligdag, starter vi på ordren den første hverdag efter.</p>"
+            "title": "How long does delivery take?",
+            "text": "<p>We pack and ship orders within 3–4 business days. Delivery then takes another 3–6 business days.</p><p>If you order at the weekend or on a public holiday, we start on your order the next business day.</p>"
           }
         },
         "q-13": {
           "type": "question",
           "settings": {
-            "title": "Hvor er mit sporingsnummer?",
-            "text": "<p>Det kommer på mail, så snart pakken er afsendt – så det findes endnu ikke, mens vi pakker ordren. Du kan også følge den på siden <a href=\"/pages/track-order\">Spor min ordre</a>.</p><p>Kan du ikke finde mailen, så tjek dit spamfilter, før du skriver til os.</p>"
+            "title": "Where is my tracking number?",
+            "text": "<p>It's emailed as soon as the package ships – so it doesn't exist yet while we're packing your order. You can also follow it on the <a href=\"/pages/track-order\">Track my order</a> page.</p><p>Can't find the email? Check your spam folder before writing to us.</p>"
           }
         },
         "q-14": {
           "type": "question",
           "settings": {
-            "title": "Min ordre er forsinket. Hvad gør jeg?",
-            "text": "<p>Sporingen kan være stille i et par dage, mens pakken flytter sig mellem fragtfirmaer. Det betyder ikke i sig selv, at den er væk.</p><p>Er der ikke sket noget i 7 dage, eller er den forventede dato passeret, så skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer, så rykker vi for den.</p>"
+            "title": "My order is late. What should I do?",
+            "text": "<p>Tracking can go quiet for a few days while the package moves between carriers. That alone doesn't mean it's lost.</p><p>If nothing has happened for 7 days, or the expected date has passed, email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number and we'll chase it up.</p>"
           }
         },
         "q-15": {
           "type": "question",
           "settings": {
-            "title": "Jeg har kun fået en del af min ordre. Hvorfor?",
-            "text": "<p>Varerne ligger ikke altid samme sted, så en ordre kan blive sendt i flere pakker med hvert sit sporingsnummer. Resten er på vej, og du betaler ikke ekstra for det.</p><p>Er den sidste pakke ikke kommet inden for en uge efter den første, så skriv til os.</p>"
+            "title": "I only received part of my order. Why?",
+            "text": "<p>Items aren't always stored in the same place, so an order may ship in several packages, each with its own tracking number. The rest is on its way, and you don't pay extra for it.</p><p>If the last package hasn't arrived within a week of the first, write to us.</p>"
           }
         },
         "q-16": {
           "type": "question",
           "settings": {
-            "title": "Sporingen siger leveret, men jeg har ikke fået noget.",
-            "text": "<p>Spørg dem, du bor sammen med, og naboerne, og tjek pakkeboksen eller udleveringsstedet i nærheden – fragtfirmaer lægger ofte pakker der og registrerer dem som leveret.</p><p>Er den stadig ikke dukket op, så skriv til os inden 7 dage efter leveringsscanningen, mens fragtfirmaet endnu har oplysningerne.</p>"
+            "title": "Tracking says delivered, but I haven't received anything.",
+            "text": "<p>Ask the people you live with and your neighbours, and check your mailbox or the nearest pickup point – carriers often leave packages there and mark them as delivered.</p><p>If it still hasn't turned up, write to us within 7 days of the delivery scan, while the carrier still has the details.</p>"
           }
         },
         "q-17": {
           "type": "question",
           "settings": {
-            "title": "Tilbyder I ekspreslevering?",
-            "text": "<p>Ikke lige nu. Alle ordrer sendes gratis med sporbar standardlevering, så vi kan ikke love en bestemt dato. Har du en deadline, så regn med 6-10 hverdage.</p>"
+            "title": "Do you offer express delivery?",
+            "text": "<p>Not at the moment. All orders ship free with tracked standard delivery, so we can't promise a specific date. If you have a deadline, allow 6–10 business days.</p>"
           }
         },
         "q-18": {
           "type": "question",
           "settings": {
-            "title": "Hvor leverer I til, og skal jeg betale told?",
-            "text": "<p>Vi leverer til Danmark og til resten af Europa, blandt andet:</p><ul><li><strong>Norden:</strong> Danmark, Sverige, Norge, Finland.</li><li><strong>Resten af Europa:</strong> Tyskland, Holland, Belgien, Frankrig, Østrig, Italien, Spanien, Portugal, Irland, Grækenland og Storbritannien.</li></ul><p>Vi betaler told, importafgifter og gebyrer, så der kommer intet oveni. Vi leverer til private adresser, virksomheder og pakkeshops.</p>"
+            "title": "Where do you ship, and do I pay duties?",
+            "text": "<p>We ship across Canada – to every province and territory.</p><p>We cover duties, import fees and charges, so there's nothing extra to pay on delivery. We deliver to home addresses, businesses and pickup points.</p>"
           }
         },
         "q-19": {
           "type": "question",
           "settings": {
-            "title": "Hvilke fragtfirmaer bruger I?",
-            "text": "<p>Vi bruger etablerede fragtfirmaer – blandt andet PostNord, GLS, DHL, FedEx og UPS, afhængigt af hvor pakken skal hen – så den kommer sikkert og til tiden.</p>"
+            "title": "Which carriers do you use?",
+            "text": "<p>We use established carriers – including Canada Post, UPS, FedEx and DHL, depending on the destination – so your package arrives safely and on time.</p>"
           }
         },
         "group-20": {
           "type": "group",
           "settings": {
-            "title": "Ordrer og ændringer",
-            "nav_label": "Ordrer og ændringer"
+            "title": "Orders and changes",
+            "nav_label": "Orders and changes"
           }
         },
         "q-21": {
           "type": "question",
           "settings": {
-            "title": "Kan jeg annullere min ordre?",
-            "text": "<p>Ja, så længe den ikke er afsendt. Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer hurtigst muligt – der er et kort vindue, før ordren går videre til lageret.</p><p>Er den først sendt, går det hurtigst at tage imod pakken og sende den tilbage.</p>"
+            "title": "Can I cancel my order?",
+            "text": "<p>Yes, as long as it hasn't shipped. Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number as soon as possible – there's a short window before the order goes to the warehouse.</p><p>Once it has shipped, the quickest option is to accept the package and send it back.</p>"
           }
         },
         "q-22": {
           "type": "question",
           "settings": {
-            "title": "Kan jeg ændre leveringsadressen?",
-            "text": "<p>Kun før afsendelsen. Send os den rettede adresse sammen med dit ordrenummer med det samme, så opdaterer vi den, hvis ordren ikke er sendt endnu.</p><p>Fragtfirmaer kan ikke omdirigere en pakke, når den først er i deres system.</p>"
+            "title": "Can I change the shipping address?",
+            "text": "<p>Only before it ships. Send us the corrected address with your order number right away, and we'll update it if the order hasn't shipped yet.</p><p>Carriers can't redirect a package once it's in their system.</p>"
           }
         },
         "q-23": {
           "type": "question",
           "settings": {
-            "title": "Jeg har bestilt noget ved en fejl. Kan I fjerne det?",
-            "text": "<p>Hvis ordren ikke er afsendt, så ja – sig hvilken vare, så tager vi den af og betaler den del tilbage. Er den sendt, skal den gennem den almindelige returnering.</p>"
+            "title": "I ordered something by mistake. Can you remove it?",
+            "text": "<p>If the order hasn't shipped, yes – tell us which item and we'll remove it and refund that part. If it has shipped, it goes through the normal return process.</p>"
           }
         },
         "q-24": {
           "type": "question",
           "settings": {
-            "title": "Kommer en udsolgt størrelse tilbage?",
-            "text": "<p>Nogle gange, men vi kan ikke love det – det afhænger af, hvad vores producenter kan lave. Vi har ikke besked-når-på-lager lige nu, så nyhedsbrevet er den bedste måde at høre, når en serie kommer igen.</p>"
+            "title": "Will a sold-out size come back?",
+            "text": "<p>Sometimes, but we can't promise – it depends on what our makers can produce. We don't have back-in-stock alerts right now, so the newsletter is the best way to hear when a line returns.</p>"
           }
         },
         "q-25": {
           "type": "question",
           "settings": {
-            "title": "Jeg har betalt, men fik ingen bekræftelse på mail.",
-            "text": "<p>Tjek først dit spamfilter, og dernæst den mailadresse du skrev i kassen – ét forkert tegn er den typiske årsag.</p><p>Mangler den stadig, så skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med det navn og den adresse, du bestilte under, så sender vi den igen. En manglende mail betyder ikke, at ordren gik galt.</p>"
+            "title": "I paid but didn't get a confirmation email.",
+            "text": "<p>First check your spam folder, then the email address you entered at checkout – a single wrong character is the usual cause.</p><p>Still missing? Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with the name and address you ordered under, and we'll resend it. A missing email doesn't mean the order went wrong.</p>"
           }
         },
         "group-26": {
           "type": "group",
           "settings": {
-            "title": "Størrelser, materialer og vask",
-            "nav_label": "Størrelser, materialer og vask"
+            "title": "Sizes, materials and care",
+            "nav_label": "Sizes, materials and care"
           }
         },
         "q-27": {
           "type": "question",
           "settings": {
-            "title": "Hvordan finder jeg min størrelse?",
-            "text": "<p>Størrelserne varierer fra serie til serie, så gå efter målene på varesiden frem for den størrelse, du plejer at tage.</p><p>Den nemmeste kontrol: mål et stykke tøj, du selv har og synes sidder godt, mens det ligger fladt, og sammenlign.</p>"
+            "title": "How do I find my size?",
+            "text": "<p>Sizes vary from line to line, so go by the measurements on the product page rather than the size you usually wear.</p><p>The easiest check: lay a garment you own and like the fit of flat, measure it, and compare.</p>"
           }
         },
         "q-28": {
           "type": "question",
           "settings": {
-            "title": "Hvor finder jeg de præcise mål?",
-            "text": "<p>I varebeskrivelsen, under billederne. Står det mål, du mangler, ikke der, så skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med varens navn, så finder vi det, før du bestiller.</p>"
+            "title": "Where can I find the exact measurements?",
+            "text": "<p>In the product description, below the photos. If the measurement you need isn't there, email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with the product name and we'll find it before you order.</p>"
           }
         },
         "q-29": {
           "type": "question",
           "settings": {
-            "title": "Hvordan vasker og plejer jeg varen?",
-            "text": "<p>Følg vaskemærket i tøjet – det går forud for alle generelle råd.</p><p>Som tommelfingerregel: vask ved 30°C på skåneprogram, vend print og mørke farver ud, lad tørretumbleren stå, og tør strik fladt frem for på en bøjle.</p>"
+            "title": "How do I wash and care for my item?",
+            "text": "<p>Follow the care label in the garment – it takes priority over any general advice.</p><p>As a rule of thumb: wash at 30°C on a gentle cycle, turn prints and dark colours inside out, skip the dryer, and dry knits flat rather than on a hanger.</p>"
           }
         }
       },
@@ -253,14 +253,14 @@
         "q-29"
       ],
       "settings": {
-        "eyebrow": "Hjælp",
-        "title": "Ofte stillede spørgsmål",
-        "subheading": "Ligetil svar på det, vi oftest bliver spurgt om.",
+        "eyebrow": "Help",
+        "title": "Frequently asked questions",
+        "subheading": "Straight answers to what we're asked most.",
         "show_nav": true,
-        "nav_title": "På denne side",
-        "contact_title": "Mangler du stadig hjælp?",
-        "contact_text": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer. Mandag til fredag, 9.00-18.00 dansk tid.<br/>Vi svarer på alle beskeder, normalt inden for 1-2 hverdage.</p>",
-        "contact_button_label": "Kontakt os",
+        "nav_title": "On this page",
+        "contact_title": "Still need help?",
+        "contact_text": "<p>Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number. Monday to Friday, 9:00–18:00 CET.<br/>We answer every message, usually within 1–2 business days.</p>",
+        "contact_button_label": "Contact us",
         "contact_button_link": "/pages/contact",
         "padding_bottom": 96,
         "padding_bottom_mobile": 56,

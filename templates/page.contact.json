@@ -29,51 +29,51 @@
           "type": "support",
           "settings": {
             "icon": "clock",
-            "label": "Svartid",
-            "value": "1-2 hverdage"
+            "label": "Response time",
+            "value": "1–2 business days"
           }
         },
         "support_KQYaGF": {
           "type": "support",
           "settings": {
             "icon": "clock",
-            "label": "ÅBNINGSTIDER",
-            "value": "Mandag til fredag, 9.00-18.00"
+            "label": "HOURS",
+            "value": "Monday to Friday, 9:00–18:00 CET"
           }
         },
         "faq-1": {
           "type": "faq",
           "settings": {
-            "question": "Hvor hurtigt svarer I?",
-            "answer": "<p>Inden for 1-2 hverdage, mandag til fredag. Skriver du i weekenden, svarer vi den første hverdag efter.</p>"
+            "question": "How quickly do you reply?",
+            "answer": "<p>Within 1–2 business days, Monday to Friday. If you write at the weekend, we'll reply on the next business day.</p>"
           }
         },
         "faq-2": {
           "type": "faq",
           "settings": {
-            "question": "Kan jeg ændre eller annullere en ordre efter køb?",
-            "answer": "<p>Ja, så længe den ikke er afsendt. Send os en mail med dit ordrenummer med det samme – der er et kort vindue, før ordren går videre til lageret.</p>"
+            "question": "Can I change or cancel an order after purchase?",
+            "answer": "<p>Yes, as long as it hasn't shipped. Email us your order number right away – there's a short window before the order goes to the warehouse.</p>"
           }
         },
         "faq-3": {
           "type": "faq",
           "settings": {
-            "question": "Hvor er min ordre?",
-            "answer": "<p>Dit sporingsnummer kommer på mail, så snart pakken er afsendt, og du kan følge den på siden <a href=\"/pages/track-order\">Spor min ordre</a>. Er der ikke sket noget i 7 dage, så skriv til os.</p>"
+            "question": "Where is my order?",
+            "answer": "<p>Your tracking number is emailed as soon as the package ships, and you can follow it on the <a href=\"/pages/track-order\">Track my order</a> page. If nothing has happened for 7 days, write to us.</p>"
           }
         },
         "faq-4": {
           "type": "faq",
           "settings": {
-            "question": "Hvordan returnerer eller bytter jeg en vare?",
-            "answer": "<p>Skriv til os inden 30 dage efter levering, så sender vi returadressen. Vi bytter ikke størrelser direkte – send varen tilbage og læg en ny ordre i den størrelse, du vil have.</p>"
+            "question": "How do I return or exchange an item?",
+            "answer": "<p>Write to us within 30 days of delivery and we'll send you the return address. We don't exchange sizes directly – send the item back and place a new order in the size you want.</p>"
           }
         },
         "faq-5": {
           "type": "faq",
           "settings": {
-            "question": "Hvordan finder jeg den rigtige størrelse?",
-            "answer": "<p>Gå efter målene på varesiden frem for den størrelse, du plejer at tage. Der er mere i vores <a href=\"/pages/faq\">spørgsmål og svar</a>.</p>"
+            "question": "How do I find the right size?",
+            "answer": "<p>Go by the measurements on the product page rather than the size you usually wear. There's more in our <a href=\"/pages/faq\">FAQ</a>.</p>"
           }
         }
       },
@@ -89,19 +89,19 @@
       ],
       "settings": {
         "show_breadcrumbs": true,
-        "home_label": "Forside",
-        "title": "Skriv til os",
-        "tagline": "Spørgsmål om en ordre, en størrelse, eller vil du bare sige hej? Der sidder altid et menneske og svarer.",
+        "home_label": "Home",
+        "title": "Write to us",
+        "tagline": "A question about an order or a size, or just want to say hi? There's always a real person on the other end.",
         "image": "shopify://shop_images/New_Hero_Mobile.webp",
         "image_height": 860,
-        "support_title": "Kundeservice",
-        "support_note": "Skriv til os – et menneske svarer, typisk inden for 1-2 hverdage.",
-        "form_title": "Send os en besked",
-        "form_note": "Vi svarer typisk inden for 1-2 hverdage.",
-        "button_label": "Send besked",
-        "faq_eyebrow": "Spørgsmål og svar",
-        "faq_title": "Ofte stillede spørgsmål",
-        "faq_sub": "Hurtige svar på det, vi oftest bliver spurgt om.",
+        "support_title": "Customer service",
+        "support_note": "Write to us – a real person replies, usually within 1–2 business days.",
+        "form_title": "Send us a message",
+        "form_note": "We usually reply within 1–2 business days.",
+        "button_label": "Send message",
+        "faq_eyebrow": "FAQ",
+        "faq_title": "Frequently asked questions",
+        "faq_sub": "Quick answers to what we're asked most.",
         "color_text": "#1c1d1d",
         "color_muted": "#474b52",
         "color_soft": "#6e6e6e",

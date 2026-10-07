@@ -16,36 +16,36 @@
           "type": "row",
           "settings": {
             "icon": "truck",
-            "text": "Gratis fragt",
+            "text": "Free shipping",
             "hi": "",
-            "sub": "På alle ordrer, ingen minimumskøb"
+            "sub": "On every order, no minimum"
           }
         },
         "row-2": {
           "type": "row",
           "settings": {
             "icon": "clock",
-            "text": "Afsendes inden for 3-4 hverdage",
+            "text": "Ships within 3–4 business days",
             "hi": "",
-            "sub": "Derefter 3-6 hverdage med levering"
+            "sub": "Then 3–6 business days for delivery"
           }
         },
         "row-3": {
           "type": "row",
           "settings": {
             "icon": "return",
-            "text": "30 dages returret",
+            "text": "30-day returns",
             "hi": "",
-            "sub": "Fra den dag du modtager pakken"
+            "sub": "From the day you receive your package"
           }
         },
         "row-4": {
           "type": "row",
           "settings": {
             "icon": "lock",
-            "text": "Sikker betaling",
+            "text": "Secure checkout",
             "hi": "",
-            "sub": "Krypteret og uden gebyrer"
+            "sub": "Encrypted, with no fees"
           }
         },
         "acc-1": {
@@ -53,16 +53,16 @@
           "settings": {
             "title": "Produktinformation",
             "use_desc": true,
-            "text": "<p>Skriv teksten her.</p>",
+            "text": "<p>Write your text here.</p>",
             "open": true
           }
         },
         "acc-2": {
           "type": "acc",
           "settings": {
-            "title": "Fragt og returnering",
+            "title": "Shipping and returns",
             "use_desc": false,
-            "text": "<p><strong>Levering</strong></p><p>Vi pakker og sender inden for 3-4 hverdage. Derefter tager leveringen 3-6 hverdage mere. Fragten er gratis på alle ordrer, og du får et sporingsnummer på mail, så snart pakken er afsendt.</p><p><strong>Returnering</strong></p><p>Du har 30 dage fra levering. Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer, så sender vi returadressen.</p>",
+            "text": "<p><strong>Shipping</strong></p><p>We pack and ship within 3–4 business days. Delivery then takes another 3–6 business days. Shipping is free on every order, and you'll get a tracking number by email as soon as your package ships.</p><p><strong>Returns</strong></p><p>You have 30 days from delivery. Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number and we'll send you the return address.</p>",
             "open": false
           }
         },
@@ -71,7 +71,7 @@
           "settings": {
             "title": "Kundeservice",
             "use_desc": false,
-            "text": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer.</p><p>Mandag til fredag, 9.00-18.00. Vi svarer typisk inden for 1-2 hverdage.</p>",
+            "text": "<p>Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number.</p><p>Monday to Friday, 9:00–18:00 CET. We usually reply within 1–2 business days.</p>",
             "open": false
           }
         }
@@ -86,7 +86,7 @@
         "acc-3"
       ],
       "settings": {
-        "dictionary": "Color=Farve, Colour=Farve, Size=Størrelse, Black=Sort, White=Hvid, Grey=Grå, Gray=Grå, Brown=Brun, Blue=Blå, Navy=Marineblå, Green=Grøn, Red=Rød, Pink=Rosa, Purple=Lilla, Yellow=Gul, Orange=Orange, Beige=Beige, Khaki=Khaki, Gold=Guld, Multi=Flerfarvet, Burgundy=Bordeaux, Cream=Creme, Ivory=Elfenben, Dresses=Kjoler, Jackets=Jakker, Coats=Frakker, Sweaters=Sweatre, Cardigans=Cardigans, Pants=Bukser, Jeans=Jeans, Shorts=Shorts, Skirts=Nederdele, Shirts=Skjorter, Blouses=Bluser, Polo Shirts=Poloshirts, T-Shirts & Tops=T-shirts og toppe, Hoodies & Sweatshirts=Hættetrøjer, Vests=Veste, Blazers=Blazere, Jumpsuits=Buksedragter, Matching Sets=Sæt, Sneakers=Sneakers, Loafers=Loafers, Boots=Støvler, Dress Shoes=Pæne sko, Sandals=Sandaler, Heels=Hæle, Belts=Bælter, Jewelry=Smykker, Sunglasses=Solbriller, Underwear=Undertøj, Bags=Tasker",
+        "dictionary": "Colour=Color",
         "show_crumbs": true,
         "media_w": 54,
         "info_w": 42,
@@ -97,7 +97,7 @@
         "big_per_row": "2",
         "small_per_row": "2",
         "photo_visible": 6,
-        "more_label": "Vis flere billeder",
+        "more_label": "Show more images",
         "photo_gap": 6,
         "photo_ratio": "3 / 4",
         "model_note_women": "",
@@ -106,31 +106,31 @@
         "title_size_m": 22,
         "price_size": 28,
         "price_size_m": 24,
-        "atc_label": "Læg i kurv",
+        "atc_label": "Add to cart",
         "vat_note": "inkl. moms",
         "label_normal": "Normalpris:",
-        "label_omnibus": "Laveste pris 30 dage før nedsættelsen:",
+        "label_omnibus": "Lowest price in the 30 days before the discount:",
         "show_omnibus": true,
-        "pb_sale_label": "TILBUD",
+        "pb_sale_label": "SALE",
         "pb_extra_label": "",
         "show_promo": true,
-        "promo_title": "Køb flere — spar mere",
-        "promo_sub": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens.",
+        "promo_title": "Buy more — save more",
+        "promo_sub": "The discount is applied automatically in the cart. Items don't need to match.",
         "promo_tiers": "2:10, 3:20, 4:25, 5:30",
-        "promo_qty_word": "varer",
-        "promo_head2": "Rabat for flere varer",
-        "promo_buy_word": "Køb",
+        "promo_qty_word": "items",
+        "promo_head2": "Multi-buy discount",
+        "promo_buy_word": "Buy",
         "promo_off_word": "rabat",
         "promo_border": "#e4e6ea",
         "promo_bg": "#f2f3f5",
         "promo_accent": "#23213a",
         "size_cols": 5,
         "size_cols_m": 4,
-        "help_text": "Ikke sikker på størrelsen? Gå efter målene frem for den størrelse, du plejer at tage.",
-        "help_link_label": "Se målene",
+        "help_text": "Not sure about the size? Go by the measurements rather than the size you usually wear.",
+        "help_link_label": "See measurements",
         "help_link": "/pages/size-guide",
         "low_stock": "all",
-        "low_stock_tag": "Få tilbage",
+        "low_stock_tag": "Few left",
         "show_flag": true,
         "flag_label": "Udsalg",
         "flag_top": 90,
@@ -139,15 +139,15 @@
         "flag_radius": 3,
         "flag_gap": 7,
         "last_label": "Sidste stykker",
-        "note_label": "Kun 3 stk. tilbage",
+        "note_label": "Only 3 left",
         "note_bg": "#ffffff",
         "note_text": "#1c1d1d",
         "show_fab": true,
         "row_accent": "#d6332e",
         "row_hi": "#1f7a3d",
         "cross_show": true,
-        "cross_title": "Style den med",
-        "cross_add": "Læg i kurv",
+        "cross_title": "Style it with",
+        "cross_add": "Add to cart",
         "cross_collection": "",
         "cross_count": 8,
         "show_rating": true,
@@ -169,7 +169,7 @@
         "t1": {
           "type": "tab",
           "settings": {
-            "label": "Kjoler",
+            "label": "Dresses",
             "collection": "womens-dresses",
             "audience": "women"
           }
@@ -185,7 +185,7 @@
         "t3": {
           "type": "tab",
           "settings": {
-            "label": "Sko",
+            "label": "Shoes",
             "collection": "womens-footwear",
             "audience": "women"
           }
@@ -193,7 +193,7 @@
         "t4": {
           "type": "tab",
           "settings": {
-            "label": "Se alt",
+            "label": "Shop all",
             "collection": "womens",
             "audience": "women"
           }
@@ -201,7 +201,7 @@
         "m1": {
           "type": "tab",
           "settings": {
-            "label": "Jakker",
+            "label": "Jackets",
             "collection": "mens-jackets-and-coats",
             "audience": "men"
           }
@@ -217,7 +217,7 @@
         "m3": {
           "type": "tab",
           "settings": {
-            "label": "Sko",
+            "label": "Shoes",
             "collection": "mens-footwear",
             "audience": "men"
           }
@@ -225,7 +225,7 @@
         "m4": {
           "type": "tab",
           "settings": {
-            "label": "Se alt",
+            "label": "Shop all",
             "collection": "mens",
             "audience": "men"
           }
@@ -242,9 +242,9 @@
         "m4"
       ],
       "settings": {
-        "title": "OPDAG\nVORES BESTSELLERE",
+        "title": "DISCOVER\nOUR BESTSELLERS",
         "accent_word": "BESTSELLERE",
-        "subtitle": "Se de styles, vores kunder vender tilbage til.",
+        "subtitle": "The styles our customers keep coming back to.",
         "count": 24,
         "per_view": 4,
         "per_view_mobile": 2,
@@ -252,7 +252,7 @@
         "ratio": "3 / 4",
         "hover_photo": true,
         "show_sale": true,
-        "sale_label": "Tilbud",
+        "sale_label": "Sale",
         "show_dots": true,
         "dots_max": 3,
         "note_source": "type",
@@ -288,10 +288,10 @@
         "image": "shopify://shop_images/about_us_image_2.webp",
         "bleed": true,
         "ratio": "4 / 3",
-        "title": "30 dages pengene-tilbage-garanti",
-        "text": "<p>Vi står inde for det tøj, vi sælger. Derfor er hver eneste ordre dækket af 30 dages returret — regnet fra den dag pakken lander hos dig, ikke fra den dag du bestiller.</p><p>Passer den ikke, eller er den ikke, som du havde forestillet dig, skriver du til os med dit ordrenummer. Du får returadressen i svaret, og pengene er tilbage på din konto, så snart varen er nået frem til os.</p>",
+        "title": "30-day money-back guarantee",
+        "text": "<p>We stand behind the clothes we sell. That's why every order comes with 30-day returns — counted from the day the package reaches you, not the day you order.</p><p>If it doesn't fit, or isn't what you imagined, write to us with your order number. You'll get the return address in our reply, and your money is back in your account as soon as the item reaches us.</p>",
         "list": "",
-        "note": "Ingen formularer og ingen forklaringer. En mail er nok.",
+        "note": "No forms and no explanations. One email is enough.",
         "image_width": 40,
         "max_width": 900,
         "gap": 48,
@@ -329,18 +329,18 @@
       ],
       "settings": {
         "eyebrow": "ANMELDELSER",
-        "title": "Det siger vores kunder",
+        "title": "What our customers say",
         "anchor": "anmeldelser",
-        "count_label": "Baseret på",
+        "count_label": "Based on",
         "verdict_high": "Fremragende",
         "verdict_mid": "Godt",
         "verdict_low": "Middel",
-        "rated_label": "Bedømt",
-        "based_label": "ud fra",
+        "rated_label": "Rated",
+        "based_label": "out of",
         "reviews_word": "anmeldelser",
         "star_word": "stjerner",
-        "verified_label": "Verificeret køb",
-        "empty_text": "Der er endnu ingen anmeldelser.",
+        "verified_label": "Verified purchase",
+        "empty_text": "There are no reviews yet.",
         "show_distribution": false,
         "columns": 3,
         "title_size": 19,
@@ -365,15 +365,15 @@
           "type": "question",
           "settings": {
             "question": "Hvor lang tid tager leveringen?",
-            "answer": "<p>Vi pakker og sender ordrer inden for 3-4 hverdage. Derefter tager leveringen 3-6 hverdage mere.</p><p>Bestiller du i weekenden eller på en helligdag, starter vi på ordren den første hverdag efter.</p>",
+            "answer": "<p>We pack and ship orders within 3–4 business days. Delivery then takes another 3–6 business days.</p><p>If you order at the weekend or on a public holiday, we start on your order the next business day.</p>",
             "open_by_default": true
           }
         },
         "q-2": {
           "type": "question",
           "settings": {
-            "question": "Hvordan finder jeg min størrelse?",
-            "answer": "<p>Størrelserne varierer fra serie til serie, så gå efter målene på varesiden frem for den størrelse, du plejer at tage.</p><p>Den nemmeste kontrol: mål et stykke tøj, du selv har og synes sidder godt, mens det ligger fladt, og sammenlign.</p>",
+            "question": "How do I find my size?",
+            "answer": "<p>Sizes vary from line to line, so go by the measurements on the product page rather than the size you usually wear.</p><p>The easiest check: lay a garment you own and like the fit of flat, measure it, and compare.</p>",
             "open_by_default": false
           }
         },
@@ -381,15 +381,15 @@
           "type": "question",
           "settings": {
             "question": "Hvordan starter jeg en returnering?",
-            "answer": "<p>Skriv til <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> med dit ordrenummer og den vare, du vil sende tilbage, inden 30 dage efter du har modtaget den. Vi svarer med returadressen og en kort vejledning.</p><p>Vent på vores svar, før du sender noget af sted – pakker, der sendes tilbage på egen hånd, ender ofte på et lager, der ikke kan behandle dem.</p>",
+            "answer": "<p>Email <a href=\"mailto:kontakt@stilhusetnord.dk\">kontakt@stilhusetnord.dk</a> with your order number and the item you'd like to return, within 30 days of receiving it. We'll reply with the return address and short instructions.</p><p>Please wait for our reply before sending anything – packages sent back on your own often end up at a warehouse that can't process them.</p>",
             "open_by_default": false
           }
         },
         "q-4": {
           "type": "question",
           "settings": {
-            "question": "Den passer ikke. Kan jeg bytte størrelse?",
-            "answer": "<p>Vi bytter ikke størrelser direkte. Send varen tilbage og få pengene retur, og læg en ny ordre i den størrelse, du vil have – så bliver størrelsen ikke solgt til en anden, mens din pakke er undervejs.</p>",
+            "question": "It doesn't fit. Can I exchange the size?",
+            "answer": "<p>We don't exchange sizes directly. Send the item back for a refund and place a new order in the size you want – that way the size isn't sold to someone else while your package is on its way.</p>",
             "open_by_default": false
           }
         },
@@ -397,15 +397,15 @@
           "type": "question",
           "settings": {
             "question": "Hvem betaler returfragten?",
-            "answer": "<p>Det gør du selv – medmindre varen var defekt, beskadiget eller ikke den, du bestilte. Så betaler vi.</p><p>Brug en sporbar forsendelse. Indtil pakken er hos os, er den dit ansvar.</p>",
+            "answer": "<p>You do – unless the item was faulty, damaged or not what you ordered. Then we pay.</p><p>Use a tracked shipping service. Until the package reaches us, it's your responsibility.</p>",
             "open_by_default": false
           }
         },
         "q-6": {
           "type": "question",
           "settings": {
-            "question": "Hvor leverer I til, og skal jeg betale told?",
-            "answer": "<p>Vi leverer til Danmark og til resten af Europa, blandt andet:</p><ul><li><strong>Norden:</strong> Danmark, Sverige, Norge, Finland.</li><li><strong>Resten af Europa:</strong> Tyskland, Holland, Belgien, Frankrig, Østrig, Italien, Spanien, Portugal, Irland, Grækenland og Storbritannien.</li></ul><p>Vi betaler told, importafgifter og gebyrer, så der kommer intet oveni. Vi leverer til private adresser, virksomheder og pakkeshops.</p>",
+            "question": "Where do you ship, and do I pay duties?",
+            "answer": "<p>We ship across Canada – to every province and territory.</p><p>We cover duties, import fees and charges, so there's nothing extra to pay on delivery. We deliver to home addresses, businesses and pickup points.</p>",
             "open_by_default": false
           }
         }
@@ -419,10 +419,10 @@
         "q-6"
       ],
       "settings": {
-        "eyebrow": "SPØRGSMÅL OG SVAR",
-        "title": "Ofte stillede spørgsmål",
-        "subtitle": "Det, folk oftest spørger om, inden de bestiller.",
-        "more_label": "Se alle spørgsmål og svar",
+        "eyebrow": "FAQ",
+        "title": "Frequently asked questions",
+        "subtitle": "What people ask most before they order.",
+        "more_label": "See all FAQs",
         "more_link": "/pages/faq",
         "max_width": 760,
         "title_size": 19,
@@ -441,7 +441,7 @@
       "type": "product-recommendations",
       "disabled": true,
       "settings": {
-        "product_recommendations_heading": "ANBEFALET TIL DIG",
+        "product_recommendations_heading": "RECOMMENDED FOR YOU",
         "related_count": 6,
         "products_per_row": 3
       }

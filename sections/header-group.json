@@ -18,15 +18,15 @@
           "type": "announcement",
           "settings": {
             "text": "Nem returnering",
-            "link_text": "30 dages returret på alle ordrer",
+            "link_text": "30-day returns on every order",
             "link": ""
           }
         },
         "announcement_KLL7pz": {
           "type": "announcement",
           "settings": {
-            "text": "Sæsonudsalg",
-            "link_text": "Op til 50 % rabat, i en begrænset periode",
+            "text": "Seasonal sale",
+            "link_text": "Up to 50% off, for a limited time",
             "link": ""
           }
         }
@@ -64,13 +64,13 @@
         "megamenu_promo_women": {
           "type": "megamenu_promo",
           "settings": {
-            "menu_title": "HERRE",
+            "menu_title": "MEN, HERRE",
             "view_all_link": "shopify://collections/mens",
-            "view_all_label": "SE ALT",
+            "view_all_label": "SHOP ALL",
             "image": "shopify://shop_images/navigation_Image_mens.webp",
-            "eyebrow": "NY SÆSON",
-            "heading": "Herrekollektion",
-            "button_label": "SHOP HERRE",
+            "eyebrow": "NEW SEASON",
+            "heading": "Men's collection",
+            "button_label": "SHOP MEN",
             "link": "shopify://collections/mens",
             "overlay_opacity": 5,
             "text_color": "#ffffff",
@@ -80,13 +80,13 @@
         "megamenu_promo_t6GW6h": {
           "type": "megamenu_promo",
           "settings": {
-            "menu_title": "DAME",
+            "menu_title": "WOMEN, DAME",
             "view_all_link": "shopify://collections/womens",
-            "view_all_label": "SE ALT",
+            "view_all_label": "SHOP ALL",
             "image": "shopify://shop_images/Navigation_image_womens.webp",
-            "eyebrow": "NY SÆSON",
-            "heading": "Damekollektion",
-            "button_label": "SHOP DAME",
+            "eyebrow": "NEW SEASON",
+            "heading": "Women's collection",
+            "button_label": "SHOP WOMEN",
             "link": "shopify://collections/womens",
             "overlay_opacity": 5,
             "text_color": "#ffffff",
@@ -112,7 +112,7 @@
         "megamenu_narrow_dropdowns": false,
         "megamenu_min_links": 5,
         "megamenu_show_counts": true,
-        "megamenu_view_all_label": "SE ALT",
+        "megamenu_view_all_label": "SHOP ALL",
         "megamenu_heading_size": 12,
         "megamenu_heading_weight": 600,
         "megamenu_heading_spacing": 18,
@@ -122,17 +122,17 @@
         "megamenu_row_spacing": 7,
         "megamenu_count_size": 13,
         "megamenu_viewall_size": 12,
-        "mm_hl1_items": "Udsalg",
+        "mm_hl1_items": "Sale, Udsalg",
         "mm_hl1_color": "#d6332e",
         "mm_hl1_bold": true,
-        "mm_hl1_badge": "begrænset",
+        "mm_hl1_badge": "limited",
         "mm_hl1_badge_bg": "#d6332e",
-        "mm_hl2_items": "Nyheder",
+        "mm_hl2_items": "New in, Nyheder",
         "mm_hl2_color": "",
         "mm_hl2_bold": true,
-        "mm_hl2_badge": "NYT",
+        "mm_hl2_badge": "NEW",
         "mm_hl2_badge_bg": "#16150f",
-        "mm_hl3_items": "Vores favoritter",
+        "mm_hl3_items": "Our favourites, Vores favoritter",
         "mm_hl3_color": "",
         "mm_hl3_bold": false,
         "mm_hl3_badge": "★",
@@ -155,8 +155,8 @@
           "type": "item",
           "settings": {
             "icon": "cart",
-            "text": "Gratis fragt på alle ordrer",
-            "text_m": "Gratis fragt",
+            "text": "Free shipping on every order",
+            "text_m": "Free shipping",
             "color": "",
             "link": ""
           }
@@ -165,8 +165,8 @@
           "type": "item",
           "settings": {
             "icon": "lock",
-            "text": "Sikker betaling",
-            "text_m": "Sikker betaling",
+            "text": "Secure checkout",
+            "text_m": "Secure checkout",
             "color": "",
             "link": "",
             "hide_m": true
@@ -176,8 +176,8 @@
           "type": "item",
           "settings": {
             "icon": "swap",
-            "text": "30 dages returret",
-            "text_m": "30 dages retur",
+            "text": "30-day returns",
+            "text_m": "30-day returns",
             "color": "",
             "link": ""
           }

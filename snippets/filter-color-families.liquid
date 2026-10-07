@@ -14,7 +14,7 @@
 {% endcomment %}
 
 {%- liquid
-  assign color_map = 'Sort|#111111|black;onyx,Hvid|#ffffff|white;ivory;cream,Grå|#8b8b8b|grey;gray;charcoal;silver,Beige|#e8dcc4|beige;nude;apricot;sand;oat,Brun|#6b4a2f|brown;chocolate;coffee;mocha;camel;tan;taupe,Blå|#2b4a7d|blue;denim;navy;azure;indigo;teal;turquoise,Grøn|#4a7d55|green;olive;mint;sage;emerald,Khaki|#a89f68|khaki,Rød|#b3262c|red;scarlet;crimson;cherry,Bordeaux|#6b2233|burgundy;wine;maroon;bordeaux,Rosa|#e8a8bb|pink;rose;blush;fuchsia;magenta,Lilla|#6b4a8f|purple;violet;lilac;lavender;plum,Orange|#d2793a|orange;coral;rust;terracotta;peach,Gul|#d8c14a|yellow;mustard;lemon;ochre,Guld|#c9a227|gold;bronze;brass,Flerfarvet|multi|multi;colorful;colourful;rainbow;floral;print;pattern;striped;leopard;pictured' | split: ','
+  assign color_map = 'Black|#111111|black;onyx,White|#ffffff|white;ivory;cream,Grey|#8b8b8b|grey;gray;charcoal;silver,Beige|#e8dcc4|beige;nude;apricot;sand;oat,Brown|#6b4a2f|brown;chocolate;coffee;mocha;camel;tan;taupe,Blue|#2b4a7d|blue;denim;navy;azure;indigo;teal;turquoise,Green|#4a7d55|green;olive;mint;sage;emerald,Khaki|#a89f68|khaki,Red|#b3262c|red;scarlet;crimson;cherry,Burgundy|#6b2233|burgundy;wine;maroon;bordeaux,Pink|#e8a8bb|pink;rose;blush;fuchsia;magenta,Purple|#6b4a8f|purple;violet;lilac;lavender;plum,Orange|#d2793a|orange;coral;rust;terracotta;peach,Yellow|#d8c14a|yellow;mustard;lemon;ochre,Gold|#c9a227|gold;bronze;brass,Multi|multi|multi;colorful;colourful;rainbow;floral;print;pattern;striped;leopard;pictured' | split: ','
 
   comment
     Jedno przejscie po wartosciach: kazdej przypisujemy rodzine wiodaca.
@@ -37,7 +37,7 @@
 
       for family in color_map
         assign family_parts = family | split: '|'
-        if family_parts[0] == 'Flerfarvet'
+        if family_parts[0] == 'Multi'
           continue
         endif
         assign keywords = family_parts[2] | split: ';'
@@ -63,7 +63,7 @@
     if matched_family == blank
       for family in color_map
         assign family_parts = family | split: '|'
-        if family_parts[0] != 'Flerfarvet'
+        if family_parts[0] != 'Multi'
           continue
         endif
         assign keywords = family_parts[2] | split: ';'

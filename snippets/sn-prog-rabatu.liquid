@@ -32,16 +32,16 @@
 <div class="snprog{% if kompakt %} snprog--kompakt{% endif %}"{% if ile == 0 %} hidden{% endif %} data-sn-prog>
   <p class="snprog__txt" data-sn-prog-txt>
     {%- if nastepny == 0 -%}
-      Du får den højeste rabat: <strong>−30 %</strong> på hele kurven.
+      You get the highest discount: <strong>−30%</strong> on your whole cart.
     {%- else -%}
-      Tilføj {{ brakuje }} {% if brakuje == 1 %}vare{% else %}varer{% endif %} mere, og spar <strong>{{ nastepny }} %</strong> på hele kurven.
+      Add {{ brakuje }} more {% if brakuje == 1 %}item{% else %}items{% endif %} and save <strong>{{ nastepny }}%</strong> on your whole cart.
     {%- endif -%}
   </p>
   <div class="snprog__bar" aria-hidden="true"><span class="snprog__fill" data-sn-prog-fill style="width: {{ zapelnienie }}%"></span></div>
   <div class="snprog__steps" aria-hidden="true">
-    <span data-sn-prog-step="2"{% if ile >= 2 %} class="is-on"{% endif %}>2 stk. −10 %</span>
-    <span data-sn-prog-step="3"{% if ile >= 3 %} class="is-on"{% endif %}>3 stk. −20 %</span>
-    <span data-sn-prog-step="4"{% if ile >= 4 %} class="is-on"{% endif %}>4 stk. −25 %</span>
+    <span data-sn-prog-step="2"{% if ile >= 2 %} class="is-on"{% endif %}>2 items −10%</span>
+    <span data-sn-prog-step="3"{% if ile >= 3 %} class="is-on"{% endif %}>3 items −20%</span>
+    <span data-sn-prog-step="4"{% if ile >= 4 %} class="is-on"{% endif %}>4 items −25%</span>
     <span data-sn-prog-step="5"{% if ile >= 5 %} class="is-on"{% endif %}>5+ −30 %</span>
   </div>
 </div>
@@ -76,8 +76,8 @@
         el.hidden = ile === 0;
         var txt = el.querySelector('[data-sn-prog-txt]');
         txt.innerHTML = nastepny === 0
-          ? 'Du får den højeste rabat: <strong>−30 %</strong> på hele kurven.'
-          : 'Tilføj ' + brakuje + ' ' + (brakuje === 1 ? 'vare' : 'varer') + ' mere, og spar <strong>' + nastepny + ' %</strong> på hele kurven.';
+          ? 'You get the highest discount: <strong>−30%</strong> on your whole cart.'
+          : 'Add ' + brakuje + ' more ' + (brakuje === 1 ? 'item' : 'items') + ' and save <strong>' + nastepny + '%</strong> on your whole cart.';
         el.querySelector('[data-sn-prog-fill]').style.width = (Math.min(ile, 5) * 20) + '%';
         el.querySelectorAll('[data-sn-prog-step]').forEach(function (s) {
           s.classList.toggle('is-on', ile >= Number(s.getAttribute('data-sn-prog-step')));

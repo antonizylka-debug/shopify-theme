@@ -9,17 +9,17 @@
   if request.page_type == 'page'
     case page.handle
       when 'about-us'
-        assign t = 'Om os'
+        assign t = 'About us'
       when 'contact'
-        assign t = 'Kontakt os'
+        assign t = 'Contact us'
       when 'faq'
-        assign t = 'Spørgsmål og svar'
+        assign t = 'FAQ'
       when 'track-order'
-        assign t = 'Spor din ordre'
+        assign t = 'Track your order'
       when 'payment-policy'
-        assign t = 'Betaling'
+        assign t = 'Payment'
       when 'size-guide'
-        assign t = 'Størrelsesguide'
+        assign t = 'Size guide'
     endcase
   endif
   echo t

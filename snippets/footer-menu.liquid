@@ -1,7 +1,7 @@
 {%- liquid
   assign tytul_menu = linklists[block.settings.menu].title
   if tytul_menu == 'HELP' or tytul_menu == 'Help'
-    assign tytul_menu = 'Hjælp'
+    assign tytul_menu = 'Help'
   endif
 -%}
 {%- if linklists[block.settings.menu].links.size > 0 -%}
@@ -26,11 +26,11 @@
               Menu polityk w panelu mialo pomieszane linki (Privatlivspolitik
               prowadzil do wysylki). Stala lista = zawsze zgodna ze stronami polityk.
             {%- endcomment -%}
-            <li><a href="/pages/vilkar-og-betingelser">Handelsbetingelser</a></li>
-            <li><a href="/pages/retur-og-refusionspolitik">Retur og refusion</a></li>
-            <li><a href="/pages/forsendelsespolitik">Fragt og levering</a></li>
-            <li><a href="/pages/payment-policy">Betaling</a></li>
-            <li><a href="/pages/betalingspolitik">Privatlivspolitik</a></li>
+            <li><a href="/pages/vilkar-og-betingelser">Terms of service</a></li>
+            <li><a href="/pages/retur-og-refusionspolitik">Returns and refunds</a></li>
+            <li><a href="/pages/forsendelsespolitik">Shipping and delivery</a></li>
+            <li><a href="/pages/payment-policy">Payment</a></li>
+            <li><a href="/pages/betalingspolitik">Privacy policy</a></li>
           {%- else -%}
             {%- for link in linklists[block.settings.menu].links -%}
               <li><a href="{{ link.url }}">{{ link.title }}</a></li>

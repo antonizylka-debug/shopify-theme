@@ -10,7 +10,7 @@
     {% render 'sn-da', tekst: option.name %}
 {%- endcomment -%}
 {%- liquid
-  assign slownik = 'Color=Farve, Colour=Farve, Size=Størrelse, Black=Sort, White=Hvid, Grey=Grå, Gray=Grå, Brown=Brun, Blue=Blå, Navy=Marineblå, Green=Grøn, Red=Rød, Pink=Rosa, Purple=Lilla, Yellow=Gul, Orange=Orange, Beige=Beige, Khaki=Khaki, Gold=Guld, Silver=Sølv, Multi=Flerfarvet, Burgundy=Bordeaux, Wine Red=Vinrød, Cream=Creme, Ivory=Elfenben, Apricot=Abrikos, Camel=Kamel, Dark Grey=Mørkegrå, Light Grey=Lysegrå, Dark Blue=Mørkeblå, Light Blue=Lyseblå, Sky Blue=Himmelblå, Dark Green=Mørkegrøn, Army Green=Armygrøn, Olive=Oliven, Coffee=Kaffe, Rose=Rosa, Light Pink=Lyserød, Material=Materiale, Style=Stil, Pattern=Mønster'
+  assign slownik = 'Colour=Color'
   assign wynik = tekst
   assign szukany = tekst | strip | downcase
   assign pary = slownik | split: ', '

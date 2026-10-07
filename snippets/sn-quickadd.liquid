@@ -12,13 +12,13 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign t_wybierz = 'Vælg'
-  assign t_dodaj = 'Læg i kurv'
-  assign t_dodano = 'Lagt i kurven'
-  assign t_wyprzedane = 'Udsolgt'
-  assign t_zamknij = 'Luk'
-  assign t_blad = 'Noget gik galt. Prøv igen.'
-  assign t_oszczedzasz = 'Spar'
+  assign t_wybierz = 'Select'
+  assign t_dodaj = 'Add to cart'
+  assign t_dodano = 'Added to cart'
+  assign t_wyprzedane = 'Sold out'
+  assign t_zamknij = 'Close'
+  assign t_blad = 'Something went wrong. Please try again.'
+  assign t_oszczedzasz = 'Save'
 -%}
 
 <div class="snq" data-snq hidden>
@@ -302,12 +302,7 @@
        i do koszyka idzie oryginalna wartosc z produktu, bo po niej
        Shopify szuka wariantu. */
     var SLOWNIK = {
-      'color': 'Farve', 'colour': 'Farve', 'size': 'Størrelse',
-      'black': 'Sort', 'white': 'Hvid', 'grey': 'Grå', 'gray': 'Grå', 'brown': 'Brun',
-      'blue': 'Blå', 'navy': 'Marineblå', 'green': 'Grøn', 'red': 'Rød', 'pink': 'Rosa',
-      'purple': 'Lilla', 'yellow': 'Gul', 'orange': 'Orange', 'beige': 'Beige',
-      'khaki': 'Khaki', 'gold': 'Guld', 'multi': 'Flerfarvet', 'burgundy': 'Bordeaux',
-      'cream': 'Creme', 'ivory': 'Elfenben'
+      'colour': 'Color'
     };
     function poDunsku(tekst) {
       var klucz = String(tekst).toLowerCase().trim();

@@ -20,17 +20,17 @@
         "intro": {
           "type": "intro",
           "settings": {
-            "eyebrow": "Om Stilhuset Nord",
-            "heading": "Gennemtænkt tøj til hverdagen.",
-            "text": "<p>Stilhuset Nord er en webshop med tøj, sko og accessories til damer og herrer, bygget op om én idé: tøj, der ligner billederne, kommer, når vi siger det, og stadig ser rigtigt ud efter en sæson i brug.</p><p>Vi sælger i hele Danmark med priser i danske kroner og sporing på hver pakke, vi sender.</p>"
+            "eyebrow": "About Stilhuset Nord",
+            "heading": "Considered clothing for everyday life.",
+            "text": "<p>Stilhuset Nord is an online store for women's and men's clothing, shoes and accessories, built around one idea: clothes that look like the photos, arrive when we say they will, and still look right after a season of wear.</p><p>We ship across Canada with prices in Canadian dollars and tracking on every package we send.</p>"
           }
         },
         "row-why": {
           "type": "row",
           "settings": {
-            "eyebrow": "Derfor startede vi",
-            "heading": "Fordi det skal være nemmere at handle tøj online.",
-            "text": "<p>For meget tøjhandel på nettet er gætteri. Størrelser, der betyder noget forskelligt fra mærke til mærke, billeder der pynter mere end de oplyser, og en kundeservice, der svarer tre dage senere med en standardtekst.</p><p>Vi har bygget Stilhuset Nord op om det, vi selv kan stå for: mål du kan tjekke, før du bestiller, sporing på hver pakke, og et menneske der læser din mail.</p>",
+            "eyebrow": "Why we started",
+            "heading": "Because buying clothes online should be easier.",
+            "text": "<p>Too much online clothes shopping is guesswork. Sizes that mean something different from brand to brand, photos that flatter more than they inform, and customer service that replies three days later with a template.</p><p>We built Stilhuset Nord around what we can stand behind: measurements you can check before you order, tracking on every package, and a real person who reads your email.</p>",
             "image": "shopify://shop_images/about_us_image_2.webp",
             "image_position": "right"
           }
@@ -38,9 +38,9 @@
         "row-how": {
           "type": "row",
           "settings": {
-            "eyebrow": "Sådan arbejder vi",
-            "heading": "Direkte fra producent til din dør.",
-            "text": "<p>Vi arbejder direkte sammen med de producenter, der syer vores tøj, og sender fra deres lagre. Når mellemhandleren er skåret væk, kan vi holde prisen nede uden at gå på kompromis med kvaliteten.</p><p>Det betyder også, at en ordre med flere varer kan komme i mere end én pakke, hver med sin egen sporing. Du betaler ikke ekstra – du får bare mere end én levering.</p>",
+            "eyebrow": "How we work",
+            "heading": "Straight from the maker to your door.",
+            "text": "<p>We work directly with the makers who sew our clothes and ship from their warehouses. Cutting out the middleman lets us keep prices down without compromising on quality.</p><p>It also means an order with several items may arrive in more than one package, each with its own tracking. You don't pay extra – you just get more than one delivery.</p>",
             "image": "shopify://shop_images/about_us_image.webp",
             "image_position": "left"
           }
@@ -48,48 +48,48 @@
         "values-head": {
           "type": "values_head",
           "settings": {
-            "heading": "Det kan du regne med",
-            "text": "<p>Åbenhed er vigtigere end slogans. Her er præcis, hvad du kan forvente, når du handler hos os.</p>"
+            "heading": "What you can count on",
+            "text": "<p>Openness matters more than slogans. Here's exactly what you can expect when you shop with us.</p>"
           }
         },
         "value-1": {
           "type": "value",
           "settings": {
             "icon": "truck",
-            "title": "Sporbar levering",
-            "text": "Hver pakke sendes med sporing, du kan følge fra afsendelsen."
+            "title": "Tracked delivery",
+            "text": "Every package ships with tracking you can follow from dispatch."
           }
         },
         "value-2": {
           "type": "value",
           "settings": {
             "icon": "return",
-            "title": "Nem returnering",
-            "text": "Du har 30 dage fra levering til at sende noget tilbage."
+            "title": "Easy returns",
+            "text": "You have 30 days from delivery to send something back."
           }
         },
         "value-3": {
           "type": "value",
           "settings": {
             "icon": "box",
-            "title": "Hurtig afsendelse",
-            "text": "Din ordre forlader os inden for 3-4 hverdage."
+            "title": "Fast dispatch",
+            "text": "Your order leaves us within 3–4 business days."
           }
         },
         "value-4": {
           "type": "value",
           "settings": {
             "icon": "chat",
-            "title": "Vi er her for dig",
-            "text": "Et menneske svarer – typisk inden for 1-2 hverdage."
+            "title": "We're here for you",
+            "text": "A real person replies – usually within 1–2 business days."
           }
         },
         "row-support": {
           "type": "row",
           "settings": {
-            "eyebrow": "Vi er her for dig",
-            "heading": "Du kan altid få fat i et menneske.",
-            "text": "<p>Har du et spørgsmål om en vare, brug for hjælp til at spore en pakke, eller vil du bare sige hej, er vi kun en mail væk.</p><p><strong>E-mail:</strong> kontakt@stilhusetnord.dk<br/><strong>Åbningstider:</strong> mandag til fredag, 9.00-18.00</p><p>Vi svarer på alle mails, typisk inden for 1-2 hverdage.</p>",
+            "eyebrow": "We're here for you",
+            "heading": "You can always reach a real person.",
+            "text": "<p>Got a question about an item, need help tracking a package, or just want to say hi? We're only an email away.</p><p><strong>Email:</strong> kontakt@stilhusetnord.dk<br/><strong>Hours:</strong> Monday to Friday, 9:00–18:00 CET</p><p>We answer every email, usually within 1–2 business days.</p>",
             "image": "shopify://shop_images/about_us_image_1.webp",
             "image_position": "right"
           }
@@ -97,9 +97,9 @@
         "cta": {
           "type": "cta",
           "settings": {
-            "heading": "Start med den nye sæson.",
-            "text": "<p>Se hele kollektionen, og find det tøj, du faktisk ender med at tage på igen og igen.</p>",
-            "button_label": "Se kollektionen",
+            "heading": "Start with the new season.",
+            "text": "<p>Browse the full collection and find the clothes you'll actually wear again and again.</p>",
+            "button_label": "Shop the collection",
             "button_link": "/collections/all"
           }
         }

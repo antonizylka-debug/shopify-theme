@@ -80,7 +80,7 @@
             <span class="snbund__dot" aria-hidden="true"></span>
             {{ settings.campaign_name | escape }}
             {%- if settings.campaign_end != blank -%}
-              <span class="snbund__licznik" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>slutter om</span> <b data-sn-czas></b></span>
+              <span class="snbund__licznik" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>ends in</span> <b data-sn-czas></b></span>
             {%- endif -%}
           </p>
         {%- endif -%}
@@ -92,7 +92,7 @@
             {%- assign proc = czesci[1] | strip -%}
             {%- if ile != blank and proc != blank -%}
               <li class="snbund__prog{% if forloop.last %} snbund__prog--max{% endif %}">
-                <span class="snbund__ile">{{ ile }}{% if forloop.last %}+{% endif %} stk.</span>
+                <span class="snbund__ile">{{ ile }}{% if forloop.last %}+{% endif %} items</span>
                 <span class="snbund__proc">−{{ proc }} %</span>
               </li>
             {%- endif -%}

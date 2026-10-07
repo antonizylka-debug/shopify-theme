@@ -376,14 +376,14 @@
         var sel = document.createElement('select');
         sel.className = 'snk-card__select';
         sel.setAttribute('data-snk-select', '');
-        sel.setAttribute('aria-label', 'Vælg størrelse');
+        sel.setAttribute('aria-label', 'Select size');
         var pusta = document.createElement('option');
-        pusta.value = ''; pusta.textContent = 'Vælg størrelse';
+        pusta.value = ''; pusta.textContent = 'Select size';
         sel.appendChild(pusta);
         lista.forEach(function (v) {
           var o = document.createElement('option');
           o.value = v.o[iR];
-          o.textContent = nazwa(v) + (v.a ? '' : ' – udsolgt');
+          o.textContent = nazwa(v) + (v.a ? '' : ' – sold out');
           if (!v.a) o.disabled = true;
           sel.appendChild(o);
         });
@@ -557,7 +557,7 @@
             dwa(Math.floor(r / 3600)) + ':' + dwa(Math.floor(r % 3600 / 60)) + ':' + dwa(r % 60));
         } else {
           // po godzinie w pt, w sobote i w niedziele po poludniu -> poniedzialek
-          var dzien = (t.dzien === 5 || t.dzien === 6) ? 'på mandag' : 'i morgen';
+          var dzien = (t.dzien === 5 || t.dzien === 6) ? 'on Monday' : 'tomorrow';
           wstaw(txt, el.getAttribute('data-tekst-nast') || '', '{dag}', dzien);
         }
         el.hidden = false;
