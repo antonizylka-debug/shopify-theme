@@ -20,9 +20,9 @@
         "intro": {
           "type": "intro",
           "settings": {
-            "eyebrow": "About Stilhuset Nord",
+            "eyebrow": "About Dalton Pierce",
             "heading": "Considered clothing for everyday life.",
-            "text": "<p>Stilhuset Nord is an online store for women's and men's clothing, shoes and accessories, built around one idea: clothes that look like the photos, arrive when we say they will, and still look right after a season of wear.</p><p>We ship across Canada with prices in Canadian dollars and tracking on every package we send.</p>"
+            "text": "<p>Dalton Pierce is an online store for women's and men's clothing, shoes and accessories, built around one idea: clothes that look like the photos, arrive when we say they will, and still look right after a season of wear.</p><p>We ship across Canada with prices in Canadian dollars and tracking on every package we send.</p>"
           }
         },
         "row-why": {
@@ -30,7 +30,7 @@
           "settings": {
             "eyebrow": "Why we started",
             "heading": "Because buying clothes online should be easier.",
-            "text": "<p>Too much online clothes shopping is guesswork. Sizes that mean something different from brand to brand, photos that flatter more than they inform, and customer service that replies three days later with a template.</p><p>We built Stilhuset Nord around what we can stand behind: measurements you can check before you order, tracking on every package, and a real person who reads your email.</p>",
+            "text": "<p>Too much online clothes shopping is guesswork. Sizes that mean something different from brand to brand, photos that flatter more than they inform, and customer service that replies three days later with a template.</p><p>We built Dalton Pierce around what we can stand behind: measurements you can check before you order, tracking on every package, and a real person who reads your email.</p>",
             "image": "shopify://shop_images/about_us_image_2.webp",
             "image_position": "right"
           }

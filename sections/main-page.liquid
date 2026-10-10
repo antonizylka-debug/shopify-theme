@@ -10,15 +10,15 @@
       i nie zalezala od tego, co wpisano w panelu. Pozostale strony bez zmian.
     {%- endcomment -%}
     {%- case page.handle -%}
-      {%- when 'vilkar-og-betingelser' -%}
+      {%- when 'vilkar-og-betingelser', 'terms-of-service' -%}
         {%- render 'sn-polityka-handel' -%}
-      {%- when 'retur-og-refusionspolitik' -%}
+      {%- when 'retur-og-refusionspolitik', 'returns-and-refunds' -%}
         {%- render 'sn-polityka-retur' -%}
-      {%- when 'forsendelsespolitik' -%}
+      {%- when 'forsendelsespolitik', 'shipping-policy' -%}
         {%- render 'sn-polityka-fragt' -%}
       {%- when 'payment-policy' -%}
         {%- render 'sn-polityka-betaling' -%}
-      {%- when 'betalingspolitik' -%}
+      {%- when 'betalingspolitik', 'privacy-policy' -%}
         {%- render 'sn-polityka-privat' -%}
       {%- when 'track-order' -%}
         {%- render 'sn-spor-ordre' -%}
