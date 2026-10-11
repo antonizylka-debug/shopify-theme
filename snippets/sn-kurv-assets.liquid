@@ -186,6 +186,30 @@
   .snk-card__add:hover { opacity: 0.85; }
   .snk-card__add[disabled] { opacity: 0.5; cursor: default; }
 
+  /* ---------- polecane obok szuflady (komputer, od 1100 px) ----------
+     Pas po lewej stronie koszyka jak na voviabags.com. Blok [data-snk-forslag]
+     przenosi tu JS (ulozForslag); ponizej 1100 px zostaje w szufladzie pod produktami.
+     Szuflada ma 600 px (max-width wyzej), wiec pas stoi 600 px od prawej. */
+  .snk-side { display: none; }
+  @media only screen and (min-width: 1100px) {
+    .snk-side {
+      display: block; position: fixed; top: 0; bottom: 0; right: 600px; z-index: 29;
+      width: 300px; padding: 22px 22px 28px; overflow-y: auto; overscroll-behavior: contain;
+      background: #efeeeb; border-radius: 16px 0 0 16px; scrollbar-width: thin;
+      opacity: 0; visibility: hidden; transform: translateX(24px);
+      transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), visibility 0s linear 0.3s;
+    }
+    #CartDrawer.drawer--is-open + .snk-side.snk-side--ma {
+      opacity: 1; visibility: visible; transform: none;
+      transition-delay: 0.12s, 0.12s, 0s;
+    }
+    /* szuflada i pas tworza jeden panel - zaokraglony tylko lewy brzeg pasa */
+    #CartDrawer.drawer.snk-z-boku { border-radius: 0; }
+    .snk-side .snk-up { margin: 0; padding: 0; border-top: 0; }
+    .snk-side .snk-up > .snk-up__title { margin: 0 0 16px; font-size: 14px; }
+    .snk-side .snk-up__grid { grid-template-columns: 1fr; gap: 22px; }
+  }
+
   /* ---------- stopka ---------- */
   #CartDrawer .drawer__footer {
     padding: 20px 26px 22px; border-top: 1px solid #e4e6ea; background: #ffffff; box-shadow: none;
@@ -259,7 +283,7 @@
               el.hidden = ile === 0;
             });
             var noweF = d.querySelector('[data-snk-forslag]');
-            var stareF = sz.querySelector('[data-snk-forslag]');
+            var stareF = forslag();
             if (noweF && stareF) {
               stareF.innerHTML = noweF.innerHTML;
               przygotujKarty(stareF);
@@ -275,8 +299,45 @@
       var lista = sz && sz.querySelector('[data-products]');
       if (!lista) return;
       new MutationObserver(odswiez).observe(lista, { childList: true });
-      przygotujKarty(sz.querySelector('[data-snk-forslag]'));
+      ulozForslag();
+      przygotujKarty(forslag());
     }
+
+    /* ---------- polecane obok szuflady (komputer, od 1100 px) ----------
+       Blok [data-snk-forslag] wedruje miedzy szuflada a pasem [data-snk-side]
+       (stoi zaraz za #CartDrawer). Pas widac tylko, gdy szuflada jest otwarta
+       i sa karty do pokazania (klasa snk-side--ma). */
+    var naBok = window.matchMedia('(min-width: 1100px)');
+    function forslag() {
+      return document.querySelector('#CartDrawer [data-snk-forslag], [data-snk-side] [data-snk-forslag]');
+    }
+    function oznaczBok() {
+      var sz = szuflada(), bok = document.querySelector('[data-snk-side]');
+      if (!sz || !bok) return;
+      var up = bok.querySelector('[data-snk-up-wrap]');
+      var ma = naBok.matches && !!up && !up.hidden;
+      bok.classList.toggle('snk-side--ma', ma);
+      sz.classList.toggle('snk-z-boku', ma);
+    }
+    function ulozForslag() {
+      var sz = szuflada(), bok = document.querySelector('[data-snk-side]'), f = forslag();
+      if (!sz || !bok || !f) return;
+      if (naBok.matches) {
+        if (f.parentNode !== bok) bok.appendChild(f);
+      } else if (f.parentNode === bok) {
+        var lista = sz.querySelector('[data-products]');
+        if (lista) lista.insertAdjacentElement('afterend', f);
+      }
+      oznaczBok();
+    }
+    if (naBok.addEventListener) naBok.addEventListener('change', ulozForslag);
+    else if (naBok.addListener) naBok.addListener(ulozForslag);
+    /* Motyw zamyka szuflade po kliknieciu poza nia (sluchacz na window). Pas stoi
+       poza szuflada, wiec klikniecie w nim zatrzymujemy na document - sluchacze
+       na document (dodawanie do koszyka) dzialaja dalej, do window juz nie dochodzi. */
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('[data-snk-side]')) e.stopPropagation();
+    });
 
     document.addEventListener('drawerOpen', odswiez);
     document.addEventListener('cart:updated', odswiez);
@@ -337,6 +398,7 @@
         siatka.innerHTML = '';
         wynik.forEach(function (el) { siatka.appendChild(document.importNode(el, true)); });
         wrap.hidden = wynik.length === 0;
+        oznaczBok();
       });
     }
 
@@ -346,6 +408,7 @@
       var wrap = ramka.querySelector('[data-snk-up-wrap]');
       if (wrap && wrap.hasAttribute('data-snk-zrodla')) zaladujPolecane(wrap);
       else if (wrap) wrap.hidden = karty.length === 0;
+      oznaczBok();
       karty.forEach(function (k) {
         var dane;
         try { dane = JSON.parse(k.querySelector('[data-snk-json]').textContent); } catch (err) { return; }

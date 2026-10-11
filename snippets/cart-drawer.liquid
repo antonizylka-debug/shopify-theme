@@ -294,4 +294,11 @@
       </style>
     </form>
   </div>
+  {%- comment -%}
+    Polecane obok szuflady, nie pod produktami (11.10.2026, wzor: voviabags.com).
+    Na komputerze (od 1100 px) JS z sn-kurv-assets przenosi tu blok
+    [data-snk-forslag] z szuflady; na telefonie i tablecie wraca pod produkty.
+    Musi stac zaraz za #CartDrawer - CSS pokazuje go selektorem "+".
+  {%- endcomment -%}
+  <aside class="snk-side" data-snk-side aria-label="{{ settings.sn_kurv_upsell_title | escape }}"></aside>
 {%- endif -%}
