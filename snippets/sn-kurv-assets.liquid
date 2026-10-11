@@ -236,6 +236,7 @@
   .snk-trust__i svg { flex: 0 0 auto; }
   .snk-trust__i span { display: flex; flex-direction: column; font-size: 11px; line-height: 1.3; color: #8b8f96; }
   .snk-trust__i b { font-size: 12.5px; font-weight: 600; color: #1c1d1d; }
+  .snk-trust__i small { font-size: inherit; }
   @media only screen and (max-width: 768px) {
     .snk-trust { margin-top: 10px; padding-top: 10px; }
     .snk-trust__i { flex-direction: column; gap: 4px; text-align: center; }
@@ -251,6 +252,16 @@
     .snk-item { grid-template-columns: 92px 1fr; gap: 14px; }
     .snk-card { flex-basis: 90%; padding: 14px; gap: 12px; grid-template-columns: 80px 1fr; }
     #CartDrawer .cart__checkout { height: 54px; }
+  }
+  /* Niski telefon (np. 320x568): stopka brala 275 px z 568 i z listy produktow zostawalo ~30 px.
+     Ciasniejsze odstepy, a pod znaczkami zaufania same naglowki (bez podpisow). */
+  @media only screen and (max-width: 768px) and (max-height: 640px) {
+    #CartDrawer .drawer__footer { padding: 10px 18px 12px; }
+    .snk-total { margin-bottom: 8px; }
+    #CartDrawer .snk-cutoff { margin-bottom: 6px; }
+    #CartDrawer .cart__checkout { height: 48px; }
+    .snk-trust { margin-top: 6px; padding-top: 8px; }
+    .snk-trust__i small { display: none; }
   }
 </style>
 
