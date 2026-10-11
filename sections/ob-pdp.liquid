@@ -911,7 +911,7 @@
               <span class="pdp__pb pdp__pb--sale">{{ section.settings.pb_sale_label }}</span>
             {%- endif -%}
             {%- if na_przecenie and rabat > 0 -%}
-              <span class="pdp__pb pdp__pb--sale">−{{ rabat }} %</span>
+              <span class="pdp__pb pdp__pb--sale">−{{ rabat }}%</span>
             {%- endif -%}
             {%- if etykieta_extra != blank -%}
               <span class="pdp__pb pdp__pb--extra">{{ etykieta_extra }}</span>
@@ -929,7 +929,7 @@
 
         <div class="pdp__refs">
           <span class="pdp__ref" data-pdp-ref-normal{% unless na_przecenie %} hidden{% endunless %}>
-            {{ section.settings.label_normal }} <s>{%- render 'sn-cena', kwota: war.compare_at_price -%}</s><b>−{{ rabat }} %</b>
+            {{ section.settings.label_normal }} <s>{%- render 'sn-cena', kwota: war.compare_at_price -%}</s><b>−{{ rabat }}%</b>
           </span>
 
           {%- liquid
@@ -996,7 +996,7 @@
                   {%- if ile != blank and proc != blank -%}
                     <li class="pdp__akcja-prog{% if forloop.last %} pdp__akcja-prog--max{% endif %}">
                       <span>{{ ile }}{% if forloop.last %}+{% endif %} items</span>
-                      <b>−{{ proc }} %</b>
+                      <b>−{{ proc }}%</b>
                     </li>
                   {%- endif -%}
                 {%- endfor -%}
@@ -1272,7 +1272,7 @@
       var p = przecena ? Math.round((w.compare_at_price - w.price) / w.compare_at_price * 100) : 0;
       if (refNormal) {
         if (przecena) {
-          refNormal.innerHTML = ETYKIETA + ' <s>' + kwota(w.compare_at_price) + '</s><b>−' + p + ' %</b>';
+          refNormal.innerHTML = ETYKIETA + ' <s>' + kwota(w.compare_at_price) + '</s><b>−' + p + '%</b>';
           refNormal.hidden = false;
         } else {
           refNormal.hidden = true;

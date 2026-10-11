@@ -96,7 +96,7 @@
         <div class="snp-line__tiers">
           {%- for para in lista -%}
             {%- assign p = para | split: ':' -%}
-            <span class="snp-line__t" data-snp-card="{{ p[0] }}"><small>{{ p[0] }}{% if forloop.last %}+{% endif %} items</small><b>−{{ p[1] }} %</b></span>
+            <span class="snp-line__t" data-snp-card="{{ p[0] }}"><small>{{ p[0] }}{% if forloop.last %}+{% endif %} items</small><b>−{{ p[1] }}%</b></span>
           {%- endfor -%}
         </div>
         {%- if notka != blank -%}<p class="snp-line__note">{{ notka }}</p>{%- endif -%}

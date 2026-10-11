@@ -141,7 +141,7 @@
               {%- if ile != blank and proc != blank -%}
                 <li class="snk__prog{% if forloop.last %} snk__prog--max{% endif %}">
                   <span class="snk__ile">{{ ile }}{% if forloop.last %}+{% endif %} {{ section.settings.tier_word | escape }}</span>
-                  <span class="snk__proc">−{{ proc }} %</span>
+                  <span class="snk__proc">−{{ proc }}%</span>
                 </li>
               {%- endif -%}
             {%- endfor -%}
