@@ -122,7 +122,7 @@
         "promo_qty_word": "items",
         "promo_head2": "Multi-buy discount",
         "promo_buy_word": "Buy",
-        "promo_off_word": "rabat",
+        "promo_off_word": "off",
         "promo_border": "#e4e6ea",
         "promo_bg": "#f2f3f5",
         "promo_accent": "#23213a",
@@ -155,8 +155,8 @@
         "cross_count": 8,
         "show_rating": true,
         "rating_min": 4,
-        "rating_anchor": "anmeldelser",
-        "rating_link_label": "anmeldelser",
+        "rating_anchor": "reviews",
+        "rating_link_label": "reviews",
         "c_text": "#1c1d1d",
         "c_muted": "#6b6f76",
         "c_line": "#d9d6d1",
@@ -503,14 +503,14 @@
       "settings": {
         "eyebrow": "REVIEWS",
         "title": "What customers say about Dalton Pierce",
-        "anchor": "anmeldelser",
+        "anchor": "reviews",
         "count_label": "Based on",
         "verdict_high": "Excellent",
         "verdict_mid": "Good",
         "verdict_low": "Average",
         "rated_label": "Rated",
         "based_label": "out of",
-        "reviews_word": "anmeldelser",
+        "reviews_word": "reviews",
         "star_word": "stjerner",
         "verified_label": "Verified purchase",
         "empty_text": "There are no reviews yet.",
@@ -539,7 +539,7 @@
         "q-1": {
           "type": "question",
           "settings": {
-            "question": "Hvor lang tid tager leveringen?",
+            "question": "How long does delivery take?",
             "answer": "<p>We pack and ship orders within 3–4 business days. Delivery then takes another 3–6 business days.</p><p>If you order at the weekend or on a public holiday, we start on your order the next business day.</p>",
             "open_by_default": true
           }
@@ -555,7 +555,7 @@
         "q-3": {
           "type": "question",
           "settings": {
-            "question": "Hvordan starter jeg en returnering?",
+            "question": "How do I start a return?",
             "answer": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number and the item you'd like to return, within 30 days of receiving it. We'll reply with the return address and short instructions.</p><p>Please wait for our reply before sending anything – packages sent back on your own often end up at a warehouse that can't process them.</p>",
             "open_by_default": false
           }
@@ -571,7 +571,7 @@
         "q-5": {
           "type": "question",
           "settings": {
-            "question": "Hvem betaler returfragten?",
+            "question": "Who pays for return shipping?",
             "answer": "<p>You do – unless the item was faulty, damaged or not what you ordered. Then we pay.</p><p>Use a tracked shipping service. Until the package reaches us, it's your responsibility.</p>",
             "open_by_default": false
           }

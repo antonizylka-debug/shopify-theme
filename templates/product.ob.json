@@ -10,162 +10,527 @@
 {
   "sections": {
     "main": {
-      "type": "ob-product",
+      "type": "ob-pdp",
       "blocks": {
-        "promise-1": {
-          "type": "promise",
+        "row-1": {
+          "type": "row",
           "settings": {
             "icon": "truck",
-            "title": "Gratis fragt",
-            "text": "På alle ordrer"
+            "text": "Free shipping",
+            "hi": "",
+            "sub": "On every order, no minimum"
           }
         },
-        "promise-2": {
-          "type": "promise",
+        "row-2": {
+          "type": "row",
+          "settings": {
+            "icon": "clock",
+            "text": "Ships within 3–4 business days",
+            "hi": "",
+            "sub": "Then 3–6 business days for delivery"
+          }
+        },
+        "row-3": {
+          "type": "row",
           "settings": {
             "icon": "return",
-            "title": "30 dages returret",
-            "text": "Uden bøvl"
+            "text": "30-day returns",
+            "hi": "",
+            "sub": "From the day you receive your package"
           }
         },
-        "promise-3": {
-          "type": "promise",
+        "row-4": {
+          "type": "row",
           "settings": {
             "icon": "lock",
-            "title": "Sikker betaling",
-            "text": "Krypteret"
+            "text": "Secure checkout",
+            "hi": "",
+            "sub": "Encrypted, with no fees"
           }
         },
         "acc-1": {
-          "type": "accordion",
+          "type": "acc",
           "settings": {
-            "title": "Detaljer",
-            "use_description": true,
-            "text": "<p>Skriv teksten her.</p>",
-            "open_by_default": true
+            "title": "Product information",
+            "use_desc": true,
+            "text": "<p>Write your text here.</p>",
+            "open": true
           }
         },
         "acc-2": {
-          "type": "accordion",
+          "type": "acc",
           "settings": {
-            "title": "Fragt og returnering",
-            "use_description": false,
-            "text": "<p><strong>Levering</strong></p><p>Vi pakker og sender inden for 3-4 hverdage. Derefter tager leveringen 3-6 hverdage mere. Fragten er gratis på alle ordrer, og du får et sporingsnummer på mail, så snart pakken er afsendt.</p><p><strong>Returnering</strong></p><p>Du har 30 dage fra levering. Skriv til <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> med dit ordrenummer, så sender vi returadressen.</p><p><strong>Ændring af ordre</strong></p><p>Skriv til os hurtigst muligt. Når ordren først er afsendt, går det hurtigst at tage imod pakken og sende den tilbage.</p>",
-            "open_by_default": false
+            "title": "Shipping and returns",
+            "use_desc": false,
+            "text": "<p><strong>Shipping</strong></p><p>We pack and ship within 3–4 business days. Delivery then takes another 3–6 business days. Shipping is free on every order, and you'll get a tracking number by email as soon as your package ships.</p><p><strong>Returns</strong></p><p>You have 30 days from delivery. Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number and we'll send you the return address.</p>",
+            "open": false
           }
         },
         "acc-3": {
-          "type": "accordion",
+          "type": "acc",
           "settings": {
-            "title": "Kundeservice",
-            "use_description": false,
-            "text": "<p>Skriv til <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> med dit ordrenummer.</p><p>Mandag til fredag, 9.00-18.00. Vi svarer på alle beskeder, typisk inden for 1-2 hverdage.</p>",
-            "open_by_default": false
+            "title": "Customer service",
+            "use_desc": false,
+            "text": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number.</p><p>Monday to Friday, 9:00–18:00 CET. We usually reply within 1–2 business days.</p>",
+            "open": false
           }
         }
       },
       "block_order": [
-        "promise-1",
-        "promise-2",
-        "promise-3",
+        "row-1",
+        "row-2",
+        "row-3",
+        "row-4",
         "acc-1",
         "acc-2",
         "acc-3"
       ],
       "settings": {
-        "media_ratio": 57,
-        "info_ratio": 43,
-        "column_gap": 48,
-        "thumb_size": 68,
-        "padding_top": 32,
-        "padding_bottom": 48,
-        "breakpoint": 1000,
-        "show_breadcrumbs": true,
-        "title_size": 30,
-        "title_size_mobile": 26,
-        "title_uppercase": false,
-        "add_label": "Læg i kurv",
-        "save_prefix": "SPAR",
-        "show_savings_amount": false,
-        "savings_prefix": "Du sparer",
-        "show_reassure": false,
-        "reassure_items": "Ingen told eller gebyrer|Sporing på hver pakke|Dansk kundeservice",
-        "show_sticky": true,
-        "show_cutoff": false,
-        "cutoff_hour": 14,
-        "cutoff_text": "Bestil inden for {tid}, så pakker vi i dag",
-        "size_guide_label": "Størrelsesguide",
-        "size_guide_page": "/pages/size-guide",
-        "low_stock_source": "all",
-        "low_stock_tag": "Få tilbage",
-        "low_stock_threshold": 6,
-        "low_stock_text": "Få tilbage på lager",
-        "show_delivery": true,
-        "delivery_prefix": "Gratis fragt",
-        "delivery_join": "Leveres",
-        "processing_days": 4,
-        "transit_min": 3,
-        "transit_max": 6,
-        "rating_source": "section",
-        "rating_anchor": "anmeldelser",
-        "rating_min_count": 5,
-        "rating_value": "4.8",
-        "rating_label": "Bedømt som fremragende",
-        "rating_count_label": "Baseret på",
-        "show_flag": true,
-        "flag_text_value": "Næsten udsolgt",
-        "flag_bg": "#f6e58d",
-        "flag_text": "#1c1d1d",
-        "flag_top": 16,
-        "show_tiers": false,
-        "tiers_headline": "KØB FLERE — SPAR MERE",
-        "tiers_note": "Rabatten trækkes automatisk i kurven. Varerne behøver ikke være ens.",
-        "tiers_list": "2:10, 3:15, 4:20",
-        "tiers_qty_word": "# stk.",
-        "tiers_bg": "#d6332e",
-        "tiers_text": "#ffffff",
-        "tiers_body_bg": "#f4f3f1",
-        "model_note": "",
-        "brand_size": 26,
-        "flag_left": 0,
-        "badge_radius": 4,
-        "show_sale_flag": true,
-        "vat_note": "inkl. moms",
-        "before_label": "Normalpris:",
-        "sale_flag_label": "UDSALG",
-        "sale_flag_bg": "#d6332e",
-        "sale_flag_text": "#ffffff",
-        "sale_price_color": "#d6332e",
-        "show_timer": false,
-        "timer_end": "",
-        "timer_label": "TILBUDDET SLUTTER OM",
-        "timer_units": "d,t,m,s",
-        "timer_bg": "#d6332e",
-        "timer_text": "#ffffff",
+        "dictionary": "Colour=Color, Farve=Color, Størrelse=Size",
+        "show_crumbs": true,
+        "media_w": 54,
+        "info_w": 42,
+        "gap": 40,
+        "breakpoint": 900,
+        "radius": 4,
+        "big_count": 0,
+        "big_per_row": "2",
+        "small_per_row": "2",
+        "photo_visible": 6,
+        "more_label": "Show more images",
+        "photo_gap": 6,
+        "photo_ratio": "3 / 4",
+        "model_note_women": "",
+        "model_note_men": "",
+        "title_size": 26,
+        "title_size_m": 22,
+        "price_size": 28,
+        "price_size_m": 24,
+        "atc_label": "Add to cart",
+        "pilne_show": true,
+        "pilne_text": "In high demand – limited stock left. If you can still press “Add to cart”, it's still available.",
+        "vat_note": "Taxes calculated at checkout",
+        "label_normal": "Regular price:",
+        "label_omnibus": "Lowest price in the 30 days before the discount:",
         "show_omnibus": true,
-        "omnibus_label": "Laveste pris 30 dage før nedsættelsen:",
-        "show_campaign": true,
-        "campaign_title": "SÆSONUDSALG · OP TIL 50%",
-        "campaign_sub": "Rabatten er allerede trukket fra",
-        "campaign_link": "",
-        "campaign_bg": "#1c1d1d",
-        "campaign_text_color": "#ffffff",
-        "show_payment_icons": true,
-        "pay_source": "list",
-        "pay_list": "dankort, visa, master, apple_pay, google_pay, klarna",
-        "pay_limit": 9,
-        "pay_size": 20,
-        "pay_gap": 6,
-        "pay_align": "center",
+        "pb_sale_label": "SALE",
+        "pb_extra_label": "",
+        "show_promo": true,
+        "promo_title": "Buy more — save more",
+        "promo_sub": "The discount is applied automatically in the cart. Items don't need to match.",
+        "promo_tiers": "2:10, 3:20, 4:25, 5:30",
+        "promo_qty_word": "items",
+        "promo_head2": "Multi-buy discount",
+        "promo_buy_word": "Buy",
+        "promo_off_word": "off",
+        "promo_border": "#e4e6ea",
+        "promo_bg": "#f2f3f5",
+        "promo_accent": "#23213a",
+        "size_cols": 5,
+        "size_cols_m": 4,
+        "help_text": "Not sure about the size? Go by the measurements rather than the size you usually wear.",
+        "help_link_label": "See measurements",
+        "help_link": "/pages/size-guide",
+        "low_stock": "all",
+        "low_stock_tag": "Few left",
+        "show_flag": true,
+        "flag_label": "Sale",
+        "flag_top": 90,
+        "flag_left": 0,
+        "flag_inset": 14,
+        "flag_radius": 3,
+        "flag_gap": 7,
+        "last_label": "Last pieces",
+        "note_label": "Only a few left",
+        "note_bg": "#ffffff",
+        "note_text": "#1c1d1d",
+        "show_fab": true,
+        "show_sticky_atc": true,
+        "row_accent": "#d6332e",
+        "row_hi": "#1f7a3d",
+        "cross_show": true,
+        "cross_title": "Style it with",
+        "cross_add": "Add to cart",
+        "cross_collection": "",
+        "cross_count": 8,
+        "show_rating": true,
+        "rating_min": 4,
+        "rating_anchor": "reviews",
+        "rating_link_label": "reviews",
+        "c_text": "#1c1d1d",
+        "c_muted": "#6b6f76",
+        "c_line": "#d9d6d1",
+        "c_soft": "#f4f3f1",
+        "c_sale": "#d6332e",
+        "c_low": "#b05f2e",
+        "c_button": "#000000"
+      }
+    },
+    "edytorial_kampanii": {
+      "type": "sn-edytorial",
+      "settings": {
+        "image_position": "center",
+        "ratio": "21 / 9",
+        "overline": "",
+        "timer_label": "Ends in",
+        "heading": "Buy more, save up to 30%",
+        "text": "Mix and match – the discount is applied automatically in the cart.",
+        "link_label": "Buy now",
+        "button_action": "scroll",
+        "link": "",
+        "space_top": 48,
+        "space_bottom": 48,
+        "space_top_mobile": 28,
+        "space_bottom_mobile": 28
+      }
+    },
+    "bestsellers": {
+      "type": "sn-bestsellers",
+      "blocks": {
+        "t1": {
+          "type": "tab",
+          "settings": {
+            "label": "Dresses",
+            "collection": "womens-dresses",
+            "audience": "women"
+          }
+        },
+        "t2": {
+          "type": "tab",
+          "settings": {
+            "label": "Tops",
+            "collection": "womens-tops",
+            "audience": "women"
+          }
+        },
+        "t3": {
+          "type": "tab",
+          "settings": {
+            "label": "Shoes",
+            "collection": "womens-footwear",
+            "audience": "women"
+          }
+        },
+        "t4": {
+          "type": "tab",
+          "settings": {
+            "label": "Shop all",
+            "collection": "womens",
+            "audience": "women"
+          }
+        },
+        "m1": {
+          "type": "tab",
+          "settings": {
+            "label": "Jackets",
+            "collection": "mens-jackets-and-coats",
+            "audience": "men"
+          }
+        },
+        "m2": {
+          "type": "tab",
+          "settings": {
+            "label": "Shirts",
+            "collection": "mens-shirts",
+            "audience": "men"
+          }
+        },
+        "m3": {
+          "type": "tab",
+          "settings": {
+            "label": "Shoes",
+            "collection": "mens-footwear",
+            "audience": "men"
+          }
+        },
+        "m4": {
+          "type": "tab",
+          "settings": {
+            "label": "Shop all",
+            "collection": "mens",
+            "audience": "men"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
+      "settings": {
+        "title": "DISCOVER\nOUR BESTSELLERS",
+        "accent_word": "BESTSELLERE",
+        "subtitle": "The styles our customers keep coming back to.",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens",
+        "count": 24,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Sale",
+        "add_where": "hover",
+        "add_label": "Add to cart",
+        "pick_label": "Select size",
+        "show_dots": true,
+        "dots_max": 3,
+        "dots_size": 22,
+        "note_source": "type",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 32,
+        "title_size": 26,
+        "title_size_mobile": 20,
+        "head_gap": 28,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6b6f76",
         "color_line": "#e4e6ea",
-        "color_rule": "#808080",
-        "color_button": "#1c1d1d",
-        "color_button_text": "#ffffff",
-        "color_save_bg": "#e8edf5",
-        "color_save_text": "#2e4e7e",
-        "color_low_stock": "#b05f2e"
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f2f3f5",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e",
+        "color_add_bg": "#ffffff",
+        "color_add_hover": "#f2f3f5",
+        "color_add_icon": "#1c1d1d",
+        "color_add_ok": "#1f7a3d"
+      }
+    },
+    "guarantee": {
+      "type": "sn-story",
+      "settings": {
+        "layout": "left",
+        "image": "shopify://shop_images/about_us_image_2.webp",
+        "bleed": true,
+        "ratio": "4 / 3",
+        "title": "30-day money-back guarantee",
+        "text": "<p>We stand behind the clothes we sell. That's why every order comes with 30-day returns — counted from the day the package reaches you, not the day you order.</p><p>If it doesn't fit, or isn't what you imagined, write to us with your order number. You'll get the return address in our reply, and your money is back in your account as soon as the item reaches us.</p>",
+        "list": "",
+        "text_after": "",
+        "note": "No forms and no explanations. One email is enough.",
+        "image_width": 40,
+        "max_width": 900,
+        "gap": 48,
+        "gap_mobile": 20,
+        "title_size": 28,
+        "title_size_mobile": 21,
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#56524c",
+        "color_accent": "#1c1d1d"
+      }
+    },
+    "reviews": {
+      "type": "ob-reviews",
+      "blocks": {
+        "review_8nFQDm": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Really great customer service",
+            "text": "A great experience from start to finish. Customer service was friendly and very helpful!",
+            "author": "Sofie L.",
+            "country": "DK",
+            "date": "04.10.2026",
+            "verified": true
+          }
+        },
+        "review_JXwaPk": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Beautiful products and great quality",
+            "text": "The product looks even better in real life. I'm very happy with the quality",
+            "author": "Emma N",
+            "country": "DK",
+            "date": "01.10.2026",
+            "verified": true
+          }
+        },
+        "review_wXzmJH": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "A fantastic shopping experience",
+            "text": "A really lovely store with beautiful products and fantastic service. Highly recommended!",
+            "author": "Clara H.",
+            "country": "DK",
+            "date": "27.09.2026",
+            "verified": true
+          }
+        },
+        "review_kANkmC": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Fast delivery and fantastic service",
+            "text": "Everything was quick and easy, and the product fully lives up to my expectations. I'd happily shop here again!",
+            "author": "Laura J.",
+            "country": "DK",
+            "date": "23.09.2026",
+            "verified": true
+          }
+        },
+        "review_b7mDM3": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Fantastic quality and fast delivery",
+            "text": "I'm really happy with my purchase! The product is fantastic quality, and delivery was fast.",
+            "author": "Freja M.",
+            "country": "DK",
+            "date": "19.08.2026",
+            "verified": true
+          }
+        },
+        "review_HcDfrY": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Good quality",
+            "text": "I was pleasantly surprised by the quality. It feels really well made.",
+            "author": "Anna K.",
+            "country": "DK",
+            "date": "08.08.2026",
+            "verified": true
+          }
+        },
+        "review_DBaVWx": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "I love it",
+            "text": "So beautiful and comfortable. I'm really glad I chose to order from here.",
+            "author": "Maria S.",
+            "country": "DK",
+            "date": "31.07.2026",
+            "verified": true
+          }
+        },
+        "review_ckhNxD": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Beautiful product",
+            "text": "I love the design, and the quality is really good. It definitely won't be my last purchase.",
+            "author": "Julie P.",
+            "country": "DK",
+            "date": "12.06.2026",
+            "verified": true
+          }
+        },
+        "review_m97B66": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Quick and easy",
+            "text": "Ordering was easy and the package arrived sooner than expected. Very happy!",
+            "author": "Ida R.",
+            "country": "DK",
+            "date": "02.05.2026",
+            "verified": true
+          }
+        },
+        "review_3tNYnd": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Really good service",
+            "text": "I had a question before buying and got a quick, friendly answer. Fantastic service!",
+            "author": "Nanna T.",
+            "country": "DK",
+            "date": "26.04.2026",
+            "verified": true
+          }
+        },
+        "review_HCMFfG": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Very satisfied",
+            "text": "I'm really happy with both the product and the whole shopping experience.",
+            "author": "Louise B.",
+            "country": "DK",
+            "date": "21.03.2026",
+            "verified": true
+          }
+        },
+        "review_QimQJ6": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Just as expected",
+            "text": "The product arrived as described and feels like really good quality.",
+            "author": "Camilla F.",
+            "country": "DK",
+            "date": "14.02.2026",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "review_8nFQDm",
+        "review_JXwaPk",
+        "review_wXzmJH",
+        "review_kANkmC",
+        "review_b7mDM3",
+        "review_HcDfrY",
+        "review_DBaVWx",
+        "review_ckhNxD",
+        "review_m97B66",
+        "review_3tNYnd",
+        "review_HCMFfG",
+        "review_QimQJ6"
+      ],
+      "settings": {
+        "eyebrow": "REVIEWS",
+        "title": "What customers say about Dalton Pierce",
+        "anchor": "reviews",
+        "count_label": "Based on",
+        "verdict_high": "Excellent",
+        "verdict_mid": "Good",
+        "verdict_low": "Average",
+        "rated_label": "Rated",
+        "based_label": "out of",
+        "reviews_word": "reviews",
+        "star_word": "stjerner",
+        "verified_label": "Verified purchase",
+        "empty_text": "There are no reviews yet.",
+        "show_distribution": false,
+        "columns": 4,
+        "desktop_initial": 4,
+        "more_label": "Show more reviews",
+        "title_size": 19,
+        "title_size_mobile": 17,
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#f7f6f4",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea",
+        "color_star": "#00b67a",
+        "color_star_off": "#dcdce6",
+        "color_bar": "#1c1d1d"
       }
     },
     "faq": {
@@ -174,48 +539,48 @@
         "q-1": {
           "type": "question",
           "settings": {
-            "question": "Hvor lang tid tager leveringen?",
-            "answer": "<p>Vi pakker og sender ordrer inden for 3-4 hverdage. Derefter tager leveringen 3-6 hverdage mere.</p><p>Bestiller du i weekenden eller på en helligdag, starter vi på ordren den første hverdag efter.</p>",
+            "question": "How long does delivery take?",
+            "answer": "<p>We pack and ship orders within 3–4 business days. Delivery then takes another 3–6 business days.</p><p>If you order at the weekend or on a public holiday, we start on your order the next business day.</p>",
             "open_by_default": true
           }
         },
         "q-2": {
           "type": "question",
           "settings": {
-            "question": "Hvordan finder jeg min størrelse?",
-            "answer": "<p>Størrelserne varierer fra serie til serie, så gå efter målene på varesiden frem for den størrelse, du plejer at tage.</p><p>Den nemmeste kontrol: mål et stykke tøj, du selv har og synes sidder godt, mens det ligger fladt, og sammenlign.</p>",
+            "question": "How do I find my size?",
+            "answer": "<p>Sizes vary from line to line, so go by the measurements on the product page rather than the size you usually wear.</p><p>The easiest check: lay a garment you own and like the fit of flat, measure it, and compare.</p>",
             "open_by_default": false
           }
         },
         "q-3": {
           "type": "question",
           "settings": {
-            "question": "Hvordan starter jeg en returnering?",
-            "answer": "<p>Skriv til <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> med dit ordrenummer og den vare, du vil sende tilbage, inden 30 dage efter du har modtaget den. Vi svarer med returadressen og en kort vejledning.</p><p>Vent på vores svar, før du sender noget af sted – pakker, der sendes tilbage på egen hånd, ender ofte på et lager, der ikke kan behandle dem.</p>",
+            "question": "How do I start a return?",
+            "answer": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number and the item you'd like to return, within 30 days of receiving it. We'll reply with the return address and short instructions.</p><p>Please wait for our reply before sending anything – packages sent back on your own often end up at a warehouse that can't process them.</p>",
             "open_by_default": false
           }
         },
         "q-4": {
           "type": "question",
           "settings": {
-            "question": "Den passer ikke. Kan jeg bytte størrelse?",
-            "answer": "<p>Vi bytter ikke størrelser direkte. Send varen tilbage og få pengene retur, og læg en ny ordre i den størrelse, du vil have – så bliver størrelsen ikke solgt til en anden, mens din pakke er undervejs.</p>",
+            "question": "It doesn't fit. Can I exchange the size?",
+            "answer": "<p>We don't exchange sizes directly. Send the item back for a refund and place a new order in the size you want – that way the size isn't sold to someone else while your package is on its way.</p>",
             "open_by_default": false
           }
         },
         "q-5": {
           "type": "question",
           "settings": {
-            "question": "Hvem betaler returfragten?",
-            "answer": "<p>Det gør du selv – medmindre varen var defekt, beskadiget eller ikke den, du bestilte. Så betaler vi.</p><p>Brug en sporbar forsendelse. Indtil pakken er hos os, er den dit ansvar.</p>",
+            "question": "Who pays for return shipping?",
+            "answer": "<p>You do – unless the item was faulty, damaged or not what you ordered. Then we pay.</p><p>Use a tracked shipping service. Until the package reaches us, it's your responsibility.</p>",
             "open_by_default": false
           }
         },
         "q-6": {
           "type": "question",
           "settings": {
-            "question": "Hvor leverer I til, og skal jeg betale told?",
-            "answer": "<p>Vi leverer til Danmark og til resten af Europa, blandt andet:</p><ul><li><strong>Norden:</strong> Danmark, Sverige, Norge, Finland.</li><li><strong>Resten af Europa:</strong> Tyskland, Holland, Belgien, Frankrig, Østrig, Italien, Spanien, Portugal, Irland, Grækenland og Storbritannien.</li></ul><p>Vi betaler told, importafgifter og gebyrer, så der kommer intet oveni. Vi leverer til private adresser, virksomheder og pakkeshops.</p>",
+            "question": "Where do you ship, and do I pay duties?",
+            "answer": "<p>We ship across Canada – to every province and territory.</p><p>We cover duties, import fees and charges, so there's nothing extra to pay on delivery. We deliver to home addresses, businesses and pickup points.</p>",
             "open_by_default": false
           }
         }
@@ -229,10 +594,10 @@
         "q-6"
       ],
       "settings": {
-        "eyebrow": "SPØRGSMÅL OG SVAR",
-        "title": "Ofte stillede spørgsmål",
-        "subtitle": "Det, folk oftest spørger om, inden de bestiller.",
-        "more_label": "Se alle spørgsmål og svar",
+        "eyebrow": "FAQ",
+        "title": "Frequently asked questions",
+        "subtitle": "What people ask most before they order.",
+        "more_label": "See all FAQs",
         "more_link": "/pages/faq",
         "max_width": 760,
         "title_size": 19,
@@ -249,21 +614,12 @@
     },
     "product-recommendations": {
       "type": "product-recommendations",
+      "disabled": true,
       "settings": {
-        "product_recommendations_heading": "Måske kan du også lide",
+        "product_recommendations_heading": "RECOMMENDED FOR YOU",
         "related_count": 6,
         "products_per_row": 3
       }
-    },
-    "recently-viewed": {
-      "type": "recently-viewed",
-      "settings": {
-        "recent_count": 5
-      }
-    },
-    "collection-return": {
-      "type": "collection-return",
-      "settings": {}
     },
     "apps": {
       "type": "apps",
@@ -271,41 +627,16 @@
         "full_width": false,
         "space_around": true
       }
-    },
-    "reviews": {
-      "type": "ob-reviews",
-      "settings": {
-        "eyebrow": "ANMELDELSER",
-        "title": "Det siger vores kunder",
-        "anchor": "anmeldelser",
-        "count_label": "Baseret på",
-        "star_word": "stjerner",
-        "verified_label": "Verificeret køb",
-        "empty_text": "Der er endnu ingen anmeldelser.",
-        "show_distribution": true,
-        "columns": 3,
-        "title_size": 19,
-        "title_size_mobile": 17,
-        "padding_top": 56,
-        "padding_bottom": 56,
-        "padding_top_mobile": 36,
-        "padding_bottom_mobile": 36,
-        "color_bg": "#ffffff",
-        "color_text": "#1c1d1d",
-        "color_muted": "#6b6f76",
-        "color_line": "#e4e6ea",
-        "color_star": "#1c1d1d",
-        "color_bar": "#1c1d1d"
-      }
     }
   },
   "order": [
     "main",
+    "edytorial_kampanii",
+    "bestsellers",
+    "guarantee",
     "reviews",
     "faq",
     "product-recommendations",
-    "recently-viewed",
-    "collection-return",
     "apps"
   ]
 }
