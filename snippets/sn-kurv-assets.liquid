@@ -336,11 +336,16 @@
     /* Motyw zamyka szuflade po kliknieciu poza nia (sluchacz na window). Pas i okno
        szybkiego dodawania [data-snq] stoja poza szuflada, wiec klikniecie w nich
        zatrzymujemy na document - sluchacze na document (dodawanie do koszyka) dzialaja
-       dalej, do window juz nie dochodzi. Zamkniecie okna "+" nie zamyka juz koszyka. */
+       dalej, do window juz nie dochodzi. Zamkniecie okna "+" nie zamyka juz koszyka.
+       Sciezka zdarzenia zamiast closest(): okno "+" przebudowuje przyciski po kliknieciu
+       (kolor/rozmiar), wiec klikniety element nie ma juz rodzica, gdy zdarzenie dochodzi tutaj. */
     document.addEventListener('click', function (e) {
       var sz = szuflada();
-      if (!sz || !sz.classList.contains('drawer--is-open') || !e.target.closest) return;
-      if (e.target.closest('[data-snk-side], [data-snq]')) e.stopPropagation();
+      if (!sz || !sz.classList.contains('drawer--is-open')) return;
+      var sciezka = e.composedPath ? e.composedPath() : [e.target];
+      for (var i = 0; i < sciezka.length; i++) {
+        if (sciezka[i].matches && sciezka[i].matches('[data-snk-side], [data-snq]')) { e.stopPropagation(); return; }
+      }
     });
 
     document.addEventListener('drawerOpen', odswiez);
@@ -406,11 +411,33 @@
       });
     }
 
+    /* Przy zamknietym koszyku polecane pobieramy dopiero w wolnej chwili po zaladowaniu
+       strony (albo od razu przy otwarciu) - 5 zapytan i ~500 KB HTML do przetworzenia
+       nie konkuruje na telefonie z pierwszym wyswietleniem strony. */
+    var poZaladowaniu = null;
+    function polecaneGdyTrzeba(wrap) {
+      var sz = szuflada();
+      var wSzufladzie = wrap.closest('#CartDrawer, [data-snk-side]');
+      if (!wSzufladzie || (sz && sz.classList.contains('drawer--is-open'))) { zaladujPolecane(wrap); return; }
+      if (!poZaladowaniu) {
+        poZaladowaniu = new Promise(function (gotowe) {
+          document.addEventListener('drawerOpen', gotowe, { once: true });
+          function bezczynnie() {
+            if (window.requestIdleCallback) requestIdleCallback(gotowe, { timeout: 3000 });
+            else setTimeout(gotowe, 1500);
+          }
+          if (document.readyState === 'complete') bezczynnie();
+          else window.addEventListener('load', bezczynnie, { once: true });
+        });
+      }
+      poZaladowaniu.then(function () { if (wrap.isConnected) zaladujPolecane(wrap); });
+    }
+
     function przygotujKarty(ramka) {
       if (!ramka) return;
       var karty = ramka.querySelectorAll('[data-snk-card], [data-snk-g]');
       var wrap = ramka.querySelector('[data-snk-up-wrap]');
-      if (wrap && wrap.hasAttribute('data-snk-zrodla')) zaladujPolecane(wrap);
+      if (wrap && wrap.hasAttribute('data-snk-zrodla')) polecaneGdyTrzeba(wrap);
       else if (wrap) wrap.hidden = karty.length === 0;
       oznaczBok();
       karty.forEach(function (k) {

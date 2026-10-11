@@ -1,9 +1,9 @@
 {% liquid
   # --- zakresy wyszukiwania po tagach ---
   # etykiety i tagi musza byc w tej samej kolejnosci, rozdzielone przecinkiem
-  # np. 'Maend,Kvinder' + 'men,women'
-  assign scope_labels = 'Maend'
-  assign scope_tags = 'men'
+  # np. 'in Women,in Men' + 'women,men' (tagi women/men ma kazdy produkt dzialu)
+  assign scope_labels = 'in Women,in Men'
+  assign scope_tags = 'women,men'
 
   assign resources = predictive_search.resources
   assign columnCount = resources.queries.size | plus: resources.pages.size | plus: resources.articles.size | plus: resources.collections.size

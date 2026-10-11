@@ -1976,14 +1976,15 @@
     padding-bottom: 13px;
   }
   #NavDrawer .mobile-nav__toggle button,
-  #NavDrawer .mobile-nav__toggle .faux-button { border-left: 0; padding: 0 var(--drawer-gutter) 0 20px; }
+  #NavDrawer .mobile-nav__toggle .faux-button { border-left: 0; padding: 0 var(--drawer-gutter) 0 20px; height: 100%; margin: 0; }
   #NavDrawer .mobile-nav__toggle .icon { width: 14px; height: 8px; }
 
+  {%- comment -%} Podmenu: 44 px wysokosci na palec (bylo 39 px). Rozwijanie "+" na cala wysokosc wiersza (motyw dawal 60% = 28 px). {%- endcomment -%}
   #NavDrawer .mobile-nav__sublist .mobile-nav__link,
   #NavDrawer .mobile-nav__sublist .mobile-nav__faux-link {
     font-size: 15px;
-    padding-top: 9px;
-    padding-bottom: 9px;
+    padding-top: 11.5px;
+    padding-bottom: 11.5px;
     color: #4a4a4a;
     text-transform: none;
     letter-spacing: 0;
@@ -2045,7 +2046,8 @@
     color: var(--mnav-oferta-fg, #ffffff);
     text-decoration: none;
   }
-  #NavDrawer .mnav__oferta + .mobile-nav { margin-top: 0; }
+  {%- comment -%} ~ zamiast +: miedzy paskiem a lista stoi <script> licznika, wiec + nie trafial i lista wchodzila 14 px na pasek. {%- endcomment -%}
+  #NavDrawer .mnav__oferta ~ .mobile-nav { margin-top: 0; }
   #NavDrawer .mnav__oferta-tekst { display: flex; flex-direction: column; gap: 3px; flex: 1 1 auto; min-width: 0; }
   #NavDrawer .mnav__oferta-tytul {
     font-size: 13.5px;
@@ -2112,4 +2114,7 @@
   .footer__contact-row a { display: inline-block; padding: 3px 0; }
   .pdp__help a { display: inline-block; padding: 4px 0; }
   @media only screen and (min-width: 769px) { .breadcrumb { font-size: 12.5px; } }
+
+  {%- comment -%} Strona /cart na telefonie: glowny przycisk "Check out" mial 38 px wysokosci. {%- endcomment -%}
+  @media only screen and (max-width: 768px) { .cart__checkout-wrapper .cart__checkout { min-height: 52px; } }
 </style>

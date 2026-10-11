@@ -289,6 +289,8 @@
 
   @media only screen and (max-width: 768px) {
     .snc__plus { width: 30px; height: 30px; right: 8px; bottom: 8px; }
+    {%- comment -%} Kolko zostaje 30 px, ale strefa dotyku ma 44 px. {%- endcomment -%}
+    .snc__plus::before { content: ''; position: absolute; inset: -7px; }
     .snc__plus svg { width: 14px; height: 14px; }
     .snc__kropki { bottom: 10px; }
     .snc__rzad { gap: 6px; }

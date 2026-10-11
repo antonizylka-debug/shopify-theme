@@ -751,7 +751,7 @@
                   assign lad = 'eager'
                 endif
               -%}
-              <figure class="{{ klasa }}">
+              <figure class="{{ klasa }}" data-media-id="{{ media.id }}">
                 {{ media.preview_image
                   | image_url: width: 1200
                   | image_tag: loading: lad, widths: '360, 540, 750, 1080, 1200', alt: alt }}
@@ -1298,7 +1298,22 @@
         etykieta.textContent = b.dataset.pdpLabel || b.dataset.pdpVal;
       }
       odswiez();
+      pokazZdjecie();
     });
+
+    // telefon: karuzela jedzie do zdjecia wariantu, gdy zmienia sie jego zdjecie (kolor), nie przy samym rozmiarze
+    var siatkaZdj = root.querySelector('[data-pdp-photos]');
+    var startW = znajdz(wybor());
+    var ostatnieZdj = startW && startW.featured_media ? startW.featured_media.id : null;
+    function pokazZdjecie() {
+      var w = znajdz(wybor());
+      var m = w && w.featured_media;
+      if (!m || !siatkaZdj || m.id === ostatnieZdj) return;
+      ostatnieZdj = m.id;
+      if (siatkaZdj.scrollWidth <= siatkaZdj.clientWidth) return;
+      var zdj = siatkaZdj.querySelector('[data-media-id="' + m.id + '"]');
+      if (zdj) siatkaZdj.scrollTo({ left: zdj.offsetLeft - siatkaZdj.offsetLeft, behavior: 'smooth' });
+    }
 
     // ---------- pokaz wiecej zdjec ----------
     (function () {

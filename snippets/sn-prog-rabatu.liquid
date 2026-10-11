@@ -39,10 +39,10 @@
   </p>
   <div class="snprog__bar" aria-hidden="true"><span class="snprog__fill" data-sn-prog-fill style="width: {{ zapelnienie }}%"></span></div>
   <div class="snprog__steps" aria-hidden="true">
-    <span data-sn-prog-step="2"{% if ile >= 2 %} class="is-on"{% endif %}>2 items −10%</span>
-    <span data-sn-prog-step="3"{% if ile >= 3 %} class="is-on"{% endif %}>3 items −20%</span>
-    <span data-sn-prog-step="4"{% if ile >= 4 %} class="is-on"{% endif %}>4 items −25%</span>
-    <span data-sn-prog-step="5"{% if ile >= 5 %} class="is-on"{% endif %}>5+ −30%</span>
+    <span data-sn-prog-step="2"{% if ile >= 2 %} class="is-on"{% endif %}>2 items <b>−10%</b></span>
+    <span data-sn-prog-step="3"{% if ile >= 3 %} class="is-on"{% endif %}>3 items <b>−20%</b></span>
+    <span data-sn-prog-step="4"{% if ile >= 4 %} class="is-on"{% endif %}>4 items <b>−25%</b></span>
+    <span data-sn-prog-step="5"{% if ile >= 5 %} class="is-on"{% endif %}>5+ <b>−30%</b></span>
   </div>
 </div>
 
@@ -53,9 +53,12 @@
   .snprog__txt strong { color: #d6332e; font-weight: 700; }
   .snprog__bar { height: 4px; background: #dcdfe4; border-radius: 2px; overflow: hidden; }
   .snprog__fill { display: block; height: 100%; background: #1c1d1d; transition: width 0.3s ease; }
-  .snprog__steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 8px; }
+  .snprog__steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; margin-top: 8px; }
   .snprog__steps span { font-size: 12px; line-height: 1.3; color: #6b6f76; text-align: center; white-space: nowrap; }
   .snprog__steps span.is-on { color: #1c1d1d; font-weight: 600; }
+  .snprog__steps b { font-weight: inherit; }
+  /* Waski telefon: rabat pod liczba sztuk - w jednej linii cztery progi wychodzily poza ekran (320 px). */
+  @media only screen and (max-width: 480px) { .snprog__steps b { display: block; } }
   .snprog--kompakt { margin: 0 0 18px; padding: 0; background: none; }
   .snprog--kompakt .snprog__txt { margin-bottom: 9px; font-size: 14px; font-weight: 500; }
   .snprog--kompakt .snprog__bar { height: 4px; border-radius: 2px; background: #b4b8bf; }
