@@ -366,8 +366,9 @@
        sn-kurv-forslag podaje adresy (np. /collections/womens/product-type-heels),
        tu pobieramy z kazdego sections/sn-kurv-kort, ukladamy na przemian
        (szpilki, torebka, bizuteria, sandaly...) i pomijamy to, co jest w koszyku.
-       Odpowiedzi trzymamy w pamieci - kolejna zmiana koszyka nie pyta sklepu od nowa. */
-    var pamiecKart = {};
+       Odpowiedzi trzymamy w pamieci - kolejna zmiana koszyka nie pyta sklepu od nowa.
+       Pamiec wspolna z "do kompletu" na karcie produktu (pdp-crosssell) - te same adresy. */
+    var pamiecKart = window.__snKort = window.__snKort || {};
     function zaladujPolecane(wrap) {
       var zrodla = (wrap.getAttribute('data-snk-zrodla') || '').split('|').filter(Boolean);
       if (!zrodla.length) { wrap.hidden = true; return; }

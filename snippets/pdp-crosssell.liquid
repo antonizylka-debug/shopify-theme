@@ -382,10 +382,16 @@
         if (!zrodla.length) return;
         var ziarno = Number(ID.slice(-3)) || 0;
         var elegancko = ramka.hasAttribute('data-snx-elegancko');
+        /* Pamiec wspolna z polecanymi w koszyku (sn-kurv-assets) - bez niej te same
+           kolekcje szly do sklepu dwa razy. */
+        var pamiec = window.__snKort = window.__snKort || {};
         Promise.all(zrodla.map(function (u) {
-          return fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 'section_id=sn-kurv-kort', { credentials: 'same-origin' })
-            .then(function (o) { return o.ok ? o.text() : ''; })
-            .catch(function () { return ''; });
+          if (!pamiec[u]) {
+            pamiec[u] = fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 'section_id=sn-kurv-kort', { credentials: 'same-origin' })
+              .then(function (o) { return o.ok ? o.text() : ''; })
+              .catch(function () { return ''; });
+          }
+          return pamiec[u];
         })).then(function (teksty) {
           var grupy = teksty.map(function (t) {
             var d = new DOMParser().parseFromString(t, 'text/html');

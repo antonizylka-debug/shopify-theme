@@ -1312,7 +1312,12 @@
       ostatnieZdj = m.id;
       if (siatkaZdj.scrollWidth <= siatkaZdj.clientWidth) return;
       var zdj = siatkaZdj.querySelector('[data-media-id="' + m.id + '"]');
-      if (zdj) siatkaZdj.scrollTo({ left: zdj.offsetLeft - siatkaZdj.offsetLeft, behavior: 'smooth' });
+      if (!zdj) return;
+      var cel = zdj.offsetLeft - siatkaZdj.offsetLeft;
+      // poza ekranem (klient jest przy kolorach) od razu, plynnie tylko gdy galerie widac
+      var r = siatkaZdj.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < window.innerHeight) siatkaZdj.scrollTo({ left: cel, behavior: 'smooth' });
+      else siatkaZdj.scrollLeft = cel;
     }
 
     // ---------- pokaz wiecej zdjec ----------
