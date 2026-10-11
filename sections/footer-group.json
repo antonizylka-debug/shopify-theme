@@ -174,7 +174,7 @@
             "title": "Newsletter",
             "text": "<p>Hear about new arrivals and offers before anyone else.</p>",
             "button_label": "Subscribe",
-            "disclaimer": "<p>By subscribing you accept our <a href=\"/pages/betalingspolitik\">privacy policy</a></p>",
+            "disclaimer": "<p>By subscribing you accept our <a href=\"/pages/privacy-policy\">privacy policy</a></p>",
             "show_social": false,
             "container_width": 50
           }
