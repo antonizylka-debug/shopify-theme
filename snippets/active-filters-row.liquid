@@ -17,6 +17,12 @@
     {%- liquid
       assign label_check = filter.label | downcase
       assign short_name = filter.label | split: ':' | last | strip
+      assign short_check = short_name | downcase
+      if short_check contains 'rrelse'
+        assign short_name = 'Size'
+      elsif short_check contains 'farve'
+        assign short_name = 'Color'
+      endif
 
       assign is_size_filter = false
       if label_check contains 'size' or label_check contains 'rrelse'
@@ -68,7 +74,7 @@
     {%- if chip_count > visible_count -%}
       {%- assign hidden_count = chip_count | minus: visible_count -%}
       <button type="button" class="active-filters__more" data-active-filters-more data-less="Show less">
-        +{{ hidden_count }} flere
+        +{{ hidden_count }} more
       </button>
     {%- endif -%}
 

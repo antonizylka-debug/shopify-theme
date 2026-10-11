@@ -69,6 +69,20 @@
       assign filter_label = filter.label | split: ':' | last | strip
     endif
 
+    # etykiety w Search & Discovery zostaly po dunsku - na stronie zawsze po angielsku
+    assign fl_check = filter_label | downcase
+    if fl_check contains 'rrelse'
+      assign filter_label = 'Size'
+    elsif fl_check contains 'farve'
+      assign filter_label = 'Color'
+    endif
+    assign fg_check = filter_group | downcase
+    if fg_check contains 'rrelse'
+      assign filter_group = 'Size'
+    elsif fg_check contains 'farve'
+      assign filter_group = 'Color'
+    endif
+
     # filtry rozmiarowe pokazujemy jako chipy, reszte jako liste z licznikiem
     assign filter_label_check = filter.label | downcase
     assign is_size_filter = false
