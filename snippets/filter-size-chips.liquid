@@ -1,16 +1,16 @@
 {% comment %}
-  Filtr rozmiaru jako chipy w grupach "Tøj" i "Sko" (jak u Oliver & Blake):
+  Filtr rozmiaru jako chipy w grupach "Clothing" i "Shoes (US)" (jak u Oliver & Blake):
    1. litery w stalej kolejnosci (XXS ... 6XL, One Size), ze scaleniem
       zapisow tego samego rozmiaru (XXL = 2XL, Medium = M),
-   2. potem numery EU rosnaco, ze scaleniem zapisow (snippet size-canon):
-      "10 US - 44 EU" i "44" to jeden chip 44.
+   2. potem numery rosnaco, tak jak sa w danych (snippet size-canon) -
+      motyw niczego nie przelicza, rozmiary maja byc poprawne w produktach (US).
 
   Co trafia na liste zalezy od rodzaju kolekcji (szablon albo uchwyt):
-   - odziez damska: brytyjskie rozmiary przeliczone na EU (UK 10 => 38),
-   - buty: tylko numery EU (bez liter),
+   - odziez: litery i rozmiary liczbowe z danych,
+   - buty: tylko numery (bez liter),
    - spodnie: litery i talia,
-   - dzialy (Dame, Herre, all): litery i rozmiary przeliczone z UK; zwykle
-     liczby sa pomijane, bo "30" to ta sama wartosc dla spodni i butow,
+   - dzialy (womens, mens, all): litery; zwykle liczby sa pomijane,
+     bo "10" to ta sama wartosc dla sukienek i butow,
    - akcesoria: filtr rozmiaru jest ukryty (collection-grid-filters-form).
 
   Jeden chip = ukryte checkboxy wszystkich zapisow, wiec dziala natywny
@@ -33,16 +33,7 @@
   endfor
 
   # grupa liczbowa: klucz sortowania (liczba x10 + 1000000, zawsze 7 cyfr) i nazwa chipa
-  # UK-rozmiary odziezy damskiej pokazujemy jako EU (UK 10 => 38);
-  # spodnie (talia w calach), buty i akcesoria zostaja bez przeliczania
   assign ctx = collection.handle | default: ''
-  assign size_uk = false
-  if ctx contains 'womens'
-    assign size_uk = true
-    if ctx contains 'bottoms' or ctx contains 'footwear' or ctx contains 'accessories'
-      assign size_uk = false
-    endif
-  endif
 
   assign keep_small = false
   if ctx contains 'bottoms' or ctx contains 'accessories'
@@ -51,8 +42,8 @@
 
   # buty (S) czy ubrania (T): na stronach butow liczby to rozmiary butow.
   # Na stronach dzialow (mens, womens) zwykla liczba jest niejednoznaczna -
-  # "30" to ta sama wartosc dla spodni (talia) i butow - wiec jej nie
-  # pokazujemy; zostaja litery i rozmiary przeliczone z UK na EU.
+  # "10" to ta sama wartosc dla sukienek i butow - wiec jej nie
+  # pokazujemy; zostaja litery.
   assign shoe_ctx = false
   if ctx contains 'footwear'
     assign shoe_ctx = true
@@ -67,18 +58,12 @@
   # kolekcji nie ma znaczenia, np. dla Nyheder czy Udsalg
   assign size_mode = section.settings.size_filter_mode | default: 'auto'
   if size_mode != 'auto'
-    assign size_uk = false
     assign shoe_ctx = false
     assign dept_page = false
     assign keep_small = false
     case size_mode
-      when 'womens_department'
-        assign size_uk = true
+      when 'womens_department', 'mens_department'
         assign dept_page = true
-      when 'mens_department'
-        assign dept_page = true
-      when 'womens_clothing'
-        assign size_uk = true
       when 'footwear'
         assign shoe_ctx = true
       when 'bottoms'
@@ -90,26 +75,20 @@
 
 
   assign numeric_rows = ''
-  # "|<indeks wartosci>=<grupa>:<rozmiar EU>|" - uzywane przy budowie chipow
+  # "|<indeks wartosci>=<grupa>:<rozmiar US>|" - uzywane przy budowie chipow
   assign value_map = '|'
   for value in filter.values
     assign raw = value.label | downcase | strip
     assign raw_lookup = '|' | append: raw | append: '|'
     unless letter_variants contains raw_lookup
       capture canon
-        render 'size-canon', label: value.label, uk: size_uk
+        render 'size-canon', label: value.label
       endcapture
       # render zostawia biale znaki (nowa linia), a split: ' ' w Shopify tnie tez po nich
       assign canon = canon | strip
-      capture canon_plain
-        render 'size-canon', label: value.label
-      endcapture
-      assign canon_plain = canon_plain | strip
 
       assign size_group = 'T'
-      if size_uk and canon != canon_plain
-        assign size_group = 'T'
-      elsif shoe_ctx
+      if shoe_ctx
         assign size_group = 'S'
       elsif dept_page
         assign size_group = 'X'
@@ -124,9 +103,15 @@
         assign canon_parts = canon | split: '-'
         for part in canon_parts
           assign as_number = part | times: 1.0
-          # ponizej 30 to rozmiary US/UK butow i pierscionkow, powyzej 60 centymetry
-          # paskow - poza spodniami i akcesoriami ich nie pokazujemy
-          if keep_small or as_number >= 30 and as_number <= 60
+          # buty i odziez: rozsadne numery rozmiarow (wieksze liczby to np.
+          # centymetry paskow); spodnie i akcesoria bez ograniczen
+          assign in_range = false
+          if keep_small
+            assign in_range = true
+          elsif as_number >= 0 and as_number <= 60
+            assign in_range = true
+          endif
+          if in_range
             assign sort_key = as_number | times: 10 | plus: 1000000 | round
             assign row = size_group | append: sort_key | append: ':' | append: part
             assign row_lookup = ' ' | append: row | append: ' '
@@ -141,7 +126,7 @@
   endfor
   assign numeric_sorted = numeric_rows | strip | split: ' ' | sort
 
-  assign clothes_title = 'Clothing (EU)'
+  assign clothes_title = 'Clothing'
   if ctx contains 'bottoms'
     assign clothes_title = 'Waist'
   elsif ctx contains 'accessories'
@@ -154,7 +139,7 @@
     when 'accessories'
       assign clothes_title = 'Sizes'
     when 'womens_department', 'mens_department', 'womens_clothing', 'mens_clothing', 'footwear'
-      assign clothes_title = 'Clothing (EU)'
+      assign clothes_title = 'Clothing'
   endcase
 
   assign render_mode = mode | default: 'list'
@@ -314,7 +299,7 @@
   {%- endfor -%}
 
   {%- liquid
-    # na butach rozmiary to tylko numery EU - litery (XS, M...) sa bledem w danych
+    # na butach rozmiary to tylko numery US - litery (XS, M...) sa bledem w danych
     # pojedynczych produktow
     if shoe_ctx
       assign letter_chips = ''
@@ -323,15 +308,15 @@
   -%}
 
   {%- comment -%}
-    Jak u Oliver & Blake: podtytul grupy ("Tøj" / "Sko"), pod nim chipy -
-    najpierw litery, potem numery EU
+    Jak u Oliver & Blake: podtytul grupy ("Clothing" / "Shoes (US)"), pod nim chipy -
+    najpierw litery, potem numery US
   {%- endcomment -%}
   {%- if clothing_chips contains 'data-group-label' -%}
-    <p class="size-group__title">Clothing</p>
+    <p class="size-group__title">{{ clothes_title }}</p>
     <ul class="no-bullets tag-list tag-list--chips">{{ clothing_chips }}</ul>
   {%- endif -%}
   {%- if shoe_chips contains 'data-group-label' -%}
-    <p class="size-group__title">Shoes</p>
+    <p class="size-group__title">Shoes (US)</p>
     <ul class="no-bullets tag-list tag-list--chips">{{ shoe_chips }}</ul>
   {%- endif -%}
 {%- endif -%}
