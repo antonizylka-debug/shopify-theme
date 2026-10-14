@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "accessibility": {
@@ -78,6 +87,10 @@
     },
     "language": {
       "dropdown_label": "Langue"
+    },
+    "slider": {
+      "previous_slide": "Précédent",
+      "next_slide": "Suivant"
     }
   },
   "sections": {
@@ -310,19 +323,26 @@
       "regular_price": "Prix régulier",
       "from_text_html": "À partir de {{ price }}",
       "recent_products": "Vu récemment",
-      "reviews": "Commentaires"
+      "reviews": "Commentaires",
+      "was_price": "Était :",
+      "lowest_30d": "Prix le plus bas des 30 derniers jours :",
+      "sizes_available": "Tailles disponibles :",
+      "pick_size": "Sélectionner la taille"
     },
     "product": {
       "description": "Description",
       "in_stock_label": "En stock",
-      "stock_label": "{{ count }} en stock",
+      "stock_label": {
+        "one": "Stock faible – {{ count }} article restant",
+        "other": "Stock faible – {{ count }} articles restants"
+      },
       "sold_out": "Épuisé",
       "unavailable": "Non disponible",
       "quantity": "Quantité",
       "add_to_cart": "Ajouter au panier",
       "preorder": "Pré-commander",
       "include_taxes": "Taxes incluses.",
-      "shipping_policy_html": "<a href='{{ link }}'>Frais d'expédition<\/a> calculés lors du passage à la caisse.",
+      "shipping_policy_html": "<a href='{{ link }}'>Frais d'expédition</a> calculés lors du passage à la caisse.",
       "will_not_ship_until": "Sera expédié après {{ date }}",
       "will_be_in_stock_after": "Sera en stock à compter de {{ date }}",
       "waiting_for_stock": "En rupture de stock, expédition prochainement",
@@ -330,14 +350,14 @@
       "view_in_space_label": "Affichage dans votre espace, charge l'article dans une fenêtre de réalité augmentée"
     }
   },
-  "store_availability":{
-    "general":{
+  "store_availability": {
+    "general": {
       "view_store_info": "Afficher les informations de magasin",
       "check_other_stores": "Vérifier la disponibilité dans d'autres magasins",
       "pick_up_available": "Récupération disponible",
       "pick_up_currently_unavailable": "Récupération actuellement indisponible",
-      "pick_up_available_at_html": "Récupération disponible à <strong> {{location_name}} <\/strong>",
-      "pick_up_unavailable_at_html": "Récupération actuellement indisponible à <strong> {{location_name}} <\/strong>"
+      "pick_up_available_at_html": "Récupération disponible à <strong> {{location_name}} </strong>",
+      "pick_up_unavailable_at_html": "Récupération actuellement indisponible à <strong> {{location_name}} </strong>"
     }
   },
   "gift_cards": {
@@ -366,7 +386,7 @@
       "send_on_label": "Envoyer (facultatif)"
     }
   },
-  "date_formats":{
+  "date_formats": {
     "month_day_year": "%d %B, %Y"
   },
   "info": {
@@ -404,5 +424,14 @@
     "view_store_info": "Afficher les informations du magasin",
     "check_availability": "Vérifier la disponibilité dans d'autres magasins",
     "show_all_results": "Afficher tous les résultats pour \"{{ terms }}\""
+  },
+  "shopify": {
+    "checkout": {
+      "local_pickup": {
+        "stock_details": {
+          "in_stock": "En stock"
+        }
+      }
+    }
   }
 }
