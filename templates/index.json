@@ -108,7 +108,7 @@
         "c1": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/Womens_Jackets.webp",
+            "image": "shopify://shop_images/daltonpierce-ALL_PRODUCT_IMAGE.webp",
             "collection": "womens-jackets-and-coats",
             "title": "",
             "focal_point": "center center"
@@ -117,7 +117,7 @@
         "c2": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/womens_sweaters.webp",
+            "image": "shopify://shop_images/daltonpierce-collection-autumn-knit-and-long-sleeve-dresses-20261010.webp",
             "collection": "womens-sweaters-and-knitwear",
             "title": "",
             "focal_point": "center center"
@@ -126,7 +126,7 @@
         "c3": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/womens_pants.webp",
+            "image": "shopify://shop_images/daltonpierce-collection-autumn-trousers-20261010.webp",
             "collection": "womens-bottoms",
             "title": "",
             "focal_point": "center center"
@@ -135,8 +135,8 @@
         "c4": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/womens_shoes_and_boots.webp",
-            "collection": "womens-footwear",
+            "image": "shopify://shop_images/daltonpierce-collection-accessories-pauleen-hat-20261010.webp",
+            "collection": "womens-accessories",
             "title": "",
             "focal_point": "center center"
           }
