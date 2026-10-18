@@ -170,49 +170,49 @@
         "dame_1": {
           "type": "product",
           "settings": {
-            "product": "women-s-floral-v-neck-maxi-dress-flowing-silhouette"
+            "product": "elena-cashmere-turtleneck"
           }
         },
         "dame_2": {
           "type": "product",
           "settings": {
-            "product": "womens-satin-feel-halter-neck-maxi-dress-sculpted-evening-gown"
+            "product": "camille-cashmere-turtleneck"
           }
         },
         "dame_3": {
           "type": "product",
           "settings": {
-            "product": "women-s-sleeveless-bandage-cocktail-mini-dress-scoop-neck-style"
+            "product": "aurora-cashmere-sweater"
           }
         },
         "dame_4": {
           "type": "product",
           "settings": {
-            "product": "women-s-sleeveless-a-line-mini-dress-structured-fit"
+            "product": "avery-merino-cardigan"
           }
         },
         "dame_5": {
           "type": "product",
           "settings": {
-            "product": "thalia-lace-midi-dress"
+            "product": "women-s-hooded-long-jacket-adjustable-waist-zip-coat"
           }
         },
         "dame_6": {
           "type": "product",
           "settings": {
-            "product": "women-s-strappy-summer-maxi-dress-flowing-silhouette"
+            "product": "georgina-woolen-jacket"
           }
         },
         "dame_7": {
           "type": "product",
           "settings": {
-            "product": "womens-draped-satin-feel-maxi-dress-ruched-waist-evening-gown"
+            "product": "elodie-shearling-jacket"
           }
         },
         "dame_8": {
           "type": "product",
           "settings": {
-            "product": "women-s-corset-midi-dress-with-full-skirt-elegant-occasion-style"
+            "product": "nola-colour-block-knit-cardigan"
           }
         }
       },
@@ -255,8 +255,8 @@
             "collection": "",
             "image": "shopify://shop_images/Best_seller_homepage_section_image_01436b2e-6070-4599-8fa0-f87425ed8396.webp",
             "eyebrow": "SELECTED",
-            "heading": "LAYERS FOR THE COOLER MONTHS.",
-            "text": "Warm knits, coats and jackets – made for autumn.",
+            "heading": "LAYERS FOR THE COLD MONTHS.",
+            "text": "Warm knits, coats and jackets – made for winter.",
             "button_label": "SHOP NOW",
             "link": "/products/thomas-knit-blazer?variant=57627347026293",
             "text_color": "#ffffff"
@@ -373,7 +373,7 @@
         "herre_4": {
           "type": "product",
           "settings": {
-            "product": "mens-slim-fit-dress-shirt-long-sleeve-smart-formal-shirt"
+            "product": "olympia-cashmere-v-neck-sweater"
           }
         },
         "herre_5": {
@@ -385,7 +385,7 @@
         "herre_6": {
           "type": "product",
           "settings": {
-            "product": "men-s-lightweight-zip-jacket-smart-casual-british-style"
+            "product": "zane-lambswool-parka"
           }
         },
         "herre_7": {
@@ -397,7 +397,7 @@
         "herre_8": {
           "type": "product",
           "settings": {
-            "product": "men-s-long-sleeve-polo-shirt-smart-casual-style"
+            "product": "santorini-cashmere-cardigan"
           }
         }
       },
