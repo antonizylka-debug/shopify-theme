@@ -6,20 +6,10 @@
 
   <div class="rte rte--nomargin">
     {%- comment -%}
-      Polityki maja tresc w motywie (snippets/sn-polityka-*), zeby byla spojna
-      i nie zalezala od tego, co wpisano w panelu. Pozostale strony bez zmian.
+      Polityki (zwroty, dostawa, platnosci, regulamin, prywatnosc, cookies) biora tresc ze strony w panelu.
+      Snippety snippets/sn-polityka-* zostaja w motywie jako kopia, ale nie sa juz renderowane.
     {%- endcomment -%}
     {%- case page.handle -%}
-      {%- when 'vilkar-og-betingelser', 'terms-of-service' -%}
-        {%- render 'sn-polityka-handel' -%}
-      {%- when 'retur-og-refusionspolitik', 'returns-and-refunds', 'return-and-refund-policy' -%}
-        {%- render 'sn-polityka-retur' -%}
-      {%- when 'forsendelsespolitik', 'shipping-policy' -%}
-        {%- render 'sn-polityka-fragt' -%}
-      {%- when 'payment-policy' -%}
-        {%- render 'sn-polityka-betaling' -%}
-      {%- when 'betalingspolitik', 'privacy-policy' -%}
-        {%- render 'sn-polityka-privat' -%}
       {%- when 'track-order' -%}
         {%- render 'sn-spor-ordre' -%}
       {%- else -%}
