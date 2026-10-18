@@ -35,6 +35,23 @@
   if wynik == blank
     assign s = product.title | strip | replace: '  ', ' ' | replace: '  ', ' '
 
+    # 0. nowy format tytulu "DALTON PIERCE | PRODUKT FOR MEN" -> samo "PRODUKT"
+    assign dol0 = s | downcase
+    if dol0 contains 'dalton pierce | '
+      assign s = s | slice: 16, 300 | strip
+      assign dol0 = s | downcase
+    endif
+    assign dl = s.size
+    assign koniec8 = s | slice: -8, 8 | downcase
+    assign koniec10 = s | slice: -10, 10 | downcase
+    if koniec8 == ' for men'
+      assign dl = dl | minus: 8
+      assign s = s | slice: 0, dl | strip
+    elsif koniec10 == ' for women'
+      assign dl = dl | minus: 10
+      assign s = s | slice: 0, dl | strip
+    endif
+
     # 1. wielkie litery
     assign dol = s | downcase
     assign gora = s | upcase
