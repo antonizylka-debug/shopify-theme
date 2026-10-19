@@ -71,7 +71,7 @@
           "settings": {
             "title": "Customer service",
             "use_desc": false,
-            "text": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number.</p><p>Monday to Friday, 9:00–18:00 CET. We usually reply within 1–2 business days.</p>",
+            "text": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number.</p><p>Monday to Friday, 9:00–18:00, Saturday and Sunday, 10:00–16:00 ET. We usually reply within 1–2 business days.</p>",
             "open": false
           }
         }

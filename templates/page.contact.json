@@ -38,7 +38,7 @@
           "settings": {
             "icon": "clock",
             "label": "HOURS",
-            "value": "Monday to Friday, 9:00–18:00 CET"
+            "value": "Monday to Friday, 9:00–18:00, Saturday and Sunday, 10:00–16:00 ET"
           }
         },
         "faq-1": {

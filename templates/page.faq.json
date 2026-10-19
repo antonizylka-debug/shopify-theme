@@ -259,7 +259,7 @@
         "show_nav": true,
         "nav_title": "On this page",
         "contact_title": "Still need help?",
-        "contact_text": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number. Monday to Friday, 9:00–18:00 CET.<br/>We answer every message, usually within 1–2 business days.</p>",
+        "contact_text": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number. Monday to Friday, 9:00–18:00, Saturday and Sunday, 10:00–16:00 ET.<br/>We answer every message, usually within 1–2 business days.</p>",
         "contact_button_label": "Contact us",
         "contact_button_link": "/pages/contact",
         "padding_bottom": 96,
