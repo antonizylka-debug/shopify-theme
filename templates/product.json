@@ -25,7 +25,9 @@
           "type": "row",
           "settings": {
             "icon": "clock",
-            "text": "Ships by #date"
+            "text": "Ships by #date",
+            "hi": "",
+            "sub": ""
           }
         },
         "row-3": {
@@ -52,34 +54,7 @@
             "title": "Product information",
             "use_desc": true,
             "text": "<p>Write your text here.</p>",
-            "open": true
-          }
-        },
-        "acc-2": {
-          "type": "acc",
-          "settings": {
-            "title": "Free shipping",
-            "use_desc": false,
-            "text": "<p>We’re offering free shipping within Canada for all orders.</p><p>We ship our packages with a Track &amp; Trace code so you can always monitor your order.</p><p>You will receive the Track &amp; Trace code via email within 24-72 hours after placing your order.</p>",
-            "open": false
-          }
-        },
-        "acc-3": {
-          "type": "acc",
-          "settings": {
-            "title": "Customer service",
-            "use_desc": false,
-            "text": "<p>Our customer service team is here to answer all your questions and comments. Whether you need advice on a product or help with an order, we are here to support you.</p><p>Don’t hesitate to contact us; we’re happy to help!</p><p>Please contact us at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a>. We aim to respond within 1 business day.</p><p>Customer service hours: Monday–Friday, 9:00 AM–6:00 PM ET; Saturday–Sunday, 10:00 AM–4:00 PM ET.</p>",
-            "open": false
-          }
-        },
-        "acc-4": {
-          "type": "acc",
-          "settings": {
-            "title": "14-day money-back guarantee",
-            "use_desc": false,
-            "text": "<p>If our product does not meet your expectations, you can return it within 14 days upon receipt.<\/p><p>Before returning the goods, please contact our customer service at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> and let us know the reason for the return so we can process your request correctly.<\/p><p>Please review our <a href=\"\/pages\/return-and-refund-policy\">return policy<\/a> for more information!<\/p>",
-            "open": false,
+            "open": true,
             "only_types": "",
             "except_types": ""
           }
@@ -89,7 +64,7 @@
           "settings": {
             "title": "Care",
             "use_desc": false,
-            "text": "<p>With just a little care, your knitwear will stay beautiful for years to come. We recommend professional dry cleaning to preserve its softness and shape.<\/p><p>For a deeper clean, gently handwash in cool water up to 30°C with a wool-safe detergent, then lay flat to dry. Always follow the care label in the garment – it takes priority over any general advice.<\/p>",
+            "text": "<p>With just a little care, your knitwear will stay beautiful for years to come. We recommend professional dry cleaning to preserve its softness and shape.</p><p>For a deeper clean, gently handwash in cool water up to 30°C with a wool-safe detergent, then lay flat to dry. Always follow the care label in the garment – it takes priority over any general advice.</p>",
             "open": false,
             "only_types": "Sweaters,Cardigans",
             "except_types": ""
@@ -100,10 +75,43 @@
           "settings": {
             "title": "Care",
             "use_desc": false,
-            "text": "<p>Follow the care label in the garment – it takes priority over any general advice.<\/p><p>As a rule of thumb: wash at 30°C on a gentle cycle, turn prints and dark colours inside out, skip the dryer and dry flat rather than on a hanger.<\/p>",
+            "text": "<p>Follow the care label in the garment – it takes priority over any general advice.</p><p>As a rule of thumb: wash at 30°C on a gentle cycle, turn prints and dark colours inside out, skip the dryer and dry flat rather than on a hanger.</p>",
             "open": false,
             "only_types": "",
             "except_types": "Sweaters,Cardigans,Sneakers,Loafers,Boots,Dress Shoes,Sandals,Heels,Slides,Mules,Clogs,Espadrilles,Sunglasses,Jewelry,Bags,Belts,Underwear"
+          }
+        },
+        "acc-2": {
+          "type": "acc",
+          "settings": {
+            "title": "Free shipping",
+            "use_desc": false,
+            "text": "<p>We’re offering free shipping within Canada for all orders.</p><p>We ship our packages with a Track &amp; Trace code so you can always monitor your order.</p><p>You will receive the Track &amp; Trace code via email within 24-72 hours after placing your order.</p>",
+            "open": false,
+            "only_types": "",
+            "except_types": ""
+          }
+        },
+        "acc-4": {
+          "type": "acc",
+          "settings": {
+            "title": "14-day money-back guarantee",
+            "use_desc": false,
+            "text": "<p>If our product does not meet your expectations, you can return it within 14 days upon receipt.</p><p>Before returning the goods, please contact our customer service at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> and let us know the reason for the return so we can process your request correctly.</p><p>Please review our <a href=\"/pages/return-and-refund-policy\">return policy</a> for more information!</p>",
+            "open": false,
+            "only_types": "",
+            "except_types": ""
+          }
+        },
+        "acc-3": {
+          "type": "acc",
+          "settings": {
+            "title": "Customer service",
+            "use_desc": false,
+            "text": "<p>Our customer service team is here to answer all your questions and comments. Whether you need advice on a product or help with an order, we are here to support you.</p><p>Don’t hesitate to contact us; we’re happy to help!</p><p>Please contact us at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a>. We aim to respond within 1 business day.</p><p>Customer service hours: Monday–Friday, 9:00 AM–6:00 PM ET; Saturday–Sunday, 10:00 AM–4:00 PM ET.</p>",
+            "open": false,
+            "only_types": "",
+            "except_types": ""
           }
         }
       },
@@ -188,6 +196,8 @@
         "cross_collection": "",
         "cross_count": 8,
         "show_rating": true,
+        "rating_manual": "4.8",
+        "rating_manual_text": "Based on 48,500+ Reviews",
         "rating_min": 4,
         "rating_anchor": "reviews",
         "rating_link_label": "reviews",
@@ -198,6 +208,159 @@
         "c_sale": "#d6332e",
         "c_low": "#b05f2e",
         "c_button": "#000000"
+      }
+    },
+    "ob_reviews_strip_QRDkmM": {
+      "type": "ob-reviews-strip",
+      "blocks": {
+        "review_L36cp8": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": ""
+          }
+        },
+        "review_tBkiRP": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": ""
+          }
+        },
+        "review_kjadfc": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": ""
+          }
+        },
+        "review_PAyNdT": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": ""
+          }
+        }
+      },
+      "block_order": [
+        "review_L36cp8",
+        "review_tBkiRP",
+        "review_kjadfc",
+        "review_PAyNdT"
+      ],
+      "name": "Reviews carousel",
+      "settings": {
+        "verdict": "Great",
+        "rating": "4.8",
+        "based_text": "Based on",
+        "count_text": "48,500+ reviews",
+        "count_url": "",
+        "verified_label": "Verified",
+        "note": "Showing our favorite reviews",
+        "per_row": 4,
+        "c_star": "#E4B528",
+        "c_text": "#1c1d1d",
+        "c_bg": "#ffffff",
+        "pad_y": 40
+      }
+    },
+    "ob_reviews_wall_XxBbPA": {
+      "type": "ob-reviews-wall",
+      "blocks": {
+        "review_rc7VDp": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "reply": "",
+            "reply_date": ""
+          }
+        },
+        "review_CPqWNR": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "reply": "",
+            "reply_date": ""
+          }
+        },
+        "review_7qVEff": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "reply": "",
+            "reply_date": ""
+          }
+        },
+        "review_YpRNRV": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "reply": "",
+            "reply_date": ""
+          }
+        }
+      },
+      "block_order": [
+        "review_rc7VDp",
+        "review_CPqWNR",
+        "review_7qVEff",
+        "review_YpRNRV"
+      ],
+      "name": "Reviews grid",
+      "settings": {
+        "verdict": "Great",
+        "rating": "4.8",
+        "count_text": "48,500+ reviews",
+        "count_url": "",
+        "verified_label": "Verified",
+        "reply_label": "Reply from",
+        "reply_name": "Dalton Pierce",
+        "more_label": "Read more",
+        "less_label": "Show less",
+        "per_row": 4,
+        "max_h": 560,
+        "c_star": "#E4B528",
+        "c_text": "#1c1d1d",
+        "c_accent": "#1c1d1d",
+        "c_card": "#f7f8fa",
+        "c_bg": "#ffffff",
+        "pad_y": 40
       }
     },
     "edytorial_kampanii": {
@@ -562,7 +725,7 @@
         "color_text": "#1c1d1d",
         "color_muted": "#6b6f76",
         "color_line": "#e4e6ea",
-        "color_star": "#00B77F",
+        "color_star": "#00b77f",
         "color_star_off": "#dcdce6",
         "color_bar": "#1c1d1d"
       }
@@ -574,7 +737,7 @@
           "type": "question",
           "settings": {
             "question": "Do you offer free shipping?",
-            "answer": "<p>Yes! We offer free shipping on every order across Canada, with no minimum purchase. As orders are shipped internationally, customs procedures may apply upon arrival in Canada. Any applicable sales taxes are shown at checkout.<\/p>",
+            "answer": "<p>Yes! We offer free shipping on every order across Canada, with no minimum purchase. As orders are shipped internationally, customs procedures may apply upon arrival in Canada. Any applicable sales taxes are shown at checkout.</p>",
             "open_by_default": true
           }
         },
@@ -590,7 +753,7 @@
           "type": "question",
           "settings": {
             "question": "How do I choose the right size?",
-            "answer": "<p>Please check the measurements on the product page before choosing your size. If you’re unsure, email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> with the item name, and we’ll help you choose.<\/p>",
+            "answer": "<p>Please check the measurements on the product page before choosing your size. If you’re unsure, email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with the item name, and we’ll help you choose.</p>",
             "open_by_default": false
           }
         },
@@ -598,7 +761,7 @@
           "type": "question",
           "settings": {
             "question": "Can I return an item if it doesn’t fit?",
-            "answer": "<p>Yes. Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> within 14 days of receiving your order with your order number and the items you’d like to return. We’ll send you the return address of our supplier. Please wait for our reply before sending anything.<\/p><p>You may try items on as you would in a store, but wearing them is not permitted. Items must be unused, unwashed and undamaged, with all tags and labels still attached. Return shipping is at your expense.<\/p><p>We don’t offer direct exchanges. If you need another size or colour, return the item and place a new order. Please see our <a href=\"\/pages\/return-and-refund-policy\">Returns and Refunds Policy<\/a> for full conditions and exclusions.<\/p>",
+            "answer": "<p>Yes. Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> within 14 days of receiving your order with your order number and the items you’d like to return. We’ll send you the return address of our supplier. Please wait for our reply before sending anything.</p><p>You may try items on as you would in a store, but wearing them is not permitted. Items must be unused, unwashed and undamaged, with all tags and labels still attached. Return shipping is at your expense.</p><p>We don’t offer direct exchanges. If you need another size or colour, return the item and place a new order. Please see our <a href=\"/pages/return-and-refund-policy\">Returns and Refunds Policy</a> for full conditions and exclusions.</p>",
             "open_by_default": false
           }
         },
@@ -606,7 +769,7 @@
           "type": "question",
           "settings": {
             "question": "How can I track my order?",
-            "answer": "<p>Once your parcel ships, we’ll email you your tracking details. You can follow its progress on our <a href=\"\/pages\/track-order\">Track your order<\/a> page.<\/p><p>If your order arrives in separate parcels, each will have its own tracking number at no extra shipping cost. Can’t find the tracking email? Check your spam folder or contact us for help.<\/p>",
+            "answer": "<p>Once your parcel ships, we’ll email you your tracking details. You can follow its progress on our <a href=\"/pages/track-order\">Track your order</a> page.</p><p>If your order arrives in separate parcels, each will have its own tracking number at no extra shipping cost. Can’t find the tracking email? Check your spam folder or contact us for help.</p>",
             "open_by_default": false
           }
         },
@@ -614,7 +777,7 @@
           "type": "question",
           "settings": {
             "question": "Need more help?",
-            "answer": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> with your question and, if you’ve already ordered, your order number. We aim to respond within 1 business day.<\/p><p>Our customer service hours are:<\/p><ul><li>Monday–Friday: 9:00 AM–6:00 PM ET<\/li><li>Saturday–Sunday: 10:00 AM–4:00 PM ET<\/li><\/ul>",
+            "answer": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your question and, if you’ve already ordered, your order number. We aim to respond within 1 business day.</p><p>Our customer service hours are:</p><ul><li>Monday–Friday: 9:00 AM–6:00 PM ET</li><li>Saturday–Sunday: 10:00 AM–4:00 PM ET</li></ul>",
             "open_by_default": false
           }
         }
@@ -631,6 +794,8 @@
         "eyebrow": "FAQ",
         "title": "Frequently asked questions",
         "subtitle": "What people ask most before they order.",
+        "more_label": "See all questions and answers",
+        "more_link": "",
         "max_width": 760,
         "title_size": 19,
         "title_size_mobile": 17,
@@ -663,6 +828,8 @@
   },
   "order": [
     "main",
+    "ob_reviews_strip_QRDkmM",
+    "ob_reviews_wall_XxBbPA",
     "edytorial_kampanii",
     "bestsellers",
     "guarantee",
