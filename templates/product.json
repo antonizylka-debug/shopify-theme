@@ -221,7 +221,8 @@
             "name": "Brianna Mayes",
             "date": "4 days ago",
             "title": "absolutely love my Pajamas",
-            "body": "absolutely love my Pajamas!\nI bought 4 pairs, they wash well and are 100% cotton which is amazing! Great quality and styles!!!"
+            "body": "absolutely love my Pajamas!\nI bought 4 pairs, they wash well and are 100% cotton which is amazing! Great quality and styles!!!",
+            "is_sample": false
           }
         },
         "review_tBkiRP": {
@@ -232,7 +233,8 @@
             "name": "Customer name",
             "date": "",
             "title": "",
-            "body": ""
+            "body": "",
+            "is_sample": false
           }
         },
         "review_kjadfc": {
@@ -243,7 +245,8 @@
             "name": "Customer name",
             "date": "",
             "title": "",
-            "body": ""
+            "body": "",
+            "is_sample": false
           }
         },
         "review_PAyNdT": {
@@ -254,7 +257,8 @@
             "name": "Customer name",
             "date": "",
             "title": "",
-            "body": ""
+            "body": "",
+            "is_sample": false
           }
         }
       },
@@ -266,8 +270,10 @@
       ],
       "name": "Reviews carousel",
       "settings": {
+        "content_source": "custom",
         "verdict": "Great",
         "rating": "4.8",
+        "based_text": "Based on",
         "count_text": "48,500+ reviews",
         "count_url": "",
         "verified_label": "Verified",
@@ -294,7 +300,8 @@
             "title": "sda",
             "body": "ads",
             "reply": "das",
-            "reply_date": "das"
+            "reply_date": "das",
+            "is_sample": false
           }
         },
         "review_CPqWNR": {
@@ -307,7 +314,8 @@
             "title": "",
             "body": "",
             "reply": "",
-            "reply_date": ""
+            "reply_date": "",
+            "is_sample": false
           }
         },
         "review_7qVEff": {
@@ -320,7 +328,8 @@
             "title": "",
             "body": "",
             "reply": "",
-            "reply_date": ""
+            "reply_date": "",
+            "is_sample": false
           }
         },
         "review_YpRNRV": {
@@ -333,7 +342,8 @@
             "title": "",
             "body": "",
             "reply": "",
-            "reply_date": ""
+            "reply_date": "",
+            "is_sample": false
           }
         }
       },
@@ -345,6 +355,7 @@
       ],
       "name": "Reviews grid",
       "settings": {
+        "content_source": "custom",
         "verdict": "Great",
         "rating": "4.8",
         "count_text": "48,500+ reviews",
