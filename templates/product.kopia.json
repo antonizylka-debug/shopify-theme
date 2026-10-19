@@ -60,9 +60,9 @@
         "acc-2": {
           "type": "acc",
           "settings": {
-            "title": "Shipping and returns",
+            "title": "Tracked shipping",
             "use_desc": false,
-            "text": "<p><strong>Shipping</strong></p><p>All orders are processed within 1 to 3 business days, and the average delivery time is 5 to 8 business days. Tracked shipping is included, and you'll get your tracking details by email once your order has been shipped.</p><p><strong>Returns</strong></p><p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> within 14 days of receiving your order to register your return. Return shipping is at your own expense. Sale items are eligible for store credit only.</p>",
+            "text": "<p>Shipping costs are calculated at checkout based on the weight of your order and your delivery address. Every order includes full tracked shipping at no extra cost, so you can always monitor your order.</p><p>All orders are processed within 1 to 3 business days, and the average delivery time is 5 to 8 business days. You will receive your tracking details by email once your order has been shipped.</p>",
             "open": false
           }
         },
@@ -71,8 +71,41 @@
           "settings": {
             "title": "Customer service",
             "use_desc": false,
-            "text": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number.</p><p>Monday to Friday, 9:00–18:00, Saturday and Sunday, 10:00–16:00 ET. We usually reply within 1–2 business days.</p>",
+            "text": "<p>Our customer service team is here to answer all your questions and comments. Whether you need advice on a product or help with an order, we are here to support you.</p><p>Don't hesitate to contact us – we're happy to help! Please contact us at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a>. We aim to respond to all inquiries within 1 business day. Mon–Fri 9:00–18:00, Sat–Sun 10:00–16:00 ET.</p>",
             "open": false
+          }
+        },
+        "acc-4": {
+          "type": "acc",
+          "settings": {
+            "title": "14-day returns",
+            "use_desc": false,
+            "text": "<p>If our product does not meet your expectations, you can contact us within 14 days of receiving your order to register a return. Before returning the goods, please email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> and let us know the reason for the return so we can process your request correctly.<\/p><p>Items must be unused, unwashed and undamaged, with all tags and labels still attached. Return shipping is at your own expense. Regular-priced items are refunded to your original payment method; sale items and promotional purchases receive store credit instead.<\/p><p>Please review our <a href=\"\/pages\/return-and-refund-policy\">return policy<\/a> for more information.<\/p>",
+            "open": false,
+            "only_types": "",
+            "except_types": ""
+          }
+        },
+        "acc-5": {
+          "type": "acc",
+          "settings": {
+            "title": "Care",
+            "use_desc": false,
+            "text": "<p>With just a little care, your knitwear will stay beautiful for years to come. We recommend professional dry cleaning to preserve its softness and shape.<\/p><p>For a deeper clean, gently handwash in cool water up to 30°C with a wool-safe detergent, then lay flat to dry. Always follow the care label in the garment – it takes priority over any general advice.<\/p>",
+            "open": false,
+            "only_types": "Sweaters,Cardigans",
+            "except_types": ""
+          }
+        },
+        "acc-6": {
+          "type": "acc",
+          "settings": {
+            "title": "Care",
+            "use_desc": false,
+            "text": "<p>Follow the care label in the garment – it takes priority over any general advice.<\/p><p>As a rule of thumb: wash at 30°C on a gentle cycle, turn prints and dark colours inside out, skip the dryer and dry flat rather than on a hanger.<\/p>",
+            "open": false,
+            "only_types": "",
+            "except_types": "Sweaters,Cardigans,Sneakers,Loafers,Boots,Dress Shoes,Sandals,Heels,Slides,Mules,Clogs,Espadrilles,Sunglasses,Jewelry,Bags,Belts,Underwear"
           }
         }
       },
@@ -82,7 +115,10 @@
         "row-3",
         "row-4",
         "acc-1",
+        "acc-5",
+        "acc-6",
         "acc-2",
+        "acc-4",
         "acc-3"
       ],
       "settings": {
