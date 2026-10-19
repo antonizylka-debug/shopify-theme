@@ -66,9 +66,14 @@
     #shopify-section-{{ section.id }} .rvs__nav { display: none; }
     #shopify-section-{{ section.id }} .rvs__card { flex-basis: 82%; }
   }
+  #shopify-section-{{ section.id }} .rvs--boxed .rvs__stars { gap: 3px; }
+  #shopify-section-{{ section.id }} .rvs--boxed .rvs__stars > span { display: flex; background: var(--rvs-star); color: #fff; padding: 2px; }
+  #shopify-section-{{ section.id }} .rvs--boxed .rvs__stars > span.is-off { background: var(--rvs-empty); color: #fff; }
+  #shopify-section-{{ section.id }} .rvs--boxed .rvs__stars svg { width: 14px; height: 14px; }
+  #shopify-section-{{ section.id }} .rvs--boxed .rvs__sum .rvs__stars svg, #shopify-section-{{ section.id }} .rvs--boxed .rvs__top .rvs__stars svg { width: 24px; height: 24px; }
 {%- endstyle -%}
 
-<div class="rvs" data-rvs>
+<div class="rvs{% if section.settings.star_style == 'boxed' %} rvs--boxed{% endif %}" data-rvs>
   <div class="rvs__wrap">
     <div class="rvs__sum">
       {%- if section.settings.verdict != blank -%}<p class="rvs__verdict">{{ section.settings.verdict | escape }}</p>{%- endif -%}
@@ -150,6 +155,7 @@
     { "type": "text", "id": "note", "label": "Note under the cards", "default": "Showing our favorite reviews" },
     { "type": "range", "id": "per_row", "label": "Cards visible (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
     { "type": "header", "content": "Colours and spacing" },
+    { "type": "select", "id": "star_style", "label": "Star style", "default": "boxed", "options": [{ "value": "boxed", "label": "Boxed" }, { "value": "plain", "label": "Plain" }] },
     { "type": "color", "id": "c_star", "label": "Stars", "default": "#E4B528" },
     { "type": "color", "id": "c_text", "label": "Text", "default": "#1c1d1d" },
     { "type": "color", "id": "c_bg", "label": "Background", "default": "#ffffff" },

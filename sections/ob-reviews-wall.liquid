@@ -59,9 +59,14 @@
     #shopify-section-{{ section.id }} .rvw__scroll { padding: 0 16px; }
     #shopify-section-{{ section.id }} .rvw__grid { grid-template-columns: minmax(0, 1fr); }
   }
+  #shopify-section-{{ section.id }} .rvw--boxed .rvw__stars { gap: 3px; }
+  #shopify-section-{{ section.id }} .rvw--boxed .rvw__stars > span { display: flex; background: var(--rvw-star); color: #fff; padding: 2px; }
+  #shopify-section-{{ section.id }} .rvw--boxed .rvw__stars > span.is-off { background: var(--rvw-empty); color: #fff; }
+  #shopify-section-{{ section.id }} .rvw--boxed .rvw__stars svg { width: 14px; height: 14px; }
+  #shopify-section-{{ section.id }} .rvw--boxed .rvw__sum .rvw__stars svg, #shopify-section-{{ section.id }} .rvw--boxed .rvw__top .rvw__stars svg { width: 24px; height: 24px; }
 {%- endstyle -%}
 
-<div class="rvw">
+<div class="rvw{% if section.settings.star_style == 'boxed' %} rvw--boxed{% endif %}">
   <div class="rvw__head">
     <div class="rvw__top">
       {%- if section.settings.verdict != blank -%}<h2 class="rvw__verdict">{{ section.settings.verdict | escape }}</h2>{%- endif -%}
@@ -145,6 +150,7 @@
     { "type": "range", "id": "per_row", "label": "Cards per row (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
     { "type": "range", "id": "max_h", "label": "Height of the scroll box", "min": 300, "max": 900, "step": 20, "default": 560, "unit": "px" },
     { "type": "header", "content": "Colours and spacing" },
+    { "type": "select", "id": "star_style", "label": "Star style", "default": "boxed", "options": [{ "value": "boxed", "label": "Boxed" }, { "value": "plain", "label": "Plain" }] },
     { "type": "color", "id": "c_star", "label": "Stars", "default": "#E4B528" },
     { "type": "color", "id": "c_text", "label": "Text", "default": "#1c1d1d" },
     { "type": "color", "id": "c_accent", "label": "Accent (reply line, links)", "default": "#1c1d1d" },
