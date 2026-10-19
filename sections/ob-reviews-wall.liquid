@@ -1,189 +1,392 @@
 {%- comment -%}
-  Sciana opinii: naglowek z ocena, pod nim przewijana siatka kart (opcjonalnie z odpowiedzia sklepu).
-  Opinie wpisuje sie recznie w edytorze (bloki). Bez logo i nazwy zewnetrznego serwisu.
+  Pasek opinii: podsumowanie po lewej, karuzela kart po prawej.
+  Opinie wpisuje sie recznie w edytorze (bloki). Opcjonalne logo platformy wybierane w edytorze.
 {%- endcomment -%}
-{%- capture star_full -%}<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>{%- endcapture -%}
+{%- capture star_full -%}<svg viewBox="0 0 96 96" fill="currentColor" aria-hidden="true" focusable="false"><path d="M48 64.7 62.6 61 68.7 79.8 48 64.7ZM81.6 40.4H55.9L48 16.2 40.1 40.4H14.4l20.8 15-7.9 24.2 20.8-15 12.8-9.2 20.7-15Z"/></svg>{%- endcapture -%}
 
 {%- style -%}
-  #shopify-section-{{ section.id }} .rvw {
-    --rvw-star: {{ section.settings.c_star }};
-    --rvw-empty: #d9d6d1;
-    --rvw-text: {{ section.settings.c_text }};
-    --rvw-muted: #6b6f76;
-    --rvw-accent: {{ section.settings.c_accent }};
+  #shopify-section-{{ section.id }} .rvs {
+    --rvs-star: {{ section.settings.c_star }};
+    --rvs-empty: #d9d6d1;
+    --rvs-text: {{ section.settings.c_text }};
+    --rvs-muted: #6b6f76;
     background: {{ section.settings.c_bg }};
-    color: var(--rvw-text);
+    color: var(--rvs-text);
     padding: {{ section.settings.pad_y }}px 0;
   }
-  #shopify-section-{{ section.id }} .rvw__head { text-align: center; margin-bottom: 18px; padding: 0 16px; }
-  #shopify-section-{{ section.id }} .rvw__top { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
-  #shopify-section-{{ section.id }} .rvw__verdict { font-size: 26px; line-height: 1.1; margin: 0; font-weight: 400; }
-  #shopify-section-{{ section.id }} .rvw__stars { display: inline-flex; gap: 2px; color: var(--rvw-star); }
-  #shopify-section-{{ section.id }} .rvw__stars svg { width: 16px; height: 16px; display: block; }
-  #shopify-section-{{ section.id }} .rvw__stars .is-off { color: var(--rvw-empty); }
-  #shopify-section-{{ section.id }} .rvw__top .rvw__stars svg { width: 26px; height: 26px; }
-  #shopify-section-{{ section.id }} .rvw__rated { font-size: 14px; margin: 10px 0 0; }
-  #shopify-section-{{ section.id }} .rvw__rated a { color: inherit; text-decoration: underline; }
-  #shopify-section-{{ section.id }} .rvw__scroll {
-    max-width: 1340px; margin: 0 auto; padding: 0 24px;
-    max-height: {{ section.settings.max_h }}px; overflow-y: auto; overscroll-behavior: contain;
+  #shopify-section-{{ section.id }} .rvs__wrap {
+    max-width: 1500px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: flex-start; gap: 28px;
   }
-  #shopify-section-{{ section.id }} .rvw__grid {
-    display: grid; gap: 14px; grid-template-columns: repeat({{ section.settings.per_row }}, minmax(0, 1fr));
+  #shopify-section-{{ section.id }} .rvs__sum { flex: 0 0 190px; text-align: center; padding-top: 4px; }
+  #shopify-section-{{ section.id }} .rvs__verdict { font-size: 28px; line-height: 1.1; margin: 0 0 8px; font-weight: 400; }
+  #shopify-section-{{ section.id }} .rvs__stars { display: inline-flex; gap: 2px; color: var(--rvs-star); }
+  #shopify-section-{{ section.id }} .rvs__stars svg { width: 16px; height: 16px; display: block; }
+  #shopify-section-{{ section.id }} .rvs__stars .is-off { color: var(--rvs-empty); }
+  #shopify-section-{{ section.id }} .rvs__sum .rvs__stars svg { width: 30px; height: 30px; }
+  #shopify-section-{{ section.id }} .rvs__based { font-size: 14px; margin: 8px 0 0; color: var(--rvs-text); }
+  #shopify-section-{{ section.id }} .rvs__based a { color: inherit; text-decoration: underline; }
+  #shopify-section-{{ section.id }} .rvs__main { position: relative; flex: 1 1 auto; min-width: 0; padding: 0 34px; }
+  #shopify-section-{{ section.id }} .rvs__track {
+    display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
   }
-  #shopify-section-{{ section.id }} .rvw__card {
-    background: {{ section.settings.c_card }}; padding: 16px 16px 14px; font-size: 14px; line-height: 1.4;
-    display: flex; flex-direction: column; min-width: 0;
+  #shopify-section-{{ section.id }} .rvs__track::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .rvs__card {
+    flex: 0 0 calc((100% - 24px * {{ section.settings.per_row | minus: 1 }}) / {{ section.settings.per_row }});
+    scroll-snap-align: start; min-width: 0; font-size: 14px; line-height: 1.35;
   }
-  #shopify-section-{{ section.id }} .rvw__meta { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
-  #shopify-section-{{ section.id }} .rvw__ver { display: inline-flex; align-items: center; gap: 4px; color: var(--rvw-muted); text-decoration: underline; }
-  #shopify-section-{{ section.id }} .rvw__ver svg { width: 15px; height: 15px; }
-  #shopify-section-{{ section.id }} .rvw__who { color: var(--rvw-muted); font-size: 12.5px; margin: 0 0 8px; }
-  #shopify-section-{{ section.id }} .rvw__who strong { font-weight: 700; }
-  #shopify-section-{{ section.id }} .rvw__title { font-size: 15px; font-weight: 700; margin: 0 0 6px; }
-  #shopify-section-{{ section.id }} .rvw__body { margin: 0; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
-  #shopify-section-{{ section.id }} .rvw__card.is-open .rvw__body { display: block; -webkit-line-clamp: unset; }
-  #shopify-section-{{ section.id }} .rvw__reply {
-    margin-top: 12px; background: #fff; border-left: 3px solid var(--rvw-accent); padding: 12px 14px;
+  #shopify-section-{{ section.id }} .rvs__meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+  #shopify-section-{{ section.id }} .rvs__ver { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; color: var(--rvs-muted); text-decoration: underline; }
+  #shopify-section-{{ section.id }} .rvs__ver svg { width: 15px; height: 15px; }
+  #shopify-section-{{ section.id }} .rvs__who { color: var(--rvs-muted); font-size: 12.5px; margin: 0 0 8px; }
+  #shopify-section-{{ section.id }} .rvs__who strong { font-weight: 700; }
+  #shopify-section-{{ section.id }} .rvs__title { font-size: 15px; font-weight: 700; margin: 0 0 4px; }
+  #shopify-section-{{ section.id }} .rvs__body {
+    margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
   }
-  #shopify-section-{{ section.id }} .rvw__reply-head { display: flex; justify-content: space-between; gap: 10px; color: var(--rvw-muted); font-size: 13px; }
-  #shopify-section-{{ section.id }} .rvw__reply-text { margin: 8px 0 0; }
-  #shopify-section-{{ section.id }} .rvw__more {
-    margin-top: auto; padding-top: 12px; align-self: center; background: none; border: 0; cursor: pointer;
-    color: var(--rvw-accent); text-decoration: underline; font: inherit;
+  #shopify-section-{{ section.id }} .rvs__nav {
+    position: absolute; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--rvs-text); background: #fff; color: var(--rvs-text); cursor: pointer; padding: 0;
+    display: flex; align-items: center; justify-content: center;
   }
+  #shopify-section-{{ section.id }} .rvs__nav[disabled] { opacity: .25; cursor: default; border-color: #bbb; }
+  #shopify-section-{{ section.id }} .rvs__nav--prev { left: 0; }
+  #shopify-section-{{ section.id }} .rvs__nav--next { right: 0; }
+  #shopify-section-{{ section.id }} .rvs__nav svg { width: 12px; height: 12px; }
+  #shopify-section-{{ section.id }} .rvs__note { font-size: 14px; margin: 14px 0 0; padding-left: 0; }
   @media (max-width: 989px) {
-    #shopify-section-{{ section.id }} .rvw__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #shopify-section-{{ section.id }} .rvs__wrap { flex-direction: column; align-items: stretch; gap: 18px; }
+    #shopify-section-{{ section.id }} .rvs__sum { flex: none; }
+    #shopify-section-{{ section.id }} .rvs__card { flex-basis: calc((100% - 24px) / 2); }
   }
   @media (max-width: 599px) {
-    #shopify-section-{{ section.id }} .rvw__scroll { padding: 0 16px; }
-    #shopify-section-{{ section.id }} .rvw__grid { grid-template-columns: minmax(0, 1fr); }
+    #shopify-section-{{ section.id }} .rvs__wrap { padding: 0 16px; }
+    #shopify-section-{{ section.id }} .rvs__main { padding: 0; }
+    #shopify-section-{{ section.id }} .rvs__nav { display: none; }
+    #shopify-section-{{ section.id }} .rvs__card { flex-basis: 82%; }
   }
-  #shopify-section-{{ section.id }} .rvw--boxed .rvw__stars { gap: 3px; }
-  #shopify-section-{{ section.id }} .rvw--boxed .rvw__stars > span { display: flex; background: var(--rvw-star); color: #fff; padding: 2px; }
-  #shopify-section-{{ section.id }} .rvw--boxed .rvw__stars > span.is-off { background: var(--rvw-empty); color: #fff; }
-  #shopify-section-{{ section.id }} .rvw--boxed .rvw__stars svg { width: 14px; height: 14px; }
-  #shopify-section-{{ section.id }} .rvw--boxed .rvw__sum .rvw__stars svg, #shopify-section-{{ section.id }} .rvw--boxed .rvw__top .rvw__stars svg { width: 24px; height: 24px; }
+  #shopify-section-{{ section.id }} .rvs--boxed .rvs__stars { gap: 3px; }
+  #shopify-section-{{ section.id }} .rvs--boxed .rvs__stars > span { display: flex; background: var(--rvs-star); color: #fff; padding: 2px; }
+  #shopify-section-{{ section.id }} .rvs--boxed .rvs__stars > span.is-off { background: var(--rvs-empty); color: #fff; }
+  #shopify-section-{{ section.id }} .rvs--boxed .rvs__stars svg { width: 14px; height: 14px; }
+  #shopify-section-{{ section.id }} .rvs--boxed .rvs__sum .rvs__stars svg, #shopify-section-{{ section.id }} .rvs--boxed .rvs__top .rvs__stars svg { width: 24px; height: 24px; }
+
+#shopify-section-{{ section.id }} .rvs, #shopify-section-{{ section.id }} .rvs * { box-sizing:border-box; }
+#shopify-section-{{ section.id }} .rvs { font-family:Arial,Helvetica,sans-serif; --rvs-empty:#dcdce6; --rvs-muted:#666; }
+#shopify-section-{{ section.id }} .rvs h2, #shopify-section-{{ section.id }} .rvs h3 { font-family:inherit; text-transform:none; letter-spacing:normal; }
+#shopify-section-{{ section.id }} .rvs p { letter-spacing:normal; }
+#shopify-section-{{ section.id }} .rvs .rvs__stars { gap:2px; vertical-align:middle; line-height:1; flex-shrink:0; }
+#shopify-section-{{ section.id }} .rvs--boxed .rvs__stars > span { padding:0; }
+#shopify-section-{{ section.id }} .rvs--boxed .rvs__stars svg { width:18px; height:18px; }
+#shopify-section-{{ section.id }} .rvs__title { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.3; }
+#shopify-section-{{ section.id }} .rvs__logo { display:inline-block; width:108px; height:auto; max-height:32px; object-fit:contain; vertical-align:middle; }
+#shopify-section-{{ section.id }} .rvs__logo-wrap { margin-top:8px; }
+#shopify-section-{{ section.id }} .rvs__more:focus-visible, #shopify-section-{{ section.id }} .rvs__nav:focus-visible { outline:2px solid #008849; outline-offset:3px; }
+@media (prefers-reduced-motion:reduce) { #shopify-section-{{ section.id }} .rvs__track { scroll-behavior:auto; } }
+
+#shopify-section-{{ section.id }} .rvs__wrap { max-width:none; padding:0 12px; gap:28px; align-items:flex-start; }
+#shopify-section-{{ section.id }} .rvs__sum { flex:0 0 162px; padding-top:0; }
+#shopify-section-{{ section.id }} .rvs__verdict { font-size:24px; margin:0 0 5px; }
+#shopify-section-{{ section.id }} .rvs--boxed .rvs__sum .rvs__stars svg { width:30px; height:30px; }
+#shopify-section-{{ section.id }} .rvs--boxed .rvs__sum .rvs__stars > span:not(.is-off) { background:{{ section.settings.c_summary_star }}; }
+#shopify-section-{{ section.id }} .rvs__based { font-size:13px; margin:5px 0 0; line-height:1.3; }
+#shopify-section-{{ section.id }} .rvs__main { padding:0 40px 0 52px; }
+#shopify-section-{{ section.id }} .rvs__track { gap:40px; }
+#shopify-section-{{ section.id }} .rvs__card { flex-basis:calc((100% - 40px * {{ section.settings.per_row | minus: 1 }}) / {{ section.settings.per_row }}); font-size:13px; line-height:1.25; }
+#shopify-section-{{ section.id }} .rvs__meta { gap:8px; margin-bottom:9px; }
+#shopify-section-{{ section.id }} .rvs__who { font-size:12px; margin-bottom:7px; }
+#shopify-section-{{ section.id }} .rvs__title { font-size:14px; margin-bottom:4px; }
+#shopify-section-{{ section.id }} .rvs__body { -webkit-line-clamp:2; }
+#shopify-section-{{ section.id }} .rvs__ver { font-size:12px; }
+#shopify-section-{{ section.id }} .rvs__nav { width:24px; height:24px; top:68px; }
+#shopify-section-{{ section.id }} .rvs__note { font-size:13px; margin-top:19px; line-height:1.3; }
+@media(max-width:989px) { #shopify-section-{{ section.id }} .rvs__sum { flex:none; } #shopify-section-{{ section.id }} .rvs__wrap { gap:24px; } #shopify-section-{{ section.id }} .rvs__card { flex-basis:calc((100% - 24px)/2); } #shopify-section-{{ section.id }} .rvs__track { gap:24px; } #shopify-section-{{ section.id }} .rvs__main { padding:0 36px; } }
+@media(max-width:599px) { #shopify-section-{{ section.id }} .rvs__main { padding:0; } #shopify-section-{{ section.id }} .rvs__card { flex-basis:85%; } #shopify-section-{{ section.id }} .rvs__wrap { padding:0 16px; } }
+
 {%- endstyle -%}
 
-<div class="rvw{% if section.settings.star_style == 'boxed' %} rvw--boxed{% endif %}">
-  <div class="rvw__head">
-    <div class="rvw__top">
-      {%- if section.settings.verdict != blank -%}<h2 class="rvw__verdict">{{ section.settings.verdict | escape }}</h2>{%- endif -%}
-      <span class="rvw__stars" role="img" aria-label="{{ section.settings.rating | escape }} / 5">
+<dp-reviews-strip style="display:block" class="rvs{% if section.settings.star_style == 'boxed' %} rvs--boxed{% endif %}" data-rvs>
+  <div class="rvs__wrap">
+    {% if section.settings.show_summary %}<div class="rvs__sum">
+      {%- if section.settings.verdict != blank -%}<p class="rvs__verdict">{{ section.settings.verdict | escape }}</p>{%- endif -%}
+      {% if section.settings.rating != blank %}<span class="rvs__stars" role="img" aria-label="{{ section.settings.rating | escape }} / 5">
         {%- assign sum_full = section.settings.rating | round -%}
         {%- for i in (1..5) -%}<span class="{% if i > sum_full %}is-off{% endif %}">{{ star_full }}</span>{%- endfor -%}
-      </span>
+      </span>{% endif %}
+      {%- if section.settings.based_text != blank and section.settings.count_text != blank -%}
+        <p class="rvs__based">
+          {{ section.settings.based_text | escape }}
+          {%- if section.settings.count_text != blank %}
+            {% if section.settings.count_url != blank %}<a href="{{ section.settings.count_url }}">{{ section.settings.count_text | escape }}</a>{% else %}<u>{{ section.settings.count_text | escape }}</u>{% endif %}
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+{% if section.settings.review_logo != blank %}<div class="rvs__logo-wrap">{{ section.settings.review_logo | image_url: width: 216 | image_tag: class: 'rvs__logo', alt: section.settings.logo_alt, loading: 'lazy' }}</div>{% endif %}
     </div>
-    <p class="rvw__rated">
-      Rated {{ section.settings.rating | escape }} / 5 based on
-      {% if section.settings.count_url != blank %}<a href="{{ section.settings.count_url }}">{{ section.settings.count_text | escape }}</a>{% else %}<u>{{ section.settings.count_text | escape }}</u>{% endif %}
-    </p>
-  </div>
 
-  <div class="rvw__scroll">
-    <div class="rvw__grid">
-      {%- for block in section.blocks -%}
-        {%- assign full = block.settings.rating | plus: 0 -%}
-        <article class="rvw__card" {{ block.shopify_attributes }}>
-          <div class="rvw__meta">
-            <span class="rvw__stars" role="img" aria-label="{{ full }} / 5">
-              {%- for i in (1..5) -%}<span class="{% if i > full %}is-off{% endif %}">{{ star_full }}</span>{%- endfor -%}
-            </span>
-            {%- if block.settings.verified -%}
-              <span class="rvw__ver"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#6b6f76"/><path d="m4.8 8.2 2.2 2.2 4.2-4.4" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ section.settings.verified_label | escape }}</span>
-            {%- endif -%}
-          </div>
-          <p class="rvw__who"><strong>{{ block.settings.name | escape }}</strong>{% if block.settings.date != blank %}, {{ block.settings.date | escape }}{% endif %}</p>
-          {%- if block.settings.title != blank -%}<h3 class="rvw__title">{{ block.settings.title | escape }}</h3>{%- endif -%}
-          <p class="rvw__body">{{ block.settings.body | escape }}</p>
-          {%- if block.settings.reply != blank -%}
-            <div class="rvw__reply">
-              <div class="rvw__reply-head">
-                <span>{{ section.settings.reply_label | escape }} {{ section.settings.reply_name | escape }}</span>
-                <span>{{ block.settings.reply_date | escape }}</span>
-              </div>
-              <p class="rvw__reply-text">{{ block.settings.reply | escape }}</p>
+    {% endif %}
+    <div class="rvs__main">
+      <button type="button" class="rvs__nav rvs__nav--prev" data-rvs-prev aria-label="Previous"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 2 3.5 6l4 4"/></svg></button>
+      <div class="rvs__track" data-rvs-track>
+        {%- for block in section.blocks -%}
+          {%- assign full = block.settings.rating | plus: 0 -%}
+          <article class="rvs__card" {{ block.shopify_attributes }}>
+            <div class="rvs__meta">
+              <span class="rvs__stars" role="img" aria-label="{{ full }} / 5">
+                {%- for i in (1..5) -%}<span class="{% if i > full %}is-off{% endif %}">{{ star_full }}</span>{%- endfor -%}
+              </span>
+              {%- if block.settings.verified -%}
+                <span class="rvs__ver"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#6b6f76"/><path d="m4.8 8.2 2.2 2.2 4.2-4.4" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ section.settings.verified_label | escape }}</span>
+              {%- endif -%}
             </div>
-          {%- endif -%}
-          {%- assign body_len = block.settings.body | size -%}
-          {%- if body_len > 200 or block.settings.reply != blank -%}
-            <button type="button" class="rvw__more" data-rvw-more data-more="{{ section.settings.more_label | escape }}" data-less="{{ section.settings.less_label | escape }}">{{ section.settings.more_label | escape }}</button>
-          {%- endif -%}
-        </article>
-      {%- endfor -%}
+            <p class="rvs__who"><strong>{{ block.settings.name | escape }}</strong>{% if block.settings.date != blank %}, {{ block.settings.date | escape }}{% endif %}</p>
+            {%- if block.settings.title != blank -%}<h3 class="rvs__title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+            <p class="rvs__body">{{ block.settings.body | escape }}</p>
+          </article>
+        {%- endfor -%}
+      </div>
+      <button type="button" class="rvs__nav rvs__nav--next" data-rvs-next aria-label="Next"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 2 4 4-4 4"/></svg></button>
+      {%- if section.settings.note != blank -%}<p class="rvs__note">{{ section.settings.note | escape }}</p>{%- endif -%}
     </div>
   </div>
-</div>
+</dp-reviews-strip>
 
 <script>
-  (function () {
-    var root = document.getElementById('shopify-section-{{ section.id }}');
-    if (!root) return;
-    root.addEventListener('click', function (e) {
-      var b = e.target.closest('[data-rvw-more]');
-      if (!b) return;
-      var card = b.closest('.rvw__card');
-      var open = card.classList.toggle('is-open');
-      b.textContent = open ? b.getAttribute('data-less') : b.getAttribute('data-more');
-    });
-  })();
+if (!customElements.get('dp-reviews-strip')) customElements.define('dp-reviews-strip', class extends HTMLElement {
+ connectedCallback() {
+  if (this.controller) return;
+  this.controller = new AbortController();
+  const signal = this.controller.signal;
+  const track=this.querySelector('[data-rvs-track]'), prev=this.querySelector('[data-rvs-prev]'), next=this.querySelector('[data-rvs-next]');
+  if (!track || !prev || !next) return;
+  const sync=()=>{ prev.disabled=track.scrollLeft<=2; next.disabled=track.scrollLeft+track.clientWidth>=track.scrollWidth-2; };
+  const move=direction=>{ const card=track.querySelector('.rvs__card'); const gap=parseFloat(getComputedStyle(track).columnGap)||0; track.scrollBy({left:direction*((card?.getBoundingClientRect().width||300)+gap),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'}); };
+  prev.addEventListener('click',()=>move(-1),{signal}); next.addEventListener('click',()=>move(1),{signal});
+  track.addEventListener('scroll',sync,{passive:true,signal});
+  this.observer=new ResizeObserver(sync); this.observer.observe(track); sync();
+ }
+ disconnectedCallback() { this.controller?.abort(); this.controller = null; this.observer?.disconnect(); }
+});
 </script>
 
 {% schema %}
 {
-  "name": "Reviews grid",
+  "name": "Reviews carousel",
   "tag": "section",
-  "max_blocks": 50,
+  "max_blocks": 24,
   "settings": [
-    { "type": "header", "content": "Header" },
-    { "type": "text", "id": "verdict", "label": "Headline", "default": "Great" },
-    { "type": "text", "id": "rating", "label": "Rating (stars)", "info": "A number from 1 to 5, e.g. 4.8. Decides how many stars are filled.", "default": "4.8" },
-    { "type": "text", "id": "count_text", "label": "Count text", "default": "48,500+ reviews" },
-    { "type": "url", "id": "count_url", "label": "Count link (optional)" },
-    { "type": "header", "content": "Cards" },
-    { "type": "text", "id": "verified_label", "label": "Verified label", "default": "Verified" },
-    { "type": "text", "id": "reply_label", "label": "Store reply label", "default": "Reply from" },
-    { "type": "text", "id": "reply_name", "label": "Store name in replies", "default": "Dalton Pierce" },
-    { "type": "text", "id": "more_label", "label": "Read more label", "default": "Read more" },
-    { "type": "text", "id": "less_label", "label": "Read less label", "default": "Show less" },
-    { "type": "range", "id": "per_row", "label": "Cards per row (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
-    { "type": "range", "id": "max_h", "label": "Height of the scroll box", "min": 300, "max": 900, "step": 20, "default": 560, "unit": "px" },
-    { "type": "header", "content": "Colours and spacing" },
-    { "type": "select", "id": "star_style", "label": "Star style", "default": "boxed", "options": [{ "value": "boxed", "label": "Boxed" }, { "value": "plain", "label": "Plain" }] },
-    { "type": "color", "id": "c_star", "label": "Stars", "default": "#E4B528" },
-    { "type": "color", "id": "c_text", "label": "Text", "default": "#1c1d1d" },
-    { "type": "color", "id": "c_accent", "label": "Accent (reply line, links)", "default": "#1c1d1d" },
-    { "type": "color", "id": "c_card", "label": "Card background", "default": "#f7f8fa" },
-    { "type": "color", "id": "c_bg", "label": "Section background", "default": "#ffffff" },
-    { "type": "range", "id": "pad_y", "label": "Space above and below", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" }
+    {
+      "type": "header",
+      "content": "Summary (left)"
+    },
+    {
+      "type": "text",
+      "id": "verdict",
+      "label": "Headline",
+      "default": "Great"
+    },
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Rating (stars)",
+      "info": "A number from 1 to 5, e.g. 4.8. Decides how many stars are filled."
+    },
+    {
+      "type": "text",
+      "id": "based_text",
+      "label": "Text before the count",
+      "default": "Based on"
+    },
+    {
+      "type": "text",
+      "id": "count_text",
+      "label": "Count text"
+    },
+    {
+      "type": "url",
+      "id": "count_url",
+      "label": "Count link (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "text",
+      "id": "verified_label",
+      "label": "Verified label",
+      "default": "Verified"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note under the cards",
+      "default": "Showing our favorite reviews"
+    },
+    {
+      "type": "range",
+      "id": "per_row",
+      "label": "Cards visible (desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Colours and spacing"
+    },
+    {
+      "type": "select",
+      "id": "star_style",
+      "label": "Star style",
+      "default": "boxed",
+      "options": [
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        },
+        {
+          "value": "plain",
+          "label": "Plain"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "c_star",
+      "label": "Stars",
+      "default": "#00b67a"
+    },
+    {
+      "type": "color",
+      "id": "c_text",
+      "label": "Text",
+      "default": "#1c1d1d"
+    },
+    {
+      "type": "color",
+      "id": "c_bg",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "pad_y",
+      "label": "Space above and below",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "c_summary_star",
+      "label": "Summary star colour",
+      "default": "#73cf11"
+    },
+    {
+      "type": "image_picker",
+      "id": "review_logo",
+      "label": "Review platform logo",
+      "info": "Choose your platform logo and enter your real rating and review count above."
+    },
+    {
+      "type": "text",
+      "id": "logo_alt",
+      "label": "Logo alternative text",
+      "default": "Review platform"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_summary",
+      "label": "Show rating summary",
+      "default": true
+    }
   ],
   "blocks": [
     {
       "type": "review",
       "name": "Review",
       "settings": [
-        { "type": "select", "id": "rating", "label": "Stars", "default": "5", "options": [
-          { "value": "5", "label": "5" }, { "value": "4", "label": "4" }, { "value": "3", "label": "3" }, { "value": "2", "label": "2" }, { "value": "1", "label": "1" }
-        ] },
-        { "type": "checkbox", "id": "verified", "label": "Show the verified label", "info": "Only for reviews from confirmed buyers.", "default": false },
-        { "type": "text", "id": "name", "label": "Name", "default": "Customer name" },
-        { "type": "text", "id": "date", "label": "Date", "info": "Free text, e.g. 8 October." },
-        { "type": "text", "id": "title", "label": "Title" },
-        { "type": "textarea", "id": "body", "label": "Review text" },
-        { "type": "textarea", "id": "reply", "label": "Store reply (optional)" },
-        { "type": "text", "id": "reply_date", "label": "Reply date", "info": "Free text, e.g. 9 October." }
+        {
+          "type": "select",
+          "id": "rating",
+          "label": "Stars",
+          "default": "5",
+          "options": [
+            {
+              "value": "5",
+              "label": "5"
+            },
+            {
+              "value": "4",
+              "label": "4"
+            },
+            {
+              "value": "3",
+              "label": "3"
+            },
+            {
+              "value": "2",
+              "label": "2"
+            },
+            {
+              "value": "1",
+              "label": "1"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Show the verified label",
+          "info": "Only for reviews from confirmed buyers.",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Customer name"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "info": "Free text, e.g. 8 October."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Review text"
+        }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Reviews grid",
+      "name": "Reviews carousel",
       "blocks": [
-        { "type": "review" },
-        { "type": "review" },
-        { "type": "review" },
-        { "type": "review" }
+        {
+          "type": "review"
+        },
+        {
+          "type": "review"
+        },
+        {
+          "type": "review"
+        },
+        {
+          "type": "review"
+        }
       ]
     }
   ]
