@@ -270,7 +270,7 @@
       ],
       "name": "Reviews carousel",
       "settings": {
-        "content_source": "custom",
+        "content_source": "sample",
         "verdict": "Great",
         "rating": "4.8",
         "based_text": "Based on",
