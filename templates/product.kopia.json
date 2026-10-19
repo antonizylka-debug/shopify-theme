@@ -575,48 +575,48 @@
         "q-1": {
           "type": "question",
           "settings": {
-            "question": "How long does delivery take?",
-            "answer": "<p>All orders are processed within 1 to 3 business days. The average delivery time is 5 to 8 business days. During busy periods such as holidays or sales events, delivery may take slightly longer, and customs procedures may occasionally cause delays outside our control.<\/p>",
+            "question": "Do you offer free shipping?",
+            "answer": "<p>Yes! We offer free shipping on every order across Canada, with no minimum purchase. Orders are shipped internationally, so customs procedures may apply on arrival. Any applicable sales taxes are shown at checkout.<\/p>",
             "open_by_default": true
           }
         },
         "q-2": {
           "type": "question",
           "settings": {
-            "question": "How do I find my size?",
-            "answer": "<p>Sizes vary from line to line, so go by the measurements on the product page rather than the size you usually wear.</p><p>The easiest check: lay a garment you own and like the fit of flat, measure it, and compare.</p>",
+            "question": "How long does delivery take?",
+            "answer": "<p>Orders are processed within 1 to 3 business days. The average delivery time is 5 to 8 business days. We’ll email you your tracking details so you can follow your parcel.</p><p>Business days are Monday to Friday, excluding public holidays. Delivery to remote or northern areas and during busy periods may take a few days longer.</p>",
             "open_by_default": false
           }
         },
         "q-3": {
           "type": "question",
           "settings": {
-            "question": "How do I start a return?",
-            "answer": "<p>Email support@daltonpierce.com within 14 days of receiving your order to register your return. We will provide you with the return address of our supplier. Ship the item back at your own expense, including any applicable customs duties or shipping fees. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.<\/p>",
+            "question": "How do I choose the right size?",
+            "answer": "<p>Please check the measurements on the product page before choosing your size. If you’re unsure, email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> with the item name, and we’ll help you choose.<\/p>",
             "open_by_default": false
           }
         },
         "q-4": {
           "type": "question",
           "settings": {
-            "question": "It doesn't fit. Can I exchange the size?",
-            "answer": "<p>We don't exchange sizes directly. Return the item as described in our return policy and place a new order in the size you want. Please note that ordering multiple sizes with the intention of returning part of the order is not permitted.<\/p>",
+            "question": "Can I return an item if it doesn’t fit?",
+            "answer": "<p>Yes. Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> within 14 days of receiving your order with your order number and the items you’d like to return. We’ll send you the return address of our supplier. Please wait for our reply before sending anything.<\/p><p>You may try items on as you would in a store, but wearing them is not permitted. Items must be unused, unwashed and undamaged, with all tags and labels still attached. Return shipping is at your expense.<\/p><p>We don’t offer direct exchanges. If you need another size or colour, return the item and place a new order. Please see our <a href=\"\/pages\/return-and-refund-policy\">Returns and Refunds Policy<\/a> for full conditions and exclusions.<\/p>",
             "open_by_default": false
           }
         },
         "q-5": {
           "type": "question",
           "settings": {
-            "question": "Who pays for return shipping?",
-            "answer": "<p>You do. Return shipping costs are the full responsibility of the customer, including any international shipping fees and applicable customs duties. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.<\/p>",
+            "question": "How can I track my order?",
+            "answer": "<p>Once your parcel ships, we’ll email you your tracking details. You can follow its progress on our <a href=\"\/pages\/track-order\">Track your order<\/a> page.<\/p><p>If your order arrives in separate parcels, each will have its own tracking number at no extra shipping cost. Can’t find the tracking email? Check your spam folder or contact us for help.<\/p>",
             "open_by_default": false
           }
         },
         "q-6": {
           "type": "question",
           "settings": {
-            "question": "Where do you ship, and do I pay duties?",
-            "answer": "<p>We ship to addresses in Canada. Orders are shipped internationally, so customs procedures may apply on arrival, and delays due to customs are outside our control. If you have a question about import charges, email support@daltonpierce.com before you order.<\/p>",
+            "question": "Need more help?",
+            "answer": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> with your question and, if you’ve already ordered, your order number. We aim to respond within 1 business day.<\/p><p>Our customer service hours are:<\/p><ul><li>Monday–Friday: 9:00 AM–6:00 PM ET<\/li><li>Saturday–Sunday: 10:00 AM–4:00 PM ET<\/li><\/ul>",
             "open_by_default": false
           }
         }
@@ -633,8 +633,6 @@
         "eyebrow": "FAQ",
         "title": "Frequently asked questions",
         "subtitle": "What people ask most before they order.",
-        "more_label": "See all FAQs",
-        "more_link": "/pages/faq",
         "max_width": 760,
         "title_size": 19,
         "title_size_mobile": 17,
