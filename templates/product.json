@@ -216,12 +216,14 @@
         "review_L36cp8": {
           "type": "review",
           "settings": {
-            "rating": "5",
-            "verified": false,
-            "name": "Customer name",
-            "date": "",
-            "title": "",
-            "body": ""
+            "rating": "3",
+            "verified": true,
+            "name": "Brianna Mayes",
+            "date": "4 days ago",
+            "title": "absolutely love my Pajamas",
+            "body": "absolutely love my Pajamas!\nI bought 4 pairs, they wash well and are 100% cotton which is amazing! Great quality and styles!!!",
+            "reply": "We’re thrilled to hear how much you love your pajamas and that you’re happy with the quality, comfort, and styles. We’re especially happy to know they wash well and have become a favorite. Thank you for choosing us and for your amazing support, Brianna! 🤍",
+            "reply_date": "2 hours ago"
           }
         },
         "review_tBkiRP": {
@@ -232,7 +234,9 @@
             "name": "Customer name",
             "date": "",
             "title": "",
-            "body": ""
+            "body": "",
+            "reply": "",
+            "reply_date": ""
           }
         },
         "review_kjadfc": {
@@ -243,7 +247,9 @@
             "name": "Customer name",
             "date": "",
             "title": "",
-            "body": ""
+            "body": "",
+            "reply": "",
+            "reply_date": ""
           }
         },
         "review_PAyNdT": {
@@ -254,7 +260,9 @@
             "name": "Customer name",
             "date": "",
             "title": "",
-            "body": ""
+            "body": "",
+            "reply": "",
+            "reply_date": ""
           }
         }
       },
@@ -268,16 +276,26 @@
       "settings": {
         "verdict": "Great",
         "rating": "4.8",
-        "based_text": "Based on",
         "count_text": "48,500+ reviews",
         "count_url": "",
         "verified_label": "Verified",
-        "note": "Showing our favorite reviews",
+        "reply_label": "Reply from",
+        "reply_name": "Dalton & Pierce",
+        "more_label": "Read more",
+        "less_label": "Read less",
         "per_row": 4,
-        "c_star": "#E4B528",
+        "max_h": 560,
+        "star_style": "boxed",
+        "c_star": "#e4b528",
         "c_text": "#1c1d1d",
+        "c_accent": "#008849",
+        "c_card": "#f7f8fa",
         "c_bg": "#ffffff",
-        "pad_y": 40
+        "pad_y": 40,
+        "c_summary_star": "#73cf11",
+        "logo_alt": "Review platform",
+        "show_summary": true,
+        "note": "Showing our favorite reviews"
       }
     },
     "ob_reviews_wall_XxBbPA": {
@@ -291,9 +309,7 @@
             "name": "Customer name",
             "date": "",
             "title": "",
-            "body": "",
-            "reply": "",
-            "reply_date": ""
+            "body": ""
           }
         },
         "review_CPqWNR": {
@@ -304,9 +320,7 @@
             "name": "Customer name",
             "date": "",
             "title": "",
-            "body": "",
-            "reply": "",
-            "reply_date": ""
+            "body": ""
           }
         },
         "review_7qVEff": {
@@ -317,9 +331,7 @@
             "name": "Customer name",
             "date": "",
             "title": "",
-            "body": "",
-            "reply": "",
-            "reply_date": ""
+            "body": ""
           }
         },
         "review_YpRNRV": {
@@ -330,9 +342,7 @@
             "name": "Customer name",
             "date": "",
             "title": "",
-            "body": "",
-            "reply": "",
-            "reply_date": ""
+            "body": ""
           }
         }
       },
@@ -346,21 +356,20 @@
       "settings": {
         "verdict": "Great",
         "rating": "4.8",
+        "based_text": "Based on",
         "count_text": "48,500+ reviews",
         "count_url": "",
         "verified_label": "Verified",
-        "reply_label": "Reply from",
-        "reply_name": "Dalton Pierce",
-        "more_label": "Read more",
-        "less_label": "Show less",
+        "note": "Showing our favorite reviews",
         "per_row": 4,
-        "max_h": 560,
-        "c_star": "#E4B528",
+        "star_style": "boxed",
+        "c_star": "#e4b528",
         "c_text": "#1c1d1d",
-        "c_accent": "#1c1d1d",
-        "c_card": "#f7f8fa",
         "c_bg": "#ffffff",
-        "pad_y": 40
+        "pad_y": 40,
+        "c_summary_star": "#73cf11",
+        "logo_alt": "Review platform",
+        "show_summary": true
       }
     },
     "edytorial_kampanii": {
