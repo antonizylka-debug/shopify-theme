@@ -90,7 +90,7 @@
           "settings": {
             "icon": "chat",
             "title": "We're here for you",
-            "text": "24/7"
+            "text": "Mon–Fri 9:00 AM–6:00 PM ET"
           }
         }
       },
@@ -162,7 +162,7 @@
             "title": "Contact",
             "email": "support@daltonpierce.com",
             "phone": "",
-            "hours": "24/7",
+            "hours": "Mon–Fri 9:00 AM–6:00 PM ET, Sat–Sun 10:00 AM–4:00 PM ET",
             "address": "",
             "container_width": 50
           }

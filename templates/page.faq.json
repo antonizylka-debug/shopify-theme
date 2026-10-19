@@ -259,7 +259,7 @@
         "show_nav": true,
         "nav_title": "On this page",
         "contact_title": "Still need help?",
-        "contact_text": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number. Our customer service is available 24/7.<br/>We aim to respond to all inquiries within 1 business day.</p>",
+        "contact_text": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number. Customer service hours: Monday–Friday, 9:00 AM–6:00 PM ET; Saturday–Sunday, 10:00 AM–4:00 PM ET.<br/>We aim to respond to all inquiries within 1 business day.</p>",
         "contact_button_label": "Contact us",
         "contact_button_link": "/pages/contact",
         "padding_bottom": 96,

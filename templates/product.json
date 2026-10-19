@@ -69,9 +69,9 @@
         "acc-3": {
           "type": "acc",
           "settings": {
-            "title": "24\/7 customer service",
+            "title": "Customer service",
             "use_desc": false,
-            "text": "<p>Our customer service is available 24/7 to answer all your questions and comments. Whether you need advice on a product or help with an order, we are here to support you.</p><p>Don’t hesitate to contact us; we’re happy to help!</p><p>Please contact us at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a></p>",
+            "text": "<p>Our customer service team is here to answer all your questions and comments. Whether you need advice on a product or help with an order, we are here to support you.</p><p>Don’t hesitate to contact us; we’re happy to help!</p><p>Please contact us at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a>. We aim to respond within 1 business day.</p><p>Customer service hours: Monday–Friday, 9:00 AM–6:00 PM ET; Saturday–Sunday, 10:00 AM–4:00 PM ET.</p>",
             "open": false
           }
         },

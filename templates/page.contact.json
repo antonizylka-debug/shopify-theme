@@ -38,14 +38,14 @@
           "settings": {
             "icon": "clock",
             "label": "HOURS",
-            "value": "24/7"
+            "value": "Monday–Friday, 9:00 AM–6:00 PM ET; Saturday–Sunday, 10:00 AM–4:00 PM ET"
           }
         },
         "faq-1": {
           "type": "faq",
           "settings": {
             "question": "How quickly do you reply?",
-            "answer": "<p>Our customer service is available 24/7, and we aim to respond within 1 business day.</p>"
+            "answer": "<p>Our customer service hours are Monday–Friday, 9:00 AM–6:00 PM ET; Saturday–Sunday, 10:00 AM–4:00 PM ET. We aim to respond within 1 business day.</p>"
           }
         },
         "faq-2": {
