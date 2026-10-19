@@ -272,7 +272,7 @@
         "count_url": "",
         "verified_label": "Verified",
         "note": "Showing our favorite reviews",
-        "per_row": 4,
+        "per_row": 5,
         "star_style": "boxed",
         "c_text": "#1c1d1d",
         "c_bg": "#ffffff",
@@ -290,11 +290,11 @@
             "rating": "5",
             "verified": false,
             "name": "Customer name",
-            "date": "",
-            "title": "",
-            "body": "",
-            "reply": "",
-            "reply_date": ""
+            "date": "asd",
+            "title": "sda",
+            "body": "ads",
+            "reply": "das",
+            "reply_date": "das"
           }
         },
         "review_CPqWNR": {
