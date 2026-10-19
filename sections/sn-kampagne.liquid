@@ -32,8 +32,8 @@
     display: flex; align-items: center; gap: 10px; margin: 0;
     font-size: 11px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255, 255, 255, 0.78);
   }
-  #shopify-section-{{ section.id }} .snk__dot { position: relative; width: 6px; height: 6px; border-radius: 50%; background: #7A1F2B; flex: 0 0 6px; }
-  #shopify-section-{{ section.id }} .snk__dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #7A1F2B; animation: snk-puls 1.8s ease-out infinite; }
+  #shopify-section-{{ section.id }} .snk__dot { position: relative; width: 6px; height: 6px; border-radius: 50%; background: #d6332e; flex: 0 0 6px; }
+  #shopify-section-{{ section.id }} .snk__dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #d6332e; animation: snk-puls 1.8s ease-out infinite; }
   @keyframes snk-puls { from { transform: scale(1); opacity: 0.7; } to { transform: scale(3); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { #shopify-section-{{ section.id }} .snk__dot::after { animation: none; } }
   #shopify-section-{{ section.id }} .snk__czas { display: block; margin: 10px 0 0; font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: #ffffff; }

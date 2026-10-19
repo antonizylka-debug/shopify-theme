@@ -324,11 +324,11 @@
   #shopify-section-{{ section.id }} .pdp__akcja-brw {
     display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2px 8px;
     margin: 0 0 3px;
-    font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7A1F2B;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #d6332e;
   }
-  #shopify-section-{{ section.id }} .pdp__akcja-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #7A1F2B; flex: 0 0 7px; }
+  #shopify-section-{{ section.id }} .pdp__akcja-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #d6332e; flex: 0 0 7px; }
   #shopify-section-{{ section.id }} .pdp__akcja-dot::after {
-    content: ""; position: absolute; inset: 0; border-radius: 50%; background: #7A1F2B;
+    content: ""; position: absolute; inset: 0; border-radius: 50%; background: #d6332e;
     animation: pdp-akcja-puls 1.6s ease-out infinite;
   }
   @keyframes pdp-akcja-puls { from { transform: scale(1); opacity: 0.6; } to { transform: scale(2.6); opacity: 0; } }
@@ -346,7 +346,7 @@
   #shopify-section-{{ section.id }} .pdp__akcja-prog span { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--pdp-muted); white-space: nowrap; }
   #shopify-section-{{ section.id }} .pdp__akcja-prog b { font-size: 18px; font-weight: 700; line-height: 1.15; white-space: nowrap; font-variant-numeric: tabular-nums; }
   #shopify-section-{{ section.id }} .pdp__akcja-prog--max span,
-  #shopify-section-{{ section.id }} .pdp__akcja-prog--max b { color: #7A1F2B; }
+  #shopify-section-{{ section.id }} .pdp__akcja-prog--max b { color: #d6332e; }
   #shopify-section-{{ section.id }} .pdp__akcja-s { margin: 8px 0 0; font-size: 12.5px; line-height: 1.4; color: var(--pdp-muted); text-wrap: balance; }
 
   #shopify-section-{{ section.id }} .pdp__refs { margin: 10px 0 0; }
@@ -438,7 +438,7 @@
     #shopify-section-{{ section.id }} .pdp__stick.is-on { transform: translateY(0); }
     #shopify-section-{{ section.id }} .pdp__stick-info { display: flex; flex-direction: column; min-width: 0; flex: 0 1 auto; }
     #shopify-section-{{ section.id }} .pdp__stick-price { font-size: 17px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
-    #shopify-section-{{ section.id }} .pdp__stick.is-sale .pdp__stick-price { color: #7A1F2B; }
+    #shopify-section-{{ section.id }} .pdp__stick.is-sale .pdp__stick-price { color: #d6332e; }
     #shopify-section-{{ section.id }} .pdp__stick-opt { font-size: 12.5px; color: var(--pdp-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     #shopify-section-{{ section.id }} .pdp__stick-btn {
       flex: 1 1 auto; height: 48px; border: 0; cursor: pointer;
@@ -1626,7 +1626,7 @@
     { "type": "checkbox", "id": "show_sticky_atc", "label": "Sticky add to cart bar (mobile)", "default": true },
 
     { "type": "header", "content": "Promise rows" },
-    { "type": "color", "id": "row_accent", "label": "Line at the first row", "default": "#7A1F2B" },
+    { "type": "color", "id": "row_accent", "label": "Line at the first row", "default": "#d6332e" },
     { "type": "color", "id": "row_hi", "label": "Highlighted part of a heading", "default": "#1f7a3d" },
 
     { "type": "header", "content": "Suggestion under the accordions" },
@@ -1648,7 +1648,7 @@
     { "type": "color", "id": "c_muted", "label": "Secondary text", "default": "#6b6f76" },
     { "type": "color", "id": "c_line", "label": "Borders", "default": "#d9d6d1" },
     { "type": "color", "id": "c_soft", "label": "Soft background", "default": "#f4f3f1" },
-    { "type": "color", "id": "c_sale", "label": "Sale red", "default": "#7A1F2B" },
+    { "type": "color", "id": "c_sale", "label": "Sale red", "default": "#d6332e" },
     { "type": "color", "id": "c_low", "label": "Low stock dot", "default": "#b05f2e" },
     { "type": "color", "id": "c_button", "label": "Button", "default": "#23213a" }
   ],
