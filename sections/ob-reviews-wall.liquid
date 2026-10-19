@@ -1,0 +1,185 @@
+{%- comment -%}
+  Sciana opinii: naglowek z ocena, pod nim przewijana siatka kart (opcjonalnie z odpowiedzia sklepu).
+  Opinie wpisuje sie recznie w edytorze (bloki). Bez logo i nazwy zewnetrznego serwisu.
+{%- endcomment -%}
+{%- capture star_full -%}<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>{%- endcapture -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .rvw {
+    --rvw-star: {{ section.settings.c_star }};
+    --rvw-empty: #d9d6d1;
+    --rvw-text: {{ section.settings.c_text }};
+    --rvw-muted: #6b6f76;
+    --rvw-accent: {{ section.settings.c_accent }};
+    background: {{ section.settings.c_bg }};
+    color: var(--rvw-text);
+    padding: {{ section.settings.pad_y }}px 0;
+  }
+  #shopify-section-{{ section.id }} .rvw__head { text-align: center; margin-bottom: 18px; padding: 0 16px; }
+  #shopify-section-{{ section.id }} .rvw__top { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  #shopify-section-{{ section.id }} .rvw__verdict { font-size: 26px; line-height: 1.1; margin: 0; font-weight: 400; }
+  #shopify-section-{{ section.id }} .rvw__stars { display: inline-flex; gap: 2px; color: var(--rvw-star); }
+  #shopify-section-{{ section.id }} .rvw__stars svg { width: 16px; height: 16px; display: block; }
+  #shopify-section-{{ section.id }} .rvw__stars .is-off { color: var(--rvw-empty); }
+  #shopify-section-{{ section.id }} .rvw__top .rvw__stars svg { width: 26px; height: 26px; }
+  #shopify-section-{{ section.id }} .rvw__rated { font-size: 14px; margin: 10px 0 0; }
+  #shopify-section-{{ section.id }} .rvw__rated a { color: inherit; text-decoration: underline; }
+  #shopify-section-{{ section.id }} .rvw__scroll {
+    max-width: 1340px; margin: 0 auto; padding: 0 24px;
+    max-height: {{ section.settings.max_h }}px; overflow-y: auto; overscroll-behavior: contain;
+  }
+  #shopify-section-{{ section.id }} .rvw__grid {
+    display: grid; gap: 14px; grid-template-columns: repeat({{ section.settings.per_row }}, minmax(0, 1fr));
+  }
+  #shopify-section-{{ section.id }} .rvw__card {
+    background: {{ section.settings.c_card }}; padding: 16px 16px 14px; font-size: 14px; line-height: 1.4;
+    display: flex; flex-direction: column; min-width: 0;
+  }
+  #shopify-section-{{ section.id }} .rvw__meta { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  #shopify-section-{{ section.id }} .rvw__ver { display: inline-flex; align-items: center; gap: 4px; color: var(--rvw-muted); text-decoration: underline; }
+  #shopify-section-{{ section.id }} .rvw__ver svg { width: 15px; height: 15px; }
+  #shopify-section-{{ section.id }} .rvw__who { color: var(--rvw-muted); font-size: 12.5px; margin: 0 0 8px; }
+  #shopify-section-{{ section.id }} .rvw__who strong { font-weight: 700; }
+  #shopify-section-{{ section.id }} .rvw__title { font-size: 15px; font-weight: 700; margin: 0 0 6px; }
+  #shopify-section-{{ section.id }} .rvw__body { margin: 0; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+  #shopify-section-{{ section.id }} .rvw__card.is-open .rvw__body { display: block; -webkit-line-clamp: unset; }
+  #shopify-section-{{ section.id }} .rvw__reply {
+    margin-top: 12px; background: #fff; border-left: 3px solid var(--rvw-accent); padding: 12px 14px;
+  }
+  #shopify-section-{{ section.id }} .rvw__reply-head { display: flex; justify-content: space-between; gap: 10px; color: var(--rvw-muted); font-size: 13px; }
+  #shopify-section-{{ section.id }} .rvw__reply-text { margin: 8px 0 0; }
+  #shopify-section-{{ section.id }} .rvw__more {
+    margin-top: auto; padding-top: 12px; align-self: center; background: none; border: 0; cursor: pointer;
+    color: var(--rvw-accent); text-decoration: underline; font: inherit;
+  }
+  @media (max-width: 989px) {
+    #shopify-section-{{ section.id }} .rvw__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 599px) {
+    #shopify-section-{{ section.id }} .rvw__scroll { padding: 0 16px; }
+    #shopify-section-{{ section.id }} .rvw__grid { grid-template-columns: minmax(0, 1fr); }
+  }
+{%- endstyle -%}
+
+<div class="rvw">
+  <div class="rvw__head">
+    <div class="rvw__top">
+      {%- if section.settings.verdict != blank -%}<h2 class="rvw__verdict">{{ section.settings.verdict | escape }}</h2>{%- endif -%}
+      <span class="rvw__stars" role="img" aria-label="{{ section.settings.rating | escape }} / 5">
+        {%- assign sum_full = section.settings.rating | round -%}
+        {%- for i in (1..5) -%}<span class="{% if i > sum_full %}is-off{% endif %}">{{ star_full }}</span>{%- endfor -%}
+      </span>
+    </div>
+    <p class="rvw__rated">
+      Rated {{ section.settings.rating | escape }} / 5 based on
+      {% if section.settings.count_url != blank %}<a href="{{ section.settings.count_url }}">{{ section.settings.count_text | escape }}</a>{% else %}<u>{{ section.settings.count_text | escape }}</u>{% endif %}
+    </p>
+  </div>
+
+  <div class="rvw__scroll">
+    <div class="rvw__grid">
+      {%- for block in section.blocks -%}
+        {%- assign full = block.settings.rating | plus: 0 -%}
+        <article class="rvw__card" {{ block.shopify_attributes }}>
+          <div class="rvw__meta">
+            <span class="rvw__stars" role="img" aria-label="{{ full }} / 5">
+              {%- for i in (1..5) -%}<span class="{% if i > full %}is-off{% endif %}">{{ star_full }}</span>{%- endfor -%}
+            </span>
+            {%- if block.settings.verified -%}
+              <span class="rvw__ver"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#6b6f76"/><path d="m4.8 8.2 2.2 2.2 4.2-4.4" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ section.settings.verified_label | escape }}</span>
+            {%- endif -%}
+          </div>
+          <p class="rvw__who"><strong>{{ block.settings.name | escape }}</strong>{% if block.settings.date != blank %}, {{ block.settings.date | escape }}{% endif %}</p>
+          {%- if block.settings.title != blank -%}<h3 class="rvw__title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+          <p class="rvw__body">{{ block.settings.body | escape }}</p>
+          {%- if block.settings.reply != blank -%}
+            <div class="rvw__reply">
+              <div class="rvw__reply-head">
+                <span>{{ section.settings.reply_label | escape }} {{ section.settings.reply_name | escape }}</span>
+                <span>{{ block.settings.reply_date | escape }}</span>
+              </div>
+              <p class="rvw__reply-text">{{ block.settings.reply | escape }}</p>
+            </div>
+          {%- endif -%}
+          {%- assign body_len = block.settings.body | size -%}
+          {%- if body_len > 200 or block.settings.reply != blank -%}
+            <button type="button" class="rvw__more" data-rvw-more data-more="{{ section.settings.more_label | escape }}" data-less="{{ section.settings.less_label | escape }}">{{ section.settings.more_label | escape }}</button>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section.id }}');
+    if (!root) return;
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-rvw-more]');
+      if (!b) return;
+      var card = b.closest('.rvw__card');
+      var open = card.classList.toggle('is-open');
+      b.textContent = open ? b.getAttribute('data-less') : b.getAttribute('data-more');
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Reviews grid",
+  "tag": "section",
+  "max_blocks": 50,
+  "settings": [
+    { "type": "header", "content": "Header" },
+    { "type": "text", "id": "verdict", "label": "Headline", "default": "Great" },
+    { "type": "text", "id": "rating", "label": "Rating (stars)", "info": "A number from 1 to 5, e.g. 4.8. Decides how many stars are filled.", "default": "4.8" },
+    { "type": "text", "id": "count_text", "label": "Count text", "default": "48,500+ reviews" },
+    { "type": "url", "id": "count_url", "label": "Count link (optional)" },
+    { "type": "header", "content": "Cards" },
+    { "type": "text", "id": "verified_label", "label": "Verified label", "default": "Verified" },
+    { "type": "text", "id": "reply_label", "label": "Store reply label", "default": "Reply from" },
+    { "type": "text", "id": "reply_name", "label": "Store name in replies", "default": "Dalton Pierce" },
+    { "type": "text", "id": "more_label", "label": "Read more label", "default": "Read more" },
+    { "type": "text", "id": "less_label", "label": "Read less label", "default": "Show less" },
+    { "type": "range", "id": "per_row", "label": "Cards per row (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "range", "id": "max_h", "label": "Height of the scroll box", "min": 300, "max": 900, "step": 20, "default": 560, "unit": "px" },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "c_star", "label": "Stars", "default": "#E4B528" },
+    { "type": "color", "id": "c_text", "label": "Text", "default": "#1c1d1d" },
+    { "type": "color", "id": "c_accent", "label": "Accent (reply line, links)", "default": "#1c1d1d" },
+    { "type": "color", "id": "c_card", "label": "Card background", "default": "#f7f8fa" },
+    { "type": "color", "id": "c_bg", "label": "Section background", "default": "#ffffff" },
+    { "type": "range", "id": "pad_y", "label": "Space above and below", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "select", "id": "rating", "label": "Stars", "default": "5", "options": [
+          { "value": "5", "label": "5" }, { "value": "4", "label": "4" }, { "value": "3", "label": "3" }, { "value": "2", "label": "2" }, { "value": "1", "label": "1" }
+        ] },
+        { "type": "checkbox", "id": "verified", "label": "Show the verified label", "info": "Only for reviews from confirmed buyers.", "default": false },
+        { "type": "text", "id": "name", "label": "Name", "default": "Customer name" },
+        { "type": "text", "id": "date", "label": "Date", "info": "Free text, e.g. 8 October." },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Review text" },
+        { "type": "textarea", "id": "reply", "label": "Store reply (optional)" },
+        { "type": "text", "id": "reply_date", "label": "Reply date", "info": "Free text, e.g. 9 October." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews grid",
+      "blocks": [
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,186 @@
+{%- comment -%}
+  Pasek opinii: podsumowanie po lewej, karuzela kart po prawej.
+  Opinie wpisuje sie recznie w edytorze (bloki). Bez logo i nazwy zewnetrznego serwisu.
+{%- endcomment -%}
+{%- capture star_full -%}<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>{%- endcapture -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .rvs {
+    --rvs-star: {{ section.settings.c_star }};
+    --rvs-empty: #d9d6d1;
+    --rvs-text: {{ section.settings.c_text }};
+    --rvs-muted: #6b6f76;
+    background: {{ section.settings.c_bg }};
+    color: var(--rvs-text);
+    padding: {{ section.settings.pad_y }}px 0;
+  }
+  #shopify-section-{{ section.id }} .rvs__wrap {
+    max-width: 1500px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: flex-start; gap: 28px;
+  }
+  #shopify-section-{{ section.id }} .rvs__sum { flex: 0 0 190px; text-align: center; padding-top: 4px; }
+  #shopify-section-{{ section.id }} .rvs__verdict { font-size: 28px; line-height: 1.1; margin: 0 0 8px; font-weight: 400; }
+  #shopify-section-{{ section.id }} .rvs__stars { display: inline-flex; gap: 2px; color: var(--rvs-star); }
+  #shopify-section-{{ section.id }} .rvs__stars svg { width: 16px; height: 16px; display: block; }
+  #shopify-section-{{ section.id }} .rvs__stars .is-off { color: var(--rvs-empty); }
+  #shopify-section-{{ section.id }} .rvs__sum .rvs__stars svg { width: 30px; height: 30px; }
+  #shopify-section-{{ section.id }} .rvs__based { font-size: 14px; margin: 8px 0 0; color: var(--rvs-text); }
+  #shopify-section-{{ section.id }} .rvs__based a { color: inherit; text-decoration: underline; }
+  #shopify-section-{{ section.id }} .rvs__main { position: relative; flex: 1 1 auto; min-width: 0; padding: 0 34px; }
+  #shopify-section-{{ section.id }} .rvs__track {
+    display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory;
+    scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+  }
+  #shopify-section-{{ section.id }} .rvs__track::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .rvs__card {
+    flex: 0 0 calc((100% - 24px * {{ section.settings.per_row | minus: 1 }}) / {{ section.settings.per_row }});
+    scroll-snap-align: start; min-width: 0; font-size: 14px; line-height: 1.35;
+  }
+  #shopify-section-{{ section.id }} .rvs__meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+  #shopify-section-{{ section.id }} .rvs__ver { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; color: var(--rvs-muted); text-decoration: underline; }
+  #shopify-section-{{ section.id }} .rvs__ver svg { width: 15px; height: 15px; }
+  #shopify-section-{{ section.id }} .rvs__who { color: var(--rvs-muted); font-size: 12.5px; margin: 0 0 8px; }
+  #shopify-section-{{ section.id }} .rvs__who strong { font-weight: 700; }
+  #shopify-section-{{ section.id }} .rvs__title { font-size: 15px; font-weight: 700; margin: 0 0 4px; }
+  #shopify-section-{{ section.id }} .rvs__body {
+    margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  #shopify-section-{{ section.id }} .rvs__nav {
+    position: absolute; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--rvs-text); background: #fff; color: var(--rvs-text); cursor: pointer; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #shopify-section-{{ section.id }} .rvs__nav[disabled] { opacity: .25; cursor: default; border-color: #bbb; }
+  #shopify-section-{{ section.id }} .rvs__nav--prev { left: 0; }
+  #shopify-section-{{ section.id }} .rvs__nav--next { right: 0; }
+  #shopify-section-{{ section.id }} .rvs__nav svg { width: 12px; height: 12px; }
+  #shopify-section-{{ section.id }} .rvs__note { font-size: 14px; margin: 14px 0 0; padding-left: 0; }
+  @media (max-width: 989px) {
+    #shopify-section-{{ section.id }} .rvs__wrap { flex-direction: column; align-items: stretch; gap: 18px; }
+    #shopify-section-{{ section.id }} .rvs__sum { flex: none; }
+    #shopify-section-{{ section.id }} .rvs__card { flex-basis: calc((100% - 24px) / 2); }
+  }
+  @media (max-width: 599px) {
+    #shopify-section-{{ section.id }} .rvs__wrap { padding: 0 16px; }
+    #shopify-section-{{ section.id }} .rvs__main { padding: 0; }
+    #shopify-section-{{ section.id }} .rvs__nav { display: none; }
+    #shopify-section-{{ section.id }} .rvs__card { flex-basis: 82%; }
+  }
+{%- endstyle -%}
+
+<div class="rvs" data-rvs>
+  <div class="rvs__wrap">
+    <div class="rvs__sum">
+      {%- if section.settings.verdict != blank -%}<p class="rvs__verdict">{{ section.settings.verdict | escape }}</p>{%- endif -%}
+      <span class="rvs__stars" role="img" aria-label="{{ section.settings.rating | escape }} / 5">
+        {%- assign sum_full = section.settings.rating | round -%}
+        {%- for i in (1..5) -%}<span class="{% if i > sum_full %}is-off{% endif %}">{{ star_full }}</span>{%- endfor -%}
+      </span>
+      {%- if section.settings.based_text != blank -%}
+        <p class="rvs__based">
+          {{ section.settings.based_text | escape }}
+          {%- if section.settings.count_text != blank %}
+            {% if section.settings.count_url != blank %}<a href="{{ section.settings.count_url }}">{{ section.settings.count_text | escape }}</a>{% else %}<u>{{ section.settings.count_text | escape }}</u>{% endif %}
+          {%- endif -%}
+        </p>
+      {%- endif -%}
+    </div>
+
+    <div class="rvs__main">
+      <button type="button" class="rvs__nav rvs__nav--prev" data-rvs-prev aria-label="Previous"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 2 3.5 6l4 4"/></svg></button>
+      <div class="rvs__track" data-rvs-track>
+        {%- for block in section.blocks -%}
+          {%- assign full = block.settings.rating | plus: 0 -%}
+          <article class="rvs__card" {{ block.shopify_attributes }}>
+            <div class="rvs__meta">
+              <span class="rvs__stars" role="img" aria-label="{{ full }} / 5">
+                {%- for i in (1..5) -%}<span class="{% if i > full %}is-off{% endif %}">{{ star_full }}</span>{%- endfor -%}
+              </span>
+              {%- if block.settings.verified -%}
+                <span class="rvs__ver"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#6b6f76"/><path d="m4.8 8.2 2.2 2.2 4.2-4.4" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ section.settings.verified_label | escape }}</span>
+              {%- endif -%}
+            </div>
+            <p class="rvs__who"><strong>{{ block.settings.name | escape }}</strong>{% if block.settings.date != blank %}, {{ block.settings.date | escape }}{% endif %}</p>
+            {%- if block.settings.title != blank -%}<h3 class="rvs__title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+            <p class="rvs__body">{{ block.settings.body | escape }}</p>
+          </article>
+        {%- endfor -%}
+      </div>
+      <button type="button" class="rvs__nav rvs__nav--next" data-rvs-next aria-label="Next"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 2 4 4-4 4"/></svg></button>
+      {%- if section.settings.note != blank -%}<p class="rvs__note">{{ section.settings.note | escape }}</p>{%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section.id }}');
+    if (!root) return;
+    var track = root.querySelector('[data-rvs-track]');
+    var prev = root.querySelector('[data-rvs-prev]');
+    var next = root.querySelector('[data-rvs-next]');
+    if (!track || !prev || !next) return;
+    function step() { var c = track.querySelector('.rvs__card'); return c ? c.getBoundingClientRect().width + 24 : 300; }
+    function sync() {
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+    }
+    prev.addEventListener('click', function () { track.scrollBy({ left: -step() * 1, behavior: 'smooth' }); });
+    next.addEventListener('click', function () { track.scrollBy({ left: step() * 1, behavior: 'smooth' }); });
+    track.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Reviews carousel",
+  "tag": "section",
+  "max_blocks": 24,
+  "settings": [
+    { "type": "header", "content": "Summary (left)" },
+    { "type": "text", "id": "verdict", "label": "Headline", "default": "Great" },
+    { "type": "text", "id": "rating", "label": "Rating (stars)", "info": "A number from 1 to 5, e.g. 4.8. Decides how many stars are filled.", "default": "4.8" },
+    { "type": "text", "id": "based_text", "label": "Text before the count", "default": "Based on" },
+    { "type": "text", "id": "count_text", "label": "Count text", "default": "48,500+ reviews" },
+    { "type": "url", "id": "count_url", "label": "Count link (optional)" },
+    { "type": "header", "content": "Cards" },
+    { "type": "text", "id": "verified_label", "label": "Verified label", "default": "Verified" },
+    { "type": "text", "id": "note", "label": "Note under the cards", "default": "Showing our favorite reviews" },
+    { "type": "range", "id": "per_row", "label": "Cards visible (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "c_star", "label": "Stars", "default": "#E4B528" },
+    { "type": "color", "id": "c_text", "label": "Text", "default": "#1c1d1d" },
+    { "type": "color", "id": "c_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "range", "id": "pad_y", "label": "Space above and below", "min": 0, "max": 100, "step": 4, "default": 40, "unit": "px" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "select", "id": "rating", "label": "Stars", "default": "5", "options": [
+          { "value": "5", "label": "5" }, { "value": "4", "label": "4" }, { "value": "3", "label": "3" }, { "value": "2", "label": "2" }, { "value": "1", "label": "1" }
+        ] },
+        { "type": "checkbox", "id": "verified", "label": "Show the verified label", "info": "Only for reviews from confirmed buyers.", "default": false },
+        { "type": "text", "id": "name", "label": "Name", "default": "Customer name" },
+        { "type": "text", "id": "date", "label": "Date", "info": "Free text, e.g. 8 October." },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Review text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews carousel",
+      "blocks": [
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" }
+      ]
+    }
+  ]
+}
+{% endschema %}
