@@ -59,14 +59,14 @@
           "type": "faq",
           "settings": {
             "question": "Where is my order?",
-            "answer": "<p>Your tracking number is emailed as soon as the package ships, and you can follow it on the <a href=\"/pages/track-order\">Track my order</a> page. If nothing has happened for 7 days, write to us.</p>"
+            "answer": "<p>Your tracking number is emailed as soon as the package ships, and you can follow it on the <a href=\"/pages/track-order\">Track my order</a> page. If the expected delivery date has passed, write to us.</p>"
           }
         },
         "faq-4": {
           "type": "faq",
           "settings": {
             "question": "How do I return or exchange an item?",
-            "answer": "<p>Write to us within 30 days of delivery and we'll send you the return address. We don't exchange sizes directly – send the item back and place a new order in the size you want.</p>"
+            "answer": "<p>Email us within 14 days of receiving your order to register your return, and we will provide you with the return address of our supplier. We don't exchange sizes directly – return the item and place a new order in the size you want.</p>"
           }
         },
         "faq-5": {

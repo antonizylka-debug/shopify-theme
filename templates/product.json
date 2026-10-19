@@ -16,27 +16,27 @@
           "type": "row",
           "settings": {
             "icon": "truck",
-            "text": "Free shipping",
+            "text": "Tracked shipping included",
             "hi": "",
-            "sub": "On every order, no minimum"
+            "sub": "Tracking details sent by email"
           }
         },
         "row-2": {
           "type": "row",
           "settings": {
             "icon": "clock",
-            "text": "Ships within 3–4 business days",
+            "text": "Processed within 1–3 business days",
             "hi": "",
-            "sub": "Then 3–6 business days for delivery"
+            "sub": "Delivery in 5 to 8 business days"
           }
         },
         "row-3": {
           "type": "row",
           "settings": {
             "icon": "return",
-            "text": "30-day returns",
+            "text": "Returns within 14 days",
             "hi": "",
-            "sub": "From the day you receive your package"
+            "sub": "Email us within 14 days of receiving your order"
           }
         },
         "row-4": {
@@ -62,7 +62,7 @@
           "settings": {
             "title": "Shipping and returns",
             "use_desc": false,
-            "text": "<p><strong>Shipping</strong></p><p>We pack and ship within 3–4 business days. Delivery then takes another 3–6 business days. Shipping is free on every order, and you'll get a tracking number by email as soon as your package ships.</p><p><strong>Returns</strong></p><p>You have 30 days from delivery. Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number and we'll send you the return address.</p>",
+            "text": "<p><strong>Shipping</strong></p><p>All orders are processed within 1 to 3 business days, and the average delivery time is 5 to 8 business days. Tracked shipping is included, and you'll get your tracking details by email once your order has been shipped.</p><p><strong>Returns</strong></p><p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> within 14 days of receiving your order to register your return. Return shipping is at your own expense. Sale items are eligible for store credit only.</p>",
             "open": false
           }
         },
@@ -317,8 +317,8 @@
         "image": "shopify://shop_images/about_us_image_2.webp",
         "bleed": true,
         "ratio": "4 / 3",
-        "title": "30-day money-back guarantee",
-        "text": "<p>We stand behind the clothes we sell. That's why every order comes with 30-day returns — counted from the day the package reaches you, not the day you order.</p><p>If it doesn't fit, or isn't what you imagined, write to us with your order number. You'll get the return address in our reply, and your money is back in your account as soon as the item reaches us.</p>",
+        "title": "Returns within 14 days",
+        "text": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> within 14 days of receiving your order to register your return. Items must be unused, unwashed and undamaged, with all tags and labels still attached.</p><p>Regular-priced items are refunded to your original payment method. Sale items and promotional purchases receive store credit instead. Return shipping is at your own expense.</p>",
         "list": "",
         "text_after": "",
         "note": "No forms and no explanations. One email is enough.",
@@ -540,7 +540,7 @@
           "type": "question",
           "settings": {
             "question": "How long does delivery take?",
-            "answer": "<p>We pack and ship orders within 3–4 business days. Delivery then takes another 3–6 business days.</p><p>If you order at the weekend or on a public holiday, we start on your order the next business day.</p>",
+            "answer": "All orders are processed within 1 to 3 business days. The average delivery time is 5 to 8 business days. During busy periods such as holidays or sales events, delivery may take slightly longer, and customs procedures may occasionally cause delays outside our control.",
             "open_by_default": true
           }
         },
@@ -556,7 +556,7 @@
           "type": "question",
           "settings": {
             "question": "How do I start a return?",
-            "answer": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your order number and the item you'd like to return, within 30 days of receiving it. We'll reply with the return address and short instructions.</p><p>Please wait for our reply before sending anything – packages sent back on your own often end up at a warehouse that can't process them.</p>",
+            "answer": "Email support@daltonpierce.com within 14 days of receiving your order to register your return. We will provide you with the return address of our supplier. Ship the item back at your own expense, including any applicable customs duties or shipping fees. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.",
             "open_by_default": false
           }
         },
@@ -564,7 +564,7 @@
           "type": "question",
           "settings": {
             "question": "It doesn't fit. Can I exchange the size?",
-            "answer": "<p>We don't exchange sizes directly. Send the item back for a refund and place a new order in the size you want – that way the size isn't sold to someone else while your package is on its way.</p>",
+            "answer": "We don't exchange sizes directly. Return the item as described in our return policy and place a new order in the size you want. Please note that ordering multiple sizes with the intention of returning part of the order is not permitted.",
             "open_by_default": false
           }
         },
@@ -572,7 +572,7 @@
           "type": "question",
           "settings": {
             "question": "Who pays for return shipping?",
-            "answer": "<p>You do – unless the item was faulty, damaged or not what you ordered. Then we pay.</p><p>Use a tracked shipping service. Until the package reaches us, it's your responsibility.</p>",
+            "answer": "You do. Return shipping costs are the full responsibility of the customer, including any international shipping fees and applicable customs duties. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.",
             "open_by_default": false
           }
         },
@@ -580,7 +580,7 @@
           "type": "question",
           "settings": {
             "question": "Where do you ship, and do I pay duties?",
-            "answer": "<p>We ship across Canada – to every province and territory.</p><p>We cover duties, import fees and charges, so there's nothing extra to pay on delivery. We deliver to home addresses, businesses and pickup points.</p>",
+            "answer": "We ship to addresses in Canada. Orders are shipped internationally, so customs procedures may apply on arrival, and delays due to customs are outside our control. If you have a question about import charges, email support@daltonpierce.com before you order.",
             "open_by_default": false
           }
         }
