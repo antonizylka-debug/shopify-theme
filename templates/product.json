@@ -294,13 +294,13 @@
           "type": "review",
           "settings": {
             "rating": "5",
-            "verified": false,
-            "name": "Customer name",
-            "date": "asd",
-            "title": "sda",
-            "body": "ads",
-            "reply": "das",
-            "reply_date": "das",
+            "verified": true,
+            "name": "Emily Carter",
+            "date": "2026-10-15",
+            "title": "Really happy with my order",
+            "body": "I was a little unsure about ordering at first, but I'm glad I did. The sweater looks lovely and fits just how I wanted. I've already worn it a few times.",
+            "reply": "I was a little unsure about ordering at first, but I'm glad I did. The sweater looks lovely and fits just how I wanted. I've already worn it a few times.\nStore reply: Thank you, Emily! We're so happy to hear you're enjoying your new sweater. We really appreciate you giving Dalton Pierce a try.",
+            "reply_date": "2026-10-16",
             "is_sample": false
           }
         },
