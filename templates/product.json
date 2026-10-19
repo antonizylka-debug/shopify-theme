@@ -576,7 +576,7 @@
           "type": "question",
           "settings": {
             "question": "Do you offer free shipping?",
-            "answer": "<p>Yes! We offer free shipping on every order across Canada, with no minimum purchase. Orders are shipped internationally, so customs procedures may apply on arrival. Any applicable sales taxes are shown at checkout.<\/p>",
+            "answer": "<p>Yes! We offer free shipping on every order across Canada, with no minimum purchase. As orders are shipped internationally, customs procedures may apply upon arrival in Canada. Any applicable sales taxes are shown at checkout.<\/p>",
             "open_by_default": true
           }
         },

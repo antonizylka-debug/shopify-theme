@@ -140,7 +140,7 @@
           "type": "question",
           "settings": {
             "title": "Where do you ship, and do I pay duties?",
-            "text": "<p>We ship to addresses in Canada. Orders are shipped internationally, so customs procedures may apply on arrival, and delays due to customs are outside our control. If you have a question about import charges, email support@daltonpierce.com before you order.<\/p>"
+            "text": "<p>We ship to addresses in Canada. As orders are shipped internationally, customs procedures may apply upon arrival in Canada. Delays due to customs procedures may occasionally occur but are outside of our control. Our team ensures all necessary documentation is included with every shipment to make the customs process as smooth as possible. If you have a question about import charges, email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> before you order.<\/p>"
           }
         },
         "q-19": {
