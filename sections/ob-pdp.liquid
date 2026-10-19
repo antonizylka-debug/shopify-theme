@@ -1077,6 +1077,17 @@
         {%- endif -%}
         {%- assign wiersze = section.blocks | where: 'type', 'row' -%}
         {%- if wiersze.size > 0 -%}
+          {%- comment -%} {date} w tekście wiersza = dzień wysyłki: dziś + 3 dni robocze (górna granica 1–3 dni z polityki) {%- endcomment -%}
+          {%- assign ship_ts = 'now' | date: '%s' | plus: 0 -%}
+          {%- assign ship_left = 3 -%}
+          {%- for i in (1..7) -%}
+            {%- if ship_left > 0 -%}
+              {%- assign ship_ts = ship_ts | plus: 86400 -%}
+              {%- assign ship_wd = ship_ts | date: '%u' -%}
+              {%- if ship_wd != '6' and ship_wd != '7' -%}{%- assign ship_left = ship_left | minus: 1 -%}{%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- assign ship_date = ship_ts | date: '%a, %b %-d' -%}
           <div class="pdp__rows">
             {%- for block in wiersze -%}
               <div class="pdp__row" {{ block.shopify_attributes }}>
@@ -1094,7 +1105,7 @@
                   </svg>
                 </span>
                 <span class="pdp__row-txt">
-                  <span class="pdp__row-title">{{ block.settings.text }}{% if block.settings.hi != blank %} <span class="pdp__row-hi">{{ block.settings.hi }}</span>{% endif %}</span>
+                  <span class="pdp__row-title">{{ block.settings.text | replace: '{date}', ship_date }}{% if block.settings.hi != blank %} <span class="pdp__row-hi">{{ block.settings.hi }}</span>{% endif %}</span>
                   {%- if block.settings.sub != blank -%}
                     <span class="pdp__row-sub">{{ block.settings.sub }}</span>
                   {%- endif -%}
