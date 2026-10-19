@@ -18,7 +18,7 @@
           "type": "announcement",
           "settings": {
             "text": "Easy returns",
-            "link_text": "30-day returns on every order",
+            "link_text": "14-day money-back guarantee on every order",
             "link": ""
           }
         },
@@ -156,7 +156,7 @@
         "mnav_bar_fg": "#ffffff",
         "mnav_usp_show": true,
         "mnav_usp_1": "Free shipping on every order",
-        "mnav_usp_2": "30-day returns",
+        "mnav_usp_2": "14-day money-back guarantee",
         "mnav_usp_3": "Secure checkout"
       }
     },
@@ -189,8 +189,8 @@
           "type": "item",
           "settings": {
             "icon": "swap",
-            "text": "30-day returns",
-            "text_m": "30-day returns",
+            "text": "14-day money-back guarantee",
+            "text_m": "14-day guarantee",
             "hide_m": false,
             "color": "",
             "link": ""

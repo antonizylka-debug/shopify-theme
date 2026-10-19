@@ -16,9 +16,9 @@
           "type": "row",
           "settings": {
             "icon": "truck",
-            "text": "Tracked shipping included",
+            "text": "Free shipping",
             "hi": "",
-            "sub": "Tracking details sent by email"
+            "sub": "On every order, no minimum"
           }
         },
         "row-2": {
@@ -34,9 +34,9 @@
           "type": "row",
           "settings": {
             "icon": "return",
-            "text": "Returns within 14 days",
+            "text": "14-day money-back guarantee",
             "hi": "",
-            "sub": "Email us within 14 days of receiving your order"
+            "sub": "From the day you receive your package"
           }
         },
         "row-4": {
@@ -60,27 +60,27 @@
         "acc-2": {
           "type": "acc",
           "settings": {
-            "title": "Tracked shipping",
+            "title": "Free shipping",
             "use_desc": false,
-            "text": "<p>Shipping costs are calculated at checkout based on the weight of your order and your delivery address. Every order includes full tracked shipping at no extra cost, so you can always monitor your order.</p><p>All orders are processed within 1 to 3 business days, and the average delivery time is 5 to 8 business days. You will receive your tracking details by email once your order has been shipped.</p>",
+            "text": "<p>We’re offering free shipping within Canada for all orders.</p><p>We ship our packages with a Track &amp; Trace code so you can always monitor your order.</p><p>You will receive the Track &amp; Trace code via email within 24-72 hours after placing your order.</p>",
             "open": false
           }
         },
         "acc-3": {
           "type": "acc",
           "settings": {
-            "title": "Customer service",
+            "title": "24\/7 customer service",
             "use_desc": false,
-            "text": "<p>Our customer service team is here to answer all your questions and comments. Whether you need advice on a product or help with an order, we are here to support you.</p><p>Don't hesitate to contact us – we're happy to help! Please contact us at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a>. We aim to respond to all inquiries within 1 business day. Mon–Fri 9:00–18:00, Sat–Sun 10:00–16:00 ET.</p>",
+            "text": "<p>Our customer service is available 24/7 to answer all your questions and comments. Whether you need advice on a product or help with an order, we are here to support you.</p><p>Don’t hesitate to contact us; we’re happy to help!</p><p>Please contact us at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a></p>",
             "open": false
           }
         },
         "acc-4": {
           "type": "acc",
           "settings": {
-            "title": "14-day returns",
+            "title": "14-day money-back guarantee",
             "use_desc": false,
-            "text": "<p>If our product does not meet your expectations, you can contact us within 14 days of receiving your order to register a return. Before returning the goods, please email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> and let us know the reason for the return so we can process your request correctly.<\/p><p>Items must be unused, unwashed and undamaged, with all tags and labels still attached. Return shipping is at your own expense. Regular-priced items are refunded to your original payment method; sale items and promotional purchases receive store credit instead.<\/p><p>Please review our <a href=\"\/pages\/return-and-refund-policy\">return policy<\/a> for more information.<\/p>",
+            "text": "<p>If our product does not meet your expectations, you can return it within 14 days upon receipt.<\/p><p>Before returning the goods, please contact our customer service at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> and let us know the reason for the return so we can process your request correctly.<\/p><p>Please review our <a href=\"\/pages\/return-and-refund-policy\">return policy<\/a> for more information!<\/p>",
             "open": false,
             "only_types": "",
             "except_types": ""
@@ -353,11 +353,11 @@
         "image": "shopify://shop_images/about_us_image_2.webp",
         "bleed": true,
         "ratio": "4 / 3",
-        "title": "Returns within 14 days",
-        "text": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> within 14 days of receiving your order to register your return. Items must be unused, unwashed and undamaged, with all tags and labels still attached.</p><p>Regular-priced items are refunded to your original payment method. Sale items and promotional purchases receive store credit instead. Return shipping is at your own expense.</p>",
+        "title": "14-day money-back guarantee",
+        "text": "<p>If our product does not meet your expectations, you can return it within 14 days upon receipt.</p><p>Before returning the goods, please contact our customer service at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> and let us know the reason for the return so we can process your request correctly.</p><p>Please review our <a href=\"/pages/return-and-refund-policy\">return policy</a> for more information!</p>",
         "list": "",
         "text_after": "",
-        "note": "No forms and no explanations. One email is enough.",
+        "note": "Tell us the reason for your return so we can process your request correctly.",
         "image_width": 40,
         "max_width": 900,
         "gap": 48,

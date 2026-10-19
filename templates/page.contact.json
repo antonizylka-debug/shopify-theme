@@ -30,7 +30,7 @@
           "settings": {
             "icon": "clock",
             "label": "Response time",
-            "value": "1–2 business days"
+            "value": "1 business day"
           }
         },
         "support_KQYaGF": {
@@ -38,14 +38,14 @@
           "settings": {
             "icon": "clock",
             "label": "HOURS",
-            "value": "Monday to Friday, 9:00–18:00, Saturday and Sunday, 10:00–16:00 ET"
+            "value": "24/7"
           }
         },
         "faq-1": {
           "type": "faq",
           "settings": {
             "question": "How quickly do you reply?",
-            "answer": "<p>Within 1–2 business days, Monday to Friday. If you write at the weekend, we'll reply on the next business day.</p>"
+            "answer": "<p>Our customer service is available 24/7, and we aim to respond within 1 business day.</p>"
           }
         },
         "faq-2": {
@@ -95,9 +95,9 @@
         "image": "shopify://shop_images/New_Hero_Mobile.webp",
         "image_height": 860,
         "support_title": "Customer service",
-        "support_note": "Write to us – a real person replies, usually within 1–2 business days.",
+        "support_note": "Write to us – a real person replies – we aim to respond within 1 business day.",
         "form_title": "Send us a message",
-        "form_note": "We usually reply within 1–2 business days.",
+        "form_note": "We aim to respond within 1 business day.",
         "button_label": "Send message",
         "faq_eyebrow": "FAQ",
         "faq_title": "Frequently asked questions",
