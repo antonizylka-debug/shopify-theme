@@ -25,9 +25,7 @@
           "type": "row",
           "settings": {
             "icon": "clock",
-            "text": "Ships by {date}",
-            "hi": "",
-            "sub": "Delivery in 5 to 8 business days"
+            "text": "Ships by #date"
           }
         },
         "row-3": {
