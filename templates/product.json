@@ -540,7 +540,7 @@
           "type": "question",
           "settings": {
             "question": "How long does delivery take?",
-            "answer": "All orders are processed within 1 to 3 business days. The average delivery time is 5 to 8 business days. During busy periods such as holidays or sales events, delivery may take slightly longer, and customs procedures may occasionally cause delays outside our control.",
+            "answer": "<p>All orders are processed within 1 to 3 business days. The average delivery time is 5 to 8 business days. During busy periods such as holidays or sales events, delivery may take slightly longer, and customs procedures may occasionally cause delays outside our control.<\/p>",
             "open_by_default": true
           }
         },
@@ -556,7 +556,7 @@
           "type": "question",
           "settings": {
             "question": "How do I start a return?",
-            "answer": "Email support@daltonpierce.com within 14 days of receiving your order to register your return. We will provide you with the return address of our supplier. Ship the item back at your own expense, including any applicable customs duties or shipping fees. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.",
+            "answer": "<p>Email support@daltonpierce.com within 14 days of receiving your order to register your return. We will provide you with the return address of our supplier. Ship the item back at your own expense, including any applicable customs duties or shipping fees. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.<\/p>",
             "open_by_default": false
           }
         },
@@ -564,7 +564,7 @@
           "type": "question",
           "settings": {
             "question": "It doesn't fit. Can I exchange the size?",
-            "answer": "We don't exchange sizes directly. Return the item as described in our return policy and place a new order in the size you want. Please note that ordering multiple sizes with the intention of returning part of the order is not permitted.",
+            "answer": "<p>We don't exchange sizes directly. Return the item as described in our return policy and place a new order in the size you want. Please note that ordering multiple sizes with the intention of returning part of the order is not permitted.<\/p>",
             "open_by_default": false
           }
         },
@@ -572,7 +572,7 @@
           "type": "question",
           "settings": {
             "question": "Who pays for return shipping?",
-            "answer": "You do. Return shipping costs are the full responsibility of the customer, including any international shipping fees and applicable customs duties. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.",
+            "answer": "<p>You do. Return shipping costs are the full responsibility of the customer, including any international shipping fees and applicable customs duties. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.<\/p>",
             "open_by_default": false
           }
         },
@@ -580,7 +580,7 @@
           "type": "question",
           "settings": {
             "question": "Where do you ship, and do I pay duties?",
-            "answer": "We ship to addresses in Canada. Orders are shipped internationally, so customs procedures may apply on arrival, and delays due to customs are outside our control. If you have a question about import charges, email support@daltonpierce.com before you order.",
+            "answer": "<p>We ship to addresses in Canada. Orders are shipped internationally, so customs procedures may apply on arrival, and delays due to customs are outside our control. If you have a question about import charges, email support@daltonpierce.com before you order.<\/p>",
             "open_by_default": false
           }
         }

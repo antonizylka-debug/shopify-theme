@@ -28,63 +28,63 @@
           "type": "question",
           "settings": {
             "title": "How do I start a return?",
-            "text": "Email support@daltonpierce.com within 14 days of receiving your order to register your return. We will provide you with the return address of our supplier. Ship the item back at your own expense, including any applicable customs duties or shipping fees. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking."
+            "text": "<p>Email support@daltonpierce.com within 14 days of receiving your order to register your return. We will provide you with the return address of our supplier. Ship the item back at your own expense, including any applicable customs duties or shipping fees. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.<\/p>"
           }
         },
         "q-3": {
           "type": "question",
           "settings": {
             "title": "What can I return?",
-            "text": "Returns can only be requested after you have physically received your order. Items must be unused, unwashed, undamaged and in their original condition, with all tags and labels still attached. Trying on items is permitted, but wearing them is not. Ordering multiple sizes with the intention of returning part of the order is not permitted."
+            "text": "<p>Returns can only be requested after you have physically received your order. Items must be unused, unwashed, undamaged and in their original condition, with all tags and labels still attached. Trying on items is permitted, but wearing them is not. Ordering multiple sizes with the intention of returning part of the order is not permitted.<\/p>"
           }
         },
         "q-4": {
           "type": "question",
           "settings": {
             "title": "It doesn't fit. Can I exchange the size?",
-            "text": "We don't exchange sizes directly. Return the item as described in our return policy and place a new order in the size you want. Please note that ordering multiple sizes with the intention of returning part of the order is not permitted."
+            "text": "<p>We don't exchange sizes directly. Return the item as described in our return policy and place a new order in the size you want. Please note that ordering multiple sizes with the intention of returning part of the order is not permitted.<\/p>"
           }
         },
         "q-5": {
           "type": "question",
           "settings": {
             "title": "Who pays for return shipping?",
-            "text": "You do. Return shipping costs are the full responsibility of the customer, including any international shipping fees and applicable customs duties. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking."
+            "text": "<p>You do. Return shipping costs are the full responsibility of the customer, including any international shipping fees and applicable customs duties. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.<\/p>"
           }
         },
         "q-6": {
           "type": "question",
           "settings": {
             "title": "Where should I send my return?",
-            "text": "To the return address of our supplier, which we send you after you've emailed support@daltonpierce.com to register your return."
+            "text": "<p>To the return address of our supplier, which we send you after you've emailed support@daltonpierce.com to register your return.<\/p>"
           }
         },
         "q-7": {
           "type": "question",
           "settings": {
             "title": "My item is damaged or wrong. What now?",
-            "text": "Email support@daltonpierce.com with your order number and a few photos, and we'll look into it. Nothing in our policies limits your rights under applicable consumer protection law."
+            "text": "<p>Email support@daltonpierce.com with your order number and a few photos, and we'll look into it. Nothing in our policies limits your rights under applicable consumer protection law.<\/p>"
           }
         },
         "q-8": {
           "type": "question",
           "settings": {
             "title": "Why do you need photos?",
-            "text": "Photos help us see the problem and resolve it faster."
+            "text": "<p>Photos help us see the problem and resolve it faster.<\/p>"
           }
         },
         "q-9": {
           "type": "question",
           "settings": {
             "title": "How long until I get my money back?",
-            "text": "Once your returned item has been received and inspected, your return is processed within 14 days. You'll receive an email when your refund or store credit has been processed."
+            "text": "<p>Once your returned item has been received and inspected, your return is processed within 14 days. You'll receive an email when your refund or store credit has been processed.<\/p>"
           }
         },
         "q-10": {
           "type": "question",
           "settings": {
             "title": "Do I get my money back?",
-            "text": "It depends on what you bought. Regular-priced items: if the return meets all of our return conditions, you get a refund to your original payment method. Sale items and promotional purchases are not eligible for a refund – if the return is approved and all return conditions have been met, you receive store credit for a future purchase instead."
+            "text": "<p>It depends on what you bought. Regular-priced items: if the return meets all of our return conditions, you get a refund to your original payment method. Sale items and promotional purchases are not eligible for a refund – if the return is approved and all return conditions have been met, you receive store credit for a future purchase instead.<\/p>"
           }
         },
         "group-11": {
@@ -98,7 +98,7 @@
           "type": "question",
           "settings": {
             "title": "How long does delivery take?",
-            "text": "All orders are processed within 1 to 3 business days. The average delivery time is 5 to 8 business days. During busy periods such as holidays or sales events, delivery may take slightly longer, and customs procedures may occasionally cause delays outside our control."
+            "text": "<p>All orders are processed within 1 to 3 business days. The average delivery time is 5 to 8 business days. During busy periods such as holidays or sales events, delivery may take slightly longer, and customs procedures may occasionally cause delays outside our control.<\/p>"
           }
         },
         "q-13": {
@@ -112,7 +112,7 @@
           "type": "question",
           "settings": {
             "title": "My order is late. What should I do?",
-            "text": "Tracking can go quiet for a few days while the package moves between carriers. That alone doesn't mean it's lost. If the expected delivery date has passed, email support@daltonpierce.com with your order number and we'll chase it up."
+            "text": "<p>Tracking can go quiet for a few days while the package moves between carriers. That alone doesn't mean it's lost. If the expected delivery date has passed, email support@daltonpierce.com with your order number and we'll chase it up.<\/p>"
           }
         },
         "q-15": {
@@ -126,21 +126,21 @@
           "type": "question",
           "settings": {
             "title": "Tracking says delivered, but I haven't received anything.",
-            "text": "Ask the people you live with and your neighbours, and check your mailbox or the nearest pickup point. If tracking confirms that the package was delivered to the address you provided, responsibility passes to the customer. If you still can't find it, email support@daltonpierce.com with your order number."
+            "text": "<p>Ask the people you live with and your neighbours, and check your mailbox or the nearest pickup point. If tracking confirms that the package was delivered to the address you provided, responsibility passes to the customer. If you still can't find it, email support@daltonpierce.com with your order number.<\/p>"
           }
         },
         "q-17": {
           "type": "question",
           "settings": {
             "title": "Do you offer express delivery?",
-            "text": "Not at the moment. All orders ship with tracked standard delivery, so we can't promise a specific date. If you have a deadline, allow 1–3 business days for processing plus 5–8 business days for delivery."
+            "text": "<p>Not at the moment. All orders ship with tracked standard delivery, so we can't promise a specific date. If you have a deadline, allow 1–3 business days for processing plus 5–8 business days for delivery.<\/p>"
           }
         },
         "q-18": {
           "type": "question",
           "settings": {
             "title": "Where do you ship, and do I pay duties?",
-            "text": "We ship to addresses in Canada. Orders are shipped internationally, so customs procedures may apply on arrival, and delays due to customs are outside our control. If you have a question about import charges, email support@daltonpierce.com before you order."
+            "text": "<p>We ship to addresses in Canada. Orders are shipped internationally, so customs procedures may apply on arrival, and delays due to customs are outside our control. If you have a question about import charges, email support@daltonpierce.com before you order.<\/p>"
           }
         },
         "q-19": {
@@ -168,7 +168,7 @@
           "type": "question",
           "settings": {
             "title": "Can I change the shipping address?",
-            "text": "Email support@daltonpierce.com within 24 hours of placing your order. An incorrect shipping address entered at checkout is the customer's responsibility. Carriers can't redirect a package once it's in their system."
+            "text": "<p>Email support@daltonpierce.com within 24 hours of placing your order. An incorrect shipping address entered at checkout is the customer's responsibility. Carriers can't redirect a package once it's in their system.<\/p>"
           }
         },
         "q-23": {
