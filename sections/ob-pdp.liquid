@@ -1107,13 +1107,25 @@
         {%- assign akordeony = section.blocks | where: 'type', 'acc' -%}
         {%- if akordeony.size > 0 -%}
           <div class="pdp__accs">
+            {%- assign typ_produktu = ',' | append: product.type | downcase | remove: ' ' | append: ',' -%}
             {%- for block in akordeony -%}
+              {%- assign pokaz = true -%}
+              {%- if block.settings.only_types != blank -%}
+                {%- assign tylko = ',' | append: block.settings.only_types | downcase | remove: ' ' | append: ',' -%}
+                {%- unless tylko contains typ_produktu -%}{%- assign pokaz = false -%}{%- endunless -%}
+              {%- endif -%}
+              {%- if block.settings.except_types != blank -%}
+                {%- assign oprocz = ',' | append: block.settings.except_types | downcase | remove: ' ' | append: ',' -%}
+                {%- if oprocz contains typ_produktu -%}{%- assign pokaz = false -%}{%- endif -%}
+              {%- endif -%}
+              {%- if pokaz -%}
               <details class="pdp__acc" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
                 <summary>{{ block.settings.title }}</summary>
                 <div class="pdp__acc-body">
                   {%- if block.settings.use_desc -%}{{ product.description }}{%- else -%}{{ block.settings.text }}{%- endif -%}
                 </div>
               </details>
+              {%- endif -%}
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -1681,7 +1693,9 @@
         { "type": "text", "id": "title", "label": "Heading", "default": "Produktinformation" },
         { "type": "checkbox", "id": "use_desc", "label": "Use the product description", "default": false },
         { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Skriv teksten her.</p>" },
-        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false },
+        { "type": "text", "id": "only_types", "label": "Show only for these product types", "info": "Comma-separated product types, e.g. Sweaters, Cardigans. Empty = every product." },
+        { "type": "text", "id": "except_types", "label": "Hide for these product types", "info": "Comma-separated product types, e.g. Sneakers, Belts. Empty = hide for none." }
       ]
     }
   ],
