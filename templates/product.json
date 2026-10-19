@@ -355,7 +355,7 @@
       ],
       "name": "Reviews grid",
       "settings": {
-        "content_source": "custom",
+        "content_source": "sample",
         "verdict": "Great",
         "rating": "4.8",
         "count_text": "48,500+ reviews",
