@@ -1,0 +1,116 @@
+{%- comment -%}
+  Okienko z tabelą rozmiarów dla produktu (otwierane z "See measurements" w ob-pdp, atrybut data-sg-open).
+  Kategoria z typu produktu + tagu "Department: Men/Women". Wywołanie: render 'sn-sizechart', product: product
+  Ustawia sg_chart_available (capture 'sg_has') — patrz ob-pdp. Plik generuje rozmiary/buduj-sizechart-snippet.js — nie edytuj ręcznie.
+{%- endcomment -%}
+{%- liquid
+  assign sg_gender = ''
+  if product.tags contains 'Department: Men'
+    assign sg_gender = 'mens-'
+  elsif product.tags contains 'Department: Women'
+    assign sg_gender = 'womens-'
+  endif
+  assign sg_type = product.type
+  assign sg_shoes = 'Boots,Clogs,Dress Shoes,Espadrilles,Heels,Loafers,Mules,Sandals,Slides,Sneakers' | split: ','
+  assign sg_bottoms = 'Pants,Jeans,Shorts,Skirts' | split: ','
+  assign sg_none = 'Belts,Sunglasses,Jewelry,Bags,Underwear,Suits' | split: ','
+  assign sg_key = ''
+  if sg_gender != ''
+    if sg_none contains sg_type
+      assign sg_key = ''
+    elsif sg_type == 'Matching Sets'
+      if sg_gender == 'womens-'
+        assign sg_key = 'womens-tops'
+      endif
+    elsif sg_shoes contains sg_type
+      assign sg_key = sg_gender | append: 'shoes'
+    elsif sg_bottoms contains sg_type
+      assign sg_key = sg_gender | append: 'bottoms'
+    else
+      assign sg_key = sg_gender | append: 'tops'
+    endif
+  endif
+-%}
+{%- if sg_key != '' -%}
+{%- if sg_key == 'womens-tops' -%}
+  {%- capture sg_title -%}Women's dresses, tops and knitwear{%- endcapture -%}
+  {%- capture sg_note -%}Between sizes? Size up for a relaxed fit.{%- endcapture -%}
+  {%- assign sg_units = true -%}
+  {%- capture sg_table -%}<table class="sgm__t"><thead><tr><th>Size</th><th>Bust</th><th>Waist</th><th>Hips</th></tr></thead><tbody><tr><th scope="row">XS</th><td data-in="31–32" data-cm="79–81">31–32</td><td data-in="23–24" data-cm="58–61">23–24</td><td data-in="33–34" data-cm="84–86">33–34</td></tr><tr><th scope="row">S</th><td data-in="33–34" data-cm="84–86">33–34</td><td data-in="25–26" data-cm="64–66">25–26</td><td data-in="35–36" data-cm="89–91">35–36</td></tr><tr><th scope="row">M</th><td data-in="35–36" data-cm="89–91">35–36</td><td data-in="27–28" data-cm="69–71">27–28</td><td data-in="37–38" data-cm="94–97">37–38</td></tr><tr><th scope="row">L</th><td data-in="37–39" data-cm="94–99">37–39</td><td data-in="29–31" data-cm="74–79">29–31</td><td data-in="39–41" data-cm="99–104">39–41</td></tr><tr><th scope="row">XL</th><td data-in="40–42" data-cm="102–107">40–42</td><td data-in="32–34" data-cm="81–86">32–34</td><td data-in="42–44" data-cm="107–112">42–44</td></tr><tr><th scope="row">2XL</th><td data-in="43–45" data-cm="109–114">43–45</td><td data-in="35–37" data-cm="89–94">35–37</td><td data-in="45–47" data-cm="114–119">45–47</td></tr><tr><th scope="row">3XL</th><td data-in="46–48" data-cm="117–122">46–48</td><td data-in="38–40" data-cm="97–102">38–40</td><td data-in="48–50" data-cm="122–127">48–50</td></tr></tbody></table>{%- endcapture -%}
+{%- elsif sg_key == 'womens-bottoms' -%}
+  {%- capture sg_title -%}Women's pants and skirts{%- endcapture -%}
+  {%- capture sg_note -%}If the inseam isn't what you're looking for, email us and we may be able to help.{%- endcapture -%}
+  {%- assign sg_units = true -%}
+  {%- capture sg_table -%}<table class="sgm__t"><thead><tr><th>Size</th><th>Waist</th><th>Hips</th><th>Inseam</th></tr></thead><tbody><tr><th scope="row">XS</th><td data-in="23–24" data-cm="58–61">23–24</td><td data-in="33–34" data-cm="84–86">33–34</td><td data-in="30" data-cm="76">30</td></tr><tr><th scope="row">S</th><td data-in="25–26" data-cm="64–66">25–26</td><td data-in="35–36" data-cm="89–91">35–36</td><td data-in="30" data-cm="76">30</td></tr><tr><th scope="row">M</th><td data-in="27–28" data-cm="69–71">27–28</td><td data-in="37–38" data-cm="94–97">37–38</td><td data-in="30.5" data-cm="77">30.5</td></tr><tr><th scope="row">L</th><td data-in="29–31" data-cm="74–79">29–31</td><td data-in="39–41" data-cm="99–104">39–41</td><td data-in="30.5" data-cm="77">30.5</td></tr><tr><th scope="row">XL</th><td data-in="32–34" data-cm="81–86">32–34</td><td data-in="42–44" data-cm="107–112">42–44</td><td data-in="30.5" data-cm="77">30.5</td></tr><tr><th scope="row">2XL</th><td data-in="35–37" data-cm="89–94">35–37</td><td data-in="45–47" data-cm="114–119">45–47</td><td data-in="30.5" data-cm="78">30.5</td></tr><tr><th scope="row">3XL</th><td data-in="38–40" data-cm="97–102">38–40</td><td data-in="48–50" data-cm="122–127">48–50</td><td data-in="30.5" data-cm="78">30.5</td></tr></tbody></table>{%- endcapture -%}
+{%- elsif sg_key == 'mens-tops' -%}
+  {%- capture sg_title -%}Men's jackets, shirts and knitwear{%- endcapture -%}
+  {%- capture sg_note -%}Between sizes? Size up for a more relaxed fit.{%- endcapture -%}
+  {%- assign sg_units = true -%}
+  {%- capture sg_table -%}<table class="sgm__t"><thead><tr><th>Size</th><th>Chest</th><th>Sleeve length</th></tr></thead><tbody><tr><th scope="row">XS</th><td data-in="33–34" data-cm="84–86">33–34</td><td data-in="33" data-cm="84">33</td></tr><tr><th scope="row">S</th><td data-in="36–38" data-cm="91–97">36–38</td><td data-in="33.5" data-cm="85">33.5</td></tr><tr><th scope="row">M</th><td data-in="39–41" data-cm="99–104">39–41</td><td data-in="34" data-cm="86">34</td></tr><tr><th scope="row">L</th><td data-in="42–44" data-cm="107–112">42–44</td><td data-in="34.75" data-cm="88">34.75</td></tr><tr><th scope="row">XL</th><td data-in="45–48" data-cm="114–122">45–48</td><td data-in="35.5" data-cm="90">35.5</td></tr><tr><th scope="row">2XL</th><td data-in="49–53" data-cm="124–135">49–53</td><td data-in="36.25" data-cm="92">36.25</td></tr><tr><th scope="row">3XL</th><td data-in="54–58" data-cm="137–147">54–58</td><td data-in="37.5" data-cm="95">37.5</td></tr></tbody></table>{%- endcapture -%}
+{%- elsif sg_key == 'mens-bottoms' -%}
+  {%- capture sg_title -%}Men's pants and trousers{%- endcapture -%}
+  {%- capture sg_note -%}If the inseam isn't what you're looking for, email us and we may be able to help.{%- endcapture -%}
+  {%- assign sg_units = true -%}
+  {%- capture sg_table -%}<table class="sgm__t"><thead><tr><th>Size</th><th>Waist</th><th>Inseam</th></tr></thead><tbody><tr><th scope="row">XS</th><td data-in="28" data-cm="71">28</td><td data-in="31.5" data-cm="80">31.5</td></tr><tr><th scope="row">S</th><td data-in="30" data-cm="76">30</td><td data-in="31.5" data-cm="80">31.5</td></tr><tr><th scope="row">M</th><td data-in="32" data-cm="81">32</td><td data-in="32" data-cm="81">32</td></tr><tr><th scope="row">L</th><td data-in="34" data-cm="86">34</td><td data-in="32" data-cm="81">32</td></tr><tr><th scope="row">XL</th><td data-in="36" data-cm="91">36</td><td data-in="32" data-cm="81">32</td></tr><tr><th scope="row">2XL</th><td data-in="38" data-cm="97">38</td><td data-in="32.5" data-cm="83">32.5</td></tr><tr><th scope="row">3XL</th><td data-in="40" data-cm="102">40</td><td data-in="32.5" data-cm="83">32.5</td></tr></tbody></table>{%- endcapture -%}
+{%- elsif sg_key == 'mens-shoes' -%}
+  {%- capture sg_title -%}Men's footwear{%- endcapture -%}
+  {%- capture sg_note -%}{%- endcapture -%}
+  {%- assign sg_units = false -%}
+  {%- capture sg_table -%}<p class="sgm__p">All men's footwear is offered in <strong>US Men's standard sizing</strong>. Please select your usual US Men's size.</p><p class="sgm__p">Unsure of your equivalent in another sizing system? Email <a href="mailto:support@daltonpierce.com">support@daltonpierce.com</a> and we'll guide you through.</p>{%- endcapture -%}
+{%- elsif sg_key == 'womens-shoes' -%}
+  {%- capture sg_title -%}Women's footwear{%- endcapture -%}
+  {%- capture sg_note -%}{%- endcapture -%}
+  {%- assign sg_units = false -%}
+  {%- capture sg_table -%}<p class="sgm__p">All women's footwear is offered in <strong>US Women's standard sizing</strong>. Please select your usual US Women's size.</p><p class="sgm__p">Unsure of your equivalent in another sizing system? Email <a href="mailto:support@daltonpierce.com">support@daltonpierce.com</a> and we'll guide you through.</p>{%- endcapture -%}
+{%- endif -%}
+<div class="sgm" data-sgm hidden role="dialog" aria-modal="true" aria-labelledby="sgm-h">
+  <div class="sgm__card">
+    <button type="button" class="sgm__x" aria-label="Close">&times;</button>
+    <h2 class="sgm__h" id="sgm-h">Size guide – {{ sg_title }}</h2>
+    {%- if sg_units -%}
+      <div class="sgm__units" role="group" aria-label="Units">
+        <button type="button" data-sgm-unit="in" aria-pressed="true">In</button>
+        <button type="button" data-sgm-unit="cm" aria-pressed="false">Cm</button>
+      </div>
+      <p class="sgm__note" style="margin:0 0 10px" data-sgm-unitnote>Measurements shown in inches.</p>
+    {%- endif -%}
+    {{ sg_table }}
+    {%- if sg_note != blank -%}<p class="sgm__note">{{ sg_note }}</p>{%- endif -%}
+    <a class="sgm__more" href="/pages/size-guide" target="_blank" rel="noopener">View the full size guide</a>
+  </div>
+</div>
+<style>
+.sgm { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(0, 0, 0, 0.5); }
+.sgm[hidden] { display: none; }
+.sgm__card { background: #fff; color: #1c1d1d; width: 100%; max-width: 560px; max-height: calc(100dvh - 32px); overflow: auto; border-radius: 4px; padding: 22px 20px 20px; position: relative; }
+.sgm__x { position: absolute; top: 6px; right: 6px; width: 44px; height: 44px; border: 0; background: none; font-size: 28px; line-height: 1; cursor: pointer; color: inherit; }
+.sgm__h { font-size: 18px; margin: 0 40px 4px 0; font-weight: 600; }
+.sgm__units { display: inline-flex; margin: 10px 0 12px; border: 1px solid #c4c4c4; border-radius: 3px; overflow: hidden; }
+.sgm__units button { border: 0; background: #fff; padding: 9px 16px; min-height: 40px; font: inherit; font-size: 14px; cursor: pointer; }
+.sgm__units button[aria-pressed="true"] { background: #1c1d1d; color: #fff; }
+.sgm__t { width: 100%; border-collapse: collapse; font-size: 14px; }
+.sgm__t th, .sgm__t td { padding: 9px 6px; text-align: left; border-bottom: 1px solid #e8e8e1; }
+.sgm__t thead th { font-weight: 600; border-bottom: 1px solid #c4c4c4; }
+.sgm__note, .sgm__p { font-size: 13px; color: #6b6f76; margin: 12px 0 0; line-height: 1.45; }
+.sgm__p { color: #1c1d1d; font-size: 14px; }
+.sgm__more { display: inline-block; margin-top: 14px; font-size: 14px; }
+</style>
+<script>
+(function () {
+  var box = document.querySelector('[data-sgm]'); if (!box || box.dataset.ready) return; box.dataset.ready = '1';
+  var last = null, x = box.querySelector('.sgm__x');
+  function open(e) { e.preventDefault(); last = document.activeElement; box.hidden = false; document.documentElement.style.overflow = 'hidden'; x.focus(); }
+  function close() { box.hidden = true; document.documentElement.style.overflow = ''; if (last) last.focus(); }
+  document.querySelectorAll('[data-sg-open]').forEach(function (a) { a.addEventListener('click', open); });
+  x.addEventListener('click', close);
+  box.addEventListener('click', function (e) { if (e.target === box) close(); });
+  document.addEventListener('keydown', function (e) { if (!box.hidden && e.key === 'Escape') close(); });
+  box.querySelectorAll('[data-sgm-unit]').forEach(function (b) { b.addEventListener('click', function () {
+    var u = b.getAttribute('data-sgm-unit');
+    box.querySelectorAll('[data-sgm-unit]').forEach(function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+    box.querySelectorAll('td[data-in]').forEach(function (td) { td.textContent = td.getAttribute(u === 'cm' ? 'data-cm' : 'data-in'); });
+    var n = box.querySelector('[data-sgm-unitnote]'); if (n) n.textContent = u === 'cm' ? 'Measurements shown in centimetres.' : 'Measurements shown in inches.';
+  }); });
+})();
+</script>
+{%- endif -%}

@@ -1021,7 +1021,9 @@
             <div>
               {{ section.settings.help_text }}
               {%- if section.settings.help_link != blank and section.settings.help_link_label != blank -%}
-                <br><a href="{{ section.settings.help_link }}">{{ section.settings.help_link_label }}</a>
+                {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
+                <br><a href="{{ section.settings.help_link }}"{% if sg_html contains 'data-sgm' %} data-sg-open{% endif %}>{{ section.settings.help_link_label }}</a>
+                {{- sg_html -}}
               {%- endif -%}
             </div>
           </div>
