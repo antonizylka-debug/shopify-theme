@@ -287,97 +287,6 @@
         "show_summary": true
       }
     },
-    "ob_reviews_wall_XxBbPA": {
-      "type": "ob-reviews-wall",
-      "blocks": {
-        "review_rc7VDp": {
-          "type": "review",
-          "settings": {
-            "rating": "5",
-            "verified": true,
-            "name": "Emily Carter",
-            "date": "2026-10-15",
-            "title": "Really happy with my order",
-            "body": "I was a little unsure about ordering at first, but I'm glad I did. The sweater looks lovely and fits just how I wanted. I've already worn it a few times.",
-            "reply": "I was a little unsure about ordering at first, but I'm glad I did. The sweater looks lovely and fits just how I wanted. I've already worn it a few times.\nStore reply: Thank you, Emily! We're so happy to hear you're enjoying your new sweater. We really appreciate you giving Dalton Pierce a try.",
-            "reply_date": "2026-10-16",
-            "is_sample": false
-          }
-        },
-        "review_CPqWNR": {
-          "type": "review",
-          "settings": {
-            "rating": "5",
-            "verified": false,
-            "name": "Customer name",
-            "date": "",
-            "title": "",
-            "body": "",
-            "reply": "",
-            "reply_date": "",
-            "is_sample": false
-          }
-        },
-        "review_7qVEff": {
-          "type": "review",
-          "settings": {
-            "rating": "5",
-            "verified": false,
-            "name": "Customer name",
-            "date": "",
-            "title": "",
-            "body": "",
-            "reply": "",
-            "reply_date": "",
-            "is_sample": false
-          }
-        },
-        "review_YpRNRV": {
-          "type": "review",
-          "settings": {
-            "rating": "5",
-            "verified": false,
-            "name": "Customer name",
-            "date": "",
-            "title": "",
-            "body": "",
-            "reply": "",
-            "reply_date": "",
-            "is_sample": false
-          }
-        }
-      },
-      "block_order": [
-        "review_rc7VDp",
-        "review_CPqWNR",
-        "review_7qVEff",
-        "review_YpRNRV"
-      ],
-      "name": "Reviews grid",
-      "settings": {
-        "content_source": "sample",
-        "verdict": "Great",
-        "rating": "4.8",
-        "count_text": "48,500+ reviews",
-        "count_url": "",
-        "verified_label": "Verified",
-        "reply_label": "Reply from",
-        "reply_name": "Dalton & Pierce",
-        "more_label": "Read more",
-        "less_label": "Read less",
-        "per_row": 4,
-        "max_h": 560,
-        "star_style": "boxed",
-        "c_text": "#1c1d1d",
-        "c_accent": "#008849",
-        "c_card": "#f7f8fa",
-        "c_bg": "#ffffff",
-        "pad_y": 40,
-        "logo_alt": "Review platform",
-        "show_summary": true,
-        "note": "Showing our favorite reviews"
-      }
-    },
     "edytorial_kampanii": {
       "type": "sn-edytorial",
       "settings": {
@@ -712,6 +621,7 @@
         "review_HCMFfG",
         "review_QimQJ6"
       ],
+      "disabled": true,
       "settings": {
         "eyebrow": "REVIEWS",
         "title": "What customers say about Dalton Pierce",
@@ -743,6 +653,97 @@
         "color_star": "#00b77f",
         "color_star_off": "#dcdce6",
         "color_bar": "#1c1d1d"
+      }
+    },
+    "ob_reviews_wall_XxBbPA": {
+      "type": "ob-reviews-wall",
+      "blocks": {
+        "review_rc7VDp": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": true,
+            "name": "Emily Carter",
+            "date": "2026-10-15",
+            "title": "Really happy with my order",
+            "body": "I was a little unsure about ordering at first, but I'm glad I did. The sweater looks lovely and fits just how I wanted. I've already worn it a few times.",
+            "reply": "I was a little unsure about ordering at first, but I'm glad I did. The sweater looks lovely and fits just how I wanted. I've already worn it a few times.\nStore reply: Thank you, Emily! We're so happy to hear you're enjoying your new sweater. We really appreciate you giving Dalton Pierce a try.",
+            "reply_date": "2026-10-16",
+            "is_sample": false
+          }
+        },
+        "review_CPqWNR": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "reply": "",
+            "reply_date": "",
+            "is_sample": false
+          }
+        },
+        "review_7qVEff": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "reply": "",
+            "reply_date": "",
+            "is_sample": false
+          }
+        },
+        "review_YpRNRV": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "reply": "",
+            "reply_date": "",
+            "is_sample": false
+          }
+        }
+      },
+      "block_order": [
+        "review_rc7VDp",
+        "review_CPqWNR",
+        "review_7qVEff",
+        "review_YpRNRV"
+      ],
+      "name": "Reviews grid",
+      "settings": {
+        "content_source": "sample",
+        "verdict": "Great",
+        "rating": "4.8",
+        "count_text": "48,500+ reviews",
+        "count_url": "",
+        "verified_label": "Verified",
+        "reply_label": "Reply from",
+        "reply_name": "Dalton & Pierce",
+        "more_label": "Read more",
+        "less_label": "Read less",
+        "per_row": 4,
+        "max_h": 560,
+        "star_style": "boxed",
+        "c_text": "#1c1d1d",
+        "c_accent": "#008849",
+        "c_card": "#f7f8fa",
+        "c_bg": "#ffffff",
+        "pad_y": 40,
+        "logo_alt": "Review platform",
+        "show_summary": true,
+        "note": "Showing our favorite reviews"
       }
     },
     "faq": {
@@ -844,11 +845,11 @@
   "order": [
     "main",
     "ob_reviews_strip_QRDkmM",
-    "ob_reviews_wall_XxBbPA",
     "edytorial_kampanii",
     "bestsellers",
     "guarantee",
     "reviews",
+    "ob_reviews_wall_XxBbPA",
     "faq",
     "product-recommendations",
     "apps"
