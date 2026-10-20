@@ -2117,4 +2117,12 @@
 
   {%- comment -%} Strona /cart na telefonie: glowny przycisk "Check out" mial 38 px wysokosci. {%- endcomment -%}
   @media only screen and (max-width: 768px) { #MainContent .cart__checkout-wrapper .cart__checkout { min-height: 52px; } }
+
+  {%- comment -%} Audyt mobile 20.10: male pola dotyku (28-34 px). Wygląd bez zmian; pole klikalne rozszerzone do ok. 44 px niewidoczna warstwa ::after (elementy position:absolute/relative) lub wieksze przyciski w koszyku. {%- endcomment -%}
+  @media only screen and (max-width: 768px) {
+    .announcement-arrows__btn::after, .pdp__dot::after, .snc__plus::after { content: ""; position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; transform: translate(-50%, -50%); }
+    .snk-item__trash { min-width: 40px; min-height: 40px; }
+    .snk-item .js-qty__adjust, .snk .js-qty__adjust { min-width: 40px; min-height: 40px; }
+    .snx__arrow { min-width: 44px; min-height: 44px; }
+  }
 </style>
