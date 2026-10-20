@@ -66,7 +66,7 @@
 <div class="sgm" data-sgm hidden role="dialog" aria-modal="true" aria-labelledby="sgm-h">
   <div class="sgm__card">
     <button type="button" class="sgm__x" aria-label="Close">&times;</button>
-    <h2 class="sgm__h" id="sgm-h">Size guide – {{ sg_title }}</h2>
+    <h2 class="sgm__h" id="sgm-h">Size guide<span class="sgm__prod">{{ product.title | escape }}</span></h2>
     {%- if sg_units -%}
       <div class="sgm__units" role="group" aria-label="Units">
         <button type="button" data-sgm-unit="in" aria-pressed="true">In</button>
@@ -85,6 +85,7 @@
 .sgm__card { background: #fff; color: #1c1d1d; width: 100%; max-width: 560px; max-height: calc(100dvh - 32px); overflow: auto; border-radius: 4px; padding: 22px 20px 20px; position: relative; }
 .sgm__x { position: absolute; top: 6px; right: 6px; width: 44px; height: 44px; border: 0; background: none; font-size: 28px; line-height: 1; cursor: pointer; color: inherit; }
 .sgm__h { font-size: 18px; margin: 0 40px 4px 0; font-weight: 600; }
+.sgm__prod { display: block; margin-top: 4px; font-size: 14px; font-weight: 400; color: #6b6f76; }
 .sgm__units { display: inline-flex; margin: 10px 0 12px; border: 1px solid #c4c4c4; border-radius: 3px; overflow: hidden; }
 .sgm__units button { border: 0; background: #fff; padding: 9px 16px; min-height: 40px; font: inherit; font-size: 14px; cursor: pointer; }
 .sgm__units button[aria-pressed="true"] { background: #1c1d1d; color: #fff; }
