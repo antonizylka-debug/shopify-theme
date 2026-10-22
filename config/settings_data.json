@@ -119,6 +119,16 @@
         "type": "shopify://apps/booster-page-speed-optimizer/blocks/app-embed/d920faf3-7c60-423a-9636-22618b5561b5",
         "disabled": false,
         "settings": {}
+      },
+      "10864971697205422121": {
+        "type": "shopify://apps/gorgias-live-chat-helpdesk/blocks/gorgias/a66db725-7b96-4e3f-916e-6c8e6f87aaaa",
+        "disabled": false,
+        "settings": {}
+      },
+      "17198465164502963513": {
+        "type": "shopify://apps/cwill-parcel-panel/blocks/app.embed/fc785c3f-90e0-4c98-a20c-7cde9ba5e4b5",
+        "disabled": false,
+        "settings": {}
       }
     }
   },
