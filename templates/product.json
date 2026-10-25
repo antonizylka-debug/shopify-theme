@@ -785,7 +785,7 @@
           "type": "question",
           "settings": {
             "question": "How can I track my order?",
-            "answer": "<p>Once your parcel ships, we’ll email you your tracking details. You can follow its progress on our <a href=\"/pages/track-order\">Track your order</a> page.</p><p>If your order arrives in separate parcels, each will have its own tracking number at no extra shipping cost. Can’t find the tracking email? Check your spam folder or contact us for help.</p>",
+            "answer": "<p>Once your parcel ships, we’ll email you your tracking details. You can follow its progress on our <a href=\"/a/tracking\">Track your order</a> page.</p><p>If your order arrives in separate parcels, each will have its own tracking number at no extra shipping cost. Can’t find the tracking email? Check your spam folder or contact us for help.</p>",
             "open_by_default": false
           }
         },

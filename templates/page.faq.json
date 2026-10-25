@@ -105,7 +105,7 @@
           "type": "question",
           "settings": {
             "title": "Where is my tracking number?",
-            "text": "<p>It's emailed as soon as the package ships – so it doesn't exist yet while we're packing your order. You can also follow it on the <a href=\"/pages/track-order\">Track my order</a> page.</p><p>Can't find the email? Check your spam folder before writing to us.</p>"
+            "text": "<p>It's emailed as soon as the package ships – so it doesn't exist yet while we're packing your order. You can also follow it on the <a href=\"/a/tracking\">Track my order</a> page.</p><p>Can't find the email? Check your spam folder before writing to us.</p>"
           }
         },
         "q-14": {

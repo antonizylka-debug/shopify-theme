@@ -59,7 +59,7 @@
           "type": "faq",
           "settings": {
             "question": "Where is my order?",
-            "answer": "<p>Your tracking number is emailed as soon as the package ships, and you can follow it on the <a href=\"/pages/track-order\">Track my order</a> page. If the expected delivery date has passed, write to us.</p>"
+            "answer": "<p>Your tracking number is emailed as soon as the package ships, and you can follow it on the <a href=\"/a/tracking\">Track my order</a> page. If the expected delivery date has passed, write to us.</p>"
           }
         },
         "faq-4": {
