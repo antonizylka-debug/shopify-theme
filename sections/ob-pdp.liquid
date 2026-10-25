@@ -348,6 +348,10 @@
   #shopify-section-{{ section.id }} .pdp__akcja-prog--max span,
   #shopify-section-{{ section.id }} .pdp__akcja-prog--max b { color: #6b1f2d; }
   #shopify-section-{{ section.id }} .pdp__akcja-s { margin: 8px 0 0; font-size: 12.5px; line-height: 1.4; color: var(--pdp-muted); text-wrap: balance; }
+  #shopify-section-{{ section.id }} .pdp__akcja { padding: 10px 12px; }
+  #shopify-section-{{ section.id }} .pdp__akcja-t { display: none; }
+  #shopify-section-{{ section.id }} .pdp__akcja-prog b { font-size: 16px; }
+  #shopify-section-{{ section.id }} .pdp__akcja-prog span { font-size: 11px; }
 
   #shopify-section-{{ section.id }} .pdp__refs { margin: 10px 0 0; }
   #shopify-section-{{ section.id }} .pdp__ref {
@@ -611,7 +615,7 @@
     #shopify-section-{{ section.id }} .pdp__info > .pdp__price { margin-bottom: 18px; }
     #shopify-section-{{ section.id }} .pdp__info > .pdp__refs { margin-top: -8px; margin-bottom: 18px; }
     #shopify-section-{{ section.id }} .pdp__info > .pdp__help { margin-top: 0; }
-    #shopify-section-{{ section.id }} .pdp__info > .pdp__akcja { margin: 14px 0 4px; }
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__akcja { order: 1; margin: 0 0 16px; }
 
     {%- comment -%}
       Na telefonie siatka spychala cene daleko pod ekran - przy kilkunastu
@@ -958,6 +962,63 @@
         </div>
 
         
+        {%- comment -%}
+          ---------- ramka akcji: nazwa akcji + licznik, kup wiecej, popyt ----------
+          Jedna zwarta ramka zamiast dwoch (duze "Kob flere" na gorze i osobny
+          tekst pod przyciskiem). Ten sam styl co rabat w kolekcjach: czerwony
+          naglowek akcji (Ustawienia motywu > Campaign; w dniu konca "slutter i
+          aften"), tytul, progi w jednym rzedzie z cienkimi kreskami, jedno
+          zdanie. Na PC tu, nad rozmiarami; na telefonie zaraz za przyciskiem.
+        {%- endcomment -%}
+        {%- liquid
+          assign pokaz_progi = false
+          if section.settings.show_promo and section.settings.promo_tiers != blank
+            assign pokaz_progi = true
+          endif
+          assign pokaz_tekst = false
+          if section.settings.pilne_show and section.settings.pilne_text != blank
+            assign pokaz_tekst = true
+          endif
+        -%}
+        {%- if pokaz_progi or pokaz_tekst -%}
+          <div class="pdp__akcja">
+            {%- if pokaz_tekst -%}
+              <p class="pdp__akcja-brw">
+                <span class="pdp__akcja-dot" aria-hidden="true"></span>
+                {{ settings.campaign_name | default: 'Seasonal sale' | escape }}
+                {%- if settings.campaign_end != blank -%}
+                  <span class="pdp__akcja-czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>ends in</span> <b data-sn-czas></b></span>
+                {%- endif -%}
+              </p>
+            {%- endif -%}
+            {%- if pokaz_progi -%}
+              {%- if section.settings.promo_title != blank -%}
+                <p class="pdp__akcja-t">{{ section.settings.promo_title }}</p>
+              {%- endif -%}
+              <ol class="pdp__akcja-progi">
+                {%- assign progi = section.settings.promo_tiers | split: ',' -%}
+                {%- for prog in progi -%}
+                  {%- liquid
+                    assign para = prog | strip | split: ':'
+                    assign ile = para[0] | strip
+                    assign proc = para[1] | strip
+                  -%}
+                  {%- if ile != blank and proc != blank -%}
+                    <li class="pdp__akcja-prog{% if forloop.last %} pdp__akcja-prog--max{% endif %}">
+                      <span>{{ ile }}{% if forloop.last %}+{% endif %} items</span>
+                      <b>−{{ proc }}%</b>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ol>
+            {%- endif -%}
+            {%- if pokaz_tekst -%}
+              <p class="pdp__akcja-s">{{ section.settings.pilne_text | escape }}</p>
+              {%- if settings.campaign_end != blank -%}{%- render 'sn-licznik' -%}{%- endif -%}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
         {%- comment -%} ---------- pomoc przy rozmiarze (produkt bez wariantow nie ma czego dobierac) ---------- {%- endcomment -%}
         {%- if section.settings.help_text != blank and product.has_only_default_variant == false -%}
           <div class="pdp__help">
@@ -1021,63 +1082,7 @@
             </button>
           </div>
         {%- endif -%}
-        {%- comment -%}
-          ---------- ramka akcji: nazwa akcji + licznik, kup wiecej, popyt ----------
-          Jedna zwarta ramka zamiast dwoch (duze "Kob flere" na gorze i osobny
-          tekst pod przyciskiem). Ten sam styl co rabat w kolekcjach: czerwony
-          naglowek akcji (Ustawienia motywu > Campaign; w dniu konca "slutter i
-          aften"), tytul, progi w jednym rzedzie z cienkimi kreskami, jedno
-          zdanie. Na PC tu, nad rozmiarami; na telefonie zaraz za przyciskiem.
-        {%- endcomment -%}
-        {%- liquid
-          assign pokaz_progi = false
-          if section.settings.show_promo and section.settings.promo_tiers != blank
-            assign pokaz_progi = true
-          endif
-          assign pokaz_tekst = false
-          if section.settings.pilne_show and section.settings.pilne_text != blank
-            assign pokaz_tekst = true
-          endif
-        -%}
-        {%- if pokaz_progi or pokaz_tekst -%}
-          <div class="pdp__akcja">
-            {%- if pokaz_tekst -%}
-              <p class="pdp__akcja-brw">
-                <span class="pdp__akcja-dot" aria-hidden="true"></span>
-                {{ settings.campaign_name | default: 'Seasonal sale' | escape }}
-                {%- if settings.campaign_end != blank -%}
-                  <span class="pdp__akcja-czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>ends in</span> <b data-sn-czas></b></span>
-                {%- endif -%}
-              </p>
-            {%- endif -%}
-            {%- if pokaz_progi -%}
-              {%- if section.settings.promo_title != blank -%}
-                <p class="pdp__akcja-t">{{ section.settings.promo_title }}</p>
-              {%- endif -%}
-              <ol class="pdp__akcja-progi">
-                {%- assign progi = section.settings.promo_tiers | split: ',' -%}
-                {%- for prog in progi -%}
-                  {%- liquid
-                    assign para = prog | strip | split: ':'
-                    assign ile = para[0] | strip
-                    assign proc = para[1] | strip
-                  -%}
-                  {%- if ile != blank and proc != blank -%}
-                    <li class="pdp__akcja-prog{% if forloop.last %} pdp__akcja-prog--max{% endif %}">
-                      <span>{{ ile }}{% if forloop.last %}+{% endif %} items</span>
-                      <b>−{{ proc }}%</b>
-                    </li>
-                  {%- endif -%}
-                {%- endfor -%}
-              </ol>
-            {%- endif -%}
-            {%- if pokaz_tekst -%}
-              <p class="pdp__akcja-s">{{ section.settings.pilne_text | escape }}</p>
-              {%- if settings.campaign_end != blank -%}{%- render 'sn-licznik' -%}{%- endif -%}
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-
+        
         {%- assign wiersze = section.blocks | where: 'type', 'row' -%}
         {%- if wiersze.size > 0 -%}
           {%- comment -%} #date w tekście wiersza = dzień wysyłki: dziś + 3 dni robocze (górna granica 1–3 dni z polityki) {%- endcomment -%}
