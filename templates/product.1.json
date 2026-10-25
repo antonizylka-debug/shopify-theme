@@ -141,7 +141,7 @@
         "price_size": 28,
         "price_size_m": 24,
         "atc_label": "Add to cart",
-        "pilne_show": true,
+        "pilne_show": false,
         "pilne_text": "In high demand – limited stock left. If you can still press “Add to cart”, it's still available.",
         "vat_note": "Taxes calculated at checkout",
         "label_normal": "Regular price:",
@@ -180,7 +180,7 @@
         "note_text": "#1c1d1d",
         "show_fab": true,
         "show_sticky_atc": true,
-        "row_accent": "#d6332e",
+        "row_accent": "#6b1f2d",
         "row_hi": "#1f7a3d",
         "cross_show": true,
         "cross_title": "Style it with",
@@ -195,7 +195,7 @@
         "c_muted": "#6b6f76",
         "c_line": "#d9d6d1",
         "c_soft": "#f4f3f1",
-        "c_sale": "#d6332e",
+        "c_sale": "#6b1f2d",
         "c_low": "#b05f2e",
         "c_button": "#6b1f2d"
       }

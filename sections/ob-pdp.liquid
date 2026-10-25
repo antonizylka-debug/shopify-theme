@@ -324,11 +324,11 @@
   #shopify-section-{{ section.id }} .pdp__akcja-brw {
     display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2px 8px;
     margin: 0 0 3px;
-    font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #d6332e;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6b1f2d;
   }
-  #shopify-section-{{ section.id }} .pdp__akcja-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #d6332e; flex: 0 0 7px; }
+  #shopify-section-{{ section.id }} .pdp__akcja-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #6b1f2d; flex: 0 0 7px; }
   #shopify-section-{{ section.id }} .pdp__akcja-dot::after {
-    content: ""; position: absolute; inset: 0; border-radius: 50%; background: #d6332e;
+    content: ""; position: absolute; inset: 0; border-radius: 50%; background: #6b1f2d;
     animation: pdp-akcja-puls 1.6s ease-out infinite;
   }
   @keyframes pdp-akcja-puls { from { transform: scale(1); opacity: 0.6; } to { transform: scale(2.6); opacity: 0; } }
@@ -346,7 +346,7 @@
   #shopify-section-{{ section.id }} .pdp__akcja-prog span { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--pdp-muted); white-space: nowrap; }
   #shopify-section-{{ section.id }} .pdp__akcja-prog b { font-size: 18px; font-weight: 700; line-height: 1.15; white-space: nowrap; font-variant-numeric: tabular-nums; }
   #shopify-section-{{ section.id }} .pdp__akcja-prog--max span,
-  #shopify-section-{{ section.id }} .pdp__akcja-prog--max b { color: #d6332e; }
+  #shopify-section-{{ section.id }} .pdp__akcja-prog--max b { color: #6b1f2d; }
   #shopify-section-{{ section.id }} .pdp__akcja-s { margin: 8px 0 0; font-size: 12.5px; line-height: 1.4; color: var(--pdp-muted); text-wrap: balance; }
 
   #shopify-section-{{ section.id }} .pdp__refs { margin: 10px 0 0; }
@@ -438,7 +438,7 @@
     #shopify-section-{{ section.id }} .pdp__stick.is-on { transform: translateY(0); }
     #shopify-section-{{ section.id }} .pdp__stick-info { display: flex; flex-direction: column; min-width: 0; flex: 0 1 auto; }
     #shopify-section-{{ section.id }} .pdp__stick-price { font-size: 17px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
-    #shopify-section-{{ section.id }} .pdp__stick.is-sale .pdp__stick-price { color: #d6332e; }
+    #shopify-section-{{ section.id }} .pdp__stick.is-sale .pdp__stick-price { color: #6b1f2d; }
     #shopify-section-{{ section.id }} .pdp__stick-opt { font-size: 12.5px; color: var(--pdp-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     #shopify-section-{{ section.id }} .pdp__stick-btn {
       flex: 1 1 auto; height: 48px; border: 0; cursor: pointer;
@@ -957,63 +957,7 @@
           {%- endif -%}
         </div>
 
-        {%- comment -%}
-          ---------- ramka akcji: nazwa akcji + licznik, kup wiecej, popyt ----------
-          Jedna zwarta ramka zamiast dwoch (duze "Kob flere" na gorze i osobny
-          tekst pod przyciskiem). Ten sam styl co rabat w kolekcjach: czerwony
-          naglowek akcji (Ustawienia motywu > Campaign; w dniu konca "slutter i
-          aften"), tytul, progi w jednym rzedzie z cienkimi kreskami, jedno
-          zdanie. Na PC tu, nad rozmiarami; na telefonie zaraz za przyciskiem.
-        {%- endcomment -%}
-        {%- liquid
-          assign pokaz_progi = false
-          if section.settings.show_promo and section.settings.promo_tiers != blank
-            assign pokaz_progi = true
-          endif
-          assign pokaz_tekst = false
-          if section.settings.pilne_show and section.settings.pilne_text != blank
-            assign pokaz_tekst = true
-          endif
-        -%}
-        {%- if pokaz_progi or pokaz_tekst -%}
-          <div class="pdp__akcja">
-            {%- if pokaz_tekst -%}
-              <p class="pdp__akcja-brw">
-                <span class="pdp__akcja-dot" aria-hidden="true"></span>
-                {{ settings.campaign_name | default: 'Seasonal sale' | escape }}
-                {%- if settings.campaign_end != blank -%}
-                  <span class="pdp__akcja-czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>ends in</span> <b data-sn-czas></b></span>
-                {%- endif -%}
-              </p>
-            {%- endif -%}
-            {%- if pokaz_progi -%}
-              {%- if section.settings.promo_title != blank -%}
-                <p class="pdp__akcja-t">{{ section.settings.promo_title }}</p>
-              {%- endif -%}
-              <ol class="pdp__akcja-progi">
-                {%- assign progi = section.settings.promo_tiers | split: ',' -%}
-                {%- for prog in progi -%}
-                  {%- liquid
-                    assign para = prog | strip | split: ':'
-                    assign ile = para[0] | strip
-                    assign proc = para[1] | strip
-                  -%}
-                  {%- if ile != blank and proc != blank -%}
-                    <li class="pdp__akcja-prog{% if forloop.last %} pdp__akcja-prog--max{% endif %}">
-                      <span>{{ ile }}{% if forloop.last %}+{% endif %} items</span>
-                      <b>−{{ proc }}%</b>
-                    </li>
-                  {%- endif -%}
-                {%- endfor -%}
-              </ol>
-            {%- endif -%}
-            {%- if pokaz_tekst -%}
-              <p class="pdp__akcja-s">{{ section.settings.pilne_text | escape }}</p>
-              {%- if settings.campaign_end != blank -%}{%- render 'sn-licznik' -%}{%- endif -%}
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-
+        
         {%- comment -%} ---------- pomoc przy rozmiarze (produkt bez wariantow nie ma czego dobierac) ---------- {%- endcomment -%}
         {%- if section.settings.help_text != blank and product.has_only_default_variant == false -%}
           <div class="pdp__help">
@@ -1077,6 +1021,63 @@
             </button>
           </div>
         {%- endif -%}
+        {%- comment -%}
+          ---------- ramka akcji: nazwa akcji + licznik, kup wiecej, popyt ----------
+          Jedna zwarta ramka zamiast dwoch (duze "Kob flere" na gorze i osobny
+          tekst pod przyciskiem). Ten sam styl co rabat w kolekcjach: czerwony
+          naglowek akcji (Ustawienia motywu > Campaign; w dniu konca "slutter i
+          aften"), tytul, progi w jednym rzedzie z cienkimi kreskami, jedno
+          zdanie. Na PC tu, nad rozmiarami; na telefonie zaraz za przyciskiem.
+        {%- endcomment -%}
+        {%- liquid
+          assign pokaz_progi = false
+          if section.settings.show_promo and section.settings.promo_tiers != blank
+            assign pokaz_progi = true
+          endif
+          assign pokaz_tekst = false
+          if section.settings.pilne_show and section.settings.pilne_text != blank
+            assign pokaz_tekst = true
+          endif
+        -%}
+        {%- if pokaz_progi or pokaz_tekst -%}
+          <div class="pdp__akcja">
+            {%- if pokaz_tekst -%}
+              <p class="pdp__akcja-brw">
+                <span class="pdp__akcja-dot" aria-hidden="true"></span>
+                {{ settings.campaign_name | default: 'Seasonal sale' | escape }}
+                {%- if settings.campaign_end != blank -%}
+                  <span class="pdp__akcja-czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>ends in</span> <b data-sn-czas></b></span>
+                {%- endif -%}
+              </p>
+            {%- endif -%}
+            {%- if pokaz_progi -%}
+              {%- if section.settings.promo_title != blank -%}
+                <p class="pdp__akcja-t">{{ section.settings.promo_title }}</p>
+              {%- endif -%}
+              <ol class="pdp__akcja-progi">
+                {%- assign progi = section.settings.promo_tiers | split: ',' -%}
+                {%- for prog in progi -%}
+                  {%- liquid
+                    assign para = prog | strip | split: ':'
+                    assign ile = para[0] | strip
+                    assign proc = para[1] | strip
+                  -%}
+                  {%- if ile != blank and proc != blank -%}
+                    <li class="pdp__akcja-prog{% if forloop.last %} pdp__akcja-prog--max{% endif %}">
+                      <span>{{ ile }}{% if forloop.last %}+{% endif %} items</span>
+                      <b>−{{ proc }}%</b>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ol>
+            {%- endif -%}
+            {%- if pokaz_tekst -%}
+              <p class="pdp__akcja-s">{{ section.settings.pilne_text | escape }}</p>
+              {%- if settings.campaign_end != blank -%}{%- render 'sn-licznik' -%}{%- endif -%}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
         {%- assign wiersze = section.blocks | where: 'type', 'row' -%}
         {%- if wiersze.size > 0 -%}
           {%- comment -%} #date w tekście wiersza = dzień wysyłki: dziś + 3 dni robocze (górna granica 1–3 dni z polityki) {%- endcomment -%}
@@ -1660,7 +1661,7 @@
     { "type": "checkbox", "id": "show_sticky_atc", "label": "Sticky add to cart bar (mobile)", "default": true },
 
     { "type": "header", "content": "Promise rows" },
-    { "type": "color", "id": "row_accent", "label": "Line at the first row", "default": "#d6332e" },
+    { "type": "color", "id": "row_accent", "label": "Line at the first row", "default": "#6b1f2d" },
     { "type": "color", "id": "row_hi", "label": "Highlighted part of a heading", "default": "#1f7a3d" },
 
     { "type": "header", "content": "Suggestion under the accordions" },
@@ -1684,7 +1685,7 @@
     { "type": "color", "id": "c_muted", "label": "Secondary text", "default": "#6b6f76" },
     { "type": "color", "id": "c_line", "label": "Borders", "default": "#d9d6d1" },
     { "type": "color", "id": "c_soft", "label": "Soft background", "default": "#f4f3f1" },
-    { "type": "color", "id": "c_sale", "label": "Sale red", "default": "#d6332e" },
+    { "type": "color", "id": "c_sale", "label": "Sale red", "default": "#6b1f2d" },
     { "type": "color", "id": "c_low", "label": "Low stock dot", "default": "#b05f2e" },
     { "type": "color", "id": "c_button", "label": "Button", "default": "#23213a" }
   ],
