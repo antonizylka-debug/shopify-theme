@@ -170,49 +170,49 @@
         "dame_1": {
           "type": "product",
           "settings": {
-            "product": "elena-cashmere-turtleneck"
+            "product": "adele-grace-belted-overcoat"
           }
         },
         "dame_2": {
           "type": "product",
           "settings": {
-            "product": "camille-cashmere-turtleneck"
+            "product": "ameline-elise-wool-coat"
           }
         },
         "dame_3": {
           "type": "product",
           "settings": {
-            "product": "aurora-cashmere-sweater"
+            "product": "avery-wool-blend-overcoat"
           }
         },
         "dame_4": {
           "type": "product",
           "settings": {
-            "product": "avery-merino-cardigan"
+            "product": "ariadne-claire-stand-collar-overcoat"
           }
         },
         "dame_5": {
           "type": "product",
           "settings": {
-            "product": "women-s-hooded-long-jacket-adjustable-waist-zip-coat"
+            "product": "sylvaine-eve-turtleneck-sweater"
           }
         },
         "dame_6": {
           "type": "product",
           "settings": {
-            "product": "georgina-woolen-jacket"
+            "product": "imogen-elise-turtleneck-sweater"
           }
         },
         "dame_7": {
           "type": "product",
           "settings": {
-            "product": "elodie-shearling-jacket"
+            "product": "marais-cashmere-turtleneck-sweater"
           }
         },
         "dame_8": {
           "type": "product",
           "settings": {
-            "product": "nola-colour-block-knit-cardigan"
+            "product": "aurelia-wool-knit-sweater"
           }
         }
       },
@@ -355,49 +355,49 @@
         "herre_1": {
           "type": "product",
           "settings": {
-            "product": "men-s-belted-trench-coat-classic-tailored-style"
+            "product": "harlan-relaxed-overcoat"
           }
         },
         "herre_2": {
           "type": "product",
           "settings": {
-            "product": "men-s-tailored-classic-coat-structured-smart-casual-outerwear"
+            "product": "calla-tailored-overcoat"
           }
         },
         "herre_3": {
           "type": "product",
           "settings": {
-            "product": "stellan-herringbone-waistcoat"
+            "product": "blake-tailored-overcoat"
           }
         },
         "herre_4": {
           "type": "product",
           "settings": {
-            "product": "olympia-cashmere-v-neck-sweater"
+            "product": "blake-tailored-coat"
           }
         },
         "herre_5": {
           "type": "product",
           "settings": {
-            "product": "men-s-slim-fit-tailored-blazer-smart-casual-structured-jacket"
+            "product": "wyatt-wool-coat"
           }
         },
         "herre_6": {
           "type": "product",
           "settings": {
-            "product": "zane-lambswool-parka"
+            "product": "dario-wool-coat"
           }
         },
         "herre_7": {
           "type": "product",
           "settings": {
-            "product": "men-s-tweed-waistcoat-tailored-smart-casual-vest"
+            "product": "textured-wool-zip-jacket-oatmeal"
           }
         },
         "herre_8": {
           "type": "product",
           "settings": {
-            "product": "santorini-cashmere-cardigan"
+            "product": "verona-wool-jacket"
           }
         }
       },
@@ -437,16 +437,16 @@
         "t1": {
           "type": "tab",
           "settings": {
-            "label": "Dresses",
-            "collection": "womens-dresses",
+            "label": "Coats",
+            "collection": "womens-jackets-and-coats",
             "audience": "all"
           }
         },
         "t2": {
           "type": "tab",
           "settings": {
-            "label": "Tops",
-            "collection": "womens-tops",
+            "label": "Knitwear",
+            "collection": "womens-sweaters-and-knitwear",
             "audience": "all"
           }
         },
