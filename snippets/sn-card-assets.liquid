@@ -98,28 +98,6 @@
     pointer-events: none;
   }
 
-  /* ---------- kropki ---------- */
-  .snc__kropki {
-    position: absolute;
-    left: 50%;
-    bottom: 12px;
-    z-index: 2;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 5px;
-    padding: 5px 8px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.85);
-    pointer-events: none;
-  }
-  .snc__kropka {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: #b8b4ae;
-    transition: background-color 0.2s ease;
-  }
-  .snc__kropka.is-on { background: #1c1d1d; }
-
   /* ---------- strzalki ---------- */
   {%- comment -%}
     Obie strzalki zawsze, a przewijanie zapetla sie: w lewo z pierwszego
@@ -164,25 +142,21 @@
   .snc__plus.is-ok .snc__ikona-ok { display: block; }
 
   {%- comment -%}
-    "+", kropki i strzalki pokazuja sie dopiero po najechaniu na kafel.
-    Tylko tam, gdzie jest najechanie, czyli mysz. Na telefonie zostaja
-    widoczne cale czas - inaczej nie byloby ich jak wywolac, a kropki
-    sa jedyna wskazowka, ze zdjecia da sie przesunac palcem.
+    "+" i strzalki pokazuja sie dopiero po najechaniu na kafel.
+    Tylko tam, gdzie jest najechanie, czyli mysz. Na telefonie "+" zostaje
+    widoczny caly czas - inaczej nie byloby go jak wywolac.
     Stan "wlozone do koszyka" (is-ok) trzyma "+" widoczny, nawet gdy
     kursor juz zjechal z kafla.
   {%- endcomment -%}
   @media (hover: hover) and (pointer: fine) {
     .snc__plus,
-    .snc__kropki,
     .snc__strz {
       opacity: 0;
       transition: opacity 0.22s ease, background-color 0.18s ease, transform 0.18s ease;
     }
     .snc:hover .snc__plus,
-    .snc:hover .snc__kropki,
     .snc:hover .snc__strz,
     .snc:focus-within .snc__strz,
-    .snc:focus-within .snc__kropki,
     .snc__strz:focus-visible,
     .snc__plus:focus-visible,
     .snc__plus.is-ok,
@@ -292,7 +266,6 @@
     {%- comment -%} Kolko zostaje 30 px, ale strefa dotyku ma 44 px. {%- endcomment -%}
     .snc__plus::before { content: ''; position: absolute; inset: -7px; }
     .snc__plus svg { width: 14px; height: 14px; }
-    .snc__kropki { bottom: 10px; }
     .snc__rzad { gap: 6px; }
     {%- comment -%}
       Na telefonie kafel ma ~180 px i jedna linijka nazwy obok cen
@@ -315,22 +288,6 @@
   (function () {
     if (window.__sncGotowe) return;
     window.__sncGotowe = true;
-
-    function kropki(pas) {
-      var foto = pas.closest('.snc__foto');
-      if (!foto) return;
-      var nr = Math.round(pas.scrollLeft / Math.max(1, pas.clientWidth));
-      var k = foto.querySelectorAll('.snc__kropka');
-      for (var i = 0; i < k.length; i++) k[i].classList.toggle('is-on', i === nr);
-    }
-
-    /* scroll nie bąbelkuje, ale da sie go zlapac w fazie przechwytywania -
-       jeden nasluch obsluguje wszystkie kafle, takze te dociagniete
-       filtrem albo paginacja. */
-    document.addEventListener('scroll', function (e) {
-      var t = e.target;
-      if (t && t.nodeType === 1 && t.hasAttribute('data-snc-pas')) kropki(t);
-    }, true);
 
     document.addEventListener('click', function (e) {
       if (!e.target.closest) return;

@@ -2,7 +2,8 @@
   Kafel produktu. Uklad wybrany przez Antoniego z makiety 10 wariantow:
 
   - zdjecia: wszystkie zdjecia produktu po kolei, jak w galerii zwyklego
-    motywu Shopify - strzalki i kropki przechodza przez kazde,
+    motywu Shopify - strzalki (i palec na telefonie) przechodza przez
+    kazde. Kropek pod zdjeciem nie ma (decyzja Antoniego 26.10),
   - na zdjeciu: procent rabatu w wygladzie wariantu 02 (czerwona
     plakietka, bialy napis),
   - pod zdjeciem: dwie kolumny (wariant 04) - po lewej nazwa i pod nia
@@ -92,11 +93,6 @@
         <button type="button" class="snc__strz snc__strz--p" data-snc-krok="1" aria-label="{{ 'general.slider.next_slide' | t }}">
           <svg viewBox="0 0 10 16" aria-hidden="true" focusable="false"><path d="M1.5 1.5 8 8l-6.5 6.5"/></svg>
         </button>
-        <div class="snc__kropki" aria-hidden="true">
-          {%- for k in (1..pokazane) -%}
-            <span class="snc__kropka{% if forloop.first %} is-on{% endif %}"></span>
-          {%- endfor -%}
-        </div>
       {%- endif -%}
 
       <button

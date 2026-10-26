@@ -156,8 +156,8 @@
     grid-column: span {{ 6 | divided_by: section.settings.big_per_row }};
   }
 
-  /* kropki tylko pod karuzela na telefonie */
-  #shopify-section-{{ section.id }} .pdp__dots { display: none; }
+  /* miniatury tylko pod karuzela na telefonie */
+  #shopify-section-{{ section.id }} .pdp__thumbs { display: none; }
 
   /* zdjecia ponad limitem chowamy do klikniecia w przycisk */
   #shopify-section-{{ section.id }} .pdp__photo--more { display: none; }
@@ -646,32 +646,57 @@
       Na telefonie plakietka siada na dole zdjecia, a nie na gorze - tak jak
       na wzorcu. Przyklejanie nie jest tu potrzebne, bo karuzela ma wysokosc
       jednego zdjecia i plakietka i tak nie ucieka.
+
+      Odstepy od dolu liczone od dolu .pdp__media, czyli razem z paskiem
+      miniatur pod zdjeciem (8 + 64 = 72 px). Zmieniasz wysokosc miniatur -
+      zmien tez te dwie liczby.
     {%- endcomment -%}
     #shopify-section-{{ section.id }} .pdp__overlay {
-      position: absolute; top: auto; bottom: 44px; left: 0; right: 0;
+      position: absolute; top: auto; bottom: 78px; left: 0; right: 0;
     }
     #shopify-section-{{ section.id }} .pdp__flags { top: auto; bottom: 0; }
     #shopify-section-{{ section.id }} .pdp__fab {
-      display: flex; bottom: 52px;
+      display: flex; bottom: 86px;
     }
 
     #shopify-section-{{ section.id }} .pdp__row { padding: 10px 0 10px 12px; }
 
-    #shopify-section-{{ section.id }} .pdp__dots {
-      display: flex; justify-content: center; flex-wrap: wrap;
-      gap: 0; padding-top: 10px;
+    {%- comment -%}
+      Miniatury zamiast kropek (26.10, prosba Antoniego): widac, co jest na
+      kolejnych zdjeciach. Pasek przewija sie w bok, gdy zdjec jest wiecej
+      niz miesci sie na szerokosc. Marginesy auto na skrajnych centruja
+      krotki pasek, a dlugiemu nie ucinaja poczatku (justify-content:
+      center by ucial).
+    {%- endcomment -%}
+    #shopify-section-{{ section.id }} .pdp__thumbs {
+      display: flex; gap: 6px;
+      padding-top: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
     }
-    #shopify-section-{{ section.id }} .pdp__dot {
-      flex: 0 0 28px; width: 28px; height: 28px;
-      border: 0; background: none; padding: 0; cursor: pointer;
-      position: relative;
+    #shopify-section-{{ section.id }} .pdp__thumbs::-webkit-scrollbar { display: none; }
+    #shopify-section-{{ section.id }} .pdp__thumb:first-child { margin-left: auto; }
+    #shopify-section-{{ section.id }} .pdp__thumb:last-child { margin-right: auto; }
+    #shopify-section-{{ section.id }} .pdp__thumb {
+      flex: 0 0 auto;
+      height: 64px;
+      aspect-ratio: {{ section.settings.photo_ratio }};
+      padding: 0; cursor: pointer;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      background: var(--pdp-soft);
+      overflow: hidden;
+      opacity: 0.55;
+      transition: opacity 0.15s ease, border-color 0.15s ease;
     }
-    #shopify-section-{{ section.id }} .pdp__dot::after {
-      content: ''; position: absolute; left: 50%; top: 50%;
-      width: 6px; height: 6px; margin: -3px 0 0 -3px;
-      border-radius: 50%; background: var(--pdp-line);
+    #shopify-section-{{ section.id }} .pdp__thumb img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
     }
-    #shopify-section-{{ section.id }} .pdp__dot.is-on::after { background: var(--pdp-text); }
+    #shopify-section-{{ section.id }} .pdp__thumb.is-on {
+      opacity: 1;
+      border-color: var(--pdp-text);
+    }
 
     #shopify-section-{{ section.id }} .pdp__title { font-size: {{ section.settings.title_size_m }}px; }
     #shopify-section-{{ section.id }} .pdp__price { font-size: {{ section.settings.price_size_m }}px; }
@@ -786,10 +811,14 @@
         {%- endif -%}
 
         {%- if product.media.size > 1 -%}
-          <div class="pdp__dots" data-pdp-dots>
+          <div class="pdp__thumbs" data-pdp-thumbs>
             {%- for media in product.media -%}
-              <button type="button" class="pdp__dot{% if forloop.first %} is-on{% endif %}"
-                      data-pdp-dot="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }} of {{ product.media.size }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
+              <button type="button" class="pdp__thumb{% if forloop.first %} is-on{% endif %}"
+                      data-pdp-thumb="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }} of {{ product.media.size }}"{% if forloop.first %} aria-current="true"{% endif %}>
+                {{ media.preview_image
+                  | image_url: width: 160
+                  | image_tag: loading: 'lazy', widths: '100, 160', sizes: '52px', alt: '' }}
+              </button>
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -1440,25 +1469,35 @@
       sprawdz();
     })();
 
-    // ---------- kropki karuzeli (telefon) ----------
+    // ---------- miniatury karuzeli (telefon) ----------
+    // Wczesniej kropki przewijaly plynnie (scrollTo smooth). Przy scroll-snap
+    // przejazd przez kilka zdjec trwal ~2 s i potrafil stanac w pol drogi -
+    // stad "nie przenosi tam, gdzie ma". Teraz skok od razu na wybrane zdjecie.
     (function () {
       var siatka = root.querySelector('[data-pdp-photos]');
-      var kropki = [].slice.call(root.querySelectorAll('[data-pdp-dot]'));
-      if (!siatka || !kropki.length) return;
+      var pasek = root.querySelector('[data-pdp-thumbs]');
+      var miniatury = [].slice.call(root.querySelectorAll('[data-pdp-thumb]'));
+      if (!siatka || !pasek || !miniatury.length) return;
 
       function zaznacz(i) {
-        kropki.forEach(function (d) {
-          var on = parseInt(d.dataset.pdpDot, 10) === i;
+        miniatury.forEach(function (d) {
+          var on = parseInt(d.dataset.pdpThumb, 10) === i;
           d.classList.toggle('is-on', on);
           if (on) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
         });
+        // aktywna miniatura na srodek paska - bez scrollIntoView, ktore
+        // ruszaloby cala strone
+        var t = miniatury[i];
+        if (!t || pasek.scrollWidth <= pasek.clientWidth) return;
+        var rp = pasek.getBoundingClientRect(), rt = t.getBoundingClientRect();
+        pasek.scrollLeft += (rt.left - rp.left) - (rp.width - rt.width) / 2;
       }
 
-      kropki.forEach(function (d) {
+      miniatury.forEach(function (d) {
         d.addEventListener('click', function () {
-          var i = parseInt(d.dataset.pdpDot, 10);
-          var zdj = siatka.children[i];
-          if (zdj) siatka.scrollTo({ left: zdj.offsetLeft - siatka.offsetLeft, behavior: 'smooth' });
+          var i = parseInt(d.dataset.pdpThumb, 10);
+          zaznacz(i);
+          siatka.scrollLeft = i * siatka.clientWidth;
         });
       });
 
