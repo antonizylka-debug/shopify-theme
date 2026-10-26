@@ -743,8 +743,13 @@
             assign notka = section.settings.note_label
           endif
 
+          comment
+            Plakietka "Sale" tylko na przecenionym produkcie - ten sam warunek
+            co plakietka procentu na kaflu. Wczesniej wisiala na kazdym
+            produkcie z niskim stanem, takze na 358 bez zadnej obnizki (26.10).
+          endcomment
           assign jest_plakietka = false
-          if section.settings.show_flag and malo and section.settings.flag_label != blank
+          if section.settings.show_flag and malo and section.settings.flag_label != blank and product.compare_at_price > product.price
             assign jest_plakietka = true
           endif
         -%}
