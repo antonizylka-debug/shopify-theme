@@ -761,9 +761,11 @@
             Plakietka "Sale" tylko na przecenionym produkcie - ten sam warunek
             co plakietka procentu na kaflu. Wczesniej wisiala na kazdym
             produkcie z niskim stanem, takze na 358 bez zadnej obnizki (26.10).
+            Od 27.10 nie zalezy juz od niskiego stanu - "Only a few left" jest
+            tylko na produktach z tagiem, a "Sale" ma zostac na kazdej przecenie.
           endcomment
           assign jest_plakietka = false
-          if section.settings.show_flag and malo and section.settings.flag_label != blank and product.compare_at_price > product.price
+          if section.settings.show_flag and section.settings.flag_label != blank and product.compare_at_price > product.price
             assign jest_plakietka = true
           endif
         -%}
