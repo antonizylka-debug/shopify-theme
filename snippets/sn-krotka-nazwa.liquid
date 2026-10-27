@@ -52,7 +52,16 @@
       assign slowa = dol | split: ' '
       assign s = ''
       for w in slowa
-        assign duze = w | capitalize
+        assign cz_w = w | split: '-'
+        assign duze = ''
+        for c_w in cz_w
+          assign c_cap = c_w | capitalize
+          if forloop.first
+            assign duze = c_cap
+          else
+            assign duze = duze | append: '-' | append: c_cap
+          endif
+        endfor
         assign s = s | append: ' ' | append: duze
       endfor
       assign s = s | strip

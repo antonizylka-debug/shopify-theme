@@ -277,7 +277,7 @@
         "count_text": "2.850+ reviews",
         "count_url": "",
         "verified_label": "Verified",
-        "note": "Showing our favorite reviews",
+        "note": "Showing our favourite reviews",
         "per_row": 5,
         "star_style": "boxed",
         "c_text": "#1c1d1d",
@@ -1049,7 +1049,7 @@
         "pad_y": 40,
         "logo_alt": "Review platform",
         "show_summary": true,
-        "note": "Showing our favorite reviews"
+        "note": "Showing our favourite reviews"
       }
     },
     "faq": {

@@ -42,7 +42,7 @@
             "columns": "Size, Waist, Hips, Inseam",
             "rows": "XS | 58-61 | 84-86 | 76\nS | 64-66 | 89-91 | 76\nM | 69-71 | 94-97 | 77\nL | 74-79 | 99-104 | 77\nXL | 81-86 | 107-112 | 77\n2XL | 89-94 | 114-119 | 78\n3XL | 97-102 | 122-127 | 78",
             "convert_units": true,
-            "fit": "True to size at the waist. Styles with elastic give about 4 cm more.",
+            "fit": "True to size at the waist. Styles with elastic give about 1.5 in (4 cm) more.",
             "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in the dryer.",
             "measure": "Measure your waist at its narrowest, your hips at the fullest point, and your inseam from crotch to ankle."
           }
@@ -117,9 +117,9 @@
             "columns": "Size, Waist, Inseam",
             "rows": "XS | 71 | 80\nS | 76 | 80\nM | 81 | 81\nL | 86 | 81\nXL | 91 | 81\n2XL | 97 | 83\n3XL | 102 | 83",
             "convert_units": true,
-            "fit": "True to size at the waist. Styles with elastic or a drawstring give about 4 cm more.",
+            "fit": "True to size at the waist. Styles with elastic or a drawstring give about 1.5 in (4 cm) more.",
             "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in the dryer.",
-            "measure": "Measure your waist where you wear your trousers, your hips at the fullest point, and your inseam from crotch to ankle."
+            "measure": "Measure your waist where you wear your pants and your inseam from crotch to ankle."
           }
         },
         "mens-belts": {

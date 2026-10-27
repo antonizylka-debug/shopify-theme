@@ -21,7 +21,7 @@
           "type": "support",
           "settings": {
             "icon": "mail",
-            "label": "E-mail",
+            "label": "Email",
             "value": "support@daltonpierce.com"
           }
         },
@@ -95,7 +95,7 @@
         "image": "shopify://shop_images/New_Hero_Mobile.webp",
         "image_height": 860,
         "support_title": "Customer service",
-        "support_note": "Write to us – a real person replies – we aim to respond within 1 business day.",
+        "support_note": "Write to us and a real person replies. We aim to respond within 1 business day.",
         "form_title": "Send us a message",
         "form_note": "We aim to respond within 1 business day.",
         "button_label": "Send message",
