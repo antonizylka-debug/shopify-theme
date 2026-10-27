@@ -128,7 +128,7 @@
             "group": "Men",
             "pill": "Belts",
             "title": "Size guide – men's belts",
-            "note": "Choose by your trouser waistband, not your clothing size.",
+            "note": "Choose by your pants waistband, not your clothing size.",
             "columns": "Size, Waist, Total length",
             "rows": "S | 75-85 | 100\nM | 85-95 | 110\nL | 95-105 | 120\nXL | 105-115 | 130",
             "convert_units": true,

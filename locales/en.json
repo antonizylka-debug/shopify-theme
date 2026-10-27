@@ -138,7 +138,7 @@
       "shipping_at_checkout": "Shipping, taxes and discount codes are calculated at checkout.",
       "update": "Update cart",
       "checkout": "CHECK OUT SECURELY",
-      "empty": "Your cart is currently empty.",
+      "empty": "Your cart is empty.",
       "continue_browsing_html": "<a href='{{ url }}'>Continue shopping</a>",
       "close_cart": "Close cart",
       "reduce_quantity": "Reduce item quantity by one",

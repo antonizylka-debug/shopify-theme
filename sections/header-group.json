@@ -26,7 +26,7 @@
           "type": "announcement",
           "settings": {
             "text": "Seasonal sale",
-            "link_text": "Up to 50% off, for a limited time",
+            "link_text": "Up to 50% off for a limited time",
             "link": ""
           }
         }
@@ -147,8 +147,8 @@
         "show_currency_flags": false,
         "show_locale_selector": false,
         "mnav_bar_show": true,
-        "mnav_bar_title": "Seasonal sale · up to 50% off",
-        "mnav_bar_text": "For a limited time only",
+        "mnav_bar_title": "Seasonal sale · Up to 50% off",
+        "mnav_bar_text": "For a limited time",
         "mnav_bar_end": "",
         "mnav_bar_cta": "Shop now",
         "mnav_bar_link": "shopify://collections/all",

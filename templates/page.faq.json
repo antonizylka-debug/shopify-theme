@@ -42,7 +42,7 @@
           "type": "question",
           "settings": {
             "title": "It doesn't fit. Can I exchange the size?",
-            "text": "<p>We don't exchange sizes directly. Return the item as described in our return policy and place a new order in the size you want. Please note that ordering multiple sizes with the intention of returning part of the order is not permitted.<\/p>"
+            "text": "<p>We don't exchange sizes directly. Return the item as described in our return policy and place a new order in the size you want.<\/p>"
           }
         },
         "q-5": {
@@ -147,7 +147,7 @@
           "type": "question",
           "settings": {
             "title": "Which carriers do you use?",
-            "text": "<p>We use established carriers – including Canada Post, UPS, FedEx and DHL, depending on the destination – so your package arrives safely and on time.</p>"
+            "text": "<p>We use established carriers so your package arrives safely and on time.</p>"
           }
         },
         "group-20": {

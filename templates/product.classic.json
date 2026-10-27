@@ -43,7 +43,7 @@
             "icon": "lock",
             "text": "Secure checkout",
             "hi": "",
-            "sub": "Encrypted, with no fees"
+            "sub": "Encrypted payment"
           }
         },
         "acc-1": {
@@ -60,7 +60,7 @@
           "settings": {
             "title": "Free shipping",
             "use_desc": false,
-            "text": "<p>We’re offering free shipping within Canada for all orders.</p><p>We ship our packages with a Track &amp; Trace code so you can always monitor your order.</p><p>You will receive the Track &amp; Trace code via email within 24-72 hours after placing your order.</p>",
+            "text": "<p>We're offering free shipping within Canada for all orders.</p><p>We ship our packages with a Track &amp; Trace code so you can always monitor your order.</p><p>You will receive the Track &amp; Trace code via email within 24-72 hours after placing your order.</p>",
             "open": false
           }
         },
@@ -69,7 +69,7 @@
           "settings": {
             "title": "Customer service",
             "use_desc": false,
-            "text": "<p>Our customer service team is here to answer all your questions and comments. Whether you need advice on a product or help with an order, we are here to support you.</p><p>Don’t hesitate to contact us; we’re happy to help!</p><p>Please contact us at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a>. We aim to respond within 1 business day.</p><p>Customer service hours: Monday–Friday, 9:00 AM–6:00 PM ET; Saturday–Sunday, 10:00 AM–4:00 PM ET.</p>",
+            "text": "<p>Our customer service team is here to answer all your questions and comments. Whether you need advice on a product or help with an order, we are here to support you.</p><p>Don't hesitate to contact us; we're happy to help!</p><p>Please contact us at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a>. We aim to respond within 1 business day.</p><p>Customer service hours: Monday–Friday, 9:00 AM–6:00 PM ET; Saturday–Sunday, 10:00 AM–4:00 PM ET.</p>",
             "open": false
           }
         },
@@ -165,7 +165,7 @@
         "help_text": "Not sure about the size? Go by the measurements rather than the size you usually wear.",
         "help_link_label": "See measurements",
         "help_link": "/pages/size-guide",
-        "low_stock": "all",
+        "low_stock": "off",
         "low_stock_tag": "Few left",
         "show_flag": true,
         "flag_label": "Sale",
@@ -582,7 +582,7 @@
           "type": "question",
           "settings": {
             "question": "How long does delivery take?",
-            "answer": "<p>Orders are processed within 1 to 3 business days. The average delivery time is 5 to 8 business days. We’ll email you your tracking details so you can follow your parcel.</p><p>Business days are Monday to Friday, excluding public holidays. Delivery to remote or northern areas and during busy periods may take a few days longer.</p>",
+            "answer": "<p>Orders are processed within 1 to 3 business days. The average delivery time is 5 to 8 business days. We'll email you your tracking details so you can follow your parcel.</p><p>Business days are Monday to Friday, excluding public holidays. Delivery to remote or northern areas and during busy periods may take a few days longer.</p>",
             "open_by_default": false
           }
         },
@@ -590,15 +590,15 @@
           "type": "question",
           "settings": {
             "question": "How do I choose the right size?",
-            "answer": "<p>Please check the measurements on the product page before choosing your size. If you’re unsure, email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> with the item name, and we’ll help you choose.<\/p>",
+            "answer": "<p>Please check the measurements on the product page before choosing your size. If you're unsure, email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> with the item name, and we'll help you choose.<\/p>",
             "open_by_default": false
           }
         },
         "q-4": {
           "type": "question",
           "settings": {
-            "question": "Can I return an item if it doesn’t fit?",
-            "answer": "<p>Yes. Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> within 14 days of receiving your order with your order number and the items you’d like to return. We’ll send you the return address of our supplier. Please wait for our reply before sending anything.<\/p><p>You may try items on as you would in a store, but wearing them is not permitted. Items must be unused, unwashed and undamaged, with all tags and labels still attached. Return shipping is at your expense.<\/p><p>We don’t offer direct exchanges. If you need another size or colour, return the item and place a new order. Please see our <a href=\"\/pages\/return-and-refund-policy\">Returns and Refunds Policy<\/a> for full conditions and exclusions.<\/p>",
+            "question": "Can I return an item if it doesn't fit?",
+            "answer": "<p>Yes. Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> within 14 days of receiving your order with your order number and the items you'd like to return. We'll send you the return address of our supplier. Please wait for our reply before sending anything.<\/p><p>You may try items on as you would in a store, but wearing them is not permitted. Items must be unused, unwashed and undamaged, with all tags and labels still attached. Return shipping is at your expense.<\/p><p>We don't offer direct exchanges. If you need another size or colour, return the item and place a new order. Please see our <a href=\"\/pages\/return-and-refund-policy\">Returns and Refunds Policy<\/a> for full conditions and exclusions.<\/p>",
             "open_by_default": false
           }
         },
@@ -606,7 +606,7 @@
           "type": "question",
           "settings": {
             "question": "How can I track my order?",
-            "answer": "<p>Once your parcel ships, we’ll email you your tracking details. You can follow its progress on our <a href=\"\/a\/tracking\">Track your order<\/a> page.<\/p><p>If your order arrives in separate parcels, each will have its own tracking number at no extra shipping cost. Can’t find the tracking email? Check your spam folder or contact us for help.<\/p>",
+            "answer": "<p>Once your parcel ships, we'll email you your tracking details. You can follow its progress on our <a href=\"\/a\/tracking\">Track your order<\/a> page.<\/p><p>If your order arrives in separate parcels, each will have its own tracking number at no extra shipping cost. Can't find the tracking email? Check your spam folder or contact us for help.<\/p>",
             "open_by_default": false
           }
         },
@@ -614,7 +614,7 @@
           "type": "question",
           "settings": {
             "question": "Need more help?",
-            "answer": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> with your question and, if you’ve already ordered, your order number. We aim to respond within 1 business day.<\/p><p>Our customer service hours are:<\/p><ul><li>Monday–Friday: 9:00 AM–6:00 PM ET<\/li><li>Saturday–Sunday: 10:00 AM–4:00 PM ET<\/li><\/ul>",
+            "answer": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> with your question and, if you've already ordered, your order number. We aim to respond within 1 business day.<\/p><p>Our customer service hours are:<\/p><ul><li>Monday–Friday: 9:00 AM–6:00 PM ET<\/li><li>Saturday–Sunday: 10:00 AM–4:00 PM ET<\/li><\/ul>",
             "open_by_default": false
           }
         }
