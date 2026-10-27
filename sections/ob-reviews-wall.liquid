@@ -133,7 +133,12 @@
 #shopify-section-{{ section.id }} .rvw__trustpilot img {position:absolute;top:-34px;left:-6px;width:120px;height:120px;max-width:none;max-height:none;display:block;}
 {%- endstyle -%}
 
-<dp-reviews-wall style="display:block" class="rvw{% if section.settings.star_style == 'boxed' %} rvw--boxed{% endif %}">
+{%- comment -%}
+  id="reviews" to cel linku "Based on 2,850+ Reviews" pod tytulem produktu
+  (ustawienie rating_anchor w ob-pdp). Bez niego klik nigdzie nie prowadzil.
+  scroll-margin, zeby naglowek opinii nie chowal sie pod przyklejonym menu.
+{%- endcomment -%}
+<dp-reviews-wall id="reviews" style="display:block; scroll-margin-top: 90px" class="rvw{% if section.settings.star_style == 'boxed' %} rvw--boxed{% endif %}">
 {% if has_samples %}<p class="rvw__demo">DEMO — Sample reviews, not real customer testimonials or Trustpilot reviews.</p>{% endif %}
   {% if section.settings.show_summary %}<div class="rvw__head">
     <div class="rvw__top">

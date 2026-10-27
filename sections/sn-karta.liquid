@@ -1,0 +1,22 @@
+{%- comment -%}
+  Jeden kafel produktu (sn-card) do pobrania skryptem.
+
+  Ta sekcja nie stoi w zadnym szablonie. Rzad "Recently viewed"
+  (sections/sn-ostatnio) pobiera ja z adresu
+    /products/<handle>?section_id=sn-karta
+  i Shopify renderuje ja w kontekscie tego produktu - stad gotowy kafel,
+  taki sam jak w kolekcji i w bestsellerach.
+{%- endcomment -%}
+
+{%- if product != blank -%}
+  <div data-sn-karta="{{ product.handle }}">
+    {%- render 'sn-card', product: product, grid_item: false -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product card (fetch)",
+  "settings": []
+}
+{% endschema %}

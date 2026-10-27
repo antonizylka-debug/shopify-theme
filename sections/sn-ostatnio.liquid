@@ -1,0 +1,230 @@
+{%- comment -%}
+  Rzad "Recently viewed" na samym dole karty produktu (27.10, prosba
+  Antoniego).
+
+  Wbudowana sekcja recently-viewed motywu tu nie dziala: produkt zapisuje
+  do niej tylko stary szablon produktu (theme.Product), a sklep stoi na
+  ob-pdp - lista zawsze bylaby pusta.
+
+  Ta sekcja sama zapisuje ogladany produkt w localStorage przegladarki
+  klienta (klucz sn-ostatnio, najnowszy pierwszy), a kafle pobiera po
+  jednym z /products/<handle>?section_id=sn-karta - ten sam kafel co
+  w kolekcji i w bestsellerach. Bez ogladanych produktow rzad sie nie
+  pokazuje.
+{%- endcomment -%}
+
+{%- liquid
+  assign per = section.settings.per_view
+  assign per_m = section.settings.per_view_mobile
+  assign odstep = 2
+
+  assign tytul = section.settings.title | escape | newline_to_br
+  if section.settings.accent_word != blank
+    assign slowo = section.settings.accent_word | escape
+    capture zamiennik
+      echo '<span class="sno__akcent">'
+      echo slowo
+      echo '</span>'
+    endcapture
+    assign tytul = tytul | replace: slowo, zamiennik
+  endif
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .sno {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    color: #1c1d1d;
+    overflow: hidden;
+  }
+  #shopify-section-{{ section.id }} .sno[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .sno__head { text-align: center; margin-bottom: 28px; }
+  #shopify-section-{{ section.id }} .sno__title {
+    margin: 0;
+    font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
+    font-size: 26px; font-weight: 600; line-height: 1.18; letter-spacing: 0.01em;
+    text-wrap: balance;
+  }
+  #shopify-section-{{ section.id }} .sno__akcent { color: {{ section.settings.color_accent }}; }
+
+  #shopify-section-{{ section.id }} .sno__wrap { position: relative; }
+  #shopify-section-{{ section.id }} .sno__track {
+    display: flex;
+    gap: {{ odstep }}px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  #shopify-section-{{ section.id }} .sno__track::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .sno__track.is-dojezdza { scroll-snap-type: none; }
+  #shopify-section-{{ section.id }} .sno__card {
+    flex: 0 0 calc((100% - {{ per | minus: 1 | times: odstep }}px) / {{ per }});
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+  {%- comment -%}
+    Jak w "Style it with": pasek zdjec w kafelku nie lapie palca, zeby
+    przesuniecie szlo do calego rzedu.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .snc__pas { overflow-x: hidden; overscroll-behavior-x: auto; }
+
+  #shopify-section-{{ section.id }} .sno__strz {
+    position: absolute; top: 40%; z-index: 4;
+    width: 40px; height: 40px; margin-top: -20px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; border: 1px solid #e4e6ea; border-radius: 50%;
+    background: #ffffff; color: #1c1d1d; cursor: pointer;
+    box-shadow: 0 2px 10px rgba(28, 29, 29, 0.08);
+    transition: opacity 0.2s ease;
+  }
+  #shopify-section-{{ section.id }} .sno__strz svg { width: 9px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+  #shopify-section-{{ section.id }} .sno__strz--l { left: 14px; }
+  #shopify-section-{{ section.id }} .sno__strz--p { right: 14px; }
+  #shopify-section-{{ section.id }} .sno__strz[disabled] { opacity: 0; pointer-events: none; }
+  @media not all and (hover: hover) {
+    #shopify-section-{{ section.id }} .sno__strz { display: none; }
+  }
+
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .sno {
+      padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
+    }
+    #shopify-section-{{ section.id }} .sno__title { font-size: 20px; }
+    #shopify-section-{{ section.id }} .sno__card {
+      flex-basis: calc((100% - {{ per_m | minus: 1 | times: odstep }}px) / {{ per_m }});
+    }
+  }
+{%- endstyle -%}
+
+{%- render 'sn-card-assets' -%}
+
+<div class="sno" data-sno hidden>
+  {%- if section.settings.title != blank -%}
+    <div class="page-width sno__head">
+      <h2 class="sno__title">{{ tytul }}</h2>
+    </div>
+  {%- endif -%}
+  <div class="sno__wrap">
+    <button type="button" class="sno__strz sno__strz--l" data-sno-krok="-1" aria-label="{{ 'general.slider.previous_slide' | t }}" disabled>
+      <svg viewBox="0 0 10 16" aria-hidden="true" focusable="false"><path d="M8.5 1.5 2 8l6.5 6.5"/></svg>
+    </button>
+    <div class="sno__track" data-sno-track></div>
+    <button type="button" class="sno__strz sno__strz--p" data-sno-krok="1" aria-label="{{ 'general.slider.next_slide' | t }}">
+      <svg viewBox="0 0 10 16" aria-hidden="true" focusable="false"><path d="M1.5 1.5 8 8l-6.5 6.5"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var korzen = document.getElementById('shopify-section-{{ section.id }}');
+    if (!korzen) return;
+    var ramka = korzen.querySelector('[data-sno]');
+    var tor = korzen.querySelector('[data-sno-track]');
+    var wstecz = korzen.querySelector('[data-sno-krok="-1"]');
+    var dalej = korzen.querySelector('[data-sno-krok="1"]');
+
+    var KLUCZ = 'sn-ostatnio';
+    var ILE = {{ section.settings.count | json }};
+    var biezacy = {% if product != blank %}{{ product.handle | json }}{% else %}null{% endif %};
+
+    var lista = [];
+    try {
+      lista = JSON.parse(window.localStorage.getItem(KLUCZ) || '[]');
+      if (!Array.isArray(lista)) lista = [];
+    } catch (e) { lista = []; }
+
+    var doPokazania = lista.filter(function (h) { return h !== biezacy; }).slice(0, ILE);
+
+    // ogladany produkt na poczatek listy - pokaze sie na nastepnej karcie
+    if (biezacy) {
+      var nowa = [biezacy].concat(lista.filter(function (h) { return h !== biezacy; })).slice(0, 30);
+      try { window.localStorage.setItem(KLUCZ, JSON.stringify(nowa)); } catch (e) {}
+    }
+
+    if (!doPokazania.length) return;
+
+    function stan() {
+      var maks = tor.scrollWidth - tor.clientWidth;
+      wstecz.disabled = tor.scrollLeft < 4;
+      dalej.disabled = tor.scrollLeft > maks - 4;
+    }
+
+    /* Dojazd strzalkami: 300 ms z krzywa ease, jak w bestsellerach.
+       Przyciaganie wylaczone na czas jazdy, bo inaczej szarpie. */
+    var klatka = null;
+    function ease(x) { return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; }
+    function jedzDo(cel) {
+      if (klatka) cancelAnimationFrame(klatka);
+      var maks = tor.scrollWidth - tor.clientWidth;
+      cel = Math.max(0, Math.min(cel, maks));
+      var start = tor.scrollLeft, roznica = cel - start, t0 = performance.now();
+      if (Math.abs(roznica) < 1) { stan(); return; }
+      tor.classList.add('is-dojezdza');
+      klatka = requestAnimationFrame(function ruch(teraz) {
+        var p = Math.min(1, (teraz - t0) / 300);
+        tor.scrollLeft = start + roznica * ease(p);
+        if (p < 1) { klatka = requestAnimationFrame(ruch); return; }
+        klatka = null;
+        tor.classList.remove('is-dojezdza');
+        stan();
+      });
+    }
+    function krok() {
+      var k = tor.children[0];
+      return k ? k.getBoundingClientRect().width + {{ odstep }} : tor.clientWidth;
+    }
+    [wstecz, dalej].forEach(function (b) {
+      b.addEventListener('click', function () {
+        var kier = parseInt(b.getAttribute('data-sno-krok'), 10);
+        var k = krok();
+        var naRaz = Math.max(1, Math.floor(tor.clientWidth / k));
+        jedzDo((Math.round(tor.scrollLeft / k) + kier * naRaz) * k);
+      });
+    });
+    tor.addEventListener('scroll', stan, { passive: true });
+
+    var KORZEN_URL = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+    Promise.all(doPokazania.map(function (h) {
+      return fetch(KORZEN_URL + 'products/' + encodeURIComponent(h) + '?section_id=sn-karta')
+        .then(function (o) { return o.ok ? o.text() : ''; })
+        .catch(function () { return ''; });
+    })).then(function (teksty) {
+      teksty.forEach(function (t) {
+        if (!t) return;
+        var d = new DOMParser().parseFromString(t, 'text/html');
+        var kafel = d.querySelector('[data-sn-karta] > .snc');
+        if (!kafel) return;
+        var el = document.createElement('div');
+        el.className = 'sno__card';
+        el.appendChild(document.importNode(kafel, true));
+        tor.appendChild(el);
+      });
+      if (!tor.children.length) return;
+      ramka.hidden = false;
+      stan();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Recently viewed (cards)",
+  "settings": [
+    { "type": "textarea", "id": "title", "label": "Heading", "default": "RECENTLY\nVIEWED" },
+    { "type": "text", "id": "accent_word", "label": "Word in colour", "info": "Must match the heading exactly.", "default": "VIEWED" },
+    { "type": "color", "id": "color_accent", "label": "Colour of that word", "default": "#d6332e" },
+    { "type": "range", "id": "count", "label": "Products at most", "default": 12, "min": 4, "max": 20, "step": 1 },
+    { "type": "range", "id": "per_view", "label": "Visible at once", "default": 4, "min": 2, "max": 6, "step": 1 },
+    { "type": "range", "id": "per_view_mobile", "label": "Visible at once (phone)", "default": 2, "min": 1, "max": 3, "step": 1 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "default": 0, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "default": 56, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_top_mobile", "label": "Space above (phone)", "default": 0, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Space below (phone)", "default": 36, "min": 0, "max": 100, "step": 4, "unit": "px" }
+  ],
+  "presets": [{ "name": "Recently viewed (cards)" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

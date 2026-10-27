@@ -443,6 +443,20 @@
     #shopify-section-{{ section.id }} .pdp__stick-info { display: flex; flex-direction: column; min-width: 0; flex: 0 1 auto; }
     #shopify-section-{{ section.id }} .pdp__stick-price { font-size: 17px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
     #shopify-section-{{ section.id }} .pdp__stick.is-sale .pdp__stick-price { color: #6b1f2d; }
+    {%- comment -%}
+      Obok ceny obnizka produktu: przekreslona cena i procent (27.10, prosba
+      Antoniego) - wczesniej pasek pokazywal sama cene i promocja znikala,
+      gdy klient przewinal nizej.
+    {%- endcomment -%}
+    #shopify-section-{{ section.id }} .pdp__stick-row { display: flex; align-items: center; gap: 7px; white-space: nowrap; }
+    #shopify-section-{{ section.id }} .pdp__stick-promo { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; line-height: 1.2; }
+    #shopify-section-{{ section.id }} .pdp__stick-promo[hidden] { display: none; }
+    #shopify-section-{{ section.id }} .pdp__stick-promo s { color: var(--pdp-muted); }
+    #shopify-section-{{ section.id }} .pdp__stick-promo b {
+      padding: 2px 6px; border-radius: 10px;
+      background: #6b1f2d; color: #fff;
+      font-size: 11.5px; font-weight: 600; font-variant-numeric: tabular-nums;
+    }
     #shopify-section-{{ section.id }} .pdp__stick-opt { font-size: 12.5px; color: var(--pdp-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     #shopify-section-{{ section.id }} .pdp__stick-btn {
       flex: 1 1 auto; height: 48px; border: 0; cursor: pointer;
@@ -1108,7 +1122,12 @@
         {%- if section.settings.show_sticky_atc -%}
           <div class="pdp__stick{% if war.compare_at_price > war.price %} is-sale{% endif %}" data-pdp-stick aria-hidden="true">
             <div class="pdp__stick-info">
-              <span class="pdp__stick-price" data-pdp-stick-price>{%- render 'sn-cena', kwota: war.price -%}</span>
+              <span class="pdp__stick-row">
+                <span class="pdp__stick-price" data-pdp-stick-price>{%- render 'sn-cena', kwota: war.price -%}</span>
+                <span class="pdp__stick-promo" data-pdp-stick-promo{% unless na_przecenie %} hidden{% endunless %}>
+                  {%- if na_przecenie -%}<s>{%- render 'sn-cena', kwota: war.compare_at_price -%}</s><b>−{{ rabat }}%</b>{%- endif -%}
+                </span>
+              </span>
               <span class="pdp__stick-opt" data-pdp-stick-opt></span>
             </div>
             <button type="button" class="pdp__stick-btn" data-pdp-stick-btn tabindex="-1" {% unless war.available %}disabled{% endunless %}>
@@ -1425,8 +1444,17 @@
       var wybrany = ileRozmiarow < 2;
       var WYBIERZ = 'Select size';
 
+      var promo = pasek.querySelector('[data-pdp-stick-promo]');
+
       function stan() {
         cena.innerHTML = teraz ? teraz.innerHTML : '';
+        // obnizka przepisana z linii "Regular price" - ta juz sie zmienia z wariantem
+        if (promo) {
+          var s = refNormal && !refNormal.hidden ? refNormal.querySelector('s') : null;
+          var b = s ? refNormal.querySelector('b') : null;
+          promo.innerHTML = s ? '<s>' + s.innerHTML + '</s>' + (b ? '<b>' + b.textContent + '</b>' : '') : '';
+          promo.hidden = !s;
+        }
         pasek.classList.toggle('is-sale', blokCeny ? blokCeny.classList.contains('pdp__price--sale') : false);
         var r = rozmiary ? rozmiary.querySelector('.is-on') : null;
         opis.textContent = (wybrany && r) ? 'Size: ' + r.textContent.trim() : '';

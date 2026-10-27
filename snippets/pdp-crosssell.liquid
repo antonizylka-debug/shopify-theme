@@ -178,8 +178,14 @@
       trafialby w zdjecia i przesuwal je zamiast rzedu. Tutaj pasek zdjec
       nie reaguje na palec - strzalki na PC dalej go przewijaja, bo
       przewijanie z kodu dziala takze przy overflow: hidden.
+
+      overscroll-behavior wraca do auto (27.10): kafel ma "contain", zeby
+      na liscie produktow przesuniecie zdjec nie ruszalo strony. Tu pasek
+      zdjec jest overflow: hidden, a "contain" i tak zatrzymywal palec na
+      kafelku, zamiast oddac ruch rzedowi - rzad nie dawal sie przesunac.
     {%- endcomment -%}
-    .snx .snc__pas { overflow-x: hidden; }
+    .snx .snc__pas { overflow-x: hidden; overscroll-behavior-x: auto; }
+    .snx__track { overscroll-behavior-x: contain; }
 
     @media only screen and (max-width: 768px) {
       .snx__item { flex-basis: calc((100% - 12px) / 1.6); }
