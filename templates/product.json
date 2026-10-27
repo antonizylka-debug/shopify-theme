@@ -173,7 +173,7 @@
         "help_text": "Not sure about the size? Go by the measurements rather than the size you usually wear.",
         "help_link_label": "See measurements",
         "help_link": "/pages/size-guide",
-        "low_stock": "off",
+        "low_stock": "all",
         "low_stock_tag": "Few left",
         "show_flag": true,
         "flag_label": "Sale",
