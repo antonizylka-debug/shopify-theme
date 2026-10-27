@@ -431,6 +431,312 @@
         "color_add_ok": "#1f7a3d"
       }
     },
+    "rzad_kurtki": {
+      "type": "sn-bestsellers",
+      "blocks": {
+        "k1": {
+          "type": "tab",
+          "settings": {
+            "label": "Jackets & coats",
+            "collection": "womens-jackets-and-coats",
+            "audience": "women"
+          }
+        },
+        "k2": {
+          "type": "tab",
+          "settings": {
+            "label": "Jackets & coats",
+            "collection": "mens-jackets-and-coats",
+            "audience": "men"
+          }
+        }
+      },
+      "block_order": [
+        "k1",
+        "k2"
+      ],
+      "settings": {
+        "title": "JACKETS & COATS",
+        "accent_word": "COATS",
+        "subtitle": "Warm layers for the season ahead.",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens",
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Sale",
+        "add_where": "hover",
+        "add_label": "Add to cart",
+        "pick_label": "Select size",
+        "show_dots": true,
+        "dots_max": 3,
+        "dots_size": 22,
+        "note_source": "type",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 32,
+        "title_size": 26,
+        "title_size_mobile": 20,
+        "head_gap": 28,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea",
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f2f3f5",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e",
+        "color_add_bg": "#ffffff",
+        "color_add_hover": "#f2f3f5",
+        "color_add_icon": "#1c1d1d",
+        "color_add_ok": "#1f7a3d"
+      }
+    },
+    "rzad_dzianina": {
+      "type": "sn-bestsellers",
+      "blocks": {
+        "d1": {
+          "type": "tab",
+          "settings": {
+            "label": "Knits & sweaters",
+            "collection": "womens-sweaters-and-knitwear",
+            "audience": "women"
+          }
+        },
+        "d2": {
+          "type": "tab",
+          "settings": {
+            "label": "Knits & sweaters",
+            "collection": "mens-sweaters-and-knitwear",
+            "audience": "men"
+          }
+        }
+      },
+      "block_order": [
+        "d1",
+        "d2"
+      ],
+      "settings": {
+        "title": "KNITS & SWEATERS",
+        "accent_word": "SWEATERS",
+        "subtitle": "Soft knits to wear on repeat.",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens",
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Sale",
+        "add_where": "hover",
+        "add_label": "Add to cart",
+        "pick_label": "Select size",
+        "show_dots": true,
+        "dots_max": 3,
+        "dots_size": 22,
+        "note_source": "type",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 32,
+        "title_size": 26,
+        "title_size_mobile": 20,
+        "head_gap": 28,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea",
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f2f3f5",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e",
+        "color_add_bg": "#ffffff",
+        "color_add_hover": "#f2f3f5",
+        "color_add_icon": "#1c1d1d",
+        "color_add_ok": "#1f7a3d"
+      }
+    },
+    "rzad_spodnie": {
+      "type": "sn-bestsellers",
+      "blocks": {
+        "s1": {
+          "type": "tab",
+          "settings": {
+            "label": "Pants",
+            "collection": "womens-bottoms",
+            "audience": "women"
+          }
+        },
+        "s2": {
+          "type": "tab",
+          "settings": {
+            "label": "Pants",
+            "collection": "mens-pants",
+            "audience": "men"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2"
+      ],
+      "settings": {
+        "title": "PANTS",
+        "accent_word": "PANTS",
+        "subtitle": "Easy fits that go with everything.",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens",
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Sale",
+        "add_where": "hover",
+        "add_label": "Add to cart",
+        "pick_label": "Select size",
+        "show_dots": true,
+        "dots_max": 3,
+        "dots_size": 22,
+        "note_source": "type",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 32,
+        "title_size": 26,
+        "title_size_mobile": 20,
+        "head_gap": 28,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea",
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f2f3f5",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e",
+        "color_add_bg": "#ffffff",
+        "color_add_hover": "#f2f3f5",
+        "color_add_icon": "#1c1d1d",
+        "color_add_ok": "#1f7a3d"
+      }
+    },
+    "rzad_buty_torby": {
+      "type": "sn-bestsellers",
+      "blocks": {
+        "b1": {
+          "type": "tab",
+          "settings": {
+            "label": "Shoes",
+            "collection": "womens-footwear",
+            "audience": "women"
+          }
+        },
+        "b2": {
+          "type": "tab",
+          "settings": {
+            "label": "Bags & accessories",
+            "collection": "womens-accessories",
+            "audience": "women"
+          }
+        },
+        "b3": {
+          "type": "tab",
+          "settings": {
+            "label": "Shoes",
+            "collection": "mens-footwear",
+            "audience": "men"
+          }
+        },
+        "b4": {
+          "type": "tab",
+          "settings": {
+            "label": "Bags & accessories",
+            "collection": "mens-accessories",
+            "audience": "men"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "title": "SHOES & BAGS",
+        "accent_word": "BAGS",
+        "subtitle": "The finishing touch for every outfit.",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens",
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Sale",
+        "add_where": "hover",
+        "add_label": "Add to cart",
+        "pick_label": "Select size",
+        "show_dots": true,
+        "dots_max": 3,
+        "dots_size": 22,
+        "note_source": "type",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 32,
+        "title_size": 26,
+        "title_size_mobile": 20,
+        "head_gap": 28,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea",
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f2f3f5",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e",
+        "color_add_bg": "#ffffff",
+        "color_add_hover": "#f2f3f5",
+        "color_add_icon": "#1c1d1d",
+        "color_add_ok": "#1f7a3d"
+      }
+    },
     "guarantee": {
       "type": "sn-story",
       "settings": {
@@ -834,6 +1140,21 @@
         "products_per_row": 3
       }
     },
+    "ostatnio_ogladane": {
+      "type": "sn-ostatnio",
+      "settings": {
+        "title": "RECENTLY\nVIEWED",
+        "accent_word": "VIEWED",
+        "color_accent": "#d6332e",
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36
+      }
+    },
     "apps": {
       "type": "apps",
       "settings": {
@@ -847,11 +1168,16 @@
     "ob_reviews_strip_QRDkmM",
     "edytorial_kampanii",
     "bestsellers",
+    "rzad_kurtki",
+    "rzad_dzianina",
+    "rzad_spodnie",
+    "rzad_buty_torby",
     "guarantee",
     "reviews",
     "ob_reviews_wall_XxBbPA",
     "faq",
     "product-recommendations",
+    "ostatnio_ogladane",
     "apps"
   ]
 }
