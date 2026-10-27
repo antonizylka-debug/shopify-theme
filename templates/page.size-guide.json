@@ -27,8 +27,8 @@
             "columns": "Size, Bust, Waist, Hips",
             "rows": "XS | 79-81 | 58-61 | 84-86\nS | 84-86 | 64-66 | 89-91\nM | 89-91 | 69-71 | 94-97\nL | 94-99 | 74-79 | 99-104\nXL | 102-107 | 81-86 | 107-112\n2XL | 109-114 | 89-94 | 114-119\n3XL | 117-122 | 97-102 | 122-127",
             "convert_units": true,
-            "fit": "True to size. A set is measured on bust, waist and hips together, so go by the largest measurement rather than the bust alone.",
-            "care": "Machine wash cold with similar colours. Dry flat or on a hanger. Wash both pieces together so they age the same.",
+            "fit": "True to size. If your measurements fall in different sizes, go by the largest one rather than your bust alone.",
+            "care": "Machine wash cold with similar colours. Dry flat or on a hanger.",
             "measure": "Measure your bust at the fullest point, your waist at its natural narrowest, and your hips at the fullest point. Choose the size that fits the largest of the three."
           }
         },
@@ -57,9 +57,9 @@
             "columns": "Size, Bust, Waist, Hips",
             "rows": "XS | 79-81 | 58-61 | 84-86\nS | 84-86 | 64-66 | 89-91\nM | 89-91 | 69-71 | 94-97\nL | 94-99 | 74-79 | 99-104\nXL | 102-107 | 81-86 | 107-112\n2XL | 109-114 | 89-94 | 114-119\n3XL | 117-122 | 97-102 | 122-127",
             "convert_units": true,
-            "fit": "True to size. A set is measured on bust, waist and hips together, so go by the largest measurement rather than the bust alone.",
+            "fit": "True to size. If your measurements fall in different sizes, go by the largest one rather than your bust alone.",
             "care": "Wash at 30°C on a gentle cycle, turn prints inside out, and dry flat rather than in the dryer.",
-            "measure": "Bust at the fullest point, waist at its narrowest, and hips at the fullest point about 20 cm below the waist."
+            "measure": "Bust at the fullest point, waist at its narrowest, and hips at the fullest point, about 8 in (20 cm) below the waist."
           }
         },
         "sets": {
