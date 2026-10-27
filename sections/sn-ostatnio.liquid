@@ -130,22 +130,6 @@
     var ILE = {{ section.settings.count | json }};
     var biezacy = {% if product != blank %}{{ product.handle | json }}{% else %}null{% endif %};
 
-    var lista = [];
-    try {
-      lista = JSON.parse(window.localStorage.getItem(KLUCZ) || '[]');
-      if (!Array.isArray(lista)) lista = [];
-    } catch (e) { lista = []; }
-
-    var doPokazania = lista.filter(function (h) { return h !== biezacy; }).slice(0, ILE);
-
-    // ogladany produkt na poczatek listy - pokaze sie na nastepnej karcie
-    if (biezacy) {
-      var nowa = [biezacy].concat(lista.filter(function (h) { return h !== biezacy; })).slice(0, 30);
-      try { window.localStorage.setItem(KLUCZ, JSON.stringify(nowa)); } catch (e) {}
-    }
-
-    if (!doPokazania.length) return;
-
     function stan() {
       var maks = tor.scrollWidth - tor.clientWidth;
       wstecz.disabled = tor.scrollLeft < 4;
@@ -187,24 +171,61 @@
     tor.addEventListener('scroll', stan, { passive: true });
 
     var KORZEN_URL = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
-    Promise.all(doPokazania.map(function (h) {
+    var kafle = {}; // handle -> pobrany kafel, zeby nie pobierac drugi raz
+    var runda = 0;
+
+    function pobierz(h) {
+      if (kafle[h] !== undefined) return Promise.resolve(kafle[h]);
       return fetch(KORZEN_URL + 'products/' + encodeURIComponent(h) + '?section_id=sn-karta')
         .then(function (o) { return o.ok ? o.text() : ''; })
-        .catch(function () { return ''; });
-    })).then(function (teksty) {
-      teksty.forEach(function (t) {
-        if (!t) return;
-        var d = new DOMParser().parseFromString(t, 'text/html');
-        var kafel = d.querySelector('[data-sn-karta] > .snc');
-        if (!kafel) return;
-        var el = document.createElement('div');
-        el.className = 'sno__card';
-        el.appendChild(document.importNode(kafel, true));
-        tor.appendChild(el);
+        .catch(function () { return ''; })
+        .then(function (t) {
+          var d = t ? new DOMParser().parseFromString(t, 'text/html') : null;
+          kafle[h] = d ? d.querySelector('[data-sn-karta] > .snc') : null;
+          return kafle[h];
+        });
+    }
+
+    function zbuduj() {
+      var lista = [];
+      try {
+        lista = JSON.parse(window.localStorage.getItem(KLUCZ) || '[]');
+        if (!Array.isArray(lista)) lista = [];
+      } catch (e) { lista = []; }
+
+      var doPokazania = lista.filter(function (h) { return h !== biezacy; }).slice(0, ILE);
+
+      // ogladany produkt na poczatek listy - pokaze sie na nastepnej karcie
+      if (biezacy) {
+        var nowa = [biezacy].concat(lista.filter(function (h) { return h !== biezacy; })).slice(0, 30);
+        try { window.localStorage.setItem(KLUCZ, JSON.stringify(nowa)); } catch (e) {}
+      }
+
+      var ta = ++runda;
+      Promise.all(doPokazania.map(pobierz)).then(function (gotowe) {
+        if (ta !== runda) return; // w miedzyczasie ruszyla nowsza przebudowa
+        tor.innerHTML = '';
+        gotowe.forEach(function (kafel) {
+          if (!kafel) return;
+          var el = document.createElement('div');
+          el.className = 'sno__card';
+          el.appendChild(document.importNode(kafel, true));
+          tor.appendChild(el);
+        });
+        tor.scrollLeft = 0;
+        ramka.hidden = !tor.children.length;
+        stan();
       });
-      if (!tor.children.length) return;
-      ramka.hidden = false;
-      stan();
+    }
+
+    zbuduj();
+
+    /* Powrot przyciskiem "wstecz" przywraca strone z pamieci przegladarki
+       (bfcache) bez ponownego uruchomienia skryptu - rzad zostawal z lista
+       z chwili pierwszego wejscia, czesto z jednym produktem. Przebudowa
+       przy kazdym takim powrocie. */
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) zbuduj();
     });
   })();
 </script>
