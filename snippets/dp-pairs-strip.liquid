@@ -1,11 +1,13 @@
 {%- comment -%}
   "Pairs well with …" strip inside the collection grid (31.10.2026, AOV brief §5).
-  Shown once, after the 8th product on page 1 of a category collection: 4 available
+  Shown after the 12th product of every page (so also in each "Show more" batch), with the next 4
+  products each time (resync 31.10). 4 available
   products from the category that completes the outfit (knitwear -> trousers, coats -> knitwear,
   dresses -> bags & accessories ...). Same sn-card tiles with the "+" quick add.
   Broad collections (Women, Men, Sale, New in, search) get nothing.
 
   @param {object} collection
+  @param {number} [page] - current_page; shifts the products by 4 per page
 {%- endcomment -%}
 {%- liquid
   assign h = collection.handle | default: ''
@@ -53,7 +55,8 @@
   endif
 -%}
 {%- if src != blank and src.products_count > 0 -%}
-  <div class="grid__item dp-pairs" data-dp-pairs>
+  {%- comment -%} <aside>, not <div>: the theme grid breaks rows with :nth-of-type on the product divs {%- endcomment -%}
+  <aside class="dp-pairs" data-dp-pairs aria-label="Pairs well with {{ label }}">
     <div class="dp-pairs__head">
       <p class="dp-pairs__title">Pairs well with {{ label }}</p>
       <p class="dp-pairs__sub">Mix &amp; Match – any 2 pieces −10%, up to −30% at 5+</p>
@@ -61,16 +64,17 @@
     </div>
     <div class="dp-pairs__row">
       {%- assign n = 0 -%}
-      {%- for p in src.products limit: 24 -%}
+      {%- assign dp_off = page | default: 1 | minus: 1 | times: 4 | modulo: 24 -%}
+      {%- for p in src.products limit: 30 offset: dp_off -%}
         {%- if n >= 4 -%}{%- break -%}{%- endif -%}
         {%- if p.available == false or p.type == 'Order Add-on' -%}{%- continue -%}{%- endif -%}
         <div class="dp-pairs__card">{%- render 'sn-card', product: p, grid_item: false -%}</div>
         {%- assign n = n | plus: 1 -%}
       {%- endfor -%}
     </div>
-  </div>
+  </aside>
   <style>
-    [data-product-grid] > .dp-pairs { width: 100%; flex: 0 0 100%; margin: 6px 0 34px; padding: 22px 4px 4px; border-top: 1px solid #e4e6ea; border-bottom: 1px solid #e4e6ea; }
+    [data-product-grid] > .dp-pairs { display: block; clear: both; float: none; box-sizing: border-box; width: 100%; flex: 0 0 100%; margin: 6px 0 34px; padding: 22px 4px 4px; border-top: 1px solid #e4e6ea; border-bottom: 1px solid #e4e6ea; }
     .dp-pairs__head { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2px 16px; margin: 0 0 16px; }
     .dp-pairs__title { grid-column: 1; margin: 0; font-size: 18px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
     .dp-pairs__sub { grid-column: 1; margin: 0; font-size: 13px; color: #6b1f2d; font-weight: 600; }
