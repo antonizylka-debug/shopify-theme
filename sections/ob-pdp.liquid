@@ -286,7 +286,8 @@
     display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap;
   }
   #shopify-section-{{ section.id }} .pdp__price--sale { color: var(--pdp-sale); }
-  #shopify-section-{{ section.id }} .pdp__vat--below { display: block; margin: 6px 0 0; }
+  #shopify-section-{{ section.id }} .dp-pricing__main { display: flex; flex-direction: column; justify-content: center; }
+  #shopify-section-{{ section.id }} .pdp__vat--below { display: block; margin: 5px 0 0; font-size: 12px; line-height: 1.3; }
   #shopify-section-{{ section.id }} .pdp__vat {
     font-size: 13px; font-weight: 400; color: var(--pdp-muted);
   }
@@ -985,18 +986,20 @@
 
         {%- comment -%} ---------- cena ---------- {%- endcomment -%}
         <div class="dp-pricing">
+        <div class="dp-pricing__main">
         <div class="pdp__price{% if na_przecenie %} pdp__price--sale{% endif %}" data-pdp-price>
           <span data-pdp-now>{%- render 'sn-cena', kwota: war.price -%}</span>
+        </div>
+        {%- comment -%} Tax note in small print under the price (31.10.2026) {%- endcomment -%}
+        {%- if section.settings.vat_note != blank -%}
+          <p class="pdp__vat pdp__vat--below">{{ section.settings.vat_note }}</p>
+        {%- endif -%}
         </div>
         {%- comment -%} Price per item in a multi-buy (real cart price), 31.10.2026 {%- endcomment -%}
         {%- if section.settings.multibuy_price_show and section.settings.promo_tiers != blank and product.type != 'Order Add-on' -%}
           {%- render 'dp-multibuy-price', price: war.price, tiers: section.settings.promo_tiers -%}
         {%- endif -%}
         </div>
-        {%- comment -%} Tax note under the price, not next to it (31.10.2026) {%- endcomment -%}
-        {%- if section.settings.vat_note != blank -%}
-          <p class="pdp__vat pdp__vat--below">{{ section.settings.vat_note }}</p>
-        {%- endif -%}
 
         <div class="pdp__refs">
           <span class="pdp__ref" data-pdp-ref-normal{% unless na_przecenie %} hidden{% endunless %}>
