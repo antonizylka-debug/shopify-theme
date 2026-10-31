@@ -305,7 +305,7 @@
         "space_bottom_mobile": 28
       }
     },
-    "mix_match": { "type": "sn-polecane", "settings": {} }, "bestsellers": {
+    "mix_match": { "type": "dp-mix-match", "settings": {} }, "bestsellers": {
       "type": "sn-bestsellers", "disabled": true,
       "blocks": {
         "t1": {
