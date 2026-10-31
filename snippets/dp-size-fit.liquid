@@ -13,6 +13,8 @@
   .dp-size-fit { margin: 8px 0 0; font-size: 13px; line-height: 1.45; color: #6b6f76; }
   .dp-size-fit b { color: #1c1d1d; font-weight: 600; }
   .dp-size-fit[hidden] { display: none; }
+  /* phone: ob-pdp orders .pdp__info children - keep the line right under the sizes, above Add to cart */
+  .pdp__info > .dp-size-fit { order: 2; }
 </style>
 <script>
   (function () {
