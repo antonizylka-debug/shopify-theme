@@ -67,6 +67,9 @@
   .snprog--kompakt .snprog__bar { height: 4px; border-radius: 2px; background: #b4b8bf; }
   .snprog--kompakt .snprog__fill { background: #6b1f2d; }
   .snprog--kompakt .snprog__steps { display: none; }
+  .snk-up__zach { margin: -4px 0 10px; font-size: 12.5px; line-height: 1.35; color: #6b6f76; }
+  .snk-up__zach[hidden] { display: none; }
+  .snk-up__zach b { color: #6b1f2d; font-weight: 700; }
 </style>
 <script>
   (function () {
@@ -88,6 +91,12 @@
         el.querySelectorAll('[data-sn-prog-step]').forEach(function (s) {
           s.classList.toggle('is-on', ile >= Number(s.getAttribute('data-sn-prog-step')));
         });
+      });
+      /* zacheta nad polecanymi w koszyku (sn-kurv-forslag) */
+      document.querySelectorAll('[data-sn-zacheta]').forEach(function (z) {
+        var cel = ile >= 1 && ile < 5 ? { 1: 10, 2: 20, 3: 25, 4: 30 }[ile] : 0;
+        z.hidden = !cel;
+        z.innerHTML = cel ? 'Add 1 more item and get <b>−' + cel + '%</b> on your whole cart' : '';
       });
     }
     function odswiez(e) {

@@ -68,6 +68,26 @@
   -%}
   <div class="snk-up" data-snk-up-wrap data-snk-zrodla="{{ zrodla | escape }}" data-snk-wyklucz="{{ wyklucz }}" data-snk-ziarno="{{ ziarno }}"{% if dzial == 'womens' %}{% case typ %}{% when 'Dresses', 'Jumpsuits', 'Matching Sets', 'Playsuits & Rompers' %} data-snk-elegancko{% endcase %}{% endif %} hidden>
     <p class="snk-up__title">{{ settings.sn_kurv_upsell_title }}</p>
+    {%- comment -%} Zacheta do nastepnego progu (brief AOV 31.10.2026); JS w sn-prog-rabatu odswieza po zmianie koszyka. {%- endcomment -%}
+    {%- liquid
+      capture szt
+        render 'sn-liczba-sztuk'
+      endcapture
+      assign szt = szt | plus: 0
+      case szt
+        when 1
+          assign zach = 'Add 1 more item and get <b>−10%</b> on your whole cart'
+        when 2
+          assign zach = 'Add 1 more item and get <b>−20%</b> on your whole cart'
+        when 3
+          assign zach = 'Add 1 more item and get <b>−25%</b> on your whole cart'
+        when 4
+          assign zach = 'Add 1 more item and get <b>−30%</b> on your whole cart'
+        else
+          assign zach = ''
+      endcase
+    -%}
+    <p class="snk-up__zach" data-sn-zacheta{% if zach == blank %} hidden{% endif %}>{{ zach }}</p>
     <div class="snk-up__grid" data-snk-up-grid></div>
   </div>
 {%- endif -%}
