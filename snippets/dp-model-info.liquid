@@ -1,0 +1,90 @@
+{%- comment -%}
+  "Model is 175 cm (5′9″) tall and wears size S." under the size buttons, above Add to cart (31.10.2026).
+
+  Real line - from product metafields only, never guessed:
+    custom.model_height_cm (integer)  - model height in cm
+    custom.model_size (single line)   - size the model wears, must match a variant (XXL = 2XL, Small = S ...)
+    custom.has_model_photo (boolean)  - a person wearing the product is in the gallery
+  Missing field, height out of 140-210, or a size no variant has = nothing shown.
+  Fixed per product - does not change when the customer picks a size.
+
+  @param {string} section_id
+{%- endcomment -%}
+{%- liquid
+  assign dp_h = product.metafields.custom.model_height_cm.value | times: 1
+  assign dp_s = product.metafields.custom.model_size.value | strip
+  assign dp_photo = product.metafields.custom.has_model_photo.value
+
+  assign dp_want = dp_s | upcase | remove: ' ' | remove: '-'
+  case dp_want
+    when 'XXL', 'DOUBLEEXTRALARGE'
+      assign dp_want = '2XL'
+    when 'XXXL'
+      assign dp_want = '3XL'
+    when 'SMALL'
+      assign dp_want = 'S'
+    when 'MEDIUM'
+      assign dp_want = 'M'
+    when 'LARGE'
+      assign dp_want = 'L'
+    when 'XSMALL', 'EXTRASMALL'
+      assign dp_want = 'XS'
+    when 'XLARGE', 'EXTRALARGE'
+      assign dp_want = 'XL'
+  endcase
+
+  assign dp_size_opt = nil
+  for opt in product.options_with_values
+    assign dp_name = opt.name | downcase
+    if dp_name contains 'size' or dp_name contains 'størrelse'
+      assign dp_size_opt = opt
+      break
+    endif
+  endfor
+
+  assign dp_match = ''
+  if dp_size_opt and dp_want != blank
+    for val in dp_size_opt.values
+      assign dp_v = val | upcase | remove: ' ' | remove: '-'
+      case dp_v
+        when 'XXL', 'DOUBLEEXTRALARGE'
+          assign dp_v = '2XL'
+        when 'XXXL'
+          assign dp_v = '3XL'
+        when 'SMALL'
+          assign dp_v = 'S'
+        when 'MEDIUM'
+          assign dp_v = 'M'
+        when 'LARGE'
+          assign dp_v = 'L'
+        when 'XSMALL', 'EXTRASMALL'
+          assign dp_v = 'XS'
+        when 'XLARGE', 'EXTRALARGE'
+          assign dp_v = 'XL'
+      endcase
+      if dp_v == dp_want
+        assign dp_match = val
+        break
+      endif
+    endfor
+  endif
+
+  assign dp_real = false
+  if dp_photo == true and dp_h >= 140 and dp_h <= 210 and dp_match != ''
+    assign dp_real = true
+    assign dp_in = dp_h | divided_by: 2.54 | round
+    assign dp_ft = dp_in | divided_by: 12
+    assign dp_inch = dp_in | modulo: 12
+  endif
+-%}
+{%- if dp_real -%}
+  <p class="dp-model-info">Model is <b>{{ dp_h }} cm ({{ dp_ft }}′{{ dp_inch }}″)</b> tall and wears size <b>{{ dp_match | escape }}</b>.</p>
+{%- endif -%}
+{%- if dp_real -%}
+  <style>
+    .dp-model-info { margin: 10px 0 0; font-size: 13px; line-height: 1.45; color: #6b6f76; }
+    .dp-model-info b { color: #1c1d1d; font-weight: 600; }
+    .dp-model-info[hidden] { display: none; }
+    /* phone: ob-pdp orders .pdp__info children - same slot as the sizes, right above Add to cart */
+    #shopify-section-{{ section_id }} .pdp__info > .dp-model-info { order: 2; margin-bottom: 14px; }  </style>
+{%- endif -%}
