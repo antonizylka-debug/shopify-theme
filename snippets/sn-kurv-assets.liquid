@@ -419,6 +419,7 @@
         siatka.innerHTML = '';
         wynik.forEach(function (el) { siatka.appendChild(document.importNode(el, true)); });
         wrap.hidden = wynik.length === 0;
+        if (window.snZacheta) window.snZacheta();
         oznaczBok();
       });
     }

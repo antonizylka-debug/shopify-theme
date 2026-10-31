@@ -79,7 +79,7 @@
   .snz__err { margin: 8px 0 0; font-size: 12.5px; color: #6b1f2d; }
   .snz__err[hidden] { display: none; }
 </style>
-<div class="snz" data-snz data-snz-sekcja="{{ sekcja }}" data-snz-zrodla="{{ zrodla | escape }}" data-snz-progi="{{ progi | escape }}" data-snz-pid="{{ product.id }}"{% if elegancko %} data-snz-elegancko{% endif %} hidden>
+<div class="snz" data-snz data-snz-sekcja="{{ sekcja }}" data-snz-zrodla="{{ zrodla | escape }}" data-snz-progi="{{ progi | escape }}" data-snz-pid="{{ product.id }}" data-snz-handle="{{ product.handle }}"{% if elegancko %} data-snz-elegancko{% endif %} hidden>
   <div class="snz__head">
     <p class="snz__t">Complete the look</p>
     <p class="snz__hint" data-snz-hint></p>
@@ -144,6 +144,7 @@
     }
 
     function przelicz() {
+      odswiezKolor();
       var g = glowny();
       var suma = 0, n = 0;
       if (g) {
@@ -178,11 +179,43 @@
       })[0] || null;
     }
 
-    function wiersz(p) {
+    /* "Love the fit? Try another shade" - ten sam produkt w innym kolorze, jako pierwszy
+       wiersz. Rozmiar podpowiadamy z wyboru w glownym formularzu, kolor wybrany wyzej jest
+       wylaczony (to bylby drugi raz to samo). */
+    function idxKoloru(p) {
+      for (var i = 0; i < p.options.length; i++) if (/colou?r|farve|shade/i.test(String(p.options[i].name || p.options[i]))) return i;
+      return -1;
+    }
+    function odswiezKolor() {
+      var li = lista.querySelector('[data-snz-kolor]');
+      var g = glowny();
+      if (!li || !g) return;
+      var iK = Number(li.getAttribute('data-snz-kolor'));
+      var sel = li.querySelector('[data-snz-opt="' + iK + '"]');
+      Array.prototype.forEach.call(sel.options, function (o) {
+        if (!o.value) return;
+        var jest = li.__snz.p.variants.some(function (v) { return v.available && v.options[iK] === o.value; });
+        o.disabled = !jest || o.value === g.options[iK];
+      });
+      if (sel.value === g.options[iK]) sel.value = '';
+      /* rozmiar jak w glownym formularzu, jesli klientka jeszcze nie wybrala */
+      g.options.forEach(function (w, i) {
+        if (i === iK) return;
+        var s = li.querySelector('[data-snz-opt="' + i + '"]');
+        if (s && !s.value && !s.__reczny) {
+          var o = Array.prototype.filter.call(s.options, function (x) { return x.value === w && !x.disabled; })[0];
+          if (o) s.value = w;
+        }
+      });
+    }
+
+    function wiersz(p, iKoloru) {
       var li = document.createElement('li');
       li.className = 'snz__it';
       li.setAttribute('data-snz-x', p.id);
       li.__snz = { p: p };
+      var kolor = typeof iKoloru === 'number';
+      if (kolor) li.setAttribute('data-snz-kolor', iKoloru);
       var img = p.featured_image ? p.featured_image + (p.featured_image.indexOf('?') < 0 ? '?' : '&') + 'width=120' : '';
       var cb = document.createElement('input');
       cb.type = 'checkbox'; cb.className = 'snz__cb'; cb.setAttribute('aria-label', 'Add ' + p.title);
@@ -192,7 +225,9 @@
       if (img) { var im = document.createElement('img'); im.src = img; im.alt = ''; im.loading = 'lazy'; im.width = 52; im.height = 68; a.appendChild(im); }
       li.appendChild(a);
       var info = document.createElement('span'); info.className = 'snz__info';
-      var nazwa = document.createElement('a'); nazwa.className = 'snz__name'; nazwa.href = p.url; nazwa.textContent = p.title;
+      var nazwa = document.createElement(kolor ? 'span' : 'a'); nazwa.className = 'snz__name';
+      if (kolor) { var b = document.createElement('b'); b.textContent = 'Love the fit? Try another shade'; nazwa.appendChild(b); }
+      else { nazwa.href = p.url; nazwa.textContent = p.title; }
       info.appendChild(nazwa);
       var rz = document.createElement('span'); rz.className = 'snz__row';
       var pr = document.createElement('span'); pr.className = 'snz__price'; pr.textContent = cena(p.price);
@@ -259,13 +294,22 @@
         }
         return pamiec[u];
       })).then(function (teksty) {
-        return Promise.all(wybierz(teksty).map(function (h) {
+        var uchwyty = [ramka.getAttribute('data-snz-handle')].concat(wybierz(teksty));
+        return Promise.all(uchwyty.map(function (h) {
           return fetch(KORZEN + 'products/' + h + '.js').then(function (o) { return o.ok ? o.json() : null; }).catch(function () { return null; });
         }));
       }).then(function (produkty) {
+        var ten = produkty && produkty.shift();
         produkty = (produkty || []).filter(function (p) { return p && p.available; });
-        if (!produkty.length) return;
+        /* inny kolor tylko gdy sa co najmniej 2 dostepne kolory */
+        var iK = ten ? idxKoloru(ten) : -1;
+        var kolory = {};
+        if (iK >= 0) ten.variants.forEach(function (v) { if (v.available) kolory[v.options[iK]] = 1; });
+        var zKolorem = iK >= 0 && Object.keys(kolory).length > 1;
+        if (!produkty.length && !zKolorem) return;
+        if (zKolorem) lista.appendChild(wiersz(ten, iK));
         produkty.forEach(function (p) { lista.appendChild(wiersz(p)); });
+        odswiezKolor();
         ramka.hidden = false;
         return fetch(KORZEN + 'cart.js', { credentials: 'same-origin' }).then(function (o) { return o.json(); })
           .then(function (c) { wKoszyku = window.dpSztuki ? window.dpSztuki(c) : c.item_count; })
@@ -277,6 +321,7 @@
       blad.hidden = true;
       if (e.target.matches('.snz__sel')) {
         e.target.classList.remove('is-err');
+        e.target.__reczny = true;
         var li = e.target.closest('[data-snz-x]');
         if (e.target.value) li.querySelector('.snz__cb').checked = true;
         /* zdjecie wybranego koloru */

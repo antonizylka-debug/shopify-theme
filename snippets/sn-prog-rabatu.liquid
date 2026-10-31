@@ -70,6 +70,8 @@
   .snk-up__zach { margin: -4px 0 10px; font-size: 12.5px; line-height: 1.35; color: #6b6f76; }
   .snk-up__zach[hidden] { display: none; }
   .snk-up__zach b { color: #6b1f2d; font-weight: 700; }
+  .snk-g__zach { margin: 4px 0 0; font-size: 11.5px; line-height: 1.3; color: #6b6f76; }
+  .snk-g__zach b { color: #6b1f2d; font-weight: 700; }
 </style>
 <script>
   (function () {
@@ -92,6 +94,8 @@
           s.classList.toggle('is-on', ile >= Number(s.getAttribute('data-sn-prog-step')));
         });
       });
+      window.__snIle = ile;
+      if (window.snZacheta) window.snZacheta();
       /* zacheta nad polecanymi w koszyku (sn-kurv-forslag) */
       document.querySelectorAll('[data-sn-zacheta]').forEach(function (z) {
         var cel = ile >= 1 && ile < 5 ? { 1: 10, 2: 20, 3: 25, 4: 30 }[ile] : 0;
@@ -99,6 +103,19 @@
         z.innerHTML = cel ? 'Add 1 more item and get <b>−' + cel + '%</b> on your whole cart' : '';
       });
     }
+    /* Pod kazda karta polecanych w koszyku: co da dodanie wlasnie tej rzeczy (brief AOV 2D).
+       Wolane tez z sn-kurv-assets po wstawieniu kart (przychodza pozniej niz koszyk). */
+    window.snZacheta = function () {
+      var ile = window.__snIle;
+      if (typeof ile !== 'number') return;
+      var cel = ile >= 1 && ile < 5 ? { 1: 10, 2: 20, 3: 25, 4: 30 }[ile] : 0;
+      document.querySelectorAll('[data-snk-up-grid] [data-snk-g]').forEach(function (g) {
+        var z = g.querySelector('.snk-g__zach');
+        if (!cel) { if (z) z.remove(); return; }
+        if (!z) { z = document.createElement('p'); z.className = 'snk-g__zach'; g.appendChild(z); }
+        z.innerHTML = 'Add this · unlock <b>−' + cel + '%</b> on your cart';
+      });
+    };
     function odswiez(e) {
       var c = e && e.detail && e.detail.cart;
       if (c && typeof c.item_count === 'number') { rysuj((window.dpSztuki ? window.dpSztuki(c) : c.item_count)); return; }
