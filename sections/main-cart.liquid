@@ -17,6 +17,11 @@
       <div class="cart__page">
         <div data-products class="cart__page-col">
           {% for item in cart.items %}
+            {%- if item.product.type == 'Order Add-on' -%}{%- continue -%}{%- endif -%}
+            {%- render 'cart-item', product: item, sizes: '150px', -%}
+          {%- endfor -%}
+          {% for item in cart.items %}
+            {%- unless item.product.type == 'Order Add-on' -%}{%- continue -%}{%- endunless -%}
             {%- render 'cart-item', product: item, sizes: '150px', -%}
           {%- endfor -%}
         </div>

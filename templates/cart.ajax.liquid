@@ -15,6 +15,11 @@
   data-count="{{ sn_szt }}"
   data-cart-subtotal="{{ cart.total_price }}">
   {% for item in cart.items %}
+    {%- if item.product.type == 'Order Add-on' -%}{%- continue -%}{%- endif -%}
+    {%- render 'cart-item', product: item, sizes: '100px', -%}
+  {% endfor %}
+  {% for item in cart.items %}
+    {%- unless item.product.type == 'Order Add-on' -%}{%- continue -%}{%- endunless -%}
     {%- render 'cart-item', product: item, sizes: '100px', -%}
   {% endfor %}
 </div>
