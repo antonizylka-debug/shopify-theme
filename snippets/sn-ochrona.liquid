@@ -1,17 +1,34 @@
 {%- comment -%}
   Delivery Protection (produkt "delivery-protection", typ "Order Add-on").
   Zasady (Antoni, 31.10.2026):
-  - gdy klient dodaje cokolwiek do pustego koszyka, ochrona dochodzi sama jako osobna pozycja (1 szt.);
-  - klient moze ja usunac - wtedy nie wraca, dopoki koszyk sie nie oprozni;
-  - gdy w koszyku zostaje sama ochrona, znika (nie da sie kupic samej ochrony);
-  - zawsze dokladnie 1 sztuka.
+  - gdy klient dodaje cokolwiek do pustego koszyka, ochrona dochodzi sama jako pozycja koszyka (1 szt.);
+  - w koszyku nie stoi na liscie produktow, tylko jako maly wiersz z przelacznikiem nad suma
+    (snippet sn-ochrona-wiersz); wylaczenie = usuniecie, ochrona nie wraca, dopoki koszyk sie nie oprozni;
+  - gdy w koszyku zostaje sama ochrona, znika (nie da sie kupic samej ochrony); zawsze dokladnie 1 sztuka.
   Ochrona nie liczy sie do sztuk (progi rabatow, licznik koszyka): window.dpSztuki(cart)
   i snippet sn-liczba-sztuk. Rabaty za ilosc w panelu obejmuja 25 kolekcji - produktu w nich nie ma.
 {%- endcomment -%}
 {%- assign dp_ochrona = all_products['delivery-protection'] -%}
 <style>
-  .snk-item--dodatek .snk-item__row { display: none !important; }
-  .snk-item--dodatek .snk-item__dodatek-opis { font-size: 12.5px; line-height: 1.4; color: #6b6f76; margin-top: 4px; }
+  .dp-row { display: flex; align-items: center; gap: 10px; padding: 9px 12px; margin: 0; background: #f6f6f4; border-radius: 8px; color: #1c1d1d; }
+  .dp-row[hidden] { display: none; }
+  .dp-row__ico { flex: 0 0 18px; color: #1c1d1d; }
+  .dp-row__txt { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; cursor: pointer; margin: 0; }
+  .dp-row__t { font-size: 13px; font-weight: 600; }
+  .dp-row__s { font-size: 11.5px; color: #6b6f76; }
+  .dp-row__cena { font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .dp-switch { position: relative; flex: 0 0 36px; width: 36px; height: 20px; }
+  .dp-switch__in { position: absolute; inset: -12px -4px; width: calc(100% + 8px); height: calc(100% + 24px); margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
+  .dp-switch__tor { position: absolute; inset: 0; border-radius: 20px; background: #c9cbcf; transition: background .2s; }
+  .dp-switch__tor::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+  .dp-switch__in:checked + .dp-switch__tor { background: #1c1d1d; }
+  .dp-switch__in:checked + .dp-switch__tor::after { transform: translateX(16px); }
+  .dp-switch__in:focus-visible + .dp-switch__tor { outline: 2px solid #1c1d1d; outline-offset: 2px; }
+  .dp-row.is-busy { opacity: .6; pointer-events: none; }
+  #CartDrawer .dp-wrap { padding: 8px 26px 10px; background: #ffffff; }
+  @media (max-width: 768px) { #CartDrawer .dp-wrap { padding: 6px 18px 8px; } }
+  .dp-wrap--strona { margin: 0 0 14px; }
+  @media (prefers-reduced-motion: reduce) { .dp-switch__tor, .dp-switch__tor::after { transition: none; } }
 </style>
 <script>
   window.dpSztuki = function (c) {
@@ -29,39 +46,47 @@
     var VID = {{ dp_ochrona.selected_or_first_available_variant.id | json }};
     var KORZEN = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
     var KLUCZ = 'dp_ochrona_usunieta';
-    var kluczLinii = null, wToku = false, ponownie = false, wlasneZapytanie = false;
+    var wToku = false, ponownie = false;
 
     function odrzucona() { try { return localStorage.getItem(KLUCZ) === '1'; } catch (e) { return false; } }
     function ustaw(v) { try { if (v) localStorage.setItem(KLUCZ, '1'); else localStorage.removeItem(KLUCZ); } catch (e) {} }
 
     function wyslij(url, dane) {
-      wlasneZapytanie = true;
       return fetch(KORZEN + url, {
         method: 'POST', credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
         body: JSON.stringify(dane)
-      }).then(function (r) { wlasneZapytanie = false; return r.json(); })
-        .catch(function () { wlasneZapytanie = false; return null; });
+      }).then(function (r) { return r.json(); }).catch(function () { return null; });
+    }
+    function koszyk() { return fetch(KORZEN + 'cart.js', { credentials: 'same-origin' }).then(function (r) { return r.json(); }); }
+
+    function wiersze(c) {
+      var jest = c.items.some(function (i) { return i.variant_id === VID; });
+      var inne = window.dpSztuki(c) > 0;
+      document.querySelectorAll('[data-dp-row]').forEach(function (w) {
+        w.hidden = !inne;
+        w.classList.remove('is-busy');
+        var t = w.querySelector('[data-dp-toggle]');
+        if (t) t.checked = jest;
+      });
     }
 
     function odswiezWidok() {
-      return fetch(KORZEN + 'cart.js', { credentials: 'same-origin' })
-        .then(function (r) { return r.json(); })
-        .then(function (c) {
-          document.dispatchEvent(new CustomEvent('cart:build'));
-          document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: c, dpOchrona: true } }));
-        }).catch(function () {});
+      return koszyk().then(function (c) {
+        wiersze(c);
+        document.dispatchEvent(new CustomEvent('cart:build'));
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: c, dpOchrona: true } }));
+      }).catch(function () {});
     }
 
     function synchronizuj() {
       if (wToku) { ponownie = true; return; }
       wToku = true;
-      fetch(KORZEN + 'cart.js', { credentials: 'same-origin' })
-        .then(function (r) { return r.json(); })
+      koszyk()
         .then(function (c) {
           var ochrona = c.items.filter(function (i) { return i.variant_id === VID; });
           var reszta = c.items.filter(function (i) { return i.variant_id !== VID && i.product_type !== 'Order Add-on'; });
-          kluczLinii = ochrona.length ? ochrona[0].key : null;
+          wiersze(c);
           if (!reszta.length) {
             ustaw(false);
             if (ochrona.length) return wyslij('cart/change.js', { id: ochrona[0].key, quantity: 0 });
@@ -82,18 +107,20 @@
         });
     }
 
-    /* Klient usuwa ochrone (kosz albo ilosc 0) -> zapamietaj i nie dodawaj ponownie. */
-    var fetchOryginal = window.fetch;
-    window.fetch = function (zasob, opcje) {
-      try {
-        var url = typeof zasob === 'string' ? zasob : (zasob && zasob.url) || '';
-        if (!wlasneZapytanie && kluczLinii && /\/cart\/change(\.js)?/.test(url) && opcje && typeof opcje.body === 'string') {
-          var b = JSON.parse(opcje.body);
-          if (b && String(b.id) === String(kluczLinii) && Number(b.quantity) === 0) ustaw(true);
-        }
-      } catch (e) {}
-      return fetchOryginal.apply(this, arguments);
-    };
+    /* Przelacznik: wylaczenie = usuniecie i zapamietanie wyboru; wlaczenie = dodanie z powrotem. */
+    document.addEventListener('change', function (e) {
+      var t = e.target.closest && e.target.closest('[data-dp-toggle]');
+      if (!t) return;
+      var w = t.closest('[data-dp-row]'); if (w) w.classList.add('is-busy');
+      var wlacz = t.checked;
+      ustaw(!wlacz);
+      koszyk().then(function (c) {
+        var o = c.items.filter(function (i) { return i.variant_id === VID; });
+        if (wlacz && !o.length) return wyslij('cart/add.js', { items: [{ id: VID, quantity: 1 }] });
+        if (!wlacz && o.length) return wyslij('cart/change.js', { id: o[0].key, quantity: 0 });
+        return null;
+      }).then(odswiezWidok).catch(function () { if (w) w.classList.remove('is-busy'); });
+    });
 
     document.addEventListener('ajaxProduct:added', function () { setTimeout(synchronizuj, 250); });
     document.addEventListener('cart:updated', function (e) {
