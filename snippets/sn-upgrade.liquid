@@ -99,7 +99,6 @@
         assign naglowek = 'Prefer wool?'
         assign korzysc = 'Wool – warmer than synthetic fabrics and keeps its shape longer.'
     endcase
-    assign roznica = wybor.price | minus: cena
   -%}
   <style>
     .snu { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; margin: 14px 0 4px; padding: 12px; border: 1px solid #e4e6ea; border-radius: 8px; color: inherit; text-decoration: none; }
@@ -112,7 +111,6 @@
     .snu__why { margin: 3px 0 4px; font-size: 12.5px; line-height: 1.4; color: #6b6f76; }
     .snu__row { display: flex; gap: 10px; align-items: baseline; font-size: 13px; }
     .snu__price { font-weight: 600; }
-    .snu__diff { color: #6b6f76; font-size: 12px; }
     .snu__cta { margin-left: auto; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
   </style>
   <a class="snu" href="{{ wybor.url }}">
@@ -123,7 +121,6 @@
       <span class="snu__why">{{ korzysc }}</span>
       <span class="snu__row">
         <span class="snu__price">{%- render 'sn-cena', kwota: wybor.price -%}</span>
-        <span class="snu__diff">{%- render 'sn-cena', kwota: roznica -%} more than this item</span>
         <span class="snu__cta">View &rarr;</span>
       </span>
     </span>
