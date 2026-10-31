@@ -8,10 +8,10 @@
   Missing field, height out of 140-210, or a size no variant has = nothing shown.
   Fixed per product - does not change when the customer picks a size.
 
-  Example line - "Model information preview: 172 cm · Size M — example data." Only on products without
-  complete real data, and the script shows it only on an unpublished theme (Shopify.theme.role != main),
-  so it can never reach customers on the live theme. Values are made up from the product id and the
-  middle size - marked data-dp-model-example. Delete this part once the real fields are filled.
+  Mockup line - same sentence, made-up values (height from the product id, middle size), so Antoni can
+  see the look before real data exists (31.10.2026). Only on products without complete real data, and the
+  script shows it only on an unpublished theme (Shopify.theme.role != main), so it can never reach
+  customers on the live theme. Marked data-dp-model-example. Delete this part before publishing.
 
   @param {string} section_id
 {%- endcomment -%}
@@ -95,8 +95,12 @@
         break
       endif
     endfor
+    assign dp_ex_in = dp_ex_h | divided_by: 2.54 | round
+    assign dp_ex_ft = dp_ex_in | divided_by: 12
+    assign dp_ex_inch = dp_ex_in | modulo: 12
   -%}
-  <p class="dp-model-info" data-dp-model-example="true" hidden>Model information preview: <b>{{ dp_ex_h }} cm</b> · <b>Size {{ dp_ex_size | escape }}</b> — example data.</p>
+  {%- comment -%} Same sentence as the real line, made-up values - mockup only, unpublished theme {%- endcomment -%}
+  <p class="dp-model-info" data-dp-model-example="true" hidden>Model is <b>{{ dp_ex_h }} cm ({{ dp_ex_ft }}′{{ dp_ex_inch }}″)</b> tall and wears size <b>{{ dp_ex_size | escape }}</b>.</p>
   <script>
     (function () {
       var el = document.querySelector('[data-dp-model-example]:not([data-dp-model-example-ready])');
@@ -109,11 +113,9 @@
 {%- endif -%}
 {%- if dp_real or dp_size_opt -%}
   <style>
-    .dp-model-info { margin: 6px 0 0; font-size: 13px; line-height: 1.45; color: #6b6f76; }
+    .dp-model-info { margin: 10px 0 0; font-size: 13px; line-height: 1.45; color: #6b6f76; }
     .dp-model-info b { color: #1c1d1d; font-weight: 600; }
     .dp-model-info[hidden] { display: none; }
     /* phone: ob-pdp orders .pdp__info children - same slot as the sizes, right above Add to cart */
-    #shopify-section-{{ section_id }} .pdp__info > .dp-model-info { order: 2; margin-bottom: 14px; }
-    #shopify-section-{{ section_id }} .pdp__info > .dp-size-fit:not([hidden]) + .dp-model-info { margin-top: -8px; }
-  </style>
+    #shopify-section-{{ section_id }} .pdp__info > .dp-model-info { order: 2; margin-bottom: 14px; }  </style>
 {%- endif -%}

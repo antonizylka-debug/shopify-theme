@@ -1122,9 +1122,7 @@
             </div>
           {%- endunless -%}
         {%- endfor -%}
-        {%- comment -%} What the selected size fits, from the size chart (31.10.2026) {%- endcomment -%}
-        {%- assign dp_skirt = false -%}{%- if product.type == 'Skirts' -%}{%- assign dp_skirt = true -%}{%- endif -%}
-        {%- unless product.has_only_default_variant -%}{%- render 'dp-size-fit', section_id: section.id, skip_inseam: dp_skirt -%}{%- endunless -%}
+        {%- comment -%} dp-size-fit line removed from the page 31.10.2026 (Antoni) - snippet kept {%- endcomment -%}
         {%- comment -%} Model height + size worn, from custom.model_* metafields (31.10.2026) {%- endcomment -%}
         {%- render 'dp-model-info', section_id: section.id -%}
 
