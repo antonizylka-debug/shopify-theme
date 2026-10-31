@@ -1,0 +1,13 @@
+{%- comment -%}
+  Liczba sztuk w koszyku bez dodatkow typu "Order Add-on" (Delivery Protection).
+  Uzycie: {%- capture sn_szt -%}{%- render 'sn-liczba-sztuk' -%}{%- endcapture -%}{%- assign sn_szt = sn_szt | plus: 0 -%}
+{%- endcomment -%}
+{%- liquid
+  assign n = 0
+  for i in cart.items
+    unless i.product.type == 'Order Add-on'
+      assign n = n | plus: i.quantity
+    endunless
+  endfor
+  echo n
+-%}

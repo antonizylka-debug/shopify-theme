@@ -13,7 +13,7 @@
         <div class="drawer__header appear-animation appear-delay-1">
           <div class="h2 drawer__title">
             {{ 'cart.general.title' | t }}
-            <span class="snk-count" data-snk-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+            {%- capture sn_szt -%}{%- render 'sn-liczba-sztuk' -%}{%- endcapture -%}{%- assign sn_szt = sn_szt | plus: 0 -%}<span class="snk-count" data-snk-count{% if sn_szt == 0 %} hidden{% endif %}>{{ sn_szt }}</span>
           </div>
           <div class="drawer__close">
             <button type="button" class="drawer__close-button js-drawer-close">

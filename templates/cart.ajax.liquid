@@ -10,8 +10,9 @@
 {% endcomment %}
 {% layout none %}
 
+{%- capture sn_szt -%}{%- render 'sn-liczba-sztuk' -%}{%- endcapture -%}{%- assign sn_szt = sn_szt | plus: 0 -%}
 <div class="cart__items"
-  data-count="{{ cart.item_count }}"
+  data-count="{{ sn_szt }}"
   data-cart-subtotal="{{ cart.total_price }}">
   {% for item in cart.items %}
     {%- render 'cart-item', product: item, sizes: '100px', -%}

@@ -217,10 +217,10 @@
     }
     function pobierz(e) {
       var c = e && e.detail && e.detail.cart;
-      if (c && typeof c.item_count === 'number') { wszystkie(c.item_count); return; }
+      if (c && typeof c.item_count === 'number') { wszystkie((window.dpSztuki ? window.dpSztuki(c) : c.item_count)); return; }
       fetch(((window.Shopify && Shopify.routes && Shopify.routes.root) || '/') + 'cart.js', { credentials: 'same-origin' })
         .then(function (r) { return r.json(); })
-        .then(function (c) { wszystkie(c.item_count); })
+        .then(function (c) { wszystkie((window.dpSztuki ? window.dpSztuki(c) : c.item_count)); })
         .catch(function () {});
     }
     ['cart:updated', 'ajaxProduct:added', 'drawerOpen'].forEach(function (nazwa) {

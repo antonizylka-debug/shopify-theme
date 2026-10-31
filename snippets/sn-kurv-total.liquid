@@ -18,7 +18,8 @@
   assign teraz = cart.total_price
   assign oszcz = przed | minus: teraz
 -%}
-<div class="snk-total" data-snk-total data-count="{{ cart.item_count }}">
+{%- capture sn_szt -%}{%- render 'sn-liczba-sztuk' -%}{%- endcapture -%}{%- assign sn_szt = sn_szt | plus: 0 -%}
+<div class="snk-total" data-snk-total data-count="{{ sn_szt }}">
   <span class="snk-total__label">Total:</span>
   <span class="snk-total__nums">
     {%- if oszcz > 0 -%}

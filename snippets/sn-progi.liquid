@@ -8,6 +8,7 @@
   @param {string} [podtytul] - linijka pod naglowkiem (kolekcja, linje)
   @param {string} [notka] - zdanie pod progami (tylko linje)
 {%- endcomment -%}
+{%- capture sn_szt -%}{%- render 'sn-liczba-sztuk' -%}{%- endcapture -%}{%- assign sn_szt = sn_szt | plus: 0 -%}
 {%- liquid
   assign pary = progi | split: ','
   assign czyste = ''
@@ -46,11 +47,11 @@
 
   {%- case wariant -%}
     {%- when 'pasek' -%}
-      <div class="snp-bar" id="{{ id_k }}" data-snp data-snp-bar data-progi="{{ czyste }}" data-count="{{ cart.item_count }}" role="region" aria-label="{{ tytul_k }}">
+      <div class="snp-bar" id="{{ id_k }}" data-snp data-snp-bar data-progi="{{ czyste }}" data-count="{{ sn_szt }}" role="region" aria-label="{{ tytul_k }}">
         <div class="snp-bar__in">
           <div class="snp-bar__left">
             <span>{{ tytul_k }}</span>
-            <span>Your cart: <b data-snp-count>{{ cart.item_count }}</b> <span data-snp-unit>items</span></span>
+            <span>Your cart: <b data-snp-count>{{ sn_szt }}</b> <span data-snp-unit>items</span></span>
           </div>
           <div class="snp-bar__mid">
             {{ tor }}
@@ -71,9 +72,9 @@
       </div>
 
     {%- when 'kurv' -%}
-      <div class="snp-box" id="{{ id_k }}" data-snp data-progi="{{ czyste }}" data-count="{{ cart.item_count }}">
+      <div class="snp-box" id="{{ id_k }}" data-snp data-progi="{{ czyste }}" data-count="{{ sn_szt }}">
         <p class="snp-box__title">{{ tytul_k }}</p>
-        <p class="snp-box__cart">Your cart: <b data-snp-count>{{ cart.item_count }}</b> <span data-snp-unit>items</span></p>
+        <p class="snp-box__cart">Your cart: <b data-snp-count>{{ sn_szt }}</b> <span data-snp-unit>items</span></p>
         {{ tor }}
         <p class="snp-msg" data-snp-msg aria-live="polite"></p>
       </div>
@@ -84,7 +85,7 @@
         na dole zdanie z ustawienia bundle_note. (06.10.2026: jedna dluga
         linia byla chaotyczna - teraz wyrazna hierarchia.)
       {%- endcomment -%}
-      <div class="snp-line" id="{{ id_k }}" data-snp data-progi="{{ czyste }}" data-count="{{ cart.item_count }}">
+      <div class="snp-line" id="{{ id_k }}" data-snp data-progi="{{ czyste }}" data-count="{{ sn_szt }}">
         <div class="snp-line__head">
           <span class="snp-line__kamp"><span class="snp-line__dot" aria-hidden="true"></span>{{ settings.campaign_name | split: '·' | first | strip }}</span>
           <span class="snp-line__lbl">{{ tytul_k }}</span>
@@ -103,11 +104,11 @@
       </div>
 
     {%- when 'kolekcja' -%}
-      <div class="snp-col" id="{{ id_k }}" data-snp data-progi="{{ czyste }}" data-count="{{ cart.item_count }}">
+      <div class="snp-col" id="{{ id_k }}" data-snp data-progi="{{ czyste }}" data-count="{{ sn_szt }}">
         <p class="snp-col__title">{{ tytul_k }}</p>
         {%- if podtytul != blank -%}<p class="snp-col__sub">{{ podtytul }}</p>{%- endif -%}
         <div class="snp-col__status">
-          <span>Your cart: <b data-snp-count>{{ cart.item_count }}</b> <span data-snp-unit>items</span></span>
+          <span>Your cart: <b data-snp-count>{{ sn_szt }}</b> <span data-snp-unit>items</span></span>
           <span class="snp-msg" data-snp-msg aria-live="polite"></span>
         </div>
         {{ tor }}

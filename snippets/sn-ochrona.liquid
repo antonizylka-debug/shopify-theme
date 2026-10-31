@@ -1,0 +1,107 @@
+{%- comment -%}
+  Delivery Protection (produkt "delivery-protection", typ "Order Add-on").
+  Zasady (Antoni, 31.10.2026):
+  - gdy klient dodaje cokolwiek do pustego koszyka, ochrona dochodzi sama jako osobna pozycja (1 szt.);
+  - klient moze ja usunac - wtedy nie wraca, dopoki koszyk sie nie oprozni;
+  - gdy w koszyku zostaje sama ochrona, znika (nie da sie kupic samej ochrony);
+  - zawsze dokladnie 1 sztuka.
+  Ochrona nie liczy sie do sztuk (progi rabatow, licznik koszyka): window.dpSztuki(cart)
+  i snippet sn-liczba-sztuk. Rabaty za ilosc w panelu obejmuja 25 kolekcji - produktu w nich nie ma.
+{%- endcomment -%}
+{%- assign dp_ochrona = all_products['delivery-protection'] -%}
+<style>
+  .snk-item--dodatek .snk-item__row { display: none !important; }
+  .snk-item--dodatek .snk-item__dodatek-opis { font-size: 12.5px; line-height: 1.4; color: #6b6f76; margin-top: 4px; }
+</style>
+<script>
+  window.dpSztuki = function (c) {
+    if (!c) return 0;
+    var n = typeof c.item_count === 'number' ? c.item_count : 0;
+    (c.items || []).forEach(function (i) { if (i.product_type === 'Order Add-on') n -= i.quantity; });
+    return Math.max(0, n);
+  };
+</script>
+{%- if dp_ochrona and dp_ochrona.available and dp_ochrona.selected_or_first_available_variant -%}
+<script>
+  (function () {
+    if (window.__dpOchrona) return;
+    window.__dpOchrona = true;
+    var VID = {{ dp_ochrona.selected_or_first_available_variant.id | json }};
+    var KORZEN = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+    var KLUCZ = 'dp_ochrona_usunieta';
+    var kluczLinii = null, wToku = false, ponownie = false, wlasneZapytanie = false;
+
+    function odrzucona() { try { return localStorage.getItem(KLUCZ) === '1'; } catch (e) { return false; } }
+    function ustaw(v) { try { if (v) localStorage.setItem(KLUCZ, '1'); else localStorage.removeItem(KLUCZ); } catch (e) {} }
+
+    function wyslij(url, dane) {
+      wlasneZapytanie = true;
+      return fetch(KORZEN + url, {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify(dane)
+      }).then(function (r) { wlasneZapytanie = false; return r.json(); })
+        .catch(function () { wlasneZapytanie = false; return null; });
+    }
+
+    function odswiezWidok() {
+      return fetch(KORZEN + 'cart.js', { credentials: 'same-origin' })
+        .then(function (r) { return r.json(); })
+        .then(function (c) {
+          document.dispatchEvent(new CustomEvent('cart:build'));
+          document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: c, dpOchrona: true } }));
+        }).catch(function () {});
+    }
+
+    function synchronizuj() {
+      if (wToku) { ponownie = true; return; }
+      wToku = true;
+      fetch(KORZEN + 'cart.js', { credentials: 'same-origin' })
+        .then(function (r) { return r.json(); })
+        .then(function (c) {
+          var ochrona = c.items.filter(function (i) { return i.variant_id === VID; });
+          var reszta = c.items.filter(function (i) { return i.variant_id !== VID && i.product_type !== 'Order Add-on'; });
+          kluczLinii = ochrona.length ? ochrona[0].key : null;
+          if (!reszta.length) {
+            ustaw(false);
+            if (ochrona.length) return wyslij('cart/change.js', { id: ochrona[0].key, quantity: 0 });
+            return null;
+          }
+          if (ochrona.length) {
+            if (ochrona.length > 1 || ochrona[0].quantity !== 1) return wyslij('cart/change.js', { id: ochrona[0].key, quantity: 1 });
+            return null;
+          }
+          if (odrzucona()) return null;
+          return wyslij('cart/add.js', { items: [{ id: VID, quantity: 1 }] });
+        })
+        .then(function (zmiana) { return zmiana ? odswiezWidok() : null; })
+        .catch(function () {})
+        .then(function () {
+          wToku = false;
+          if (ponownie) { ponownie = false; synchronizuj(); }
+        });
+    }
+
+    /* Klient usuwa ochrone (kosz albo ilosc 0) -> zapamietaj i nie dodawaj ponownie. */
+    var fetchOryginal = window.fetch;
+    window.fetch = function (zasob, opcje) {
+      try {
+        var url = typeof zasob === 'string' ? zasob : (zasob && zasob.url) || '';
+        if (!wlasneZapytanie && kluczLinii && /\/cart\/change(\.js)?/.test(url) && opcje && typeof opcje.body === 'string') {
+          var b = JSON.parse(opcje.body);
+          if (b && String(b.id) === String(kluczLinii) && Number(b.quantity) === 0) ustaw(true);
+        }
+      } catch (e) {}
+      return fetchOryginal.apply(this, arguments);
+    };
+
+    document.addEventListener('ajaxProduct:added', function () { setTimeout(synchronizuj, 250); });
+    document.addEventListener('cart:updated', function (e) {
+      if (e && e.detail && e.detail.dpOchrona) return;
+      setTimeout(synchronizuj, 250);
+    });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', synchronizuj);
+    else synchronizuj();
+  })();
+</script>
+{%- endif -%}

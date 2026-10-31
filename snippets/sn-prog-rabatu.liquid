@@ -7,7 +7,10 @@
   @param {boolean} [kompakt] - wersja do szuflady: tekst i czerwony pasek
 {%- endcomment -%}
 {%- liquid
-  assign ile = cart.item_count
+  capture ile
+    render 'sn-liczba-sztuk'
+  endcapture
+  assign ile = ile | plus: 0
   assign nastepny = 10
   assign brakuje = 2 | minus: ile
   if ile >= 5
@@ -89,10 +92,10 @@
     }
     function odswiez(e) {
       var c = e && e.detail && e.detail.cart;
-      if (c && typeof c.item_count === 'number') { rysuj(c.item_count); return; }
+      if (c && typeof c.item_count === 'number') { rysuj((window.dpSztuki ? window.dpSztuki(c) : c.item_count)); return; }
       fetch('/cart.js', { credentials: 'same-origin' })
         .then(function (r) { return r.json(); })
-        .then(function (c) { rysuj(c.item_count); })
+        .then(function (c) { rysuj((window.dpSztuki ? window.dpSztuki(c) : c.item_count)); })
         .catch(function () {});
     }
     ['cart:updated', 'ajaxProduct:added', 'drawerOpen'].forEach(function (n) {

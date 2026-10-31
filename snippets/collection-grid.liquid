@@ -80,6 +80,7 @@ Snippet Arguments
 
   <div class="grid grid--uniform{% if mobile_flush_grid %} small--grid--flush{% endif %}" data-product-grid{% unless enable_collection_count %} data-scroll-to{% endunless %}>
     {%- for item in items -%}
+      {%- if item.type == 'Order Add-on' -%}{%- continue -%}{%- endif -%}
       {%- if item.object_type == 'product' -%}
         {%- render 'sn-card',
           product: item,
