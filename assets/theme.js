@@ -7080,6 +7080,7 @@ theme.recentlyViewed = {
       addIdToRecentlyViewed: function() {
         var handle = this.container.getAttribute('data-product-handle');
         var url = this.container.getAttribute('data-product-url');
+        if (handle === 'delivery-protection') return;
         var aspectRatio = this.container.getAttribute('data-aspect-ratio');
         var featuredImage = this.container.getAttribute('data-img-url');
   
@@ -8142,6 +8143,10 @@ theme.recentlyViewed = {
   
           // Ignore undefined key
           if (typeof product.handle == 'undefined') {
+            return;
+          }
+          // Delivery Protection (Order Add-on) nigdy w ostatnio ogladanych
+          if (product.type === 'Order Add-on') {
             return;
           }
   

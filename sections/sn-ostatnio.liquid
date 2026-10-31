@@ -128,7 +128,7 @@
 
     var KLUCZ = 'sn-ostatnio';
     var ILE = {{ section.settings.count | json }};
-    var biezacy = {% if product != blank %}{{ product.handle | json }}{% else %}null{% endif %};
+    var biezacy = {% if product != blank and product.type != 'Order Add-on' %}{{ product.handle | json }}{% else %}null{% endif %};
 
     function stan() {
       var maks = tor.scrollWidth - tor.clientWidth;

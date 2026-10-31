@@ -24,6 +24,8 @@
   Swiadomie BEZ klasy grid-product. Na nia poluja reguly i skrypty starego
   kafla kolekcji (mierzenie, wysuwana karta, blur) i rozebralyby ten kafel.
 {%- endcomment -%}
+{%- comment -%} Delivery Protection (typ Order Add-on) nigdy jako kafel: recently viewed, bestsellery, rekomendacje, kolekcje. {%- endcomment -%}
+{%- unless product.type == 'Order Add-on' -%}
 
 {%- liquid
   unless per_row
@@ -169,3 +171,4 @@
 {%- if grid_item != false -%}
 </div>
 {%- endif -%}
+{%- endunless -%}
