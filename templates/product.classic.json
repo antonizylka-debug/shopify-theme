@@ -218,8 +218,8 @@
         "space_bottom_mobile": 28
       }
     },
-    "bestsellers": {
-      "type": "sn-bestsellers",
+    "mix_match": { "type": "sn-polecane", "settings": {} }, "bestsellers": {
+      "type": "sn-bestsellers", "disabled": true,
       "blocks": {
         "t1": {
           "type": "tab",
@@ -664,7 +664,7 @@
   "order": [
     "main",
     "edytorial_kampanii",
-    "bestsellers",
+    "mix_match", "bestsellers",
     "guarantee",
     "reviews",
     "faq",
