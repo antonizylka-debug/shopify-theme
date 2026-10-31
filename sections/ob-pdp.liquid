@@ -979,11 +979,17 @@
         {%- endif -%}
 
         {%- comment -%} ---------- cena ---------- {%- endcomment -%}
+        <div class="dp-pricing">
         <div class="pdp__price{% if na_przecenie %} pdp__price--sale{% endif %}" data-pdp-price>
           <span data-pdp-now>{%- render 'sn-cena', kwota: war.price -%}</span>
           {%- if section.settings.vat_note != blank -%}
             <span class="pdp__vat">{{ section.settings.vat_note }}</span>
           {%- endif -%}
+        </div>
+        {%- comment -%} Price per item in a multi-buy (real cart price), 31.10.2026 {%- endcomment -%}
+        {%- if section.settings.multibuy_price_show and section.settings.promo_tiers != blank and product.type != 'Order Add-on' -%}
+          {%- render 'dp-multibuy-price', price: war.price, tiers: section.settings.promo_tiers -%}
+        {%- endif -%}
         </div>
 
         <div class="pdp__refs">
@@ -1369,6 +1375,7 @@
       var przecena = w.compare_at_price && w.compare_at_price > w.price;
       blokCeny.classList.toggle('pdp__price--sale', !!przecena);
       teraz.innerHTML = kwota(w.price);
+      if (window.dpMultibuyPrice) window.dpMultibuyPrice(w.price);
 
       var p = przecena ? Math.round((w.compare_at_price - w.price) / w.compare_at_price * 100) : 0;
       if (refNormal) {
@@ -1705,6 +1712,7 @@
     { "type": "checkbox", "id": "show_promo", "label": "Show the box", "default": true },
     { "type": "text", "id": "promo_title", "label": "Heading", "default": "Buy more — save more" },
     { "type": "textarea", "id": "promo_sub", "label": "Line below", "default": "The discount is applied automatically in the cart. Items don't have to match." },
+    { "type": "checkbox", "id": "multibuy_price_show", "label": "Price per item when buying 2", "info": "Shown next to the price, with the steps behind the (i).", "default": true },
     { "type": "text", "id": "promo_label", "label": "Label above the steps", "info": "Empty = campaign name from theme settings.", "default": "Mix & match — save up to 30%" },
     { "type": "text", "id": "promo_tiers", "label": "Steps", "info": "quantity:percent, separated by commas", "default": "2:10, 3:20, 4:25" },
     { "type": "text", "id": "promo_qty_word", "label": "Word after the quantity", "default": "items" },

@@ -1,0 +1,85 @@
+{%- comment -%}
+  Second price column next to the product price (31.10.2026):
+  "$62.96 ⓘ / each when you buy 2". The ⓘ opens the multi-buy steps with the
+  per-item price for each step. Real numbers only: the automatic quantity
+  discounts give exactly these prices in the cart (2 = 10 %, 3 = 20 %, 4 = 25 %, 5+ = 30 %).
+  Steps come from the section setting "Steps" (promo_tiers) and must match the discounts in admin.
+  Updated on variant change by window.dpMultibuyPrice(price) from ob-pdp.
+
+  @param {number} price - selected variant price in cents
+  @param {string} tiers - e.g. "2:10, 3:20, 4:25, 5:30"
+{%- endcomment -%}
+{%- liquid
+  assign dp_tiers = tiers | remove: ' ' | split: ','
+  assign dp_first = dp_tiers.first | split: ':'
+  assign dp_first_qty = dp_first[0] | plus: 0
+  assign dp_first_pct = dp_first[1] | plus: 0
+-%}
+{%- if dp_first_qty > 1 and dp_first_pct > 0 -%}
+  {%- assign dp_each = 100 | minus: dp_first_pct | times: price | divided_by: 100.0 | round -%}
+  <div class="dp-multibuy" data-dp-multibuy data-dp-multibuy-tiers="{{ tiers | remove: ' ' | escape }}">
+    <span class="dp-multibuy__row">
+      <span class="dp-multibuy__price" data-dp-multibuy-each>{%- render 'sn-cena', kwota: dp_each -%}</span>
+      <details class="dp-multibuy__info">
+        <summary aria-label="How the multi-buy discount works">
+          <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 9v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="6.2" r="1" fill="currentColor"/></svg>
+        </summary>
+        <div class="dp-multibuy__pop">
+          <p class="dp-multibuy__pop-title">Mix &amp; match – any pieces</p>
+          <ul class="dp-multibuy__steps" data-dp-multibuy-steps>
+            {%- for t in dp_tiers -%}
+              {%- assign p = t | split: ':' -%}
+              {%- assign q = p[0] | plus: 0 -%}
+              {%- assign pct = p[1] | plus: 0 -%}
+              {%- assign each = 100 | minus: pct | times: price | divided_by: 100.0 | round -%}
+              <li><span>{{ q }}{% if forloop.last %}+{% endif %} items · −{{ pct }}%</span><b>{%- render 'sn-cena', kwota: each -%} each</b></li>
+            {%- endfor -%}
+          </ul>
+          <p class="dp-multibuy__pop-note">Applied automatically in your cart. Items can be different products.</p>
+        </div>
+      </details>
+    </span>
+    <span class="dp-multibuy__label">each when you buy {{ dp_first_qty }}</span>
+  </div>
+  <style>
+    .dp-pricing { display: flex; align-items: stretch; gap: 18px; flex-wrap: wrap; }
+    .dp-multibuy { display: flex; flex-direction: column; justify-content: center; padding-left: 18px; border-left: 1px solid #e4e6ea; color: #1c1d1d; }
+    .dp-multibuy__row { display: flex; align-items: center; gap: 6px; }
+    .dp-multibuy__price { font-size: 20px; font-weight: 700; line-height: 1.1; }
+    .dp-multibuy__label { margin-top: 3px; font-size: 13px; color: #6b6f76; }
+    .dp-multibuy__info { position: relative; }
+    .dp-multibuy__info summary { list-style: none; display: flex; color: #6b6f76; cursor: pointer; padding: 4px; margin: -4px; }
+    .dp-multibuy__info summary::-webkit-details-marker { display: none; }
+    .dp-multibuy__info[open] summary { color: #1c1d1d; }
+    .dp-multibuy__pop { position: absolute; z-index: 20; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); width: 250px; padding: 14px 16px; background: #fff; border: 1px solid #e4e6ea; border-radius: 8px; box-shadow: 0 8px 24px rgba(28, 29, 29, .12); font-size: 13px; }
+    .dp-multibuy__pop-title { margin: 0 0 8px; font-weight: 700; }
+    .dp-multibuy__steps { list-style: none; margin: 0; padding: 0; }
+    .dp-multibuy__steps li { display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; border-top: 1px solid #f0f1f3; }
+    .dp-multibuy__steps li:first-child { border-top: 0; }
+    .dp-multibuy__steps b { font-weight: 600; white-space: nowrap; }
+    .dp-multibuy__pop-note { margin: 8px 0 0; font-size: 12px; color: #6b6f76; line-height: 1.4; }
+    @media (max-width: 480px) { .dp-multibuy__pop { left: auto; right: -8px; transform: none; } }
+  </style>
+  <script>
+    (function () {
+      if (window.dpMultibuyPrice) return;
+      function money(c) {
+        if (window.snCena) return window.snCena(c, function (g) { return '$' + (g / 100).toFixed(2); });
+        return '$' + (c / 100).toFixed(2);
+      }
+      window.dpMultibuyPrice = function (price) {
+        document.querySelectorAll('[data-dp-multibuy]').forEach(function (box) {
+          var tiers = (box.getAttribute('data-dp-multibuy-tiers') || '').split(',').map(function (t) { var a = t.split(':'); return [Number(a[0]), Number(a[1])]; });
+          if (!tiers.length) return;
+          box.querySelector('[data-dp-multibuy-each]').textContent = money(Math.round(price * (100 - tiers[0][1]) / 100));
+          var rows = box.querySelectorAll('[data-dp-multibuy-steps] b');
+          tiers.forEach(function (t, i) { if (rows[i]) rows[i].textContent = money(Math.round(price * (100 - t[1]) / 100)) + ' each'; });
+        });
+      };
+      /* close the popover on outside click */
+      document.addEventListener('click', function (e) {
+        document.querySelectorAll('.dp-multibuy__info[open]').forEach(function (d) { if (!d.contains(e.target)) d.removeAttribute('open'); });
+      });
+    })();
+  </script>
+{%- endif -%}
