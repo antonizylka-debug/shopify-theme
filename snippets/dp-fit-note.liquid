@@ -47,6 +47,8 @@
     else
       assign dp_tip = 'Women’s shoes come in US sizing – choose your usual US size.'
     endif
+  elsif dp_type == 'Skirts'
+    assign dp_tip = 'Choose by your waist and hip measurements.'
   elsif dp_bottoms contains dp_type
     assign dp_tip = 'Choose by your waist measurement – the inseam is listed in the size chart.'
   elsif dp_outer contains dp_type
