@@ -1123,7 +1123,8 @@
           {%- endunless -%}
         {%- endfor -%}
         {%- comment -%} What the selected size fits, from the size chart (31.10.2026) {%- endcomment -%}
-        {%- unless product.has_only_default_variant -%}{%- render 'dp-size-fit', section_id: section.id -%}{%- endunless -%}
+        {%- assign dp_skirt = false -%}{%- if product.type == 'Skirts' -%}{%- assign dp_skirt = true -%}{%- endif -%}
+        {%- unless product.has_only_default_variant -%}{%- render 'dp-size-fit', section_id: section.id, skip_inseam: dp_skirt -%}{%- endunless -%}
 
         {%- comment -%}
           Osobnego linku "Storrelsesguide" tu nie ma - prowadzilby tam samo,

@@ -6,8 +6,9 @@
   Facts from the chart only - we don't state what the model in the photos wears.
 
   @param {string} section_id
+  @param {boolean} [skip_inseam] - skirts: inseam means nothing
 {%- endcomment -%}
-<p class="dp-size-fit" data-dp-size-fit data-dp-size-fit-section="{{ section_id }}" hidden></p>
+<p class="dp-size-fit" data-dp-size-fit data-dp-size-fit-section="{{ section_id }}"{% if skip_inseam %} data-dp-size-fit-no-inseam{% endif %} hidden></p>
 <style>
   .dp-size-fit { margin: 8px 0 0; font-size: 13px; line-height: 1.45; color: #6b6f76; }
   .dp-size-fit b { color: #1c1d1d; font-weight: 600; }
@@ -62,7 +63,7 @@
         var name = (c.heads[i] || '').toLowerCase();
         var val = cell.inch ? cell.inch + ' in' + (cell.cm ? ' (' + cell.cm + ' cm)' : '') : cell.txt;
         return name + ' ' + val;
-      }).filter(Boolean);
+      }).filter(function (p, i) { return !(line.hasAttribute('data-dp-size-fit-no-inseam') && /inseam/i.test(c.heads[i] || '')); });
       line.innerHTML = '';
       var b = document.createElement('b');
       b.textContent = 'Size ' + size + ' fits: ';
