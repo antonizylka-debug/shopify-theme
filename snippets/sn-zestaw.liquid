@@ -66,7 +66,7 @@
   .snz__name b { font-weight: 600; }
   .snz__row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .snz__price { font-size: 13px; font-weight: 600; white-space: nowrap; }
-  .snz__sel { max-width: 150px; height: 30px; padding: 0 26px 0 8px; font-size: 12.5px; border: 1px solid #c9cbcf; border-radius: 4px; background-color: #fff; }
+  .snz__sel { max-width: 130px; height: 30px; padding: 0 26px 0 8px; font-size: 12.5px; border: 1px solid #c9cbcf; border-radius: 4px; background-color: #fff; }
   .snz__sel.is-err { border-color: #6b1f2d; }
   .snz__opt { font-size: 12px; color: #6b6f76; }
   .snz__sum { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 10px 0 10px; padding-top: 10px; border-top: 1px solid #e4e6ea; font-size: 13px; }
@@ -131,10 +131,13 @@
       return '$' + (gr / 100).toFixed(2);
     }
 
-    /* wariant wybrany w glownym formularzu karty produktu */
-    var warianty = [];
-    try { warianty = JSON.parse(sekcja.querySelector('[data-pdp-variants]').textContent); } catch (e) {}
+    /* wariant wybrany w glownym formularzu karty produktu. JSON wariantow stoi w sekcji
+       PO tym skrypcie - czytamy go przy pierwszym uzyciu, nie od razu. */
+    var warianty = null;
     function glowny() {
+      if (!warianty) {
+        try { warianty = JSON.parse(sekcja.querySelector('[data-pdp-variants]').textContent); } catch (e) { return null; }
+      }
       var pole = sekcja && sekcja.querySelector('[data-pdp-id]');
       var id = pole ? Number(pole.value) : 0;
       return warianty.filter(function (v) { return v.id === id; })[0] || null;
@@ -168,9 +171,11 @@
     function wariantX(li) {
       var p = li.__snz.p;
       if (p.variants.length === 1) return p.variants[0].available ? p.variants[0] : null;
-      var sel = li.querySelector('select');
-      var id = sel ? Number(sel.value) : 0;
-      return p.variants.filter(function (v) { return v.id === id; })[0] || null;
+      var wybor = Array.prototype.map.call(li.querySelectorAll('.snz__sel'), function (s) { return s.value; });
+      if (wybor.indexOf('') >= 0) return null;
+      return p.variants.filter(function (v) {
+        return v.available && v.options.every(function (o, i) { return o === wybor[i]; });
+      })[0] || null;
     }
 
     function wiersz(p) {
@@ -192,20 +197,30 @@
       var rz = document.createElement('span'); rz.className = 'snz__row';
       var pr = document.createElement('span'); pr.className = 'snz__price'; pr.textContent = cena(p.price);
       rz.appendChild(pr);
-      var dostepne = p.variants.filter(function (v) { return v.available; });
+      /* osobne pole na kazda opcje (kolor, rozmiar) - jedna lista "kolor / rozmiar"
+         przy butach miala 60 pozycji */
       if (p.variants.length > 1) {
-        var sel = document.createElement('select');
-        sel.className = 'snz__sel'; sel.setAttribute('aria-label', 'Select ' + p.options.map(function (o) { return o.name || o; }).join(' / ').toLowerCase() + ' for ' + p.title);
-        var pusta = document.createElement('option'); pusta.value = ''; pusta.textContent = 'Select ' + (p.options.length === 1 ? String(p.options[0].name || p.options[0]).toLowerCase() : 'option');
-        sel.appendChild(pusta);
-        p.variants.forEach(function (v) {
-          var o = document.createElement('option');
-          o.value = v.id; o.textContent = v.title + (v.available ? '' : ' – sold out');
-          o.disabled = !v.available;
-          sel.appendChild(o);
+        p.options.forEach(function (opt, i) {
+          var nazwaOpcji = String(opt.name || opt);
+          var wartosci = [];
+          p.variants.forEach(function (v) { if (wartosci.indexOf(v.options[i]) < 0) wartosci.push(v.options[i]); });
+          var sel = document.createElement('select');
+          sel.className = 'snz__sel'; sel.setAttribute('data-snz-opt', i);
+          sel.setAttribute('aria-label', nazwaOpcji + ' for ' + p.title);
+          var pusta = document.createElement('option'); pusta.value = ''; pusta.textContent = nazwaOpcji;
+          sel.appendChild(pusta);
+          var zDostepnych = [];
+          wartosci.forEach(function (w) {
+            var jest = p.variants.some(function (v) { return v.available && v.options[i] === w; });
+            var o = document.createElement('option');
+            o.value = w; o.textContent = w + (jest ? '' : ' – sold out');
+            o.disabled = !jest;
+            if (jest) zDostepnych.push(w);
+            sel.appendChild(o);
+          });
+          if (zDostepnych.length === 1) sel.value = zDostepnych[0];
+          rz.appendChild(sel);
         });
-        if (dostepne.length === 1) sel.value = dostepne[0].id;
-        rz.appendChild(sel);
       }
       info.appendChild(rz);
       li.appendChild(info);
@@ -262,12 +277,17 @@
       blad.hidden = true;
       if (e.target.matches('.snz__sel')) {
         e.target.classList.remove('is-err');
-        var cb = e.target.closest('[data-snz-x]').querySelector('.snz__cb');
-        if (e.target.value) cb.checked = true;
+        var li = e.target.closest('[data-snz-x]');
+        if (e.target.value) li.querySelector('.snz__cb').checked = true;
+        /* zdjecie wybranego koloru */
+        var i = Number(e.target.getAttribute('data-snz-opt'));
+        var zf = li.__snz.p.variants.filter(function (v) { return v.options[i] === e.target.value && v.featured_image; })[0];
+        var im = li.querySelector('.snz__img img');
+        if (zf && im) im.src = zf.featured_image.src + (zf.featured_image.src.indexOf('?') < 0 ? '?' : '&') + 'width=120';
       }
       if (e.target.matches('.snz__cb') && e.target.checked) {
-        var s = e.target.closest('[data-snz-x]').querySelector('.snz__sel');
-        if (s && !s.value) s.focus();
+        var s = Array.prototype.filter.call(e.target.closest('[data-snz-x]').querySelectorAll('.snz__sel'), function (x) { return !x.value; })[0];
+        if (s) s.focus();
       }
       przelicz();
     });
@@ -292,10 +312,17 @@
       lista.querySelectorAll('[data-snz-x]').forEach(function (li) {
         if (!li.querySelector('.snz__cb').checked) return;
         var v = wariantX(li);
-        if (!v) { var s = li.querySelector('.snz__sel'); if (s) s.classList.add('is-err'); brak = brak || li; return; }
+        if (!v) {
+          li.querySelectorAll('.snz__sel').forEach(function (s) { if (!s.value) s.classList.add('is-err'); });
+          brak = brak || li; return;
+        }
         pozycje.push({ id: v.id, quantity: 1 });
       });
-      if (brak) { blad.textContent = 'Please select a size for each ticked item.'; blad.hidden = false; var s = brak.querySelector('.snz__sel'); if (s) s.focus(); return; }
+      if (brak) {
+        blad.textContent = 'Please choose the options for each ticked item.'; blad.hidden = false;
+        var s = brak.querySelector('.snz__sel.is-err'); if (s) s.focus();
+        return;
+      }
       przycisk.disabled = true;
       fetch(KORZEN + 'cart/add.js', {
         method: 'POST', credentials: 'same-origin',
