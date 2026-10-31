@@ -1209,6 +1209,9 @@
         {%- if section.settings.cross_show -%}
           {%- render 'pdp-crosssell', product: product, ustawienia: section.settings -%}
         {%- endif -%}
+        {%- if section.settings.upgrade_show -%}
+          {%- render 'sn-upgrade', product: product -%}
+        {%- endif -%}
         {%- comment -%} Complete the look pod akordeonami (Antoni, 31.10.2026) {%- endcomment -%}
         {%- if section.settings.bundle_show -%}
           {%- render 'sn-zestaw', product: product, sekcja: section.id, progi: section.settings.promo_tiers -%}
@@ -1750,6 +1753,7 @@
     { "type": "header", "content": "Suggestion under the accordions" },
     { "type": "checkbox", "id": "cross_show", "label": "Show it", "default": true },
     { "type": "checkbox", "id": "bundle_show", "label": "Complete the look under accordions", "info": "Tick items + one button. Discount preview uses the Steps above.", "default": true },
+    { "type": "checkbox", "id": "upgrade_show", "label": "Premium alternative (better material)", "info": "Shown only when a pricier item of the same type is made of cashmere, merino, alpaca, mohair, silk or wool and this one is not.", "default": true },
     { "type": "text", "id": "cross_title", "label": "Heading", "default": "Style it with" },
     { "type": "text", "id": "cross_add", "label": "Button (no longer shown)", "default": "Add to cart", "info": "Kept because saved templates still hold this value. The row now adds through the + on each card." },
     { "type": "collection", "id": "cross_collection", "label": "Collection", "info": "Left empty it uses the one this product sits in." },

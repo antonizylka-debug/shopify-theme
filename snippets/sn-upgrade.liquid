@@ -1,0 +1,120 @@
+{%- comment -%}
+  Premium upsell na karcie produktu (brief AOV 1E, 31.10.2026).
+  Pokazujemy JEDNA drozsza alternatywe tylko wtedy, gdy ma prawdziwa,
+  zrozumiala przewage: lepszy material (kaszmir, merino, welna, jedwab,
+  alpaka, moher), ktorego ogladany produkt nie ma. Material musi byc
+  i w nazwie, i w opisie kandydata - sama nazwa moglaby byc marketingiem.
+  Ten sam typ (tag "Product Type: ...") i dzial, cena 15-80 % wyzej, dostepny.
+  Brak takiego produktu = nic sie nie wyswietla (nie polecamy drozszego
+  tylko dlatego, ze jest drozszy).
+
+  @param {object} product - ogladany produkt
+{%- endcomment -%}
+{%- liquid
+  assign typ = ''
+  for tag in product.tags
+    if tag contains 'Product Type: '
+      assign typ = tag
+      break
+    endif
+  endfor
+  assign wlasny = product.title | append: ' ' | append: product.description | downcase
+  assign cena = product.price
+  assign min_cena = cena | times: 115 | divided_by: 100
+  assign max_cena = cena | times: 180 | divided_by: 100
+  assign materialy = 'cashmere,merino,alpaca,mohair,silk,wool' | split: ','
+
+  assign zrodlo = blank
+  assign pomin = 'womens,mens,all,new-in,favourites,favorites,sale,womens-new-in,mens-new-in,womens-favourites,mens-favourites,womens-sale,mens-sale' | split: ','
+  for c in product.collections
+    if pomin contains c.handle
+      continue
+    endif
+    if c.handle contains 'womens-' or c.handle contains 'mens-'
+      assign zrodlo = c
+      break
+    endif
+  endfor
+
+  assign wybor = blank
+  assign wybor_mat = ''
+  if typ != blank and zrodlo != blank
+    for p in zrodlo.products limit: 50
+      if p.id == product.id or p.available == false
+        continue
+      endif
+      unless p.tags contains typ
+        continue
+      endunless
+      if p.price < min_cena or p.price > max_cena
+        continue
+      endif
+      assign t = p.title | downcase
+      assign d = p.description | downcase
+      for m in materialy
+        if t contains m and d contains m
+          unless wlasny contains m
+            assign wybor = p
+            assign wybor_mat = m
+          endunless
+          break
+        endif
+      endfor
+      if wybor != blank
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- if wybor != blank -%}
+  {%- liquid
+    case wybor_mat
+      when 'cashmere'
+        assign naglowek = 'Prefer cashmere?'
+        assign korzysc = 'Cashmere knit – softer and lighter, with more warmth for its weight.'
+      when 'merino'
+        assign naglowek = 'Prefer merino?'
+        assign korzysc = 'Merino wool – fine, soft fibres that regulate temperature and don’t itch.'
+      when 'alpaca'
+        assign naglowek = 'Prefer alpaca?'
+        assign korzysc = 'Alpaca – very warm for its weight and soft against the skin.'
+      when 'mohair'
+        assign naglowek = 'Prefer mohair?'
+        assign korzysc = 'Mohair – a light, airy knit with a soft halo and natural warmth.'
+      when 'silk'
+        assign naglowek = 'Prefer silk?'
+        assign korzysc = 'Silk – a smoother drape and a natural sheen, breathable to wear.'
+      else
+        assign naglowek = 'Prefer wool?'
+        assign korzysc = 'Wool – warmer than synthetic fabrics and keeps its shape longer.'
+    endcase
+    assign roznica = wybor.price | minus: cena
+  -%}
+  <style>
+    .snu { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; margin: 14px 0 4px; padding: 12px; border: 1px solid #e4e6ea; border-radius: 8px; color: inherit; text-decoration: none; }
+    .snu:hover .snu__cta { text-decoration: underline; }
+    .snu__img { display: block; width: 64px; height: 84px; border-radius: 4px; overflow: hidden; background: #f6f6f4; }
+    .snu__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .snu__t, .snu__name, .snu__why { display: block; }
+    .snu__t { margin: 0 0 2px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #6b1f2d; }
+    .snu__name { margin: 0; font-size: 13px; font-weight: 600; line-height: 1.3; }
+    .snu__why { margin: 3px 0 4px; font-size: 12.5px; line-height: 1.4; color: #6b6f76; }
+    .snu__row { display: flex; gap: 10px; align-items: baseline; font-size: 13px; }
+    .snu__price { font-weight: 600; }
+    .snu__diff { color: #6b6f76; font-size: 12px; }
+    .snu__cta { margin-left: auto; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+  </style>
+  <a class="snu" href="{{ wybor.url }}">
+    <span class="snu__img">{%- if wybor.featured_media -%}{{ wybor.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}</span>
+    <span>
+      <span class="snu__t">{{ naglowek }}</span>
+      <span class="snu__name">{{ wybor.title | escape }}</span>
+      <span class="snu__why">{{ korzysc }}</span>
+      <span class="snu__row">
+        <span class="snu__price">{%- render 'sn-cena', kwota: wybor.price -%}</span>
+        <span class="snu__diff">+{%- render 'sn-cena', kwota: roznica -%}</span>
+        <span class="snu__cta">View &rarr;</span>
+      </span>
+    </span>
+  </a>
+{%- endif -%}
