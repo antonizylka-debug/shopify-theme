@@ -1,0 +1,29 @@
+{%- comment -%}
+  Ktory rzad kategorii pokazac pod produktem (31.10.2026, Antoni: mniej rzedow,
+  jeden dopasowany do produktu). Zwraca klucz: kurtki | dzianina | spodnie | buty_torby.
+  sn-bestsellers porownuje go z koncowka section.id (template--...__rzad_<klucz>)
+  - pozostale rzedy kategorii na karcie produktu sie nie renderuja.
+
+  Do kompletu, nie "wiecej tego samego":
+    sweter / gora / koszula      -> spodnie
+    spodnie / spodnice           -> dzianina
+    plaszcz / kurtka             -> dzianina
+    sukienka / komplet           -> buty (buty i torby)
+    reszta (buty, dodatki...)    -> kurtki
+
+  @param {object} product
+{%- endcomment -%}
+{%- liquid
+  assign h = product.collections | map: 'handle' | join: ','
+  if h contains 'dresses' or h contains 'sets-and-one-pieces'
+    echo 'buty_torby'
+  elsif h contains 'jackets-and-coats'
+    echo 'dzianina'
+  elsif h contains 'bottoms'
+    echo 'dzianina'
+  elsif h contains 'sweaters-and-knitwear' or h contains 'tops' or h contains 'shirts'
+    echo 'spodnie'
+  else
+    echo 'kurtki'
+  endif
+-%}

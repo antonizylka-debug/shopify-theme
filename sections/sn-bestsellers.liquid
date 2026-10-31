@@ -12,6 +12,21 @@
   ekranem dotykowym maja jedno i drugie naraz.
 {%- endcomment -%}
 
+{%- comment -%} Na karcie produktu z rzedow kategorii (rzad_*) tylko jeden, dopasowany do produktu - snippets/sn-pdp-rzad (31.10.2026). {%- endcomment -%}
+{%- liquid
+  assign sn_pokaz = true
+  if template.name == 'product' and product != blank and section.id contains '__rzad_'
+    capture sn_klucz
+      render 'sn-pdp-rzad', product: product
+    endcapture
+    assign sn_klucz = sn_klucz | strip
+    assign sn_moj = section.id | split: '__rzad_' | last
+    if sn_moj != sn_klucz
+      assign sn_pokaz = false
+    endif
+  endif
+-%}
+{%- if sn_pokaz -%}
 {%- liquid
   assign per = section.settings.per_view
   assign per_m = section.settings.per_view_mobile
@@ -732,6 +747,8 @@
     });
   })();
 </script>
+
+{%- endif -%}
 
 {% schema %}
 {
