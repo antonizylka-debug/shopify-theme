@@ -1122,6 +1122,8 @@
             </div>
           {%- endunless -%}
         {%- endfor -%}
+        {%- comment -%} What the selected size fits, from the size chart (31.10.2026) {%- endcomment -%}
+        {%- unless product.has_only_default_variant -%}{%- render 'dp-size-fit', section_id: section.id -%}{%- endunless -%}
 
         {%- comment -%}
           Osobnego linku "Storrelsesguide" tu nie ma - prowadzilby tam samo,

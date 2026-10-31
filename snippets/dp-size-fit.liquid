@@ -1,0 +1,80 @@
+{%- comment -%}
+  "Size S fits: chest 35–36 in (89–91 cm) · sleeve 34 in (86 cm)" under the size buttons (31.10.2026).
+  Read live from the size chart table already on the page (sn-sizechart, .sgm__t), so it always
+  matches the chart. Updates when the customer picks another size. No chart row for the size
+  (shoes, one-size items) = the line stays hidden.
+  Facts from the chart only - we don't state what the model in the photos wears.
+
+  @param {string} section_id
+{%- endcomment -%}
+<p class="dp-size-fit" data-dp-size-fit data-dp-size-fit-section="{{ section_id }}" hidden></p>
+<style>
+  .dp-size-fit { margin: 8px 0 0; font-size: 13px; line-height: 1.45; color: #6b6f76; }
+  .dp-size-fit b { color: #1c1d1d; font-weight: 600; }
+  .dp-size-fit[hidden] { display: none; }
+</style>
+<script>
+  (function () {
+    var line = document.querySelector('[data-dp-size-fit]:not([data-dp-size-fit-ready])');
+    if (!line) return;
+    line.setAttribute('data-dp-size-fit-ready', '');
+    var root = document.getElementById('shopify-section-' + line.getAttribute('data-dp-size-fit-section'));
+    if (!root) return;
+
+    /* XXL = 2XL, XXXL = 3XL, "Small" = S ... */
+    function norm(s) {
+      s = String(s || '').trim().toUpperCase().replace(/\s+/g, '');
+      var map = { XXL: '2XL', XXXL: '3XL', XXXXL: '4XL', SMALL: 'S', MEDIUM: 'M', LARGE: 'L', XSMALL: 'XS', XLARGE: 'XL' };
+      return map[s] || s;
+    }
+
+    function chart() {
+      var t = root.querySelector('.sgm__t');
+      if (!t) return null;
+      var heads = Array.prototype.map.call(t.querySelectorAll('thead th'), function (h) { return h.textContent.trim(); });
+      var rows = {};
+      t.querySelectorAll('tbody tr').forEach(function (tr) {
+        var th = tr.querySelector('th');
+        if (!th) return;
+        rows[norm(th.textContent)] = Array.prototype.map.call(tr.querySelectorAll('td'), function (td) {
+          return { inch: td.getAttribute('data-in'), cm: td.getAttribute('data-cm'), txt: td.textContent.trim() };
+        });
+      });
+      return { heads: heads.slice(1), rows: rows };
+    }
+
+    function selectedSize(c) {
+      var groups = root.querySelectorAll('[data-pdp-opt]');
+      for (var i = 0; i < groups.length; i++) {
+        var on = groups[i].querySelector('[data-pdp-val].is-on, [data-pdp-val][aria-pressed="true"]');
+        if (on && c.rows[norm(on.getAttribute('data-pdp-val'))]) return on.getAttribute('data-pdp-val');
+      }
+      return null;
+    }
+
+    function draw() {
+      var c = chart();
+      if (!c) { line.hidden = true; return; }
+      var size = selectedSize(c);
+      var row = size && c.rows[norm(size)];
+      if (!row || !row.length) { line.hidden = true; return; }
+      var parts = row.map(function (cell, i) {
+        var name = (c.heads[i] || '').toLowerCase();
+        var val = cell.inch ? cell.inch + ' in' + (cell.cm ? ' (' + cell.cm + ' cm)' : '') : cell.txt;
+        return name + ' ' + val;
+      }).filter(Boolean);
+      line.innerHTML = '';
+      var b = document.createElement('b');
+      b.textContent = 'Size ' + size + ' fits: ';
+      line.appendChild(b);
+      line.appendChild(document.createTextNode(parts.join(' · ')));
+      line.hidden = false;
+    }
+
+    root.addEventListener('click', function (e) {
+      if (e.target.closest('[data-pdp-val]')) setTimeout(draw, 30);
+    });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', draw);
+    else draw();
+  })();
+</script>
