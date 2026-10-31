@@ -22,7 +22,18 @@
   assign cena = product.price
   assign min_cena = cena | times: 115 | divided_by: 100
   assign max_cena = cena | times: 180 | divided_by: 100
-  assign materialy = 'cashmere,merino,alpaca,mohair,silk,wool' | split: ','
+  comment
+    Kolejnosc = ranga (od najlepszego). Kandydat musi miec material wyzej niz
+    najlepszy material ogladanego produktu - kaszmir nie dostaje propozycji welny.
+  endcomment
+  assign materialy = 'cashmere,alpaca,silk,mohair,merino,wool' | split: ','
+  assign moja_ranga = 99
+  for m in materialy
+    if wlasny contains m
+      assign moja_ranga = forloop.index
+      break
+    endif
+  endfor
 
   assign zrodlo = blank
   assign pomin = 'womens,mens,all,new-in,favourites,favorites,sale,womens-new-in,mens-new-in,womens-favourites,mens-favourites,womens-sale,mens-sale' | split: ','
@@ -53,10 +64,10 @@
       assign d = p.description | downcase
       for m in materialy
         if t contains m and d contains m
-          unless wlasny contains m
+          if forloop.index < moja_ranga
             assign wybor = p
             assign wybor_mat = m
-          endunless
+          endif
           break
         endif
       endfor
