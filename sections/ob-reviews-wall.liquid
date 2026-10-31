@@ -31,7 +31,7 @@
   #shopify-section-{{ section.id }} .rvw__rated a { color: inherit; text-decoration: underline; }
   #shopify-section-{{ section.id }} .rvw__scroll {
     max-width: 1340px; margin: 0 auto; padding: 0 24px;
-    max-height: {{ section.settings.max_h }}px; overflow-y: auto; overscroll-behavior: contain;
+    max-height: {{ section.settings.max_h }}px; overflow-y: auto; overscroll-behavior: auto; /* auto (31.10): "contain" blokowal dalsze przewijanie strony po dojechaniu do konca opinii */
   }
   #shopify-section-{{ section.id }} .rvw__grid {
     display: grid; gap: 14px; grid-template-columns: repeat({{ section.settings.per_row }}, minmax(0, 1fr));

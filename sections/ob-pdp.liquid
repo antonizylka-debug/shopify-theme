@@ -1035,7 +1035,7 @@
             {%- if pokaz_tekst -%}
               <p class="pdp__akcja-brw">
                 <span class="pdp__akcja-dot" aria-hidden="true"></span>
-                {{ settings.campaign_name | default: 'Seasonal sale' | escape }}
+                {{ section.settings.promo_label | default: settings.campaign_name | default: 'Seasonal sale' | escape }}
                 {%- if settings.campaign_end != blank -%}
                   <span class="pdp__akcja-czas" data-sn-licznik data-slut="{{ settings.campaign_end | escape }}" hidden>· <span data-sn-etykieta>ends in</span> <b data-sn-czas></b></span>
                 {%- endif -%}
@@ -1705,6 +1705,7 @@
     { "type": "checkbox", "id": "show_promo", "label": "Show the box", "default": true },
     { "type": "text", "id": "promo_title", "label": "Heading", "default": "Buy more — save more" },
     { "type": "textarea", "id": "promo_sub", "label": "Line below", "default": "The discount is applied automatically in the cart. Items don't have to match." },
+    { "type": "text", "id": "promo_label", "label": "Label above the steps", "info": "Empty = campaign name from theme settings.", "default": "Mix & match — save up to 30%" },
     { "type": "text", "id": "promo_tiers", "label": "Steps", "info": "quantity:percent, separated by commas", "default": "2:10, 3:20, 4:25" },
     { "type": "text", "id": "promo_qty_word", "label": "Word after the quantity", "default": "items" },
     { "type": "text", "id": "promo_head2", "label": "Heading above the steps", "default": "Multi-buy discount" },
