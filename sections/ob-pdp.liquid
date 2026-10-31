@@ -286,6 +286,7 @@
     display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap;
   }
   #shopify-section-{{ section.id }} .pdp__price--sale { color: var(--pdp-sale); }
+  #shopify-section-{{ section.id }} .pdp__vat--below { display: block; margin: 6px 0 0; }
   #shopify-section-{{ section.id }} .pdp__vat {
     font-size: 13px; font-weight: 400; color: var(--pdp-muted);
   }
@@ -613,6 +614,8 @@
     #shopify-section-{{ section.id }} .pdp__info > .pdp__sub,
     #shopify-section-{{ section.id }} .pdp__info > .pdp__pbs,
     #shopify-section-{{ section.id }} .pdp__info > .pdp__price,
+    #shopify-section-{{ section.id }} .pdp__info > .dp-pricing,
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__vat--below,
     #shopify-section-{{ section.id }} .pdp__info > .pdp__refs { order: 1; }
     #shopify-section-{{ section.id }} .pdp__info > .pdp__optlabel,
     #shopify-section-{{ section.id }} .pdp__info > .pdp__swatches,
@@ -626,7 +629,9 @@
       "Normalpris" dalej 10 px, a ramka pomocy nie dodaje swoich 18 px do
       18 px pod kolorami.
     {%- endcomment -%}
-    #shopify-section-{{ section.id }} .pdp__info > .pdp__price { margin-bottom: 18px; }
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__price,
+    #shopify-section-{{ section.id }} .pdp__info > .dp-pricing { margin-bottom: 18px; }
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__vat--below { margin: -12px 0 18px; }
     #shopify-section-{{ section.id }} .pdp__info > .pdp__refs { margin-top: -8px; margin-bottom: 18px; }
     #shopify-section-{{ section.id }} .pdp__info > .pdp__help { margin-top: 0; }
     #shopify-section-{{ section.id }} .pdp__info > .pdp__akcja { order: 1; margin: 0 0 16px; }
@@ -982,15 +987,16 @@
         <div class="dp-pricing">
         <div class="pdp__price{% if na_przecenie %} pdp__price--sale{% endif %}" data-pdp-price>
           <span data-pdp-now>{%- render 'sn-cena', kwota: war.price -%}</span>
-          {%- if section.settings.vat_note != blank -%}
-            <span class="pdp__vat">{{ section.settings.vat_note }}</span>
-          {%- endif -%}
         </div>
         {%- comment -%} Price per item in a multi-buy (real cart price), 31.10.2026 {%- endcomment -%}
         {%- if section.settings.multibuy_price_show and section.settings.promo_tiers != blank and product.type != 'Order Add-on' -%}
           {%- render 'dp-multibuy-price', price: war.price, tiers: section.settings.promo_tiers -%}
         {%- endif -%}
         </div>
+        {%- comment -%} Tax note under the price, not next to it (31.10.2026) {%- endcomment -%}
+        {%- if section.settings.vat_note != blank -%}
+          <p class="pdp__vat pdp__vat--below">{{ section.settings.vat_note }}</p>
+        {%- endif -%}
 
         <div class="pdp__refs">
           <span class="pdp__ref" data-pdp-ref-normal{% unless na_przecenie %} hidden{% endunless %}>
@@ -1700,7 +1706,7 @@
     { "type": "text", "id": "atc_label", "label": "Button", "default": "Add to cart" },
     { "type": "checkbox", "id": "pilne_show", "label": "Sale text in the discount box", "info": "Heading = campaign name, countdown = campaign end (Theme settings, Campaign).", "default": true },
     { "type": "text", "id": "pilne_text", "label": "Sale notice text", "default": "High demand – limited quantities left. If you can tap »Add to cart«, it's still available." },
-    { "type": "text", "id": "vat_note", "label": "Next to the price", "default": "inkl. moms" },
+    { "type": "text", "id": "vat_note", "label": "Under the price", "default": "inkl. moms" },
     { "type": "text", "id": "label_normal", "label": "Before the normal price", "default": "Regular price:" },
     { "type": "text", "id": "label_omnibus", "label": "Before the 30-day price", "default": "Lowest price in the 30 days before the discount:" },
     { "type": "checkbox", "id": "show_omnibus", "label": "Show the 30-day price", "info": "Reads custom.lowest_price_30d", "default": true },

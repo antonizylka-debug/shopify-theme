@@ -1,6 +1,6 @@
 {%- comment -%}
   Second price column next to the product price (31.10.2026):
-  "$62.96 ⓘ / each when you buy 2". The ⓘ opens the multi-buy steps with the
+  "$52.47 ⓘ / each when you buy 5+" (the best step). The ⓘ opens the multi-buy steps with the
   per-item price for each step. Real numbers only: the automatic quantity
   discounts give exactly these prices in the cart (2 = 10 %, 3 = 20 %, 4 = 25 %, 5+ = 30 %).
   Steps come from the section setting "Steps" (promo_tiers) and must match the discounts in admin.
@@ -14,9 +14,12 @@
   assign dp_first = dp_tiers.first | split: ':'
   assign dp_first_qty = dp_first[0] | plus: 0
   assign dp_first_pct = dp_first[1] | plus: 0
+  assign dp_best = dp_tiers.last | split: ':'
+  assign dp_best_qty = dp_best[0] | plus: 0
+  assign dp_best_pct = dp_best[1] | plus: 0
 -%}
 {%- if dp_first_qty > 1 and dp_first_pct > 0 -%}
-  {%- assign dp_each = 100 | minus: dp_first_pct | times: price | divided_by: 100.0 | round -%}
+  {%- assign dp_each = 100 | minus: dp_best_pct | times: price | divided_by: 100.0 | round -%}
   <div class="dp-multibuy" data-dp-multibuy data-dp-multibuy-tiers="{{ tiers | remove: ' ' | escape }}">
     <span class="dp-multibuy__row">
       <span class="dp-multibuy__price" data-dp-multibuy-each>{%- render 'sn-cena', kwota: dp_each -%}</span>
@@ -39,7 +42,7 @@
         </div>
       </details>
     </span>
-    <span class="dp-multibuy__label">each when you buy {{ dp_first_qty }}</span>
+    <span class="dp-multibuy__label">each when you buy {{ dp_best_qty }}+</span>
   </div>
   <style>
     .dp-pricing { display: flex; align-items: stretch; gap: 18px; flex-wrap: wrap; }
@@ -71,7 +74,7 @@
         document.querySelectorAll('[data-dp-multibuy]').forEach(function (box) {
           var tiers = (box.getAttribute('data-dp-multibuy-tiers') || '').split(',').map(function (t) { var a = t.split(':'); return [Number(a[0]), Number(a[1])]; });
           if (!tiers.length) return;
-          box.querySelector('[data-dp-multibuy-each]').textContent = money(Math.round(price * (100 - tiers[0][1]) / 100));
+          box.querySelector('[data-dp-multibuy-each]').textContent = money(Math.round(price * (100 - tiers[tiers.length - 1][1]) / 100));
           var rows = box.querySelectorAll('[data-dp-multibuy-steps] b');
           tiers.forEach(function (t, i) { if (rows[i]) rows[i].textContent = money(Math.round(price * (100 - t[1]) / 100)) + ' each'; });
         });
