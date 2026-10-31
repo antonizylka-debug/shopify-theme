@@ -19,7 +19,7 @@
   if section.settings.accent_word != blank
     assign slowo = section.settings.accent_word | escape
     capture zamiennik
-      echo '<span class="snpo__akcent">'
+      echo '<span class="dp-mix__accent">'
       echo slowo
       echo '</span>'
     endcapture
@@ -46,25 +46,25 @@
 
 {%- if product != blank and zrodlo != blank -%}
 {%- style -%}
-  #shopify-section-{{ section.id }} .snpo {
+  #shopify-section-{{ section.id }} .dp-mix {
     padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
     color: #1c1d1d;
     overflow: hidden;
   }
-  #shopify-section-{{ section.id }} .snpo__head { text-align: center; margin-bottom: 28px; }
-  #shopify-section-{{ section.id }} .snpo__title {
+  #shopify-section-{{ section.id }} .dp-mix__head { text-align: center; margin-bottom: 28px; }
+  #shopify-section-{{ section.id }} .dp-mix__title {
     margin: 0;
     font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
     font-size: 26px; font-weight: 600; line-height: 1.18; letter-spacing: 0.01em;
     text-wrap: balance;
   }
-  #shopify-section-{{ section.id }} .snpo__akcent { color: {{ section.settings.color_accent }}; }
-  #shopify-section-{{ section.id }} .snpo__sub { margin: 10px 0 0; font-size: 14px; line-height: 1.5; color: #6b6f76; }
-  #shopify-section-{{ section.id }} .snpo__progi { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; margin: 12px 0 0; padding: 0; list-style: none; font-size: 13px; color: #6b6f76; }
-  #shopify-section-{{ section.id }} .snpo__progi b { color: #1c1d1d; font-weight: 700; }
+  #shopify-section-{{ section.id }} .dp-mix__accent { color: {{ section.settings.color_accent }}; }
+  #shopify-section-{{ section.id }} .dp-mix__subtitle { margin: 10px 0 0; font-size: 14px; line-height: 1.5; color: #6b6f76; }
+  #shopify-section-{{ section.id }} .dp-mix__tiers { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; margin: 12px 0 0; padding: 0; list-style: none; font-size: 13px; color: #6b6f76; }
+  #shopify-section-{{ section.id }} .dp-mix__tiers b { color: #1c1d1d; font-weight: 700; }
 
-  #shopify-section-{{ section.id }} .snpo__wrap { position: relative; }
-  #shopify-section-{{ section.id }} .snpo__track {
+  #shopify-section-{{ section.id }} .dp-mix__wrap { position: relative; }
+  #shopify-section-{{ section.id }} .dp-mix__track {
     display: flex;
     gap: {{ odstep }}px;
     overflow-x: auto;
@@ -74,16 +74,16 @@
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
   }
-  #shopify-section-{{ section.id }} .snpo__track::-webkit-scrollbar { display: none; }
-  #shopify-section-{{ section.id }} .snpo__track.is-dojezdza { scroll-snap-type: none; }
-  #shopify-section-{{ section.id }} .snpo__card {
+  #shopify-section-{{ section.id }} .dp-mix__track::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .dp-mix__track.is-dojezdza { scroll-snap-type: none; }
+  #shopify-section-{{ section.id }} .dp-mix__card {
     flex: 0 0 calc((100% - {{ per | minus: 1 | times: odstep }}px) / {{ per }});
     scroll-snap-align: start;
     min-width: 0;
   }
   #shopify-section-{{ section.id }} .snc__pas { overflow-x: hidden; overscroll-behavior-x: auto; }
 
-  #shopify-section-{{ section.id }} .snpo__strz {
+  #shopify-section-{{ section.id }} .dp-mix__arrow {
     position: absolute; top: 40%; z-index: 4;
     width: 40px; height: 40px; margin-top: -20px;
     display: flex; align-items: center; justify-content: center;
@@ -92,20 +92,20 @@
     box-shadow: 0 2px 10px rgba(28, 29, 29, 0.08);
     transition: opacity 0.2s ease;
   }
-  #shopify-section-{{ section.id }} .snpo__strz svg { width: 9px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; }
-  #shopify-section-{{ section.id }} .snpo__strz--l { left: 14px; }
-  #shopify-section-{{ section.id }} .snpo__strz--p { right: 14px; }
-  #shopify-section-{{ section.id }} .snpo__strz[disabled] { opacity: 0; pointer-events: none; }
+  #shopify-section-{{ section.id }} .dp-mix__arrow svg { width: 9px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+  #shopify-section-{{ section.id }} .dp-mix__arrow--prev { left: 14px; }
+  #shopify-section-{{ section.id }} .dp-mix__arrow--next { right: 14px; }
+  #shopify-section-{{ section.id }} .dp-mix__arrow[disabled] { opacity: 0; pointer-events: none; }
   @media not all and (hover: hover) {
-    #shopify-section-{{ section.id }} .snpo__strz { display: none; }
+    #shopify-section-{{ section.id }} .dp-mix__arrow { display: none; }
   }
 
   @media only screen and (max-width: 768px) {
-    #shopify-section-{{ section.id }} .snpo {
+    #shopify-section-{{ section.id }} .dp-mix {
       padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
     }
-    #shopify-section-{{ section.id }} .snpo__title { font-size: 20px; }
-    #shopify-section-{{ section.id }} .snpo__card {
+    #shopify-section-{{ section.id }} .dp-mix__title { font-size: 20px; }
+    #shopify-section-{{ section.id }} .dp-mix__card {
       flex-basis: calc((100% - {{ per_m | minus: 1 | times: odstep }}px) / {{ per_m }});
     }
   }
@@ -113,12 +113,12 @@
 
 {%- render 'sn-card-assets' -%}
 
-<div class="snpo" data-snpo data-snpo-pid="{{ product.id }}" data-snpo-ile="{{ ile }}">
-  <div class="page-width snpo__head">
-    {%- if section.settings.title != blank -%}<h2 class="snpo__title">{{ tytul }}</h2>{%- endif -%}
-    {%- if section.settings.subtitle != blank -%}<p class="snpo__sub">{{ section.settings.subtitle | escape }}</p>{%- endif -%}
+<div class="dp-mix" data-dp-mix data-dp-mix-pid="{{ product.id }}" data-dp-mix-count="{{ ile }}">
+  <div class="page-width dp-mix__head">
+    {%- if section.settings.title != blank -%}<h2 class="dp-mix__title">{{ tytul }}</h2>{%- endif -%}
+    {%- if section.settings.subtitle != blank -%}<p class="dp-mix__subtitle">{{ section.settings.subtitle | escape }}</p>{%- endif -%}
     {%- if section.settings.show_tiers -%}
-      <ul class="snpo__progi">
+      <ul class="dp-mix__tiers">
         <li>2 items <b>−10%</b></li>
         <li>3 items <b>−20%</b></li>
         <li>4 items <b>−25%</b></li>
@@ -126,20 +126,20 @@
       </ul>
     {%- endif -%}
   </div>
-  <div class="snpo__wrap">
-    <button type="button" class="snpo__strz snpo__strz--l" data-snpo-krok="-1" aria-label="{{ 'general.slider.previous_slide' | t }}" disabled>
+  <div class="dp-mix__wrap">
+    <button type="button" class="dp-mix__arrow dp-mix__arrow--prev" data-dp-mix-step="-1" aria-label="{{ 'general.slider.previous_slide' | t }}" disabled>
       <svg viewBox="0 0 10 16" aria-hidden="true" focusable="false"><path d="M8.5 1.5 2 8l6.5 6.5"/></svg>
     </button>
-    <div class="snpo__track" data-snpo-track>
+    <div class="dp-mix__track" data-dp-mix-track>
       {%- assign n = 0 -%}
       {%- for p in zrodlo.products limit: 40 -%}
         {%- if n >= ile -%}{%- break -%}{%- endif -%}
         {%- if p.id == product.id or p.available == false or p.type == 'Order Add-on' -%}{%- continue -%}{%- endif -%}
-        <div class="snpo__card">{%- render 'sn-card', product: p, grid_item: false -%}</div>
+        <div class="dp-mix__card">{%- render 'sn-card', product: p, grid_item: false -%}</div>
         {%- assign n = n | plus: 1 -%}
       {%- endfor -%}
     </div>
-    <button type="button" class="snpo__strz snpo__strz--p" data-snpo-krok="1" aria-label="{{ 'general.slider.next_slide' | t }}">
+    <button type="button" class="dp-mix__arrow dp-mix__arrow--next" data-dp-mix-step="1" aria-label="{{ 'general.slider.next_slide' | t }}">
       <svg viewBox="0 0 10 16" aria-hidden="true" focusable="false"><path d="M1.5 1.5 8 8l-6.5 6.5"/></svg>
     </button>
   </div>
@@ -149,10 +149,10 @@
   (function () {
     var korzen = document.getElementById('shopify-section-{{ section.id }}');
     if (!korzen) return;
-    var ramka = korzen.querySelector('[data-snpo]');
-    var tor = korzen.querySelector('[data-snpo-track]');
-    var wstecz = korzen.querySelector('[data-snpo-krok="-1"]');
-    var dalej = korzen.querySelector('[data-snpo-krok="1"]');
+    var ramka = korzen.querySelector('[data-dp-mix]');
+    var tor = korzen.querySelector('[data-dp-mix-track]');
+    var wstecz = korzen.querySelector('[data-dp-mix-step="-1"]');
+    var dalej = korzen.querySelector('[data-dp-mix-step="1"]');
     var ODSTEP = {{ odstep }};
 
     function stan() {
@@ -184,7 +184,7 @@
     }
     [wstecz, dalej].forEach(function (b) {
       b.addEventListener('click', function () {
-        var kier = parseInt(b.getAttribute('data-snpo-krok'), 10);
+        var kier = parseInt(b.getAttribute('data-dp-mix-step'), 10);
         var k = krok();
         var naRaz = Math.max(1, Math.floor(tor.clientWidth / k));
         jedzDo((Math.round(tor.scrollLeft / k) + kier * naRaz) * k);
@@ -195,9 +195,9 @@
 
     /* Rekomendacje Shopify "related" - podmieniaja kafle z podkolekcji, gdy jest ich co najmniej 4. */
     var KORZEN_URL = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
-    var ILE = Number(ramka.getAttribute('data-snpo-ile')) || 12;
+    var ILE = Number(ramka.getAttribute('data-dp-mix-count')) || 12;
     function laduj() {
-      fetch(KORZEN_URL + 'recommendations/products?section_id=sn-rekomendacje&product_id=' + ramka.getAttribute('data-snpo-pid') + '&limit=' + ILE + '&intent=related')
+      fetch(KORZEN_URL + 'recommendations/products?section_id=sn-rekomendacje&product_id=' + ramka.getAttribute('data-dp-mix-pid') + '&limit=' + ILE + '&intent=related')
         .then(function (o) { return o.ok ? o.text() : ''; })
         .then(function (t) {
           if (!t) return;
@@ -208,7 +208,7 @@
           karty.forEach(function (k) {
             k.classList.remove('snc--round');
             var el = document.createElement('div');
-            el.className = 'snpo__card';
+            el.className = 'dp-mix__card';
             el.appendChild(document.importNode(k, true));
             tor.appendChild(el);
           });

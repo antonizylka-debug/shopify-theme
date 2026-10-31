@@ -1,0 +1,32 @@
+{%- comment -%}
+  Maly wiersz Delivery Protection nad linia z suma (szuflada i strona koszyka).
+  Ochrona jest zwykla pozycja koszyka, ale nie pokazujemy jej na liscie produktow -
+  tylko tutaj, z przelacznikiem. Stan i widocznosc aktualizuje JS w sn-ochrona.
+{%- endcomment -%}
+{%- assign dp_p = all_products['delivery-protection'] -%}
+{%- if dp_p and dp_p.available -%}
+  {%- liquid
+    assign dp_v = dp_p.selected_or_first_available_variant
+    assign dp_jest = false
+    assign dp_inne = 0
+    for i in cart.items
+      if i.variant_id == dp_v.id
+        assign dp_jest = true
+      elsif i.product.type != 'Order Add-on'
+        assign dp_inne = dp_inne | plus: i.quantity
+      endif
+    endfor
+  -%}
+  <div class="dp-protection" data-dp-protection{% if dp_inne == 0 %} hidden{% endif %}>
+    <svg class="dp-protection__icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" width="18" height="18"><path d="M12 3 5 6v5c0 4.4 3 8.3 7 9.5 4-1.2 7-5.1 7-9.5V6l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <label class="dp-protection__text" for="dp-toggle-{{ placement | default: 'x' }}">
+      <span class="dp-protection__title">Delivery protection</span>
+      <span class="dp-protection__subtitle">Lost, stolen or damaged parcels</span>
+    </label>
+    <span class="dp-protection__price">{%- render 'sn-cena', kwota: dp_v.price -%}</span>
+    <span class="dp-protection__switch">
+      <input type="checkbox" id="dp-toggle-{{ placement | default: 'x' }}" class="dp-protection__input" data-dp-protection-toggle{% if dp_jest %} checked{% endif %} aria-label="Delivery protection">
+      <span class="dp-protection__track" aria-hidden="true"></span>
+    </span>
+  </div>
+{%- endif -%}

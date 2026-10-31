@@ -5,34 +5,34 @@
   - w koszyku nie stoi na liscie produktow, tylko jako maly wiersz z przelacznikiem nad suma
     (snippet sn-ochrona-wiersz); wylaczenie = usuniecie, ochrona nie wraca, dopoki koszyk sie nie oprozni;
   - gdy w koszyku zostaje sama ochrona, znika (nie da sie kupic samej ochrony); zawsze dokladnie 1 sztuka.
-  Ochrona nie liczy sie do sztuk (progi rabatow, licznik koszyka): window.dpSztuki(cart)
+  Ochrona nie liczy sie do sztuk (progi rabatow, licznik koszyka): window.dpItemCount(cart)
   i snippet sn-liczba-sztuk. Rabaty za ilosc w panelu obejmuja 25 kolekcji - produktu w nich nie ma.
 {%- endcomment -%}
 {%- assign dp_ochrona = all_products['delivery-protection'] -%}
 <style>
-  .dp-row { display: flex; align-items: center; gap: 10px; padding: 9px 12px; margin: 0; background: #f6f6f4; border-radius: 8px; color: #1c1d1d; }
-  .dp-row[hidden] { display: none; }
-  .dp-row__ico { flex: 0 0 18px; color: #1c1d1d; }
-  .dp-row__txt { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; cursor: pointer; margin: 0; }
-  .dp-row__txt, .dp-row__t, .dp-row__s { text-transform: none; letter-spacing: 0; font-family: inherit; }
-  .dp-row__t { font-size: 13px; font-weight: 600; }
-  .dp-row__s { font-size: 11.5px; color: #6b6f76; }
-  .dp-row__cena { font-size: 13px; font-weight: 600; white-space: nowrap; }
-  .dp-switch { position: relative; flex: 0 0 36px; width: 36px; height: 20px; }
-  .dp-switch__in { position: absolute; inset: -12px -4px; width: calc(100% + 8px); height: calc(100% + 24px); margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
-  .dp-switch__tor { position: absolute; inset: 0; border-radius: 20px; background: #c9cbcf; transition: background .2s; }
-  .dp-switch__tor::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
-  .dp-switch__in:checked + .dp-switch__tor { background: #1c1d1d; }
-  .dp-switch__in:checked + .dp-switch__tor::after { transform: translateX(16px); }
-  .dp-switch__in:focus-visible + .dp-switch__tor { outline: 2px solid #1c1d1d; outline-offset: 2px; }
-  .dp-row.is-busy { opacity: .6; pointer-events: none; }
-  #CartDrawer .dp-wrap { padding: 8px 26px 10px; background: #ffffff; }
-  @media (max-width: 768px) { #CartDrawer .dp-wrap { padding: 6px 18px 8px; } }
-  .dp-wrap--strona { margin: 0 0 14px; }
-  @media (prefers-reduced-motion: reduce) { .dp-switch__tor, .dp-switch__tor::after { transition: none; } }
+  .dp-protection { display: flex; align-items: center; gap: 10px; padding: 9px 12px; margin: 0; background: #f6f6f4; border-radius: 8px; color: #1c1d1d; }
+  .dp-protection[hidden] { display: none; }
+  .dp-protection__icon { flex: 0 0 18px; color: #1c1d1d; }
+  .dp-protection__text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; cursor: pointer; margin: 0; }
+  .dp-protection__text, .dp-protection__title, .dp-protection__subtitle { text-transform: none; letter-spacing: 0; font-family: inherit; }
+  .dp-protection__title { font-size: 13px; font-weight: 600; }
+  .dp-protection__subtitle { font-size: 11.5px; color: #6b6f76; }
+  .dp-protection__price { font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .dp-protection__switch { position: relative; flex: 0 0 36px; width: 36px; height: 20px; }
+  .dp-protection__input { position: absolute; inset: -12px -4px; width: calc(100% + 8px); height: calc(100% + 24px); margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
+  .dp-protection__track { position: absolute; inset: 0; border-radius: 20px; background: #c9cbcf; transition: background .2s; }
+  .dp-protection__track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+  .dp-protection__input:checked + .dp-protection__track { background: #1c1d1d; }
+  .dp-protection__input:checked + .dp-protection__track::after { transform: translateX(16px); }
+  .dp-protection__input:focus-visible + .dp-protection__track { outline: 2px solid #1c1d1d; outline-offset: 2px; }
+  .dp-protection.is-busy { opacity: .6; pointer-events: none; }
+  #CartDrawer .dp-protection-wrap { padding: 8px 26px 10px; background: #ffffff; }
+  @media (max-width: 768px) { #CartDrawer .dp-protection-wrap { padding: 6px 18px 8px; } }
+  .dp-protection-wrap--page { margin: 0 0 14px; }
+  @media (prefers-reduced-motion: reduce) { .dp-protection__track, .dp-protection__track::after { transition: none; } }
 </style>
 <script>
-  window.dpSztuki = function (c) {
+  window.dpItemCount = function (c) {
     if (!c) return 0;
     var n = typeof c.item_count === 'number' ? c.item_count : 0;
     (c.items || []).forEach(function (i) { if (i.product_type === 'Order Add-on') n -= i.quantity; });
@@ -63,11 +63,11 @@
 
     function wiersze(c) {
       var jest = c.items.some(function (i) { return i.variant_id === VID; });
-      var inne = window.dpSztuki(c) > 0;
-      document.querySelectorAll('[data-dp-row]').forEach(function (w) {
+      var inne = window.dpItemCount(c) > 0;
+      document.querySelectorAll('[data-dp-protection]').forEach(function (w) {
         w.hidden = !inne;
         w.classList.remove('is-busy');
-        var t = w.querySelector('[data-dp-toggle]');
+        var t = w.querySelector('[data-dp-protection-toggle]');
         if (t) t.checked = jest;
       });
     }
@@ -110,9 +110,9 @@
 
     /* Przelacznik: wylaczenie = usuniecie i zapamietanie wyboru; wlaczenie = dodanie z powrotem. */
     document.addEventListener('change', function (e) {
-      var t = e.target.closest && e.target.closest('[data-dp-toggle]');
+      var t = e.target.closest && e.target.closest('[data-dp-protection-toggle]');
       if (!t) return;
-      var w = t.closest('[data-dp-row]'); if (w) w.classList.add('is-busy');
+      var w = t.closest('[data-dp-protection]'); if (w) w.classList.add('is-busy');
       var wlacz = t.checked;
       ustaw(!wlacz);
       koszyk().then(function (c) {

@@ -49,73 +49,73 @@
 -%}
 {%- if zrodla != blank and product.type != 'Order Add-on' -%}
 <style>
-  .snz { margin: 28px 0 4px; padding: 14px 14px 12px; border: 1px solid #e4e6ea; border-radius: 8px; }
-  .snz[hidden] { display: none; }
-  .snz__head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
-  .snz__t { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
-  .snz__hint { margin: 0; font-size: 12px; color: #6b1f2d; font-weight: 600; text-align: right; }
-  .snz__list { list-style: none; margin: 0; padding: 0; }
-  .snz__it { display: grid; grid-template-columns: 22px 52px minmax(0, 1fr); gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid #f0f1f3; }
-  .snz__it:first-child { border-top: 0; padding-top: 2px; }
-  .snz__cb { width: 18px; height: 18px; margin: 0; accent-color: #1c1d1d; cursor: pointer; }
-  .snz__cb:disabled { cursor: default; }
-  .snz__img { display: block; width: 52px; height: 68px; border-radius: 4px; overflow: hidden; background: #f6f6f4; }
-  .snz__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .snz__info { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
-  .snz__name { font-size: 13px; line-height: 1.3; color: inherit; text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .snz__name b { font-weight: 600; }
-  .snz__row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .snz__price { font-size: 13px; font-weight: 600; white-space: nowrap; }
-  .snz__sel { max-width: 130px; height: 30px; padding: 0 26px 0 8px; font-size: 12.5px; border: 1px solid #c9cbcf; border-radius: 4px; background-color: #fff; }
-  .snz__sel.is-err { border-color: #6b1f2d; }
-  .snz__opt { font-size: 12px; color: #6b6f76; }
-  .snz__sum { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 10px 0 10px; padding-top: 10px; border-top: 1px solid #e4e6ea; font-size: 13px; }
-  .snz__sum s { color: #6b6f76; margin-right: 6px; font-weight: 400; }
-  .snz__sum b { font-size: 15px; }
-  .snz__save { color: #6b1f2d; font-weight: 600; }
-  .snz__btn { width: 100%; min-height: 46px; border: 1px solid #1c1d1d; background: #fff; color: #1c1d1d; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; border-radius: 0; }
-  .snz__btn:hover:not([disabled]) { background: #1c1d1d; color: #fff; }
-  .snz__btn[disabled] { opacity: .55; cursor: default; }
-  .snz__err { margin: 8px 0 0; font-size: 12.5px; color: #6b1f2d; }
-  .snz__err[hidden] { display: none; }
+  .dp-look { margin: 28px 0 4px; padding: 14px 14px 12px; border: 1px solid #e4e6ea; border-radius: 8px; }
+  .dp-look[hidden] { display: none; }
+  .dp-look__head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
+  .dp-look__title { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+  .dp-look__hint { margin: 0; font-size: 12px; color: #6b1f2d; font-weight: 600; text-align: right; }
+  .dp-look__list { list-style: none; margin: 0; padding: 0; }
+  .dp-look__item { display: grid; grid-template-columns: 22px 52px minmax(0, 1fr); gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid #f0f1f3; }
+  .dp-look__item:first-child { border-top: 0; padding-top: 2px; }
+  .dp-look__checkbox { width: 18px; height: 18px; margin: 0; accent-color: #1c1d1d; cursor: pointer; }
+  .dp-look__checkbox:disabled { cursor: default; }
+  .dp-look__img { display: block; width: 52px; height: 68px; border-radius: 4px; overflow: hidden; background: #f6f6f4; }
+  .dp-look__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dp-look__info { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .dp-look__name { font-size: 13px; line-height: 1.3; color: inherit; text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dp-look__name b { font-weight: 600; }
+  .dp-look__row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .dp-look__price { font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .dp-look__select { max-width: 130px; height: 30px; padding: 0 26px 0 8px; font-size: 12.5px; border: 1px solid #c9cbcf; border-radius: 4px; background-color: #fff; }
+  .dp-look__select.is-err { border-color: #6b1f2d; }
+  .dp-look__options { font-size: 12px; color: #6b6f76; }
+  .dp-look__summary { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 10px 0 10px; padding-top: 10px; border-top: 1px solid #e4e6ea; font-size: 13px; }
+  .dp-look__summary s { color: #6b6f76; margin-right: 6px; font-weight: 400; }
+  .dp-look__summary b { font-size: 15px; }
+  .dp-look__save { color: #6b1f2d; font-weight: 600; }
+  .dp-look__button { width: 100%; min-height: 46px; border: 1px solid #1c1d1d; background: #fff; color: #1c1d1d; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; border-radius: 0; }
+  .dp-look__button:hover:not([disabled]) { background: #1c1d1d; color: #fff; }
+  .dp-look__button[disabled] { opacity: .55; cursor: default; }
+  .dp-look__error { margin: 8px 0 0; font-size: 12.5px; color: #6b1f2d; }
+  .dp-look__error[hidden] { display: none; }
 </style>
-<div class="snz" data-snz data-snz-sekcja="{{ sekcja }}" data-snz-zrodla="{{ zrodla | escape }}" data-snz-progi="{{ progi | escape }}" data-snz-pid="{{ product.id }}" data-snz-handle="{{ product.handle }}"{% if elegancko %} data-snz-elegancko{% endif %} hidden>
-  <div class="snz__head">
-    <p class="snz__t">Complete the look</p>
-    <p class="snz__hint" data-snz-hint></p>
+<div class="dp-look" data-dp-look data-dp-look-section="{{ sekcja }}" data-dp-look-sources="{{ zrodla | escape }}" data-dp-look-tiers="{{ progi | escape }}" data-dp-look-pid="{{ product.id }}" data-dp-look-handle="{{ product.handle }}"{% if elegancko %} data-dp-look-formal{% endif %} hidden>
+  <div class="dp-look__head">
+    <p class="dp-look__title">Complete the look</p>
+    <p class="dp-look__hint" data-dp-look-hint></p>
   </div>
-  <ul class="snz__list" data-snz-list>
-    <li class="snz__it" data-snz-main>
-      <input type="checkbox" class="snz__cb" checked disabled aria-label="This item">
-      <span class="snz__img">{%- if product.featured_media -%}{{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}</span>
-      <span class="snz__info">
-        <span class="snz__name"><b>This item:</b> {{ product.title | escape }}</span>
-        <span class="snz__row"><span class="snz__price" data-snz-main-price></span><span class="snz__opt" data-snz-main-opt></span></span>
+  <ul class="dp-look__list" data-dp-look-list>
+    <li class="dp-look__item" data-dp-look-main>
+      <input type="checkbox" class="dp-look__checkbox" checked disabled aria-label="This item">
+      <span class="dp-look__img">{%- if product.featured_media -%}{{ product.featured_media | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}</span>
+      <span class="dp-look__info">
+        <span class="dp-look__name"><b>This item:</b> {{ product.title | escape }}</span>
+        <span class="dp-look__row"><span class="dp-look__price" data-dp-look-main-price></span><span class="dp-look__options" data-dp-look-main-options></span></span>
       </span>
     </li>
   </ul>
-  <div class="snz__sum" aria-live="polite">
-    <span data-snz-count></span>
-    <span><s data-snz-old hidden></s><b data-snz-total></b></span>
+  <div class="dp-look__summary" aria-live="polite">
+    <span data-dp-look-count></span>
+    <span><s data-dp-look-old hidden></s><b data-dp-look-total></b></span>
   </div>
-  <button type="button" class="snz__btn" data-snz-add>Add selected to bag</button>
-  <p class="snz__err" data-snz-err role="alert" hidden></p>
+  <button type="button" class="dp-look__button" data-dp-look-add>Add selected to bag</button>
+  <p class="dp-look__error" data-dp-look-error role="alert" hidden></p>
 </div>
 <script>
   (function () {
-    var ramka = document.querySelector('[data-snz]:not([data-snz-gotowe])');
+    var ramka = document.querySelector('[data-dp-look]:not([data-dp-look-ready])');
     if (!ramka) return;
-    ramka.setAttribute('data-snz-gotowe', '');
+    ramka.setAttribute('data-dp-look-ready', '');
     var KORZEN = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
-    var sekcja = document.getElementById('shopify-section-' + ramka.getAttribute('data-snz-sekcja'));
-    var lista = ramka.querySelector('[data-snz-list]');
-    var przycisk = ramka.querySelector('[data-snz-add]');
-    var blad = ramka.querySelector('[data-snz-err]');
-    var PID = ramka.getAttribute('data-snz-pid');
-    var elegancko = ramka.hasAttribute('data-snz-elegancko');
+    var sekcja = document.getElementById('shopify-section-' + ramka.getAttribute('data-dp-look-section'));
+    var lista = ramka.querySelector('[data-dp-look-list]');
+    var przycisk = ramka.querySelector('[data-dp-look-add]');
+    var blad = ramka.querySelector('[data-dp-look-error]');
+    var PID = ramka.getAttribute('data-dp-look-pid');
+    var elegancko = ramka.hasAttribute('data-dp-look-formal');
     var wKoszyku = 0;
 
-    var PROGI = (ramka.getAttribute('data-snz-progi') || '').split(',').map(function (p) {
+    var PROGI = (ramka.getAttribute('data-dp-look-tiers') || '').split(',').map(function (p) {
       var a = p.split(':'); return [Number(a[0]), Number(a[1])];
     }).filter(function (p) { return p[0] > 0 && p[1] > 0; }).sort(function (a, b) { return b[0] - a[0]; });
     function rabat(n) { for (var i = 0; i < PROGI.length; i++) if (n >= PROGI[i][0]) return PROGI[i][1]; return 0; }
@@ -149,30 +149,30 @@
       var suma = 0, n = 0;
       if (g) {
         suma += g.price; n++;
-        ramka.querySelector('[data-snz-main-price]').textContent = cena(g.price);
-        ramka.querySelector('[data-snz-main-opt]').textContent = g.title === 'Default Title' ? '' : g.title;
+        ramka.querySelector('[data-dp-look-main-price]').textContent = cena(g.price);
+        ramka.querySelector('[data-dp-look-main-options]').textContent = g.title === 'Default Title' ? '' : g.title;
       }
-      lista.querySelectorAll('[data-snz-x]').forEach(function (li) {
-        if (!li.querySelector('.snz__cb').checked) return;
+      lista.querySelectorAll('[data-dp-look-item]').forEach(function (li) {
+        if (!li.querySelector('.dp-look__checkbox').checked) return;
         var v = wariantX(li);
         suma += v ? v.price : li.__snz.p.price;
         n++;
       });
       var r = rabat(wKoszyku + n);
-      var stara = ramka.querySelector('[data-snz-old]');
-      ramka.querySelector('[data-snz-count]').innerHTML = n + (n === 1 ? ' item' : ' items') + (r ? ' · <span class="snz__save">−' + r + '% in cart</span>' : '');
-      ramka.querySelector('[data-snz-total]').textContent = cena(Math.round(suma * (100 - r) / 100));
+      var stara = ramka.querySelector('[data-dp-look-old]');
+      ramka.querySelector('[data-dp-look-count]').innerHTML = n + (n === 1 ? ' item' : ' items') + (r ? ' · <span class="dp-look__save">−' + r + '% in cart</span>' : '');
+      ramka.querySelector('[data-dp-look-total]').textContent = cena(Math.round(suma * (100 - r) / 100));
       stara.hidden = !r;
       stara.textContent = r ? cena(suma) : '';
       var nx = nastepny(wKoszyku + n);
-      ramka.querySelector('[data-snz-hint]').textContent = nx ? 'Add ' + (nx[0] - wKoszyku - n) + ' more → −' + nx[1] + '%' : '';
+      ramka.querySelector('[data-dp-look-hint]').textContent = nx ? 'Add ' + (nx[0] - wKoszyku - n) + ' more → −' + nx[1] + '%' : '';
       przycisk.textContent = n > 1 ? 'Add ' + n + ' items to bag' : 'Add selected to bag';
     }
 
     function wariantX(li) {
       var p = li.__snz.p;
       if (p.variants.length === 1) return p.variants[0].available ? p.variants[0] : null;
-      var wybor = Array.prototype.map.call(li.querySelectorAll('.snz__sel'), function (s) { return s.value; });
+      var wybor = Array.prototype.map.call(li.querySelectorAll('.dp-look__select'), function (s) { return s.value; });
       if (wybor.indexOf('') >= 0) return null;
       return p.variants.filter(function (v) {
         return v.available && v.options.every(function (o, i) { return o === wybor[i]; });
@@ -187,11 +187,11 @@
       return -1;
     }
     function odswiezKolor() {
-      var li = lista.querySelector('[data-snz-kolor]');
+      var li = lista.querySelector('[data-dp-look-colour]');
       var g = glowny();
       if (!li || !g) return;
-      var iK = Number(li.getAttribute('data-snz-kolor'));
-      var sel = li.querySelector('[data-snz-opt="' + iK + '"]');
+      var iK = Number(li.getAttribute('data-dp-look-colour'));
+      var sel = li.querySelector('[data-dp-look-option="' + iK + '"]');
       Array.prototype.forEach.call(sel.options, function (o) {
         if (!o.value) return;
         var jest = li.__snz.p.variants.some(function (v) { return v.available && v.options[iK] === o.value; });
@@ -201,7 +201,7 @@
       /* rozmiar jak w glownym formularzu, jesli klientka jeszcze nie wybrala */
       g.options.forEach(function (w, i) {
         if (i === iK) return;
-        var s = li.querySelector('[data-snz-opt="' + i + '"]');
+        var s = li.querySelector('[data-dp-look-option="' + i + '"]');
         if (s && !s.value && !s.__reczny) {
           var o = Array.prototype.filter.call(s.options, function (x) { return x.value === w && !x.disabled; })[0];
           if (o) s.value = w;
@@ -211,26 +211,26 @@
 
     function wiersz(p, iKoloru) {
       var li = document.createElement('li');
-      li.className = 'snz__it';
-      li.setAttribute('data-snz-x', p.id);
+      li.className = 'dp-look__item';
+      li.setAttribute('data-dp-look-item', p.id);
       li.__snz = { p: p };
       var kolor = typeof iKoloru === 'number';
-      if (kolor) li.setAttribute('data-snz-kolor', iKoloru);
+      if (kolor) li.setAttribute('data-dp-look-colour', iKoloru);
       var img = p.featured_image ? p.featured_image + (p.featured_image.indexOf('?') < 0 ? '?' : '&') + 'width=120' : '';
       var cb = document.createElement('input');
-      cb.type = 'checkbox'; cb.className = 'snz__cb'; cb.setAttribute('aria-label', 'Add ' + p.title);
+      cb.type = 'checkbox'; cb.className = 'dp-look__checkbox'; cb.setAttribute('aria-label', 'Add ' + p.title);
       li.appendChild(cb);
       var a = document.createElement('a');
-      a.className = 'snz__img'; a.href = p.url; a.tabIndex = -1;
+      a.className = 'dp-look__img'; a.href = p.url; a.tabIndex = -1;
       if (img) { var im = document.createElement('img'); im.src = img; im.alt = ''; im.loading = 'lazy'; im.width = 52; im.height = 68; a.appendChild(im); }
       li.appendChild(a);
-      var info = document.createElement('span'); info.className = 'snz__info';
-      var nazwa = document.createElement(kolor ? 'span' : 'a'); nazwa.className = 'snz__name';
+      var info = document.createElement('span'); info.className = 'dp-look__info';
+      var nazwa = document.createElement(kolor ? 'span' : 'a'); nazwa.className = 'dp-look__name';
       if (kolor) { var b = document.createElement('b'); b.textContent = 'Love the fit? Try another shade'; nazwa.appendChild(b); }
       else { nazwa.href = p.url; nazwa.textContent = p.title; }
       info.appendChild(nazwa);
-      var rz = document.createElement('span'); rz.className = 'snz__row';
-      var pr = document.createElement('span'); pr.className = 'snz__price'; pr.textContent = cena(p.price);
+      var rz = document.createElement('span'); rz.className = 'dp-look__row';
+      var pr = document.createElement('span'); pr.className = 'dp-look__price'; pr.textContent = cena(p.price);
       rz.appendChild(pr);
       /* osobne pole na kazda opcje (kolor, rozmiar) - jedna lista "kolor / rozmiar"
          przy butach miala 60 pozycji */
@@ -240,7 +240,7 @@
           var wartosci = [];
           p.variants.forEach(function (v) { if (wartosci.indexOf(v.options[i]) < 0) wartosci.push(v.options[i]); });
           var sel = document.createElement('select');
-          sel.className = 'snz__sel'; sel.setAttribute('data-snz-opt', i);
+          sel.className = 'dp-look__select'; sel.setAttribute('data-dp-look-option', i);
           sel.setAttribute('aria-label', nazwaOpcji + ' for ' + p.title);
           var pusta = document.createElement('option'); pusta.value = ''; pusta.textContent = nazwaOpcji;
           sel.appendChild(pusta);
@@ -284,7 +284,7 @@
     }
 
     function start() {
-      var zrodla = (ramka.getAttribute('data-snz-zrodla') || '').split('|').filter(Boolean);
+      var zrodla = (ramka.getAttribute('data-dp-look-sources') || '').split('|').filter(Boolean);
       var pamiec = window.__snKort = window.__snKort || {};
       Promise.all(zrodla.map(function (u) {
         if (!pamiec[u]) {
@@ -294,7 +294,7 @@
         }
         return pamiec[u];
       })).then(function (teksty) {
-        var uchwyty = [ramka.getAttribute('data-snz-handle')].concat(wybierz(teksty));
+        var uchwyty = [ramka.getAttribute('data-dp-look-handle')].concat(wybierz(teksty));
         return Promise.all(uchwyty.map(function (h) {
           return fetch(KORZEN + 'products/' + h + '.js').then(function (o) { return o.ok ? o.json() : null; }).catch(function () { return null; });
         }));
@@ -312,26 +312,26 @@
         odswiezKolor();
         ramka.hidden = false;
         return fetch(KORZEN + 'cart.js', { credentials: 'same-origin' }).then(function (o) { return o.json(); })
-          .then(function (c) { wKoszyku = window.dpSztuki ? window.dpSztuki(c) : c.item_count; })
+          .then(function (c) { wKoszyku = window.dpItemCount ? window.dpItemCount(c) : c.item_count; })
           .catch(function () {});
       }).then(przelicz);
     }
 
     ramka.addEventListener('change', function (e) {
       blad.hidden = true;
-      if (e.target.matches('.snz__sel')) {
+      if (e.target.matches('.dp-look__select')) {
         e.target.classList.remove('is-err');
         e.target.__reczny = true;
-        var li = e.target.closest('[data-snz-x]');
-        if (e.target.value) li.querySelector('.snz__cb').checked = true;
+        var li = e.target.closest('[data-dp-look-item]');
+        if (e.target.value) li.querySelector('.dp-look__checkbox').checked = true;
         /* zdjecie wybranego koloru */
-        var i = Number(e.target.getAttribute('data-snz-opt'));
+        var i = Number(e.target.getAttribute('data-dp-look-option'));
         var zf = li.__snz.p.variants.filter(function (v) { return v.options[i] === e.target.value && v.featured_image; })[0];
-        var im = li.querySelector('.snz__img img');
+        var im = li.querySelector('.dp-look__img img');
         if (zf && im) im.src = zf.featured_image.src + (zf.featured_image.src.indexOf('?') < 0 ? '?' : '&') + 'width=120';
       }
-      if (e.target.matches('.snz__cb') && e.target.checked) {
-        var s = Array.prototype.filter.call(e.target.closest('[data-snz-x]').querySelectorAll('.snz__sel'), function (x) { return !x.value; })[0];
+      if (e.target.matches('.dp-look__checkbox') && e.target.checked) {
+        var s = Array.prototype.filter.call(e.target.closest('[data-dp-look-item]').querySelectorAll('.dp-look__select'), function (x) { return !x.value; })[0];
         if (s) s.focus();
       }
       przelicz();
@@ -345,7 +345,7 @@
       document.addEventListener(n, function () {
         setTimeout(function () {
           fetch(KORZEN + 'cart.js', { credentials: 'same-origin' }).then(function (o) { return o.json(); })
-            .then(function (c) { wKoszyku = window.dpSztuki ? window.dpSztuki(c) : c.item_count; przelicz(); }).catch(function () {});
+            .then(function (c) { wKoszyku = window.dpItemCount ? window.dpItemCount(c) : c.item_count; przelicz(); }).catch(function () {});
         }, 300);
       });
     });
@@ -354,18 +354,18 @@
       var g = glowny();
       if (!g || !g.available) { blad.textContent = 'Please choose an available size for this item first.'; blad.hidden = false; return; }
       var pozycje = [{ id: g.id, quantity: 1 }], brak = null;
-      lista.querySelectorAll('[data-snz-x]').forEach(function (li) {
-        if (!li.querySelector('.snz__cb').checked) return;
+      lista.querySelectorAll('[data-dp-look-item]').forEach(function (li) {
+        if (!li.querySelector('.dp-look__checkbox').checked) return;
         var v = wariantX(li);
         if (!v) {
-          li.querySelectorAll('.snz__sel').forEach(function (s) { if (!s.value) s.classList.add('is-err'); });
+          li.querySelectorAll('.dp-look__select').forEach(function (s) { if (!s.value) s.classList.add('is-err'); });
           brak = brak || li; return;
         }
         pozycje.push({ id: v.id, quantity: 1 });
       });
       if (brak) {
         blad.textContent = 'Please choose the options for each ticked item.'; blad.hidden = false;
-        var s = brak.querySelector('.snz__sel.is-err'); if (s) s.focus();
+        var s = brak.querySelector('.dp-look__select.is-err'); if (s) s.focus();
         return;
       }
       przycisk.disabled = true;
@@ -376,7 +376,7 @@
       })
         .then(function (o) { return o.json().then(function (j) { if (!o.ok) throw j; return j; }); })
         .then(function () {
-          lista.querySelectorAll('[data-snz-x] .snz__cb').forEach(function (cb) { cb.checked = false; });
+          lista.querySelectorAll('[data-dp-look-item] .dp-look__checkbox').forEach(function (cb) { cb.checked = false; });
           document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { addToCartBtn: przycisk } }));
         })
         .catch(function (j) {

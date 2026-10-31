@@ -17,7 +17,7 @@
   assign sn_pokaz = true
   if template.name == 'product' and product != blank and section.id contains '__rzad_'
     capture sn_klucz
-      render 'sn-pdp-rzad', product: product
+      render 'dp-pairing-row', product: product
     endcapture
     assign sn_klucz = sn_klucz | strip
     assign sn_moj = section.id | split: '__rzad_' | last

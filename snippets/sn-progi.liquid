@@ -8,7 +8,7 @@
   @param {string} [podtytul] - linijka pod naglowkiem (kolekcja, linje)
   @param {string} [notka] - zdanie pod progami (tylko linje)
 {%- endcomment -%}
-{%- capture sn_szt -%}{%- render 'sn-liczba-sztuk' -%}{%- endcapture -%}{%- assign sn_szt = sn_szt | plus: 0 -%}
+{%- capture sn_szt -%}{%- render 'dp-cart-item-count' -%}{%- endcapture -%}{%- assign sn_szt = sn_szt | plus: 0 -%}
 {%- liquid
   assign pary = progi | split: ','
   assign czyste = ''

@@ -13,7 +13,7 @@
         <div class="drawer__header appear-animation appear-delay-1">
           <div class="h2 drawer__title">
             {{ 'cart.general.title' | t }}
-            {%- capture sn_szt -%}{%- render 'sn-liczba-sztuk' -%}{%- endcapture -%}{%- assign sn_szt = sn_szt | plus: 0 -%}<span class="snk-count" data-snk-count{% if sn_szt == 0 %} hidden{% endif %}>{{ sn_szt }}</span>
+            {%- capture sn_szt -%}{%- render 'dp-cart-item-count' -%}{%- endcapture -%}{%- assign sn_szt = sn_szt | plus: 0 -%}<span class="snk-count" data-snk-count{% if sn_szt == 0 %} hidden{% endif %}>{{ sn_szt }}</span>
           </div>
           <div class="drawer__close">
             <button type="button" class="drawer__close-button js-drawer-close">
@@ -60,7 +60,7 @@
           {% endif %}
         </div>
 
-        <div class="dp-wrap">{%- render 'sn-ochrona-wiersz', dp_miejsce: 'kurv' -%}</div>
+        <div class="dp-protection-wrap">{%- render 'dp-delivery-protection-toggle', placement: 'drawer' -%}</div>
         <div class="drawer__footer appear-animation appear-delay-4">
           <div data-discounts class="snk-hidden"></div>
           <div data-subtotal class="snk-hidden">{%- render 'sn-cena', kwota: cart.total_price -%}</div>

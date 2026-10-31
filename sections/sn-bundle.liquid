@@ -304,7 +304,7 @@
         function policz() {
           fetch('/cart.js', { headers: { Accept: 'application/json' } })
             .then(function (r) { return r.json(); })
-            .then(function (k) { opisz(window.dpSztuki ? window.dpSztuki(k) : (k.item_count || 0)); })
+            .then(function (k) { opisz(window.dpItemCount ? window.dpItemCount(k) : (k.item_count || 0)); })
             .catch(function () { opisz(0); });
         }
 

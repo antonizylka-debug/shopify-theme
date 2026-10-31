@@ -1210,11 +1210,11 @@
           {%- render 'pdp-crosssell', product: product, ustawienia: section.settings -%}
         {%- endif -%}
         {%- if section.settings.upgrade_show -%}
-          {%- render 'sn-upgrade', product: product -%}
+          {%- render 'dp-premium-upgrade', product: product -%}
         {%- endif -%}
         {%- comment -%} Complete the look pod akordeonami (Antoni, 31.10.2026) {%- endcomment -%}
         {%- if section.settings.bundle_show -%}
-          {%- render 'sn-zestaw', product: product, sekcja: section.id, progi: section.settings.promo_tiers -%}
+          {%- render 'dp-complete-look', product: product, sekcja: section.id, progi: section.settings.promo_tiers -%}
         {%- endif -%}
 
       </div>

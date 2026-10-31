@@ -1,0 +1,250 @@
+{%- comment -%}
+  Rzad "Mix & match" na karcie produktu zamiast bestsellerow (31.10.2026,
+  prosba Antoniego): inne polecane produkty + haslo o rabacie za ilosc.
+
+  Zrodlo: rekomendacje Shopify "related" dla ogladanego produktu
+  (/recommendations/products?...&section_id=sn-rekomendacje - te same kafle sn-card).
+  Zanim przyjda (albo gdy Shopify nic nie zwroci), stoja kafle z podkolekcji
+  produktu wyrenderowane przez serwer - rzad nigdy nie jest pusty.
+  Kafel to ten sam sn-card co w kolekcji; Delivery Protection nie ma kafla.
+{%- endcomment -%}
+
+{%- liquid
+  assign per = section.settings.per_view
+  assign per_m = section.settings.per_view_mobile
+  assign odstep = 2
+  assign ile = section.settings.count
+
+  assign tytul = section.settings.title | escape | newline_to_br
+  if section.settings.accent_word != blank
+    assign slowo = section.settings.accent_word | escape
+    capture zamiennik
+      echo '<span class="dp-mix__accent">'
+      echo slowo
+      echo '</span>'
+    endcapture
+    assign tytul = tytul | replace: slowo, zamiennik
+  endif
+
+  assign zrodlo = blank
+  if product != blank
+    assign pomin = 'womens,mens,all,new-in,favourites,favorites,sale,womens-new-in,mens-new-in,womens-favourites,mens-favourites,womens-sale,mens-sale' | split: ','
+    for c in product.collections
+      if pomin contains c.handle
+        continue
+      endif
+      if c.handle contains 'womens-' or c.handle contains 'mens-'
+        assign zrodlo = c
+        break
+      endif
+    endfor
+    if zrodlo == blank
+      assign zrodlo = product.collections.first
+    endif
+  endif
+-%}
+
+{%- if product != blank and zrodlo != blank -%}
+{%- style -%}
+  #shopify-section-{{ section.id }} .dp-mix {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    color: #1c1d1d;
+    overflow: hidden;
+  }
+  #shopify-section-{{ section.id }} .dp-mix__head { text-align: center; margin-bottom: 28px; }
+  #shopify-section-{{ section.id }} .dp-mix__title {
+    margin: 0;
+    font-family: var(--typeHeaderPrimary), var(--typeHeaderFallback);
+    font-size: 26px; font-weight: 600; line-height: 1.18; letter-spacing: 0.01em;
+    text-wrap: balance;
+  }
+  #shopify-section-{{ section.id }} .dp-mix__accent { color: {{ section.settings.color_accent }}; }
+  #shopify-section-{{ section.id }} .dp-mix__subtitle { margin: 10px 0 0; font-size: 14px; line-height: 1.5; color: #6b6f76; }
+  #shopify-section-{{ section.id }} .dp-mix__tiers { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; margin: 12px 0 0; padding: 0; list-style: none; font-size: 13px; color: #6b6f76; }
+  #shopify-section-{{ section.id }} .dp-mix__tiers b { color: #1c1d1d; font-weight: 700; }
+
+  #shopify-section-{{ section.id }} .dp-mix__wrap { position: relative; }
+  #shopify-section-{{ section.id }} .dp-mix__track {
+    display: flex;
+    gap: {{ odstep }}px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  #shopify-section-{{ section.id }} .dp-mix__track::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .dp-mix__track.is-dojezdza { scroll-snap-type: none; }
+  #shopify-section-{{ section.id }} .dp-mix__card {
+    flex: 0 0 calc((100% - {{ per | minus: 1 | times: odstep }}px) / {{ per }});
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+  #shopify-section-{{ section.id }} .snc__pas { overflow-x: hidden; overscroll-behavior-x: auto; }
+
+  #shopify-section-{{ section.id }} .dp-mix__arrow {
+    position: absolute; top: 40%; z-index: 4;
+    width: 40px; height: 40px; margin-top: -20px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; border: 1px solid #e4e6ea; border-radius: 50%;
+    background: #ffffff; color: #1c1d1d; cursor: pointer;
+    box-shadow: 0 2px 10px rgba(28, 29, 29, 0.08);
+    transition: opacity 0.2s ease;
+  }
+  #shopify-section-{{ section.id }} .dp-mix__arrow svg { width: 9px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+  #shopify-section-{{ section.id }} .dp-mix__arrow--prev { left: 14px; }
+  #shopify-section-{{ section.id }} .dp-mix__arrow--next { right: 14px; }
+  #shopify-section-{{ section.id }} .dp-mix__arrow[disabled] { opacity: 0; pointer-events: none; }
+  @media not all and (hover: hover) {
+    #shopify-section-{{ section.id }} .dp-mix__arrow { display: none; }
+  }
+
+  @media only screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .dp-mix {
+      padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
+    }
+    #shopify-section-{{ section.id }} .dp-mix__title { font-size: 20px; }
+    #shopify-section-{{ section.id }} .dp-mix__card {
+      flex-basis: calc((100% - {{ per_m | minus: 1 | times: odstep }}px) / {{ per_m }});
+    }
+  }
+{%- endstyle -%}
+
+{%- render 'sn-card-assets' -%}
+
+<div class="dp-mix" data-dp-mix data-dp-mix-pid="{{ product.id }}" data-dp-mix-count="{{ ile }}">
+  <div class="page-width dp-mix__head">
+    {%- if section.settings.title != blank -%}<h2 class="dp-mix__title">{{ tytul }}</h2>{%- endif -%}
+    {%- if section.settings.subtitle != blank -%}<p class="dp-mix__subtitle">{{ section.settings.subtitle | escape }}</p>{%- endif -%}
+    {%- if section.settings.show_tiers -%}
+      <ul class="dp-mix__tiers">
+        <li>2 items <b>−10%</b></li>
+        <li>3 items <b>−20%</b></li>
+        <li>4 items <b>−25%</b></li>
+        <li>5+ items <b>−30%</b></li>
+      </ul>
+    {%- endif -%}
+  </div>
+  <div class="dp-mix__wrap">
+    <button type="button" class="dp-mix__arrow dp-mix__arrow--prev" data-dp-mix-step="-1" aria-label="{{ 'general.slider.previous_slide' | t }}" disabled>
+      <svg viewBox="0 0 10 16" aria-hidden="true" focusable="false"><path d="M8.5 1.5 2 8l6.5 6.5"/></svg>
+    </button>
+    <div class="dp-mix__track" data-dp-mix-track>
+      {%- assign n = 0 -%}
+      {%- for p in zrodlo.products limit: 40 -%}
+        {%- if n >= ile -%}{%- break -%}{%- endif -%}
+        {%- if p.id == product.id or p.available == false or p.type == 'Order Add-on' -%}{%- continue -%}{%- endif -%}
+        <div class="dp-mix__card">{%- render 'sn-card', product: p, grid_item: false -%}</div>
+        {%- assign n = n | plus: 1 -%}
+      {%- endfor -%}
+    </div>
+    <button type="button" class="dp-mix__arrow dp-mix__arrow--next" data-dp-mix-step="1" aria-label="{{ 'general.slider.next_slide' | t }}">
+      <svg viewBox="0 0 10 16" aria-hidden="true" focusable="false"><path d="M1.5 1.5 8 8l-6.5 6.5"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var korzen = document.getElementById('shopify-section-{{ section.id }}');
+    if (!korzen) return;
+    var ramka = korzen.querySelector('[data-dp-mix]');
+    var tor = korzen.querySelector('[data-dp-mix-track]');
+    var wstecz = korzen.querySelector('[data-dp-mix-step="-1"]');
+    var dalej = korzen.querySelector('[data-dp-mix-step="1"]');
+    var ODSTEP = {{ odstep }};
+
+    function stan() {
+      var maks = tor.scrollWidth - tor.clientWidth;
+      wstecz.disabled = tor.scrollLeft < 4;
+      dalej.disabled = tor.scrollLeft > maks - 4;
+    }
+    var klatka = null;
+    function ease(x) { return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; }
+    function jedzDo(cel) {
+      if (klatka) cancelAnimationFrame(klatka);
+      var maks = tor.scrollWidth - tor.clientWidth;
+      cel = Math.max(0, Math.min(cel, maks));
+      var start = tor.scrollLeft, roznica = cel - start, t0 = performance.now();
+      if (Math.abs(roznica) < 1) { stan(); return; }
+      tor.classList.add('is-dojezdza');
+      klatka = requestAnimationFrame(function ruch(teraz) {
+        var p = Math.min(1, (teraz - t0) / 300);
+        tor.scrollLeft = start + roznica * ease(p);
+        if (p < 1) { klatka = requestAnimationFrame(ruch); return; }
+        klatka = null;
+        tor.classList.remove('is-dojezdza');
+        stan();
+      });
+    }
+    function krok() {
+      var k = tor.children[0];
+      return k ? k.getBoundingClientRect().width + ODSTEP : tor.clientWidth;
+    }
+    [wstecz, dalej].forEach(function (b) {
+      b.addEventListener('click', function () {
+        var kier = parseInt(b.getAttribute('data-dp-mix-step'), 10);
+        var k = krok();
+        var naRaz = Math.max(1, Math.floor(tor.clientWidth / k));
+        jedzDo((Math.round(tor.scrollLeft / k) + kier * naRaz) * k);
+      });
+    });
+    tor.addEventListener('scroll', stan, { passive: true });
+    stan();
+
+    /* Rekomendacje Shopify "related" - podmieniaja kafle z podkolekcji, gdy jest ich co najmniej 4. */
+    var KORZEN_URL = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+    var ILE = Number(ramka.getAttribute('data-dp-mix-count')) || 12;
+    function laduj() {
+      fetch(KORZEN_URL + 'recommendations/products?section_id=sn-rekomendacje&product_id=' + ramka.getAttribute('data-dp-mix-pid') + '&limit=' + ILE + '&intent=related')
+        .then(function (o) { return o.ok ? o.text() : ''; })
+        .then(function (t) {
+          if (!t) return;
+          var d = new DOMParser().parseFromString(t, 'text/html');
+          var karty = Array.prototype.slice.call(d.querySelectorAll('.snx__item .snc'));
+          if (karty.length < 4) return;
+          tor.innerHTML = '';
+          karty.forEach(function (k) {
+            k.classList.remove('snc--round');
+            var el = document.createElement('div');
+            el.className = 'dp-mix__card';
+            el.appendChild(document.importNode(k, true));
+            tor.appendChild(el);
+          });
+          tor.scrollLeft = 0;
+          stan();
+        })
+        .catch(function () {});
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (w) {
+        if (w[0].isIntersecting) { io.disconnect(); laduj(); }
+      }, { rootMargin: '600px 0px' });
+      io.observe(ramka);
+    } else laduj();
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Mix & match row",
+  "settings": [
+    { "type": "textarea", "id": "title", "label": "Heading", "default": "MIX & MATCH\nSAVE UP TO 30%" },
+    { "type": "text", "id": "accent_word", "label": "Word in colour", "info": "Must match the heading exactly.", "default": "30%" },
+    { "type": "color", "id": "color_accent", "label": "Colour of that word", "default": "#6b1f2d" },
+    { "type": "text", "id": "subtitle", "label": "Line under the heading", "default": "Combine any pieces – the discount applies automatically in your cart." },
+    { "type": "checkbox", "id": "show_tiers", "label": "Show discount steps", "default": true },
+    { "type": "range", "id": "count", "label": "Products at most", "default": 12, "min": 4, "max": 20, "step": 1 },
+    { "type": "range", "id": "per_view", "label": "Visible at once", "default": 4, "min": 2, "max": 6, "step": 1 },
+    { "type": "range", "id": "per_view_mobile", "label": "Visible at once (phone)", "default": 2, "min": 1, "max": 3, "step": 1 },
+    { "type": "range", "id": "padding_top", "label": "Space above", "default": 56, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "default": 56, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_top_mobile", "label": "Space above (phone)", "default": 36, "min": 0, "max": 100, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Space below (phone)", "default": 36, "min": 0, "max": 100, "step": 4, "unit": "px" }
+  ],
+  "presets": [{ "name": "Mix & match row" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

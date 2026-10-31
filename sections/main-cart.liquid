@@ -46,7 +46,7 @@
             {% endif %}
           </div>
 
-          <div class="dp-wrap dp-wrap--strona">{%- render 'sn-ochrona-wiersz', dp_miejsce: 'strona' -%}</div>
+          <div class="dp-protection-wrap dp-protection-wrap--page">{%- render 'dp-delivery-protection-toggle', placement: 'page' -%}</div>
           <div class="cart__item-sub cart__item-row">
             <div>{{ 'cart.general.subtotal' | t }}</div>
             <div data-subtotal>{%- render 'sn-cena', kwota: cart.total_price -%}</div>
