@@ -1,0 +1,89 @@
+{%- comment -%}
+  "Pairs well with …" strip inside the collection grid (31.10.2026, AOV brief §5).
+  Shown once, after the 8th product on page 1 of a category collection: 4 available
+  products from the category that completes the outfit (knitwear -> trousers, coats -> knitwear,
+  dresses -> bags & accessories ...). Same sn-card tiles with the "+" quick add.
+  Broad collections (Women, Men, Sale, New in, search) get nothing.
+
+  @param {object} collection
+{%- endcomment -%}
+{%- liquid
+  assign h = collection.handle | default: ''
+  assign side = ''
+  if h contains 'womens-'
+    assign side = 'womens-'
+  elsif h contains 'mens-'
+    assign side = 'mens-'
+  endif
+
+  assign pair = ''
+  assign label = ''
+  if side != ''
+    if h contains 'sweaters-and-knitwear'
+      assign pair = 'bottoms'
+      assign label = 'trousers & skirts'
+      if side == 'mens-'
+        assign label = 'trousers'
+      endif
+    elsif h contains 'jackets-and-coats'
+      assign pair = 'sweaters-and-knitwear'
+      assign label = 'knitwear'
+    elsif h contains 'bottoms'
+      assign pair = 'sweaters-and-knitwear'
+      assign label = 'knitwear'
+    elsif h contains 'tops' or h contains 'shirts'
+      assign pair = 'bottoms'
+      assign label = 'trousers'
+    elsif h contains 'dresses' or h contains 'sets-and-one-pieces'
+      assign pair = 'accessories'
+      assign label = 'bags & accessories'
+    elsif h contains 'footwear'
+      assign pair = 'jackets-and-coats'
+      assign label = 'coats & jackets'
+    elsif h contains 'accessories'
+      assign pair = 'footwear'
+      assign label = 'shoes'
+    endif
+  endif
+
+  assign src = blank
+  if pair != ''
+    assign src_handle = side | append: pair
+    assign src = collections[src_handle]
+  endif
+-%}
+{%- if src != blank and src.products_count > 0 -%}
+  <div class="grid__item dp-pairs" data-dp-pairs>
+    <div class="dp-pairs__head">
+      <p class="dp-pairs__title">Pairs well with {{ label }}</p>
+      <p class="dp-pairs__sub">Mix &amp; Match – any 2 pieces −10%, up to −30% at 5+</p>
+      <a class="dp-pairs__all" href="{{ src.url }}">Shop all &rarr;</a>
+    </div>
+    <div class="dp-pairs__row">
+      {%- assign n = 0 -%}
+      {%- for p in src.products limit: 24 -%}
+        {%- if n >= 4 -%}{%- break -%}{%- endif -%}
+        {%- if p.available == false or p.type == 'Order Add-on' -%}{%- continue -%}{%- endif -%}
+        <div class="dp-pairs__card">{%- render 'sn-card', product: p, grid_item: false -%}</div>
+        {%- assign n = n | plus: 1 -%}
+      {%- endfor -%}
+    </div>
+  </div>
+  <style>
+    [data-product-grid] > .dp-pairs { width: 100%; flex: 0 0 100%; margin: 6px 0 34px; padding: 22px 4px 4px; border-top: 1px solid #e4e6ea; border-bottom: 1px solid #e4e6ea; }
+    .dp-pairs__head { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2px 16px; margin: 0 0 16px; }
+    .dp-pairs__title { grid-column: 1; margin: 0; font-size: 18px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+    .dp-pairs__sub { grid-column: 1; margin: 0; font-size: 13px; color: #6b1f2d; font-weight: 600; }
+    .dp-pairs__all { grid-column: 2; grid-row: 1 / span 2; font-size: 13px; font-weight: 600; color: inherit; white-space: nowrap; }
+    .dp-pairs__row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+    .dp-pairs__card { min-width: 0; }
+    .dp-pairs .snc__nazwa { -webkit-line-clamp: 1; }
+    @media only screen and (max-width: 768px) {
+      .dp-pairs__title { font-size: 15px; }
+      .dp-pairs__row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+      .dp-pairs__row::-webkit-scrollbar { display: none; }
+      .dp-pairs__card { flex: 0 0 44%; scroll-snap-align: start; }
+      .dp-pairs .snc__pas { overflow-x: hidden; }
+    }
+  </style>
+{%- endif -%}

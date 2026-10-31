@@ -92,6 +92,10 @@ Snippet Arguments
           per_row: per_row
         %}
       {%- endif -%}
+      {%- comment -%} "Pairs well with" strip after the 8th product, page 1 of category collections (31.10.2026) {%- endcomment -%}
+      {%- if forloop.index == 8 and current_page == 1 and collection.products -%}
+        {%- render 'dp-pairs-strip', collection: collection -%}
+      {%- endif -%}
     {%- endfor -%}
   </div>
 </div>
