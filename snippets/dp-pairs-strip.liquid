@@ -1,11 +1,13 @@
 {%- comment -%}
   "Pairs well with …" strip inside the collection grid (31.10.2026, AOV brief §5).
-  Shown once, after the 12th product on page 1 of a category collection: 4 available
+  Shown after the 12th product of every page (so also in each "Show more" batch), with the next 4
+  products each time. 4 available
   products from the category that completes the outfit (knitwear -> trousers, coats -> knitwear,
   dresses -> bags & accessories ...). Same sn-card tiles with the "+" quick add.
   Broad collections (Women, Men, Sale, New in, search) get nothing.
 
   @param {object} collection
+  @param {number} [page] - current_page; shifts the products by 4 per page
 {%- endcomment -%}
 {%- liquid
   assign h = collection.handle | default: ''
@@ -62,7 +64,8 @@
     </div>
     <div class="dp-pairs__row">
       {%- assign n = 0 -%}
-      {%- for p in src.products limit: 24 -%}
+      {%- assign dp_off = page | default: 1 | minus: 1 | times: 4 | modulo: 24 -%}
+      {%- for p in src.products limit: 30 offset: dp_off -%}
         {%- if n >= 4 -%}{%- break -%}{%- endif -%}
         {%- if p.available == false or p.type == 'Order Add-on' -%}{%- continue -%}{%- endif -%}
         <div class="dp-pairs__card">{%- render 'sn-card', product: p, grid_item: false -%}</div>
