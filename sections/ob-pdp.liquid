@@ -1121,9 +1121,6 @@
             </span>
           </button>
         {%- endform -%}
-        {%- if section.settings.bundle_show -%}
-          {%- render 'sn-zestaw', product: product, sekcja: section.id, progi: section.settings.promo_tiers -%}
-        {%- endif -%}
         {%- if section.settings.show_sticky_atc -%}
           <div class="pdp__stick{% if war.compare_at_price > war.price %} is-sale{% endif %}" data-pdp-stick aria-hidden="true">
             <div class="pdp__stick-info">
@@ -1211,6 +1208,10 @@
         {%- comment -%} ---------- propozycja pod akordeonami ---------- {%- endcomment -%}
         {%- if section.settings.cross_show -%}
           {%- render 'pdp-crosssell', product: product, ustawienia: section.settings -%}
+        {%- endif -%}
+        {%- comment -%} Complete the look pod akordeonami (Antoni, 31.10.2026) {%- endcomment -%}
+        {%- if section.settings.bundle_show -%}
+          {%- render 'sn-zestaw', product: product, sekcja: section.id, progi: section.settings.promo_tiers -%}
         {%- endif -%}
 
       </div>
@@ -1748,7 +1749,7 @@
 
     { "type": "header", "content": "Suggestion under the accordions" },
     { "type": "checkbox", "id": "cross_show", "label": "Show it", "default": true },
-    { "type": "checkbox", "id": "bundle_show", "label": "Complete the look under Add to bag", "info": "Tick items + one button. Discount preview uses the Steps above.", "default": true },
+    { "type": "checkbox", "id": "bundle_show", "label": "Complete the look under accordions", "info": "Tick items + one button. Discount preview uses the Steps above.", "default": true },
     { "type": "text", "id": "cross_title", "label": "Heading", "default": "Style it with" },
     { "type": "text", "id": "cross_add", "label": "Button (no longer shown)", "default": "Add to cart", "info": "Kept because saved templates still hold this value. The row now adds through the + on each card." },
     { "type": "collection", "id": "cross_collection", "label": "Collection", "info": "Left empty it uses the one this product sits in." },

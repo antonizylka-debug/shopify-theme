@@ -34,11 +34,13 @@
 -%}
 <div class="snprog{% if kompakt %} snprog--kompakt{% endif %}"{% if ile == 0 %} hidden{% endif %} data-sn-prog>
   <p class="snprog__txt" data-sn-prog-txt>
-    {%- if nastepny == 0 -%}
-      You get the highest discount: <strong>−30%</strong> on your whole cart.
-    {%- else -%}
-      Add {{ brakuje }} more {% if brakuje == 1 %}item{% else %}items{% endif %} and save <strong>{{ nastepny }}%</strong> on your whole cart.
-    {%- endif -%}
+    {%- case ile -%}
+      {%- when 1 -%}Add one more item to unlock <strong>10% off</strong>
+      {%- when 2 -%}One more piece unlocks <strong>20% off</strong>
+      {%- when 3 -%}You're one item away from <strong>25% off</strong>
+      {%- when 4 -%}Add one more to unlock <strong>30% off</strong>
+      {%- else -%}{%- if ile >= 5 -%}You've unlocked <strong>30% off</strong> your order{%- endif -%}
+    {%- endcase -%}
   </p>
   <div class="snprog__bar" aria-hidden="true"><span class="snprog__fill" data-sn-prog-fill style="width: {{ zapelnienie }}%"></span></div>
   <div class="snprog__steps" aria-hidden="true">
@@ -86,9 +88,12 @@
       document.querySelectorAll('[data-sn-prog]').forEach(function (el) {
         el.hidden = ile === 0;
         var txt = el.querySelector('[data-sn-prog-txt]');
-        txt.innerHTML = nastepny === 0
-          ? 'You get the highest discount: <strong>−30%</strong> on your whole cart.'
-          : 'Add ' + brakuje + ' more ' + (brakuje === 1 ? 'item' : 'items') + ' and save <strong>' + nastepny + '%</strong> on your whole cart.';
+        /* teksty progow z briefu AOV (31.10.2026) */
+        txt.innerHTML = ile >= 5 ? 'You\'ve unlocked <strong>30% off</strong> your order'
+          : ({ 1: 'Add one more item to unlock <strong>10% off</strong>',
+               2: 'One more piece unlocks <strong>20% off</strong>',
+               3: 'You\'re one item away from <strong>25% off</strong>',
+               4: 'Add one more to unlock <strong>30% off</strong>' })[ile] || '';
         el.querySelector('[data-sn-prog-fill]').style.width = (Math.min(ile, 5) * 20) + '%';
         el.querySelectorAll('[data-sn-prog-step]').forEach(function (s) {
           s.classList.toggle('is-on', ile >= Number(s.getAttribute('data-sn-prog-step')));
@@ -96,12 +101,6 @@
       });
       window.__snIle = ile;
       if (window.snZacheta) window.snZacheta();
-      /* zacheta nad polecanymi w koszyku (sn-kurv-forslag) */
-      document.querySelectorAll('[data-sn-zacheta]').forEach(function (z) {
-        var cel = ile >= 1 && ile < 5 ? { 1: 10, 2: 20, 3: 25, 4: 30 }[ile] : 0;
-        z.hidden = !cel;
-        z.innerHTML = cel ? 'Add 1 more item and get <b>−' + cel + '%</b> on your whole cart' : '';
-      });
     }
     /* Pod kazda karta polecanych w koszyku: co da dodanie wlasnie tej rzeczy (brief AOV 2D).
        Wolane tez z sn-kurv-assets po wstawieniu kart (przychodza pozniej niz koszyk). */
