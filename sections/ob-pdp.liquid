@@ -1080,7 +1080,8 @@
           <div class="pdp__help">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7h13l5 5-5 5H3z"/><path d="M7 12h.01M11 12h.01"/></svg>
             <div>
-              {{ section.settings.help_text }}
+              {%- capture dp_fit -%}{%- render 'dp-fit-note', product: product -%}{%- endcapture -%}
+              {%- if dp_fit != blank -%}{{ dp_fit | strip }}{%- else -%}{{ section.settings.help_text }}{%- endif -%}
               {%- if section.settings.help_link != blank and section.settings.help_link_label != blank -%}
                 {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
                 <br><a href="{{ section.settings.help_link }}"{% if sg_html contains 'data-sgm' %} data-sg-open{% endif %}>{{ section.settings.help_link_label }}</a>

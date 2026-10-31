@@ -1,0 +1,60 @@
+{%- comment -%}
+  Fit note in the size help box on the product page (31.10.2026).
+  1. If the description has the supplier's model line ("Model Size: Wears size S, Height: 174 cm, ...")
+     we show it: "The model is 174 cm and wears size S." Real data only - nothing is estimated.
+  2. Otherwise a sizing tip for the product's size chart (same categories as sn-sizechart).
+     These are advice, not claims about the photos or the cut.
+  Empty output = ob-pdp falls back to the section's help text.
+
+  @param {object} product
+{%- endcomment -%}
+{%- liquid
+  assign dp_model = ''
+  assign dp_desc = product.description | strip_html | replace: '&nbsp;', ' '
+  if dp_desc contains 'Model Size:'
+    assign dp_part = dp_desc | split: 'Model Size:' | last
+    assign dp_size = dp_part | split: 'Wears size ' | last | split: ',' | first | strip
+    assign dp_height = ''
+    if dp_part contains 'Height:'
+      assign dp_height = dp_part | split: 'Height:' | last | split: ',' | first | strip
+    endif
+    assign dp_size_len = dp_size | size
+    if dp_size != blank and dp_size_len < 8
+      if dp_height != blank
+        assign dp_model = 'The model is ' | append: dp_height | append: ' and wears size ' | append: dp_size | append: '.'
+      else
+        assign dp_model = 'The model wears size ' | append: dp_size | append: '.'
+      endif
+    endif
+  endif
+
+  assign dp_men = false
+  if product.tags contains 'Department: Men'
+    assign dp_men = true
+  endif
+  assign dp_type = product.type
+  assign dp_shoes = 'Boots,Clogs,Dress Shoes,Espadrilles,Heels,Loafers,Mules,Sandals,Slides,Sneakers' | split: ','
+  assign dp_bottoms = 'Pants,Jeans,Shorts,Skirts' | split: ','
+  assign dp_outer = 'Coats,Jackets,Blazers,Capes & Ponchos,Vests' | split: ','
+  assign dp_none = 'Belts,Sunglasses,Jewelry,Bags,Underwear,Suits,Order Add-on' | split: ','
+
+  assign dp_tip = ''
+  if dp_none contains dp_type
+    assign dp_tip = ''
+  elsif dp_shoes contains dp_type
+    if dp_men
+      assign dp_tip = 'Men’s shoes come in US sizing – choose your usual US size.'
+    else
+      assign dp_tip = 'Women’s shoes come in US sizing – choose your usual US size.'
+    endif
+  elsif dp_bottoms contains dp_type
+    assign dp_tip = 'Choose by your waist measurement – the inseam is listed in the size chart.'
+  elsif dp_outer contains dp_type
+    assign dp_tip = 'Planning to wear it over a thick knit? Consider one size up.'
+  elsif dp_men
+    assign dp_tip = 'Go by your chest measurement. Between sizes? Size up for a relaxed fit.'
+  else
+    assign dp_tip = 'Go by your bust and hip measurements. Between sizes? Size up for a relaxed fit.'
+  endif
+-%}
+{%- if dp_model != blank -%}{{ dp_model }} {% endif -%}{{ dp_tip }}
