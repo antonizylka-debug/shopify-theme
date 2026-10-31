@@ -103,7 +103,7 @@
         "main_menu_link_list": "womens-menu",
         "hover_menu": true,
         "mega_menu_images": true,
-        "split_menu_left": 4,
+        "split_menu_left": 3,
         "nav_item_spacing": 11,
         "nav_font_size": 0,
         "logo_gap": 110,
