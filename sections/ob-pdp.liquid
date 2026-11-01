@@ -371,55 +371,16 @@
   }
 
   /* ---------- pomoc przy rozmiarze ---------- */
-  #shopify-section-{{ section.id }} .pdp__help.dp-size-help {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin: 12px 0;
-    padding: 12px 14px;
-    border: 1px solid #e7e3dc;
-    border-radius: 8px;
-    background: #f8f7f4;
-    color: #383530;
+  #shopify-section-{{ section.id }} .pdp__help {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--pdp-soft);
+    padding: 12px 14px; margin: 18px 0;
     font-size: 13px;
-    line-height: 1.5;
-    letter-spacing: normal;
-    text-align: left;
-    text-transform: none;
   }
-
-  #shopify-section-{{ section.id }} .dp-size-help > .dp-size-help__icon {
-    flex: 0 0 18px;
-    width: 18px;
-    height: 18px;
-    margin: 1px 0 0;
-    color: #756b5c;
-  }
-
-  #shopify-section-{{ section.id }} .dp-size-help > .dp-size-help__content {
-    min-width: 0;
-  }
-
-  #shopify-section-{{ section.id }} .dp-size-help .dp-size-help__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 5px;
-    color: #302b25;
-    font: inherit;
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
-  }
-
-  #shopify-section-{{ section.id }} .dp-size-help .dp-size-help__link:hover {
-    color: #655744;
-  }
-
-  #shopify-section-{{ section.id }} .dp-size-help .dp-size-help__link:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 4px;
+  #shopify-section-{{ section.id }} .pdp__help svg { width: 17px; height: 17px; flex: 0 0 17px; margin-top: 1px; }
+  #shopify-section-{{ section.id }} .pdp__help a {
+    display: inline-block; margin-top: 3px;
+    color: inherit; text-decoration: underline; text-underline-offset: 2px;
   }
 
   /* ---------- rozmiary ---------- */
@@ -1152,38 +1113,21 @@
           </div>
         {%- endif -%}
 
-{%- comment -%} Pomoc przy rozmiarze — tylko dla produktów z wariantami. {%- endcomment -%}
-{%- if section.settings.help_text != blank and product.has_only_default_variant == false -%}
-  <div class="pdp__help dp-size-help">
-    <svg class="dp-size-help__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-      <rect x="3" y="7" width="18" height="10" rx="1.5"/>
-      <path d="M7 7v4m4-4v6m4-6v4m4-4v6"/>
-    </svg>
-
-    <div class="dp-size-help__content">
-      {%- capture dp_fit -%}{%- render 'dp-fit-note', product: product -%}{%- endcapture -%}
-      {%- assign dp_fit = dp_fit | strip -%}
-
-      <div class="dp-size-help__text">
-        {%- if dp_fit != blank -%}
-          {{ dp_fit }}
-        {%- else -%}
-          {{ section.settings.help_text }}
+        {%- comment -%} ---------- pomoc przy rozmiarze (produkt bez wariantow nie ma czego dobierac) ---------- {%- endcomment -%}
+        {%- if section.settings.help_text != blank and product.has_only_default_variant == false -%}
+          <div class="pdp__help">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7h13l5 5-5 5H3z"/><path d="M7 12h.01M11 12h.01"/></svg>
+            <div>
+              {%- capture dp_fit -%}{%- render 'dp-fit-note', product: product -%}{%- endcapture -%}
+              {%- if dp_fit != blank -%}{{ dp_fit | strip }}{%- else -%}{{ section.settings.help_text }}{%- endif -%}
+              {%- if section.settings.help_link != blank and section.settings.help_link_label != blank -%}
+                {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
+                <br><a href="{{ section.settings.help_link }}"{% if sg_html contains 'data-sgm' %} data-sg-open{% endif %}>{{ section.settings.help_link_label }}</a>
+                {{- sg_html -}}
+              {%- endif -%}
+            </div>
+          </div>
         {%- endif -%}
-      </div>
-
-      {%- if section.settings.help_link != blank and section.settings.help_link_label != blank -%}
-        {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
-        <a class="dp-size-help__link" href="{{ section.settings.help_link }}"{% if sg_html contains 'data-sgm' %} data-sg-open{% endif %}>
-          <span>{{ section.settings.help_link_label }}</span>
-          <span aria-hidden="true">&rarr;</span>
-        </a>
-        {{- sg_html -}}
-      {%- endif -%}
-    </div>
-  </div>
-{%- endif -%}
-
 
         {%- comment -%} ---------- rozmiary i pozostale opcje (bez przycisku "Default Title" przy produkcie bez wariantow) ---------- {%- endcomment -%}
         {%- for opt in product.options_with_values -%}
@@ -1209,7 +1153,7 @@
         {%- endfor -%}
         {%- comment -%} dp-size-fit line removed from the page 31.10.2026 (Antoni) - snippet kept {%- endcomment -%}
         {%- comment -%} Model height + size worn, from custom.model_* metafields (31.10.2026) {%- endcomment -%}
-        {%- render 'dp-model-info', section_id: section.id, ss: section.settings -%}
+        {%- render 'dp-model-info', section_id: section.id -%}
 
         {%- comment -%}
           Osobnego linku "Storrelsesguide" tu nie ma - prowadzilby tam samo,
@@ -1832,18 +1776,6 @@
     { "type": "textarea", "id": "help_text", "label": "Size help box", "default": "Not sure about your size? Go by the measurements rather than the size you usually wear." },
     { "type": "text", "id": "help_link_label", "label": "Link in the help box", "default": "See measurements" },
     { "type": "url", "id": "help_link", "label": "Help box target" },
-
-    { "type": "header", "content": "Model fit line" },
-    { "type": "paragraph", "content": "Line under the sizes. Height and size come from each product's metafields. In the text use [height] for cm, [ft] for feet and inches, [size] for the size." },
-    { "type": "text", "id": "fit_text_model", "label": "Text with real model data", "default": "Model is [height] cm tall and wears size [size]." },
-    { "type": "text", "id": "fit_text_example", "label": "Text with a fit example", "info": "Must contain \"example\" or \"illustrative\". Otherwise \"Illustrative fit example:\" is added in front, so an estimate never reads as real model data.", "default": "Illustrative fit example: [height] cm · Size [size]." },
-    { "type": "range", "id": "fit_font", "label": "Text size", "default": 13, "min": 11, "max": 16, "step": 1, "unit": "px" },
-    { "type": "checkbox", "id": "fit_pill", "label": "Rounded ends", "default": true },
-    { "type": "checkbox", "id": "fit_icon", "label": "Ruler icon", "default": true },
-    { "type": "color", "id": "fit_bg", "label": "Background", "default": "#f7f6f3" },
-    { "type": "color", "id": "fit_border", "label": "Border", "default": "#e2dfd9" },
-    { "type": "color", "id": "fit_color", "label": "Text colour", "default": "#4a4d52" },
-    { "type": "color", "id": "fit_strong", "label": "Numbers colour", "default": "#1c1d1d" },
 
     { "type": "header", "content": "Low stock" },
     {
