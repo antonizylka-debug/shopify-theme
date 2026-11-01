@@ -1,0 +1,167 @@
+{%- comment -%}
+  "Combine it with" nad opisem produktu (Antoni 01.11.2026, wzor: rzad "Combineer het met"
+  na icon-amsterdam.nl). Zastepuje pole "Complete the look" z checkboxami.
+
+  Rzad duzych kart sklepu (sn-card), przewijany w bok. "+" na karcie otwiera panel z boku
+  (snippets/sn-quickadd): zdjecia, kolor, rozmiar, "Add to cart", opis. Klientka nic nie
+  zaznacza ani nie szuka - widzi rzeczy i dodaje to, co jej sie podoba.
+
+  Dobor jak w "Complete the look" i w koszyku: typy do kompletu z sn-komplet-typy (do
+  plaszcza swetry, spodnie, buty...), ten sam dzial. Karty z /collections/<dzial>/<typ>
+  przez section_id=sn-kurv-kort, ulozone na przemian z kazdego typu.
+  Brak kart = rzad sie nie pokazuje.
+
+  @param {object} product - ogladany produkt
+{%- endcomment -%}
+{%- liquid
+  assign typ = ''
+  assign dzial = 'womens'
+  for tag in product.tags
+    if tag contains 'Product Type: '
+      assign typ = tag | remove: 'Product Type: ' | strip
+      break
+    endif
+  endfor
+  if product.tags contains 'Department: Men'
+    unless product.tags contains 'Department: Women'
+      assign dzial = 'mens'
+    endunless
+  endif
+  capture cele
+    render 'sn-komplet-typy', typ: typ, dzial: dzial
+  endcapture
+  assign cele = cele | strip | split: ','
+  assign elegancko = false
+  if dzial == 'womens'
+    case typ
+      when 'Dresses', 'Jumpsuits', 'Matching Sets', 'Playsuits & Rompers'
+        assign elegancko = true
+    endcase
+  endif
+  assign zrodla = ''
+  for c in cele
+    assign tag_c = 'Product Type: ' | append: c | handle
+    assign zrodla = zrodla | append: routes.collections_url | append: '/' | append: dzial | append: '/' | append: tag_c | append: '|'
+  endfor
+-%}
+{%- if zrodla != blank and product.type != 'Order Add-on' -%}
+<style>
+  .dp-combine { margin: 30px 0 6px; }
+  .dp-combine[hidden] { display: none; }
+  .dp-combine__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 14px; }
+  .dp-combine__title { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+  .dp-combine__arrows { display: flex; gap: 8px; }
+  .dp-combine__arrow { width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border: 1px solid #c9cbcf; border-radius: 6px; background: #fff; color: #1c1d1d; cursor: pointer; }
+  .dp-combine__arrow svg { width: 8px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+  .dp-combine__arrow[disabled] { opacity: .35; cursor: default; }
+  .dp-combine__track { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+  .dp-combine__track::-webkit-scrollbar { display: none; }
+  .dp-combine__card { flex: 0 0 calc((100% - 20px) / 2.3); min-width: 0; scroll-snap-align: start; }
+  {%- comment -%} Pasek zdjec w kafelku nie lapie palca - przesuniecie idzie do calego rzedu (jak w "Style it with"). {%- endcomment -%}
+  .dp-combine .snc__pas { overflow-x: hidden; overscroll-behavior-x: auto; }
+  {%- comment -%} "+" widoczny zawsze, nie dopiero po najechaniu - ma byc pod oczami {%- endcomment -%}
+  .dp-combine .snc__plus { opacity: 1; }
+  @media only screen and (max-width: 749px) {
+    .dp-combine__card { flex-basis: calc((100% - 10px) / 1.7); }
+    .dp-combine__title { font-size: 16px; }
+  }
+  @media not all and (hover: hover) {
+    .dp-combine__arrows { display: none; }
+  }
+</style>
+<div class="dp-combine" data-dp-combine data-dp-combine-sources="{{ zrodla | escape }}" data-dp-combine-pid="{{ product.id }}"{% if elegancko %} data-dp-combine-formal{% endif %} hidden>
+  <div class="dp-combine__head">
+    <h2 class="dp-combine__title">Combine it with</h2>
+    <div class="dp-combine__arrows">
+      <button type="button" class="dp-combine__arrow" data-dp-combine-step="-1" aria-label="{{ 'general.slider.previous_slide' | t }}" disabled>
+        <svg viewBox="0 0 10 16" aria-hidden="true" focusable="false"><path d="M8.5 1.5 2 8l6.5 6.5"/></svg>
+      </button>
+      <button type="button" class="dp-combine__arrow" data-dp-combine-step="1" aria-label="{{ 'general.slider.next_slide' | t }}">
+        <svg viewBox="0 0 10 16" aria-hidden="true" focusable="false"><path d="M1.5 1.5 8 8l-6.5 6.5"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="dp-combine__track" data-dp-combine-track></div>
+</div>
+<script>
+  (function () {
+    var ramka = document.querySelector('[data-dp-combine]:not([data-dp-combine-ready])');
+    if (!ramka) return;
+    ramka.setAttribute('data-dp-combine-ready', '');
+    var tor = ramka.querySelector('[data-dp-combine-track]');
+    var wstecz = ramka.querySelector('[data-dp-combine-step="-1"]');
+    var dalej = ramka.querySelector('[data-dp-combine-step="1"]');
+    var PID = ramka.getAttribute('data-dp-combine-pid');
+    var elegancko = ramka.hasAttribute('data-dp-combine-formal');
+    var ILE = 10;
+
+    function stan() {
+      var maks = tor.scrollWidth - tor.clientWidth;
+      wstecz.disabled = tor.scrollLeft < 4;
+      dalej.disabled = tor.scrollLeft > maks - 4;
+    }
+    [wstecz, dalej].forEach(function (b) {
+      b.addEventListener('click', function () {
+        var k = tor.children[0];
+        var krok = k ? k.getBoundingClientRect().width + 10 : tor.clientWidth;
+        tor.scrollBy({ left: Number(b.getAttribute('data-dp-combine-step')) * krok * 2, behavior: 'smooth' });
+      });
+    });
+    tor.addEventListener('scroll', stan, { passive: true });
+
+    function start() {
+      var zrodla = (ramka.getAttribute('data-dp-combine-sources') || '').split('|').filter(Boolean);
+      var pamiec = window.__snKort = window.__snKort || {};
+      Promise.all(zrodla.map(function (u) {
+        if (!pamiec[u]) {
+          pamiec[u] = fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 'section_id=sn-kurv-kort', { credentials: 'same-origin' })
+            .then(function (o) { return o.ok ? o.text() : ''; })
+            .catch(function () { return ''; });
+        }
+        return pamiec[u];
+      })).then(function (teksty) {
+        /* karty z kazdego typu osobno, potem na przemian: sweter, spodnie, buty, sweter... */
+        var ziarno = Number(String(PID).slice(-3)) || 0;
+        var stosy = teksty.map(function (t) {
+          var d = new DOMParser().parseFromString(t, 'text/html');
+          var g = Array.prototype.slice.call(d.querySelectorAll('[data-snk-g]')).filter(function (el) {
+            if (elegancko && el.hasAttribute('data-snk-casual')) return false;
+            return el.getAttribute('data-snk-pid') !== PID;
+          });
+          return g.length ? g.slice(ziarno % g.length).concat(g.slice(0, ziarno % g.length)) : [];
+        }).filter(function (s) { return s.length; });
+        var uzyte = {}, karty = [];
+        for (var runda = 0; karty.length < ILE && stosy.some(function (s) { return s.length > runda; }); runda++) {
+          stosy.forEach(function (s) {
+            var el = s[runda];
+            if (!el || karty.length >= ILE) return;
+            var pid = el.getAttribute('data-snk-pid');
+            if (uzyte[pid]) return;
+            uzyte[pid] = 1;
+            karty.push(el);
+          });
+        }
+        if (!karty.length) return;
+        karty.forEach(function (el) {
+          var kafel = el.querySelector('.snc');
+          if (!kafel) return;
+          var box = document.createElement('div');
+          box.className = 'dp-combine__card';
+          box.appendChild(document.importNode(kafel, true));
+          tor.appendChild(box);
+        });
+        ramka.hidden = !tor.children.length;
+        stan();
+      });
+    }
+
+    /* pobieramy w wolnej chwili - nie konkuruje z pierwszym wyswietleniem karty */
+    function pozniej() {
+      if (window.requestIdleCallback) requestIdleCallback(start, { timeout: 2500 });
+      else setTimeout(start, 1200);
+    }
+    if (document.readyState === 'complete') pozniej();
+    else window.addEventListener('load', pozniej, { once: true });
+  })();
+</script>
+{%- endif -%}
