@@ -14,6 +14,7 @@
      Przyklady sa w osobnych polach - nigdy nie mieszaja sie z prawdziwymi danymi.
   Po wpisaniu prawdziwych pomiarow i zrodla produkt sam przechodzi na "Model is ...".
   Brak danych / rozmiar spoza wariantow = nic.
+  Buty (typ produktu z listy dp_typy_butow) = nic - wzrost modela nic nie mowi o rozmiarze buta (Antoni, 01.11).
 
   @param {string} section_id
   @param {object} ss - section.settings z ob-pdp (teksty i wyglad, sekcja "Model fit line")
@@ -30,8 +31,15 @@
     endif
   endfor
 
+  assign dp_typy_butow = 'sandals,sneakers,heels,boots,loafers,dress shoes,slides,mules,espadrilles,clogs,flats,slippers,shoes,trainers,flip flops' | split: ','
+  assign dp_typ = product.type | downcase | strip
+  assign dp_but = false
+  if dp_typy_butow contains dp_typ
+    assign dp_but = true
+  endif
+
   assign dp_rodzaj = ''
-  if dp_photo == true and dp_size_opt
+  if dp_photo == true and dp_size_opt and dp_but == false
     assign dp_h = product.metafields.custom.model_height_cm.value | times: 1
     assign dp_zrodlo = product.metafields.custom.model_data_source.value | strip
     assign dp_ex_h = product.metafields.custom.fit_example_height_cm.value | times: 1
