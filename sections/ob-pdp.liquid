@@ -1153,7 +1153,10 @@
         {%- endfor -%}
         {%- comment -%} dp-size-fit line removed from the page 31.10.2026 (Antoni) - snippet kept {%- endcomment -%}
         {%- comment -%} Model height + size worn, from custom.model_* metafields (31.10.2026) {%- endcomment -%}
-        {%- render 'dp-model-info', section_id: section.id -%}
+        {%- capture dp_model_info -%}
+          {%- render 'dp-model-info', section_id: section.id -%}
+        {%- endcapture -%}
+        {{- dp_model_info | replace: 'Illustrative fit example: ', '' | replace: 'Illustrative fit example:', '' -}}
 
         {%- comment -%}
           Osobnego linku "Storrelsesguide" tu nie ma - prowadzilby tam samo,
