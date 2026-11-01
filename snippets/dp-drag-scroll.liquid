@@ -1,36 +1,123 @@
 {%- comment -%}
-  Przeciaganie myszka wszystkich rzedow przewijanych w bok (Antoni 01.11.2026):
-  opinie, Recently viewed, Mix & Match, paski par... - tam, gdzie byly same strzalki.
-  Palcem na telefonie przewijaja sie same; tu tylko mysz.
+  Wspolne przewijanie rzedow w bok (Antoni 01.11.2026): "wszedzie jak w KNITS & SWEATERS".
+  Ten sam mechanizm co w sections/sn-bestsellers.liquid (wlaczCiagniecie), tylko dla wszystkich
+  rzedow: Combine it with, opinie, Recently viewed, Mix & Match, paski par...
 
-  Dziala na najblizszym przodku pod kursorem, ktory ma overflow-x auto/scroll i ma
-  co przewijac. Pomija miejsca z wlasnym przeciaganiem (zdjecia kart, Combine it with,
-  galeria panelu "+", bestsellery, Style it with) oraz pola formularzy.
-  Po puszczeniu dociaga do najblizszego elementu (scroll-snap); przeciagniecie nie
-  otwiera linku. Wstawiane raz, w layout/theme.liquid.
+  - Palec: natywne przewijanie przegladarki z przyciaganiem (lepsze niz cokolwiek w JS).
+  - Mysz: ciagniecie; szybki ruch = jedna karta w jego strone, powolne = najblizsza karta
+    po przekroczeniu polowy. Dojazd 300 ms po krzywej (0.25, 0.1, 0.25, 1), na czas ruchu
+    przyciaganie wylaczone - nic nie szarpie. Pozycje kart mierzone, nie wyliczane.
+  - Przeciagniecie nie otwiera produktu.
+  - window.dpRowStep(tor, kierunek) - strzalki rzedu przesuwaja o tyle kart, ile widac,
+    ta sama animacja.
+
+  Dziala na najblizszym przodku pod kursorem z overflow-x auto/scroll, ktory ma co przewijac.
+  Pomija miejsca z wlasnym mechanizmem: zdjecia kart w siatce, galeria panelu "+",
+  bestsellery (oryginal), Style it with. Wstawiane raz, w layout/theme.liquid.
 {%- endcomment -%}
 <style>
   @media (hover: hover) and (pointer: fine) {
     .dp-drag-ready { cursor: grab; }
-    .dp-drag-on, .dp-drag-on * { cursor: grabbing !important; user-select: none; }
   }
+  .dp-drag-on { cursor: grabbing !important; user-select: none; scroll-snap-type: none !important; scroll-behavior: auto !important; }
+  .dp-drag-on * { pointer-events: none; }
+  .dp-drag-anim { scroll-snap-type: none !important; scroll-behavior: auto !important; }
 </style>
 <script>
   (function () {
     if (window.__dpDrag) return;
     window.__dpDrag = true;
-    var WLASNE = '[data-snc-pas], [data-dp-combine-track], [data-snq-zdjecia], [data-snb2-track], [data-snx-track], input, select, textarea, [contenteditable]';
+    var WLASNE = '[data-snq-zdjecia], [data-snb2-track], [data-snx-track], input, select, textarea, [contenteditable]';
+
+    /* krzywa ease (0.25, 0.1, 0.25, 1) - jak w bestsellerach */
+    function krzywa(x1, y1, x2, y2) {
+      function A(a, b) { return 1 - 3 * b + 3 * a; }
+      function B(a, b) { return 3 * b - 6 * a; }
+      function C(a) { return 3 * a; }
+      function wart(t, a, b) { return ((A(a, b) * t + B(a, b)) * t + C(a)) * t; }
+      function nachyl(t, a, b) { return 3 * A(a, b) * t * t + 2 * B(a, b) * t + C(a); }
+      return function (x) {
+        var t = x;
+        for (var i = 0; i < 5; i++) {
+          var d = nachyl(t, x1, x2);
+          if (d === 0) break;
+          t -= (wart(t, x1, x2) - x) / d;
+        }
+        return wart(t, y1, y2);
+      };
+    }
+    var EASE = krzywa(0.25, 0.1, 0.25, 1);
+    var CZAS = 300;
 
     function przewijanyWBok(el) {
       for (; el && el !== document.body; el = el.parentElement) {
         var s = getComputedStyle(el);
         /* pasek zdjec karty wylaczony w rzedzie (overflow hidden) - ciagniemy caly rzad */
-        if (el.matches && el.matches('[data-snc-pas]') && s.overflowX === 'hidden') continue;
+        if (el.matches && el.matches('[data-snc-pas]')) {
+          if (s.overflowX === 'hidden') continue;
+          return null; /* zdjecia karty w siatce maja wlasne przeciaganie (sn-card-assets) */
+        }
         if (el.matches && el.matches(WLASNE)) return null;
         if ((s.overflowX === 'auto' || s.overflowX === 'scroll') && el.scrollWidth > el.clientWidth + 4) return el;
       }
       return null;
     }
+
+    /* zmierzone polozenia kart - przy zaokraglaniu pikseli roznica narasta przez caly rzad */
+    function pozycje(tor) {
+      var dz = tor.children, baza = tor.getBoundingClientRect().left, out = [];
+      for (var i = 0; i < dz.length; i++) {
+        if (dz[i].offsetWidth) out.push(dz[i].getBoundingClientRect().left - baza + tor.scrollLeft);
+      }
+      return out;
+    }
+    function ogranicz(tor, x) { return Math.max(0, Math.min(x, tor.scrollWidth - tor.clientWidth)); }
+    function najblizszy(poz, x) {
+      var best = 0;
+      for (var i = 1; i < poz.length; i++) if (Math.abs(poz[i] - x) < Math.abs(poz[best] - x)) best = i;
+      return best;
+    }
+    function celGestu(tor, predkosc) {
+      var poz = pozycje(tor);
+      if (poz.length < 2) return tor.scrollLeft;
+      var krok = poz[1] - poz[0], teraz = tor.scrollLeft / krok, i;
+      /* rzut = jedna karta w swoja strone; powolne ciagniecie = dopiero po polowie */
+      if (Math.abs(predkosc) > 0.35) i = predkosc > 0 ? Math.ceil(teraz) : Math.floor(teraz);
+      else i = Math.round(teraz);
+      i = Math.max(0, Math.min(i, poz.length - 1));
+      return ogranicz(tor, poz[i]);
+    }
+
+    function jedzDo(tor, cel) {
+      if (tor.__dpKlatka) cancelAnimationFrame(tor.__dpKlatka);
+      var start = tor.scrollLeft, roznica = cel - start;
+      if (Math.abs(roznica) < 1) { tor.classList.remove('dp-drag-anim'); return; }
+      tor.classList.add('dp-drag-anim');
+      var t0 = performance.now();
+      tor.__dpKlatka = requestAnimationFrame(function krok(teraz) {
+        var p = (teraz - t0) / CZAS;
+        if (p >= 1) {
+          tor.scrollLeft = cel;
+          tor.__dpKlatka = null;
+          tor.classList.remove('dp-drag-anim');
+          tor.dispatchEvent(new Event('scroll'));
+          return;
+        }
+        tor.scrollLeft = start + roznica * EASE(p);
+        tor.__dpKlatka = requestAnimationFrame(krok);
+      });
+    }
+
+    /* strzalki rzedu: o tyle kart, ile widac */
+    window.dpRowStep = function (tor, kier) {
+      var poz = pozycje(tor);
+      if (poz.length < 2) { jedzDo(tor, ogranicz(tor, tor.scrollLeft + kier * tor.clientWidth)); return; }
+      var krok = poz[1] - poz[0];
+      var naRaz = Math.max(1, Math.floor((tor.clientWidth + 2) / krok));
+      var i = najblizszy(poz, tor.scrollLeft) + kier * naRaz;
+      i = Math.max(0, Math.min(i, poz.length - 1));
+      jedzDo(tor, ogranicz(tor, poz[i]));
+    };
 
     /* kursor "lapki" nad rzedami, ktore da sie przeciagnac */
     document.addEventListener('pointerover', function (e) {
@@ -39,42 +126,52 @@
       if (el && !el.classList.contains('dp-drag-ready')) el.classList.add('dp-drag-ready');
     }, { passive: true });
 
-    var ciag = null, bezKliku = false;
+    var c = null, bezKliku = false;
     document.addEventListener('pointerdown', function (e) {
+      bezKliku = false;
       if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      /* "+" i strzalki to klikniecie, nigdy poczatek ciagniecia */
       if (e.target.closest && e.target.closest('button, [role="button"]')) return;
-      var el = przewijanyWBok(e.target);
-      if (!el) return;
-      ciag = { el: el, x: e.clientX, left: el.scrollLeft, id: e.pointerId, ruszone: false };
+      var tor = przewijanyWBok(e.target);
+      if (!tor) return;
+      if (tor.__dpKlatka) { cancelAnimationFrame(tor.__dpKlatka); tor.__dpKlatka = null; }
+      tor.classList.remove('dp-drag-anim');
+      c = { tor: tor, x: e.clientX, left: tor.scrollLeft, id: e.pointerId, ostX: e.clientX, ostT: performance.now(), v: 0, ruszony: false };
     });
     document.addEventListener('pointermove', function (e) {
-      if (!ciag || e.pointerId !== ciag.id) return;
-      var dx = e.clientX - ciag.x;
-      if (!ciag.ruszone && Math.abs(dx) < 6) return;
-      if (!ciag.ruszone) {
-        ciag.ruszone = true;
-        ciag.snap = ciag.el.style.scrollSnapType;
-        ciag.el.style.scrollSnapType = 'none';
-        ciag.el.style.scrollBehavior = 'auto';
-        ciag.el.classList.add('dp-drag-on');
+      if (!c || e.pointerId !== c.id) return;
+      var dx = e.clientX - c.x;
+      /* kilka pikseli to jeszcze klikniecie */
+      if (!c.ruszony && Math.abs(dx) < 4) return;
+      if (!c.ruszony) {
+        c.ruszony = true;
+        c.tor.classList.add('dp-drag-on');
+        try { c.tor.setPointerCapture(e.pointerId); } catch (err) {}
       }
-      ciag.el.scrollLeft = ciag.left - dx;
+      e.preventDefault();
+      var teraz = performance.now(), dt = teraz - c.ostT;
+      if (dt > 0) {
+        /* kursor w lewo = przewijanie w prawo, stad minus; wygladzone */
+        var chwilowa = -(e.clientX - c.ostX) / dt;
+        c.v = c.v * 0.4 + chwilowa * 0.6;
+        c.ostX = e.clientX; c.ostT = teraz;
+      }
+      c.tor.scrollLeft = c.left - dx;
     });
-    function pusc() {
-      if (!ciag) return;
-      var c = ciag;
-      ciag = null;
-      if (!c.ruszone) return;
-      c.el.classList.remove('dp-drag-on');
-      /* przywrocenie przyciagania dociaga do najblizszego elementu */
-      c.el.style.scrollSnapType = c.snap || '';
-      c.el.style.scrollBehavior = '';
-      c.el.dispatchEvent(new Event('scroll'));
+    function koniec(e) {
+      if (!c) return;
+      var s = c;
+      c = null;
+      try { if (e && s.tor.hasPointerCapture(s.id)) s.tor.releasePointerCapture(s.id); } catch (err) {}
+      s.tor.classList.remove('dp-drag-on');
+      if (!s.ruszony) return;
       bezKliku = true;
-      setTimeout(function () { bezKliku = false; }, 60);
+      /* kursor stal dluzsza chwile - to nie byl rzut */
+      if (performance.now() - s.ostT > 90) s.v = 0;
+      jedzDo(s.tor, celGestu(s.tor, s.v));
     }
-    document.addEventListener('pointerup', pusc);
-    document.addEventListener('pointercancel', pusc);
+    document.addEventListener('pointerup', koniec);
+    document.addEventListener('pointercancel', koniec);
     document.addEventListener('click', function (e) {
       if (bezKliku) { e.preventDefault(); e.stopPropagation(); bezKliku = false; }
     }, true);

@@ -156,6 +156,11 @@
     grid-column: span {{ 6 | divided_by: section.settings.big_per_row }};
   }
 
+  {%- comment -%} Pierwsze zdjecie na cala szerokosc przy nieparzystej liczbie zdjec - tylko PC (na telefonie karuzela). {%- endcomment -%}
+  @media only screen and (min-width: {{ section.settings.breakpoint | plus: 1 }}px) {
+    #shopify-section-{{ section.id }} .pdp__photo--wide { grid-column: 1 / -1; }
+  }
+
   /* miniatury tylko pod karuzela na telefonie */
   #shopify-section-{{ section.id }} .pdp__thumbs { display: none; }
 
@@ -789,6 +794,27 @@
           </div>
         {%- endif -%}
 
+        {%- liquid
+          comment
+            Nieparzysta liczba zdjec = pierwsze na cala szerokosc, reszta parami (Antoni 01.11.2026),
+            np. 5 zdjec: 1 duze + 2 + 2. Parzysta - wszystkie parami jak dotad.
+            Liczbe widocznych przed "Show more" dopasowujemy tak, zeby tez nie zostawala
+            pojedyncza dziura: przy szerokim pierwszym nieparzysta, bez niego parzysta.
+          endcomment
+          assign pdp_ile = product.media.size
+          assign pdp_szerokie = false
+          assign pdp_reszta = pdp_ile | modulo: 2
+          if pdp_ile > 1 and pdp_reszta == 1
+            assign pdp_szerokie = true
+          endif
+          assign pdp_widoczne = section.settings.photo_visible
+          assign pdp_w_reszta = pdp_widoczne | modulo: 2
+          if pdp_szerokie and pdp_w_reszta == 0
+            assign pdp_widoczne = pdp_widoczne | plus: 1
+          elsif pdp_szerokie == false and pdp_w_reszta == 1
+            assign pdp_widoczne = pdp_widoczne | plus: 1
+          endif
+        -%}
         <div class="pdp__photos" data-pdp-photos>
           {%- if product.media.size > 0 -%}
             {%- for media in product.media -%}
@@ -803,7 +829,10 @@
                 if forloop.index <= section.settings.big_count
                   assign klasa = 'pdp__photo pdp__photo--big'
                 endif
-                if forloop.index > section.settings.photo_visible
+                if forloop.first and pdp_szerokie
+                  assign klasa = klasa | append: ' pdp__photo--wide'
+                endif
+                if forloop.index > pdp_widoczne
                   assign klasa = klasa | append: ' pdp__photo--more'
                 endif
 
@@ -850,8 +879,8 @@
           </div>
         {%- endif -%}
 
-        {%- if product.media.size > section.settings.photo_visible and section.settings.more_label != blank -%}
-          {%- assign ukrytych = product.media.size | minus: section.settings.photo_visible -%}
+        {%- if product.media.size > pdp_widoczne and section.settings.more_label != blank -%}
+          {%- assign ukrytych = product.media.size | minus: pdp_widoczne -%}
           <button type="button" class="pdp__more" data-pdp-more data-pdp-hidden="{{ ukrytych }}">
             {{ section.settings.more_label }}
           </button>
