@@ -142,7 +142,7 @@
         "more_label": "Show more images",
         "photo_gap": 6,
         "photo_ratio": "3 / 4",
-        "model_note_women": "",
+        "model_note_women": "A",
         "model_note_men": "",
         "title_size": 26,
         "title_size_m": 22,
@@ -160,6 +160,8 @@
         "show_promo": true,
         "promo_title": "Seasonal discounts",
         "promo_sub": "Seasonal discounts are applied automatically in the cart. Items don't need to match.",
+        "multibuy_price_show": true,
+        "promo_label": "Mix & match — save up to 30%",
         "promo_tiers": "2:10, 3:20, 4:25, 5:30",
         "promo_qty_word": "items",
         "promo_head2": "Seasonal discount",
@@ -191,6 +193,7 @@
         "row_accent": "#6b1f2d",
         "row_hi": "#1f7a3d",
         "cross_show": false,
+        "bundle_show": true,
         "upgrade_show": false,
         "cross_title": "Style it with",
         "cross_add": "Add to cart",
@@ -306,8 +309,25 @@
         "space_bottom_mobile": 28
       }
     },
-    "mix_match": { "type": "dp-mix-match", "settings": {} }, "bestsellers": {
-      "type": "sn-bestsellers", "disabled": true,
+    "mix_match": {
+      "type": "dp-mix-match",
+      "settings": {
+        "title": "MIX & MATCH\nSAVE UP TO 30%",
+        "accent_word": "30%",
+        "color_accent": "#6b1f2d",
+        "subtitle": "Combine any pieces – the discount applies automatically in your cart.",
+        "show_tiers": true,
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 36
+      }
+    },
+    "bestsellers": {
+      "type": "sn-bestsellers",
       "blocks": {
         "t1": {
           "type": "tab",
@@ -384,6 +404,7 @@
         "m3",
         "m4"
       ],
+      "disabled": true,
       "settings": {
         "title": "DISCOVER\nOUR BESTSELLERS",
         "accent_word": "BESTSELLERS",
@@ -1168,7 +1189,8 @@
     "main",
     "ob_reviews_strip_QRDkmM",
     "edytorial_kampanii",
-    "mix_match", "bestsellers",
+    "mix_match",
+    "bestsellers",
     "rzad_kurtki",
     "rzad_dzianina",
     "rzad_spodnie",
