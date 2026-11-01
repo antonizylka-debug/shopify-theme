@@ -370,7 +370,8 @@
     color: var(--pdp-sale); font-weight: 600; margin-left: 6px;
   }
 
- .pdp__help.dp-size-help {
+  /* ---------- pomoc przy rozmiarze ---------- */
+  #shopify-section-{{ section.id }} .pdp__help.dp-size-help {
     display: flex;
     align-items: flex-start;
     gap: 10px;
@@ -387,7 +388,7 @@
     text-transform: none;
   }
 
-  .dp-size-help > .dp-size-help__icon {
+  #shopify-section-{{ section.id }} .dp-size-help > .dp-size-help__icon {
     flex: 0 0 18px;
     width: 18px;
     height: 18px;
@@ -395,11 +396,11 @@
     color: #756b5c;
   }
 
-  .dp-size-help > .dp-size-help__content {
+  #shopify-section-{{ section.id }} .dp-size-help > .dp-size-help__content {
     min-width: 0;
   }
 
-  .dp-size-help .dp-size-help__link {
+  #shopify-section-{{ section.id }} .dp-size-help .dp-size-help__link {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -412,11 +413,11 @@
     text-decoration-thickness: 1px;
   }
 
-  .dp-size-help .dp-size-help__link:hover {
+  #shopify-section-{{ section.id }} .dp-size-help .dp-size-help__link:hover {
     color: #655744;
   }
 
-  .dp-size-help .dp-size-help__link:focus-visible {
+  #shopify-section-{{ section.id }} .dp-size-help .dp-size-help__link:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 4px;
   }
