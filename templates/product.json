@@ -290,7 +290,6 @@
     },
     "edytorial_kampanii": {
       "type": "sn-edytorial",
-      "disabled": true,
       "settings": {
         "image_position": "center",
         "ratio": "21 / 9",
@@ -435,7 +434,6 @@
     },
     "rzad_kurtki": {
       "type": "sn-bestsellers",
-      "disabled": true,
       "blocks": {
         "k1": {
           "type": "tab",
@@ -508,7 +506,6 @@
     },
     "rzad_dzianina": {
       "type": "sn-bestsellers",
-      "disabled": true,
       "blocks": {
         "d1": {
           "type": "tab",
@@ -581,7 +578,6 @@
     },
     "rzad_spodnie": {
       "type": "sn-bestsellers",
-      "disabled": true,
       "blocks": {
         "s1": {
           "type": "tab",
@@ -654,7 +650,6 @@
     },
     "rzad_buty_torby": {
       "type": "sn-bestsellers",
-      "disabled": true,
       "blocks": {
         "b1": {
           "type": "tab",
@@ -745,7 +740,6 @@
     },
     "guarantee": {
       "type": "sn-story",
-      "disabled": true,
       "settings": {
         "layout": "left",
         "image": "shopify://shop_images/about_us_image_2.webp",
@@ -1061,7 +1055,6 @@
     },
     "faq": {
       "type": "ob-faq",
-      "disabled": true,
       "blocks": {
         "q-1": {
           "type": "question",
