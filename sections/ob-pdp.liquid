@@ -1156,7 +1156,26 @@
         {%- capture dp_model_info -%}
           {%- render 'dp-model-info', section_id: section.id -%}
         {%- endcapture -%}
-        {{- dp_model_info | replace: 'Illustrative fit example: ', '' | replace: 'Illustrative fit example:', '' -}}
+        {%- liquid
+          assign dp_model_info = dp_model_info | replace: 'Illustrative fit example: ', 'The model is ' | replace: 'Illustrative fit example:', 'The model is ' | replace: ' cm · Size ', ' cm tall and wears size ' | replace: ' cm &middot; Size ', ' cm tall and wears size ' | replace: ' cm &#183; Size ', ' cm tall and wears size '
+          assign dp_model_plain_text = dp_model_info | strip_html | strip
+          assign dp_model_has_imperial = false
+          if dp_model_plain_text contains '′' or dp_model_plain_text contains '&prime;' or dp_model_plain_text contains '&#8242;' or dp_model_plain_text contains '&#x2032;'
+            assign dp_model_has_imperial = true
+          endif
+          if dp_model_info contains ' cm' and dp_model_has_imperial == false
+            assign dp_model_height_cm = dp_model_plain_text | split: ' cm' | first | split: ' ' | last | plus: 0
+            if dp_model_height_cm > 0
+              assign dp_model_total_inches = dp_model_height_cm | divided_by: 2.54 | round
+              assign dp_model_feet = dp_model_total_inches | divided_by: 12 | floor
+              assign dp_model_feet_in_inches = dp_model_feet | times: 12
+              assign dp_model_inches = dp_model_total_inches | minus: dp_model_feet_in_inches
+              assign dp_model_units = ' cm (' | append: dp_model_feet | append: '′' | append: dp_model_inches | append: '″)'
+              assign dp_model_info = dp_model_info | replace_first: ' cm', dp_model_units
+            endif
+          endif
+        -%}
+        {{- dp_model_info -}}
 
         {%- comment -%}
           Osobnego linku "Storrelsesguide" tu nie ma - prowadzilby tam samo,
