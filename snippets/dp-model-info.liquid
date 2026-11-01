@@ -16,6 +16,7 @@
   Brak danych / rozmiar spoza wariantow = nic.
 
   @param {string} section_id
+  @param {object} ss - section.settings z ob-pdp (teksty i wyglad, sekcja "Model fit line")
 {%- endcomment -%}
 {%- liquid
   assign dp_photo = product.metafields.custom.has_model_photo.value
@@ -99,7 +100,7 @@
   endif
 -%}
 {%- if dp_rodzaj == 'model' -%}
-  {%- render 'dp-model-info-text', rodzaj: 'model', wzrost: dp_h, rozmiar: dp_real_size, section_id: section_id -%}
+  {%- render 'dp-model-info-text', rodzaj: 'model', wzrost: dp_h, rozmiar: dp_real_size, section_id: section_id, ss: ss -%}
 {%- elsif dp_rodzaj == 'example' -%}
-  {%- render 'dp-model-info-text', rodzaj: 'example', wzrost: dp_ex_h, rozmiar: dp_ex_size, section_id: section_id -%}
+  {%- render 'dp-model-info-text', rodzaj: 'example', wzrost: dp_ex_h, rozmiar: dp_ex_size, section_id: section_id, ss: ss -%}
 {%- endif -%}
