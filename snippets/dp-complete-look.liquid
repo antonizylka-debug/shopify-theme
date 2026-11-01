@@ -11,6 +11,9 @@
     w panelu - progi w sekcji musza byc z nimi zgodne.
   - Produkty pobierane po zaladowaniu strony (/products/<handle>.js); gdy nic nie
     przyjdzie, modul sie nie pokazuje.
+  - "Change" przy kazdej propozycji (01.11.2026): do 6 innych rzeczy tego samego typu
+    i dzialu, pobieranych dopiero po kliknieciu. Male zestawy na typ zamiast dlugiej
+    listy - research w life/01_stilhuset_nord/audyt/complete-the-look-wybor-2026-11-01.md.
 
   @param {object} product - ogladany produkt
   @param {string} sekcja - section.id karty produktu (stamtad bierzemy wybrany wariant)
@@ -78,6 +81,14 @@
   .dp-look__button[disabled] { opacity: .55; cursor: default; }
   .dp-look__error { margin: 8px 0 0; font-size: 12.5px; color: #6b1f2d; }
   .dp-look__error[hidden] { display: none; }
+  .dp-look__swap { margin-left: auto; padding: 4px 0; border: 0; background: none; color: #1c1d1d; font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+  .dp-look__alts { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 10px 32px; scrollbar-width: none; }
+  .dp-look__alts::-webkit-scrollbar { display: none; }
+  .dp-look__alts-note { align-self: center; font-size: 12px; color: #6b6f76; }
+  .dp-look__alt { flex: 0 0 68px; padding: 0; border: 1px solid #e4e6ea; border-radius: 4px; background: #fff; color: #1c1d1d; text-align: left; cursor: pointer; overflow: hidden; }
+  .dp-look__alt:hover, .dp-look__alt:focus-visible { border-color: #1c1d1d; }
+  .dp-look__alt img { display: block; width: 100%; height: 88px; object-fit: cover; background: #f6f6f4; }
+  .dp-look__alt span { display: block; padding: 3px 4px 4px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
 </style>
 <div class="dp-look" data-dp-look data-dp-look-section="{{ sekcja }}" data-dp-look-sources="{{ zrodla | escape }}" data-dp-look-tiers="{{ progi | escape }}" data-dp-look-pid="{{ product.id }}" data-dp-look-handle="{{ product.handle }}"{% if elegancko %} data-dp-look-formal{% endif %} hidden>
   <div class="dp-look__head">
@@ -209,11 +220,11 @@
       });
     }
 
-    function wiersz(p, iKoloru) {
+    function wiersz(p, iKoloru, alt) {
       var li = document.createElement('li');
       li.className = 'dp-look__item';
       li.setAttribute('data-dp-look-item', p.id);
-      li.__snz = { p: p };
+      li.__snz = { p: p, alt: alt || [] };
       var kolor = typeof iKoloru === 'number';
       if (kolor) li.setAttribute('data-dp-look-colour', iKoloru);
       var img = p.featured_image ? p.featured_image + (p.featured_image.indexOf('?') < 0 ? '?' : '&') + 'width=120' : '';
@@ -257,15 +268,26 @@
           rz.appendChild(sel);
         });
       }
+      /* "Change" - inna rzecz tego samego typu (Antoni 01.11.2026: klient ma wybrac, nie dostac narzucone) */
+      if (!kolor && li.__snz.alt.length > 1) {
+        var zm = document.createElement('button');
+        zm.type = 'button'; zm.className = 'dp-look__swap'; zm.textContent = 'Change';
+        zm.setAttribute('data-dp-look-swap', ''); zm.setAttribute('aria-expanded', 'false');
+        zm.setAttribute('aria-label', 'Show other options instead of ' + p.title);
+        rz.appendChild(zm);
+      }
       info.appendChild(rz);
       li.appendChild(info);
       return li;
     }
 
+    /* po jednej rzeczy z kazdego typu (buty, torebka, bizuteria...), max 3.
+       grupy[i] = ta rzecz + do 6 innych tego typu na "Change", w tej samej kolejnosci co ziarno */
+    var grupy = [];
     function wybierz(teksty) {
-      /* po jednej rzeczy z kazdego typu (buty, torebka, bizuteria...), max 3 */
       var ziarno = Number(String(PID).slice(-3)) || 0;
       var uchwyty = [];
+      grupy = [];
       teksty.forEach(function (t) {
         if (uchwyty.length >= 3) return;
         var d = new DOMParser().parseFromString(t, 'text/html');
@@ -273,15 +295,75 @@
           if (elegancko && el.hasAttribute('data-snk-casual')) return false;
           return el.getAttribute('data-snk-pid') !== PID;
         });
-        if (!g.length) return;
-        var el = g[ziarno % g.length];
-        var link = el.querySelector('a[href*="/products/"]');
-        if (!link) return;
-        var h = link.getAttribute('href').split('/products/')[1].split(/[?#\/]/)[0];
-        if (h && uchwyty.indexOf(h) < 0) uchwyty.push(h);
+        var hs = [];
+        for (var k = 0; k < g.length && hs.length < 7; k++) {
+          var link = g[(ziarno + k) % g.length].querySelector('a[href*="/products/"]');
+          if (!link) continue;
+          var h = link.getAttribute('href').split('/products/')[1].split(/[?#\/]/)[0];
+          if (h && hs.indexOf(h) < 0 && uchwyty.indexOf(h) < 0) hs.push(h);
+        }
+        if (!hs.length) return;
+        uchwyty.push(hs[0]);
+        grupy.push(hs);
       });
       return uchwyty;
     }
+
+    var pamiecP = {};
+    function produkt(h) {
+      if (!pamiecP[h]) {
+        pamiecP[h] = fetch(KORZEN + 'products/' + h + '.js').then(function (o) { return o.ok ? o.json() : null; }).catch(function () { return null; });
+      }
+      return pamiecP[h];
+    }
+
+    /* pasek alternatyw pod wierszem; klik w miniature podmienia wiersz */
+    function pokazInne(li, przyciskZm) {
+      var stary = li.nextElementSibling;
+      if (stary && stary.hasAttribute('data-dp-look-alts')) {
+        stary.remove(); przyciskZm.setAttribute('aria-expanded', 'false'); return;
+      }
+      lista.querySelectorAll('[data-dp-look-alts]').forEach(function (x) { x.remove(); });
+      lista.querySelectorAll('[data-dp-look-swap]').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+      var pas = document.createElement('li');
+      pas.className = 'dp-look__alts'; pas.setAttribute('data-dp-look-alts', '');
+      var nota = document.createElement('span'); nota.className = 'dp-look__alts-note'; nota.textContent = 'Loading…';
+      pas.appendChild(nota);
+      li.after(pas);
+      przyciskZm.setAttribute('aria-expanded', 'true');
+      var zajete = [ramka.getAttribute('data-dp-look-handle')];
+      lista.querySelectorAll('[data-dp-look-item]').forEach(function (x) { zajete.push(x.__snz.p.handle); });
+      var inne = li.__snz.alt.filter(function (h) { return zajete.indexOf(h) < 0; });
+      Promise.all(inne.map(produkt)).then(function (ps) {
+        ps = ps.filter(function (p) { return p && p.available; }).slice(0, 6);
+        pas.innerHTML = '';
+        if (!ps.length) { nota.textContent = 'No other options right now.'; pas.appendChild(nota); return; }
+        ps.forEach(function (p) {
+          var b = document.createElement('button');
+          b.type = 'button'; b.className = 'dp-look__alt'; b.title = p.title;
+          b.setAttribute('aria-label', 'Choose ' + p.title + ', ' + cena(p.price));
+          if (p.featured_image) {
+            var im = document.createElement('img'); im.alt = ''; im.loading = 'lazy'; im.width = 68; im.height = 88;
+            im.src = p.featured_image + (p.featured_image.indexOf('?') < 0 ? '?' : '&') + 'width=140';
+            b.appendChild(im);
+          }
+          var c = document.createElement('span'); c.textContent = cena(p.price); b.appendChild(c);
+          b.addEventListener('click', function () {
+            var nowy = wiersz(p, undefined, li.__snz.alt);
+            nowy.querySelector('.dp-look__checkbox').checked = li.querySelector('.dp-look__checkbox').checked;
+            li.replaceWith(nowy);
+            pas.remove();
+            var s = nowy.querySelector('.dp-look__select'); (s || nowy.querySelector('.dp-look__checkbox')).focus();
+            przelicz();
+          });
+          pas.appendChild(b);
+        });
+      });
+    }
+    lista.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-dp-look-swap]');
+      if (b) pokazInne(b.closest('[data-dp-look-item]'), b);
+    });
 
     function start() {
       var zrodla = (ramka.getAttribute('data-dp-look-sources') || '').split('|').filter(Boolean);
@@ -295,20 +377,19 @@
         return pamiec[u];
       })).then(function (teksty) {
         var uchwyty = [ramka.getAttribute('data-dp-look-handle')].concat(wybierz(teksty));
-        return Promise.all(uchwyty.map(function (h) {
-          return fetch(KORZEN + 'products/' + h + '.js').then(function (o) { return o.ok ? o.json() : null; }).catch(function () { return null; });
-        }));
+        return Promise.all(uchwyty.map(produkt));
       }).then(function (produkty) {
         var ten = produkty && produkty.shift();
-        produkty = (produkty || []).filter(function (p) { return p && p.available; });
+        var pary = (produkty || []).map(function (p, i) { return { p: p, alt: grupy[i] }; })
+          .filter(function (x) { return x.p && x.p.available; });
         /* inny kolor tylko gdy sa co najmniej 2 dostepne kolory */
         var iK = ten ? idxKoloru(ten) : -1;
         var kolory = {};
         if (iK >= 0) ten.variants.forEach(function (v) { if (v.available) kolory[v.options[iK]] = 1; });
         var zKolorem = iK >= 0 && Object.keys(kolory).length > 1;
-        if (!produkty.length && !zKolorem) return;
+        if (!pary.length && !zKolorem) return;
         if (zKolorem) lista.appendChild(wiersz(ten, iK));
-        produkty.forEach(function (p) { lista.appendChild(wiersz(p)); });
+        pary.forEach(function (x) { lista.appendChild(wiersz(x.p, undefined, x.alt)); });
         odswiezKolor();
         ramka.hidden = false;
         return fetch(KORZEN + 'cart.js', { credentials: 'same-origin' }).then(function (o) { return o.json(); })
