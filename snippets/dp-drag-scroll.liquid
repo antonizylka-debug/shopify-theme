@@ -1,0 +1,85 @@
+{%- comment -%}
+  Przeciaganie myszka wszystkich rzedow przewijanych w bok (Antoni 01.11.2026):
+  opinie, Recently viewed, Mix & Match, paski par... - tam, gdzie byly same strzalki.
+  Palcem na telefonie przewijaja sie same; tu tylko mysz.
+
+  Dziala na najblizszym przodku pod kursorem, ktory ma overflow-x auto/scroll i ma
+  co przewijac. Pomija miejsca z wlasnym przeciaganiem (zdjecia kart, Combine it with,
+  galeria panelu "+", bestsellery, Style it with) oraz pola formularzy.
+  Po puszczeniu dociaga do najblizszego elementu (scroll-snap); przeciagniecie nie
+  otwiera linku. Wstawiane raz, w layout/theme.liquid.
+{%- endcomment -%}
+<style>
+  @media (hover: hover) and (pointer: fine) {
+    .dp-drag-ready { cursor: grab; }
+    .dp-drag-on, .dp-drag-on * { cursor: grabbing !important; user-select: none; }
+  }
+</style>
+<script>
+  (function () {
+    if (window.__dpDrag) return;
+    window.__dpDrag = true;
+    var WLASNE = '[data-snc-pas], [data-dp-combine-track], [data-snq-zdjecia], [data-snb2-track], [data-snx-track], input, select, textarea, [contenteditable]';
+
+    function przewijanyWBok(el) {
+      for (; el && el !== document.body; el = el.parentElement) {
+        var s = getComputedStyle(el);
+        /* pasek zdjec karty wylaczony w rzedzie (overflow hidden) - ciagniemy caly rzad */
+        if (el.matches && el.matches('[data-snc-pas]') && s.overflowX === 'hidden') continue;
+        if (el.matches && el.matches(WLASNE)) return null;
+        if ((s.overflowX === 'auto' || s.overflowX === 'scroll') && el.scrollWidth > el.clientWidth + 4) return el;
+      }
+      return null;
+    }
+
+    /* kursor "lapki" nad rzedami, ktore da sie przeciagnac */
+    document.addEventListener('pointerover', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      var el = przewijanyWBok(e.target);
+      if (el && !el.classList.contains('dp-drag-ready')) el.classList.add('dp-drag-ready');
+    }, { passive: true });
+
+    var ciag = null, bezKliku = false;
+    document.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      if (e.target.closest && e.target.closest('button, [role="button"]')) return;
+      var el = przewijanyWBok(e.target);
+      if (!el) return;
+      ciag = { el: el, x: e.clientX, left: el.scrollLeft, id: e.pointerId, ruszone: false };
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (!ciag || e.pointerId !== ciag.id) return;
+      var dx = e.clientX - ciag.x;
+      if (!ciag.ruszone && Math.abs(dx) < 6) return;
+      if (!ciag.ruszone) {
+        ciag.ruszone = true;
+        ciag.snap = ciag.el.style.scrollSnapType;
+        ciag.el.style.scrollSnapType = 'none';
+        ciag.el.style.scrollBehavior = 'auto';
+        ciag.el.classList.add('dp-drag-on');
+      }
+      ciag.el.scrollLeft = ciag.left - dx;
+    });
+    function pusc() {
+      if (!ciag) return;
+      var c = ciag;
+      ciag = null;
+      if (!c.ruszone) return;
+      c.el.classList.remove('dp-drag-on');
+      /* przywrocenie przyciagania dociaga do najblizszego elementu */
+      c.el.style.scrollSnapType = c.snap || '';
+      c.el.style.scrollBehavior = '';
+      c.el.dispatchEvent(new Event('scroll'));
+      bezKliku = true;
+      setTimeout(function () { bezKliku = false; }, 60);
+    }
+    document.addEventListener('pointerup', pusc);
+    document.addEventListener('pointercancel', pusc);
+    document.addEventListener('click', function (e) {
+      if (bezKliku) { e.preventDefault(); e.stopPropagation(); bezKliku = false; }
+    }, true);
+    document.addEventListener('dragstart', function (e) {
+      if (e.target.closest && przewijanyWBok(e.target)) e.preventDefault();
+    });
+  })();
+</script>
