@@ -129,6 +129,21 @@
     var KLUCZ = 'sn-ostatnio';
     var ILE = {{ section.settings.count | json }};
     var biezacy = {% if product != blank and product.type != 'Order Add-on' %}{{ product.handle | json }}{% else %}null{% endif %};
+    {%- comment -%}
+      Na karcie meskiej tylko meskie (i unisex), na damskiej tylko damskie -
+      Antoni 01.11.2026: damskie w "Recently viewed" przy meskim produkcie myla.
+    {%- endcomment -%}
+    {%- liquid
+      assign dp_dzial = ''
+      if product.tags contains 'Department: Men'
+        unless product.tags contains 'Department: Women'
+          assign dp_dzial = 'mens'
+        endunless
+      elsif product.tags contains 'Department: Women'
+        assign dp_dzial = 'womens'
+      endif
+    -%}
+    var dzial = {{ dp_dzial | json }};
 
     function stan() {
       var maks = tor.scrollWidth - tor.clientWidth;
@@ -181,7 +196,11 @@
         .catch(function () { return ''; })
         .then(function (t) {
           var d = t ? new DOMParser().parseFromString(t, 'text/html') : null;
-          kafle[h] = d ? d.querySelector('[data-sn-karta] > .snc') : null;
+          var ramkaKafla = d ? d.querySelector('[data-sn-karta]') : null;
+          var kafel = ramkaKafla ? ramkaKafla.querySelector('.snc') : null;
+          var jegoDzial = ramkaKafla ? ramkaKafla.getAttribute('data-sn-dzial') : '';
+          // inny dzial niz ogladany produkt = nie pokazujemy (unisex i bez tagu zostaja)
+          kafle[h] = kafel && !(dzial && jegoDzial && jegoDzial !== dzial) ? kafel : null;
           return kafle[h];
         });
     }
@@ -193,7 +212,8 @@
         if (!Array.isArray(lista)) lista = [];
       } catch (e) { lista = []; }
 
-      var doPokazania = lista.filter(function (h) { return h !== biezacy; }).slice(0, ILE);
+      // z zapasem, bo czesc odpadnie przy filtrze dzialu po pobraniu
+      var doPokazania = lista.filter(function (h) { return h !== biezacy; }).slice(0, dzial ? ILE * 2 : ILE);
 
       // ogladany produkt na poczatek listy - pokaze sie na nastepnej karcie
       if (biezacy) {
@@ -205,8 +225,7 @@
       Promise.all(doPokazania.map(pobierz)).then(function (gotowe) {
         if (ta !== runda) return; // w miedzyczasie ruszyla nowsza przebudowa
         tor.innerHTML = '';
-        gotowe.forEach(function (kafel) {
-          if (!kafel) return;
+        gotowe.filter(Boolean).slice(0, ILE).forEach(function (kafel) {
           var el = document.createElement('div');
           el.className = 'sno__card';
           el.appendChild(document.importNode(kafel, true));

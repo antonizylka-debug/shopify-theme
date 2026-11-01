@@ -9,7 +9,18 @@
 {%- endcomment -%}
 
 {%- if product != blank -%}
-  <div data-sn-karta="{{ product.handle }}">
+  {%- comment -%} Dzial dla "Recently viewed": mens / womens, puste = unisex albo brak tagu (01.11.2026) {%- endcomment -%}
+  {%- liquid
+    assign dzial = ''
+    if product.tags contains 'Department: Men'
+      unless product.tags contains 'Department: Women'
+        assign dzial = 'mens'
+      endunless
+    elsif product.tags contains 'Department: Women'
+      assign dzial = 'womens'
+    endif
+  -%}
+  <div data-sn-karta="{{ product.handle }}" data-sn-dzial="{{ dzial }}">
     {%- render 'sn-card', product: product, grid_item: false -%}
   </div>
 {%- endif -%}

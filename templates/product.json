@@ -191,6 +191,7 @@
         "row_accent": "#6b1f2d",
         "row_hi": "#1f7a3d",
         "cross_show": false,
+        "upgrade_show": false,
         "cross_title": "Style it with",
         "cross_add": "Add to cart",
         "cross_collection": "",
