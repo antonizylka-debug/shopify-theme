@@ -1198,6 +1198,11 @@
           </div>
         {%- endif -%}
 
+        {%- comment -%} "Combine it with" nad opisem - rzad kart z "+" do panelu z boku (Antoni 01.11.2026, zastapil Complete the look) {%- endcomment -%}
+        {%- if section.settings.bundle_show -%}
+          {%- render 'dp-combine-with', product: product -%}
+        {%- endif -%}
+
         {%- assign akordeony = section.blocks | where: 'type', 'acc' -%}
         {%- if akordeony.size > 0 -%}
           <div class="pdp__accs">
@@ -1231,10 +1236,10 @@
         {%- if section.settings.upgrade_show -%}
           {%- render 'dp-premium-upgrade', product: product -%}
         {%- endif -%}
-        {%- comment -%} Complete the look pod akordeonami (Antoni, 31.10.2026) {%- endcomment -%}
-        {%- if section.settings.bundle_show -%}
-          {%- render 'dp-complete-look', product: product, sekcja: section.id, progi: section.settings.promo_tiers -%}
-        {%- endif -%}
+        {%- comment -%}
+          Complete the look (pole z checkboxami, dp-complete-look) zastapione 01.11.2026 rzedem
+          "Combine it with" nad opisem. Snippet zostaje w motywie, nie jest renderowany.
+        {%- endcomment -%}
 
       </div>
     </div>
@@ -1774,7 +1779,7 @@
 
     { "type": "header", "content": "Suggestion under the accordions" },
     { "type": "checkbox", "id": "cross_show", "label": "Show it", "default": true },
-    { "type": "checkbox", "id": "bundle_show", "label": "Complete the look under accordions", "info": "Tick items + one button. Discount preview uses the Steps above.", "default": true },
+    { "type": "checkbox", "id": "bundle_show", "label": "Combine it with (above description)", "info": "Row of matching items; + opens a side panel to pick size.", "default": true },
     { "type": "checkbox", "id": "upgrade_show", "label": "Premium alternative (better material)", "info": "Shown only when a pricier item of the same type is made of cashmere, merino, alpaca, mohair, silk or wool and this one is not.", "default": true },
     { "type": "text", "id": "cross_title", "label": "Heading", "default": "Style it with" },
     { "type": "text", "id": "cross_add", "label": "Button (no longer shown)", "default": "Add to cart", "info": "Kept because saved templates still hold this value. The row now adds through the + on each card." },

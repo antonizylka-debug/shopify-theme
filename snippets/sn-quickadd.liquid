@@ -19,36 +19,57 @@
   assign t_zamknij = 'Close'
   assign t_blad = 'Something went wrong. Please try again.'
   assign t_oszczedzasz = 'Save'
+  assign t_opis = 'Description'
+  assign t_pelny = 'View full product'
 -%}
 
 <div class="snq" data-snq hidden>
   <div class="snq__tlo" data-snq-tlo></div>
 
-  <div class="snq__slot">
-    <button type="button" class="snq__zamknij" data-snq-zamknij aria-label="{{ t_zamknij }}">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M6 6l12 12M18 6L6 18"/>
-      </svg>
-    </button>
+  {%- comment -%}
+    Panel z boku na cala wysokosc (Antoni 01.11.2026, wzor: icon-amsterdam.nl):
+    pasek z nazwa i krzyzykiem, duze zdjecia z licznikiem, cena, kolor,
+    rozmiar, "Add to cart", opis i link do pelnej karty produktu.
+  {%- endcomment -%}
+  <div class="snq__okno" role="dialog" aria-modal="true" aria-labelledby="snq-tytul">
+    <div class="snq__pasek">
+      <p class="snq__nag" data-snq-nag></p>
+      <button type="button" class="snq__zamknij" data-snq-zamknij aria-label="{{ t_zamknij }}">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+    </div>
 
-    <div class="snq__okno" role="dialog" aria-modal="true" aria-labelledby="snq-tytul">
-      <div class="snq__gora">
-        <img class="snq__mini" data-snq-mini alt="" width="88" height="120">
-        <div class="snq__opis">
-          <p class="snq__tytul" id="snq-tytul" data-snq-tytul></p>
-          <p class="snq__ceny">
-            <span class="snq__bylo" data-snq-bylo hidden></span>
-            <span class="snq__jest" data-snq-jest></span>
-            <span class="snq__spar" data-snq-spar hidden></span>
-          </p>
+    <div class="snq__tresc" data-snq-tresc>
+      <div class="snq__galeria">
+        <div class="snq__zdjecia" data-snq-zdjecia></div>
+        <div class="snq__nawig" data-snq-nawig>
+          <button type="button" class="snq__strz" data-snq-foto-krok="-1" aria-label="{{ 'general.slider.previous_slide' | t }}">&lsaquo;</button>
+          <span data-snq-licznik></span>
+          <button type="button" class="snq__strz" data-snq-foto-krok="1" aria-label="{{ 'general.slider.next_slide' | t }}">&rsaquo;</button>
         </div>
       </div>
+
+      <p class="snq__tytul" id="snq-tytul" data-snq-tytul></p>
+      <p class="snq__ceny">
+        <span class="snq__bylo" data-snq-bylo hidden></span>
+        <span class="snq__jest" data-snq-jest></span>
+        <span class="snq__spar" data-snq-spar hidden></span>
+      </p>
 
       <div class="snq__opcje" data-snq-opcje></div>
 
       <p class="snq__blad" data-snq-blad hidden>{{ t_blad }}</p>
 
       <button type="button" class="snq__dodaj" data-snq-dodaj>{{ t_dodaj }}</button>
+
+      <details class="snq__opis-prod" data-snq-opis-box>
+        <summary>{{ t_opis }}</summary>
+        <div class="snq__opis-tekst" data-snq-opis></div>
+      </details>
+
+      <a class="snq__link" data-snq-link href="#">{{ t_pelny }}</a>
     </div>
   </div>
 </div>
@@ -56,20 +77,7 @@
 <style>
   .snq[hidden] { display: none; }
 
-  {%- comment -%}
-    Okno siedzi przy prawym dolnym rogu, nie na srodku. Dzieki temu
-    siatka produktow zostaje widoczna i klientka nie traci miejsca,
-    w ktorym byla.
-  {%- endcomment -%}
-  .snq {
-    position: fixed;
-    inset: 0;
-    z-index: 40;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    padding: 24px;
-  }
+  .snq { position: fixed; inset: 0; z-index: 40; }
 
   .snq__tlo {
     position: absolute;
@@ -82,61 +90,72 @@
   }
   .snq.is-on .snq__tlo { opacity: 1; }
 
-  .snq__slot {
-    position: relative;
-    width: 100%;
-    max-width: 580px;
+  .snq__okno {
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: min(520px, 100%);
     display: flex;
     flex-direction: column;
-  }
-
-  .snq__okno {
-    max-height: calc(100vh - 48px);
-    max-height: calc(100dvh - 48px);
-    overflow-y: auto;
     background: #ffffff;
     color: #1c1d1d;
-    padding: 26px 28px;
-    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
-    opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.24s ease, transform 0.24s ease;
+    box-shadow: -12px 0 48px rgba(0, 0, 0, 0.16);
+    transform: translateX(100%);
+    transition: transform 0.28s ease;
   }
-  .snq.is-on .snq__okno { opacity: 1; transform: translateY(0); }
+  .snq.is-on .snq__okno { transform: translateX(0); }
 
+  .snq__pasek {
+    flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 14px 16px 14px 20px;
+    border-bottom: 1px solid #e4e6ea;
+  }
+  .snq__nag {
+    margin: 0; min-width: 0;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
   .snq__zamknij {
-    position: absolute;
-    top: 18px; right: 18px;
-    z-index: 2;
-    width: 34px; height: 34px;
+    flex: 0 0 auto;
+    width: 40px; height: 40px;
     display: inline-flex; align-items: center; justify-content: center;
     padding: 0; border: 0;
     background: transparent; color: #1c1d1d; cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.24s ease;
   }
-  .snq.is-on .snq__zamknij { opacity: 1; }
-  .snq__zamknij svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+  .snq__zamknij svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 
-  /* ---------- gora ---------- */
-  .snq__gora {
+  .snq__tresc {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 16px 20px calc(28px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* ---------- zdjecia ---------- */
+  .snq__zdjecia {
     display: flex;
-    gap: 18px;
-    padding-bottom: 22px;
-    padding-right: 40px;
-    border-bottom: 1px solid #e4e6ea;
-  }
-  .snq__mini {
-    width: 88px; height: 120px;
-    object-fit: cover;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
     background: #f1efec;
-    flex: 0 0 auto;
   }
-  .snq__opis { min-width: 0; }
+  .snq__zdjecia::-webkit-scrollbar { display: none; }
+  .snq__zdjecia img {
+    flex: 0 0 100%;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    scroll-snap-align: start;
+    display: block;
+  }
+  .snq__nawig { display: flex; align-items: center; justify-content: center; gap: 20px; margin: 10px 0 18px; font-size: 13px; }
+  .snq__nawig[hidden] { display: none; }
+  .snq__strz { width: 36px; height: 32px; padding: 0; border: 0; background: none; color: #1c1d1d; font-size: 22px; line-height: 1; cursor: pointer; }
+
   .snq__tytul {
     margin: 0 0 8px;
-    font-size: 15px; font-weight: 600;
-    letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.35;
+    font-size: 18px; font-weight: 600;
+    letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.3;
   }
   .snq__ceny { margin: 0; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; font-size: 16px; }
   {%- comment -%}
@@ -148,8 +167,8 @@
   .snq__spar { color: #6b1f2d; font-size: 13.5px; font-weight: 600; }
 
   /* ---------- opcje ---------- */
-  .snq__opcje { margin-top: 22px; }
-  .snq__grupa + .snq__grupa { margin-top: 22px; }
+  .snq__opcje { margin-top: 20px; }
+  .snq__grupa + .snq__grupa { margin-top: 20px; }
   .snq__etykieta { margin: 0 0 10px; font-size: 14px; color: #6b6f76; }
   .snq__etykieta b { color: #1c1d1d; font-weight: 600; }
 
@@ -161,7 +180,7 @@
     sa ustawione, a zdjecie jest zawsze.
   {%- endcomment -%}
   .snq__foto {
-    width: 64px; height: 88px;
+    width: 56px; height: 76px;
     padding: 0;
     border: 1px solid #e4e6ea;
     background: #f1efec center/cover no-repeat;
@@ -182,7 +201,7 @@
     transition: border-color 0.15s ease;
   }
   .snq__chip:hover { border-color: #1c1d1d; }
-  .snq__chip.is-on { border: 2px solid #1c1d1d; font-weight: 600; }
+  .snq__chip.is-on { border: 2px solid #1c1d1d; font-weight: 600; background: #1c1d1d; color: #ffffff; }
   {%- comment -%}
     Wyprzedany rozmiar zostaje widoczny, a nie znika - inaczej klientka
     szuka go w kolko i mysli, ze to blad strony.
@@ -197,7 +216,7 @@
   .snq__blad[hidden] { display: none; }
 
   .snq__dodaj {
-    margin-top: 26px;
+    margin-top: 22px;
     width: 100%;
     padding: 17px 18px;
     border: 0;
@@ -211,34 +230,20 @@
   .snq__dodaj[disabled] { background: #c9c6c1; cursor: not-allowed; }
   .snq__dodaj.is-ok { background: #1f7a3d; }
 
-  {%- comment -%}
-    Na telefonie panel siada na dole na cala szerokosc, a krzyzyk
-    przenosi sie nad niego, w wlasny bialy kwadrat - w panelu zjadalby
-    miejsce, ktorego tam nie ma.
-  {%- endcomment -%}
-  @media only screen and (max-width: 749px) {
-    .snq {
-      padding: 0 12px 0;
-      align-items: flex-end;
-      justify-content: center;
-    }
-    .snq__slot { max-width: none; }
-    .snq__okno {
-      max-height: 78vh;
-      max-height: 78dvh;
-      padding: 22px 18px calc(22px + env(safe-area-inset-bottom, 0px));
-    }
-    .snq__zamknij {
-      position: static;
-      align-self: center;
-      width: 44px; height: 44px;
-      margin-bottom: 14px;
-      background: #ffffff;
-    }
-    .snq__gora { gap: 14px; padding-right: 0; }
-    .snq__tytul { font-size: 14.5px; }
-    .snq__foto { width: 58px; height: 80px; }
+  /* ---------- opis i link ---------- */
+  .snq__opis-prod { margin-top: 22px; border-top: 1px solid #e4e6ea; border-bottom: 1px solid #e4e6ea; }
+  .snq__opis-prod summary {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 0; list-style: none; cursor: pointer;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
   }
+  .snq__opis-prod summary::-webkit-details-marker { display: none; }
+  .snq__opis-prod summary::after { content: '+'; font-size: 18px; font-weight: 400; }
+  .snq__opis-prod[open] summary::after { content: '\2212'; }
+  .snq__opis-tekst { padding: 0 0 16px; font-size: 14px; line-height: 1.6; color: #3d3f43; }
+  .snq__opis-tekst p { margin: 0 0 10px; }
+  .snq__opis-tekst img { max-width: 100%; height: auto; }
+  .snq__link { display: block; margin-top: 18px; text-align: center; font-size: 14px; font-weight: 600; color: #1c1d1d; text-decoration: underline; text-underline-offset: 3px; }
 </style>
 
 <script>
@@ -246,8 +251,14 @@
     var okno = document.querySelector('[data-snq]');
     if (!okno) return;
 
-    var panel = okno.querySelector('.snq__okno');
-    var mini = okno.querySelector('[data-snq-mini]');
+    var panel = okno.querySelector('[data-snq-tresc]');
+    var nag = okno.querySelector('[data-snq-nag]');
+    var zdjecia = okno.querySelector('[data-snq-zdjecia]');
+    var nawig = okno.querySelector('[data-snq-nawig]');
+    var licznik = okno.querySelector('[data-snq-licznik]');
+    var opisBox = okno.querySelector('[data-snq-opis-box]');
+    var opisTekst = okno.querySelector('[data-snq-opis]');
+    var link = okno.querySelector('[data-snq-link]');
     var tytul = okno.querySelector('[data-snq-tytul]');
     var bylo = okno.querySelector('[data-snq-bylo]');
     var jest = okno.querySelector('[data-snq-jest]');
@@ -356,6 +367,47 @@
       return url.replace(/(\.(jpg|jpeg|png|webp|gif))(\?|$)/i, '_240x$1$3');
     }
 
+    /* ---------- galeria w panelu ---------- */
+    function duzy(url) {
+      if (!url) return '';
+      if (url.indexOf('//') === 0) url = 'https:' + url;
+      return url + (url.indexOf('?') < 0 ? '?' : '&') + 'width=900';
+    }
+    function rdzen(url) { return String(url || '').split('?')[0].replace(/^https?:/, ''); }
+    function rysujGalerie() {
+      zdjecia.innerHTML = '';
+      var lista = (produkt.images && produkt.images.length) ? produkt.images : [produkt.featured_image];
+      lista.forEach(function (u, i) {
+        if (!u) return;
+        var im = document.createElement('img');
+        im.src = duzy(u); im.alt = i === 0 ? produkt.title : '';
+        im.loading = i < 2 ? 'eager' : 'lazy';
+        im.width = 450; im.height = 600;
+        zdjecia.appendChild(im);
+      });
+      zdjecia.scrollLeft = 0;
+      nawig.hidden = zdjecia.children.length < 2;
+      liczZdjecia();
+    }
+    function ktoreZdjecie() { return Math.round(zdjecia.scrollLeft / Math.max(1, zdjecia.clientWidth)); }
+    function liczZdjecia() { licznik.textContent = (ktoreZdjecie() + 1) + ' / ' + zdjecia.children.length; }
+    function idzDo(i) {
+      var n = zdjecia.children.length;
+      if (!n) return;
+      i = (i + n) % n;
+      /* skok bez "smooth" - plynne przewijanie z przyciaganiem potrafi stanac w pol drogi */
+      zdjecia.scrollLeft = i * zdjecia.clientWidth;
+      liczZdjecia();
+    }
+    function pokazZdjecieWariantu(w) {
+      if (!w || !w.featured_image || !w.featured_image.src) return;
+      var szukany = rdzen(w.featured_image.src);
+      Array.prototype.forEach.call(zdjecia.children, function (im, i) {
+        if (rdzen(im.src) === szukany) idzDo(i);
+      });
+    }
+    zdjecia.addEventListener('scroll', function () { liczZdjecia(); }, { passive: true });
+
     function rysujOpcje() {
       opcje.innerHTML = '';
       /* Jeden wariant bez nazwanych opcji - nie ma czego wybierac. */
@@ -425,7 +477,7 @@
       var pelny = wybor.length > 0 && wybor.every(function (x) { return x !== null && x !== undefined; });
 
       if (w) {
-        if (w.featured_image && w.featured_image.src) mini.src = maly(w.featured_image.src);
+        pokazZdjecieWariantu(w);
         jest.textContent = pieniadze(w.price);
         if (w.compare_at_price && w.compare_at_price > w.price) {
           bylo.hidden = false; bylo.textContent = pieniadze(w.compare_at_price);
@@ -479,12 +531,16 @@
            w ktory przed chwila kliknela. Pelny tytul tylko jako zapas. */
         var krotka = zrodlo && zrodlo.getAttribute ? zrodlo.getAttribute('data-snq-nazwa') : '';
         tytul.textContent = krotka || produkt.title;
-        mini.alt = produkt.title;
-        mini.src = maly((start && start.featured_image && start.featured_image.src) || produkt.featured_image);
+        nag.textContent = krotka || produkt.title;
+        opisTekst.innerHTML = produkt.description || '';
+        opisBox.hidden = !produkt.description;
+        opisBox.open = false;
+        link.href = produkt.url || ((window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/') + 'products/' + uchwyt;
 
+        pokaz();
+        rysujGalerie();
         rysujOpcje();
         odswiez();
-        pokaz();
       }
 
       if (pobrane[uchwyt]) { gotowe(pobrane[uchwyt]); return; }
@@ -510,6 +566,9 @@
 
     okno.addEventListener('click', function (e) {
       if (e.target.closest('[data-snq-tlo]') || e.target.closest('[data-snq-zamknij]')) { schowaj(); return; }
+
+      var krok = e.target.closest('[data-snq-foto-krok]');
+      if (krok) { idzDo(ktoreZdjecie() + Number(krok.getAttribute('data-snq-foto-krok'))); return; }
 
       var wartosc = e.target.closest('[data-snq-wartosc]');
       if (wartosc && !wartosc.disabled) {
