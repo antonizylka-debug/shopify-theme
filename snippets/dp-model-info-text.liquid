@@ -1,0 +1,85 @@
+{%- comment -%}
+  ============================================================================
+  WSPOLNY TEKST I WYGLAD KAPSULKI "MODEL" - jedno miejsce dla wszystkich produktow.
+  Zmiana tutaj zmienia kapsulke na kazdej karcie produktu.
+  ============================================================================
+
+  TEKSTY (ponizej, w bloku liquid):
+    tekst_model    - gdy produkt ma prawdziwe dane modela (wzrost, rozmiar, zrodlo)
+    tekst_przyklad - gdy produkt ma tylko przykladowe wartosci
+  Zmienne w tekstach:
+    [height] - wzrost w cm (sama liczba, np. 174)
+    [ft]     - ten sam wzrost w stopach i calach (np. 5′9″)
+    [size]   - rozmiar
+  Przyklad zawsze zostaje oznaczony: jesli tekst_przyklad nie zawiera slowa
+  "example" ani "illustrative", na poczatek doklejany jest znacznik_przykladu.
+
+  WYGLAD (ponizej, w <style>): zmienne --dp-fit-* - kolory, czcionka, obwodka,
+  zaokraglenie, odstepy. Ikona linijki: <svg> nizej.
+
+  Uzywane przez snippets/dp-model-info.liquid (tam decyzja, ktory tekst pokazac).
+
+  @param {string} rodzaj    - 'model' albo 'example'
+  @param {number} wzrost    - cm
+  @param {string} rozmiar   - wartosc wariantu
+  @param {string} section_id
+{%- endcomment -%}
+{%- liquid
+  assign tekst_model = 'Model is [height] cm tall and wears size [size].'
+  assign tekst_przyklad = 'Illustrative fit example: [height] cm · Size [size].'
+  assign znacznik_przykladu = 'Illustrative fit example: '
+
+  if rodzaj == 'example'
+    assign szablon = tekst_przyklad
+    assign maly = tekst_przyklad | downcase
+    unless maly contains 'example' or maly contains 'illustrative'
+      assign szablon = znacznik_przykladu | append: tekst_przyklad
+    endunless
+  else
+    assign szablon = tekst_model
+  endif
+
+  assign cale = wzrost | divided_by: 2.54 | round
+  assign stopy = cale | divided_by: 12
+  assign reszta = cale | modulo: 12
+  capture ft
+    echo stopy | append: '′' | append: reszta | append: '″'
+  endcapture
+  capture h_html
+    echo '<b>' | append: wzrost | append: '</b>'
+  endcapture
+  assign rozmiar_bezp = rozmiar | escape
+  capture s_html
+    echo '<b>' | append: rozmiar_bezp | append: '</b>'
+  endcapture
+  assign tresc = szablon | escape | replace: '[height]', h_html | replace: '[ft]', ft | replace: '[size]', s_html
+-%}
+<p class="dp-fit{% if rodzaj == 'example' %} dp-fit--example{% endif %}" data-dp-fit="{{ rodzaj }}">
+  <svg class="dp-fit__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="8" width="19" height="8" rx="1.5"/><path d="M6.5 8v3M10 8v4.5M13.5 8v3M17 8v4.5"/></svg>
+  <span class="dp-fit__text">{{ tresc }}</span>
+</p>
+<style>
+  .dp-fit {
+    /* ---- wyglad kapsulki: zmieniaj tutaj ---- */
+    --dp-fit-bg: #f7f6f3;
+    --dp-fit-border: #e2dfd9;
+    --dp-fit-text: #4a4d52;
+    --dp-fit-strong: #1c1d1d;
+    --dp-fit-icon: #6b6f76;
+    --dp-fit-font-size: 13px;
+    --dp-fit-radius: 999px;
+    --dp-fit-padding: 7px 14px 7px 11px;
+    --dp-fit-gap: 8px;
+    --dp-fit-margin: 12px 0 0;
+    /* ------------------------------------------ */
+    display: inline-flex; align-items: center; gap: var(--dp-fit-gap);
+    align-self: flex-start; max-width: 100%;
+    margin: var(--dp-fit-margin); padding: var(--dp-fit-padding);
+    background: var(--dp-fit-bg); border: 1px solid var(--dp-fit-border); border-radius: var(--dp-fit-radius);
+    color: var(--dp-fit-text); font-size: var(--dp-fit-font-size); line-height: 1.35;
+  }
+  .dp-fit b { color: var(--dp-fit-strong); font-weight: 600; }
+  .dp-fit__icon { flex: 0 0 auto; width: 16px; height: 16px; fill: none; stroke: var(--dp-fit-icon); stroke-width: 1.5; stroke-linecap: round; }
+  /* telefon: ob-pdp uklada dzieci .pdp__info - kapsulka w tym samym miejscu co rozmiary, nad "Add to cart" */
+  #shopify-section-{{ section_id }} .pdp__info > .dp-fit { order: 2; margin-bottom: 14px; }
+</style>
