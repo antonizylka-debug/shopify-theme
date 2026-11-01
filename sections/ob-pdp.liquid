@@ -1153,7 +1153,10 @@
         {%- endfor -%}
         {%- comment -%} dp-size-fit line removed from the page 31.10.2026 (Antoni) - snippet kept {%- endcomment -%}
         {%- comment -%} Model height + size worn, from custom.model_* metafields (31.10.2026) {%- endcomment -%}
-        {%- render 'dp-model-info', section_id: section.id, ss: section.settings -%}
+        {%- capture dp_model_info -%}
+          {%- render 'dp-model-info', section_id: section.id -%}
+        {%- endcapture -%}
+        {{- dp_model_info | replace: 'Illustrative fit example: ', '' | replace: 'Illustrative fit example:', '' -}}
 
         {%- comment -%}
           Osobnego linku "Storrelsesguide" tu nie ma - prowadzilby tam samo,
@@ -1776,18 +1779,6 @@
     { "type": "textarea", "id": "help_text", "label": "Size help box", "default": "Not sure about your size? Go by the measurements rather than the size you usually wear." },
     { "type": "text", "id": "help_link_label", "label": "Link in the help box", "default": "See measurements" },
     { "type": "url", "id": "help_link", "label": "Help box target" },
-
-    { "type": "header", "content": "Model fit line" },
-    { "type": "paragraph", "content": "Line under the sizes. Height and size come from each product's metafields. In the text use [height] for cm, [ft] for feet and inches, [size] for the size." },
-    { "type": "text", "id": "fit_text_model", "label": "Text with real model data", "default": "Model is [height] cm tall and wears size [size]." },
-    { "type": "text", "id": "fit_text_example", "label": "Text with a fit example", "info": "Must contain \"example\" or \"illustrative\". Otherwise \"Illustrative fit example:\" is added in front, so an estimate never reads as real model data.", "default": "Illustrative fit example: [height] cm · Size [size]." },
-    { "type": "range", "id": "fit_font", "label": "Text size", "default": 13, "min": 11, "max": 16, "step": 1, "unit": "px" },
-    { "type": "checkbox", "id": "fit_pill", "label": "Rounded ends", "default": true },
-    { "type": "checkbox", "id": "fit_icon", "label": "Ruler icon", "default": true },
-    { "type": "color", "id": "fit_bg", "label": "Background", "default": "#f7f6f3" },
-    { "type": "color", "id": "fit_border", "label": "Border", "default": "#e2dfd9" },
-    { "type": "color", "id": "fit_color", "label": "Text colour", "default": "#4a4d52" },
-    { "type": "color", "id": "fit_strong", "label": "Numbers colour", "default": "#1c1d1d" },
 
     { "type": "header", "content": "Low stock" },
     {
