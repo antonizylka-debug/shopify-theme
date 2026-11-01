@@ -95,21 +95,22 @@
 <style>
   .dp-fit {
     /* ---- wyglad kapsulki: zmieniaj tutaj ---- */
-    --dp-fit-bg: #f7f6f3;
-    --dp-fit-border: #e2dfd9;
+    /* 01.11 Antoni: sam tekst z linijka, bez tla i obwodki */
+    --dp-fit-bg: transparent;
+    --dp-fit-border: transparent;
     --dp-fit-text: #4a4d52;
     --dp-fit-strong: #1c1d1d;
     --dp-fit-icon: #6b6f76;
     --dp-fit-font-size: 13px;
     --dp-fit-radius: 999px;
-    --dp-fit-padding: 7px 14px 7px 11px;
+    --dp-fit-padding: 0;
     --dp-fit-gap: 8px;
     --dp-fit-margin: 12px 0 0;
     /* ------------------------------------------ */
     display: inline-flex; align-items: center; gap: var(--dp-fit-gap);
     align-self: flex-start; max-width: 100%;
     margin: var(--dp-fit-margin); padding: var(--dp-fit-padding);
-    background: var(--dp-fit-bg); border: 1px solid var(--dp-fit-border); border-radius: var(--dp-fit-radius);
+    background: var(--dp-fit-bg); border: 0 solid var(--dp-fit-border); border-radius: var(--dp-fit-radius);
     color: var(--dp-fit-text); font-size: var(--dp-fit-font-size); line-height: 1.35;
   }
   .dp-fit b { color: var(--dp-fit-strong); font-weight: 600; }
