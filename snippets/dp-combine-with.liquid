@@ -56,6 +56,7 @@
   .dp-combine__arrow[disabled] { opacity: .35; cursor: default; }
   .dp-combine__track { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
   .dp-combine__track::-webkit-scrollbar { display: none; }
+  @media (hover: hover) and (pointer: fine) { .dp-combine__track { cursor: grab; } }
   .dp-combine__card { flex: 0 0 calc((100% - 20px) / 2.3); min-width: 0; scroll-snap-align: start; }
   {%- comment -%} Pasek zdjec w kafelku nie lapie palca - przesuniecie idzie do calego rzedu (jak w "Style it with"). {%- endcomment -%}
   .dp-combine .snc__pas { overflow-x: hidden; overscroll-behavior-x: auto; }
@@ -108,6 +109,44 @@
       });
     });
     tor.addEventListener('scroll', stan, { passive: true });
+
+    /* Przeciaganie myszka (Antoni 01.11.2026). Palcem rzad przewija sie sam - tu tylko mysz.
+       Po puszczeniu dociaga do najblizszej karty; przeciagniecie nie otwiera produktu. */
+    var ciag = null, przeciagnieto = false;
+    tor.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('.snc__plus, button')) return;
+      ciag = { x: e.clientX, left: tor.scrollLeft, id: e.pointerId };
+      przeciagnieto = false;
+    });
+    tor.addEventListener('pointermove', function (e) {
+      if (!ciag || e.pointerId !== ciag.id) return;
+      var dx = e.clientX - ciag.x;
+      if (!przeciagnieto && Math.abs(dx) < 6) return;
+      if (!przeciagnieto) {
+        przeciagnieto = true;
+        tor.setPointerCapture(e.pointerId);
+        tor.style.scrollSnapType = 'none';
+        tor.style.cursor = 'grabbing';
+      }
+      tor.scrollLeft = ciag.left - dx;
+    });
+    function koniec() {
+      if (!ciag) return;
+      ciag = null;
+      if (!przeciagnieto) return;
+      tor.style.cursor = '';
+      var k = tor.children[0];
+      var krok = k ? k.getBoundingClientRect().width + 10 : tor.clientWidth;
+      tor.scrollLeft = Math.round(tor.scrollLeft / krok) * krok;
+      tor.style.scrollSnapType = '';
+      stan();
+    }
+    tor.addEventListener('pointerup', koniec);
+    tor.addEventListener('pointercancel', koniec);
+    tor.addEventListener('click', function (e) {
+      if (przeciagnieto) { e.preventDefault(); e.stopPropagation(); przeciagnieto = false; }
+    }, true);
+    tor.addEventListener('dragstart', function (e) { e.preventDefault(); });
 
     function start() {
       var zrodla = (ramka.getAttribute('data-dp-combine-sources') || '').split('|').filter(Boolean);

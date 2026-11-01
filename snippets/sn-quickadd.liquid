@@ -140,6 +140,7 @@
     background: #f1efec;
   }
   .snq__zdjecia::-webkit-scrollbar { display: none; }
+  @media (hover: hover) and (pointer: fine) { .snq__zdjecia { cursor: grab; } }
   .snq__zdjecia img {
     flex: 0 0 100%;
     width: 100%;
@@ -407,6 +408,39 @@
       });
     }
     zdjecia.addEventListener('scroll', function () { liczZdjecia(); }, { passive: true });
+
+    /* przeciaganie zdjec myszka - palcem przesuwaja sie same; po puszczeniu najblizsze zdjecie */
+    var ciag = null;
+    zdjecia.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      ciag = { x: e.clientX, left: zdjecia.scrollLeft, id: e.pointerId, ruszone: false };
+    });
+    zdjecia.addEventListener('pointermove', function (e) {
+      if (!ciag || e.pointerId !== ciag.id) return;
+      var dx = e.clientX - ciag.x;
+      if (!ciag.ruszone && Math.abs(dx) < 6) return;
+      if (!ciag.ruszone) {
+        ciag.ruszone = true;
+        zdjecia.setPointerCapture(e.pointerId);
+        zdjecia.style.scrollSnapType = 'none';
+        zdjecia.style.cursor = 'grabbing';
+      }
+      zdjecia.scrollLeft = ciag.left - dx;
+    });
+    function koniecCiagniecia() {
+      if (!ciag) return;
+      var bylo = ciag;
+      ciag = null;
+      if (!bylo.ruszone) return;
+      zdjecia.style.cursor = '';
+      zdjecia.style.scrollSnapType = '';
+      /* wystarczy pociagnac o 1/5 szerokosci, zeby przejsc do nastepnego */
+      var w = zdjecia.clientWidth, start = Math.round(bylo.left / w), przesun = (bylo.left - zdjecia.scrollLeft) / w;
+      idzDo(przesun < -0.2 ? start + 1 : przesun > 0.2 ? start - 1 : start);
+    }
+    zdjecia.addEventListener('pointerup', koniecCiagniecia);
+    zdjecia.addEventListener('pointercancel', koniecCiagniecia);
+    zdjecia.addEventListener('dragstart', function (e) { e.preventDefault(); });
 
     function rysujOpcje() {
       opcje.innerHTML = '';

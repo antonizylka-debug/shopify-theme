@@ -156,7 +156,7 @@
     }
     .snc:hover .snc__plus,
     .snc:hover .snc__strz,
-    .snc:focus-within .snc__strz,
+    {%- comment -%} Bez :focus-within - po kliknieciu strzalka zostawala na stale (Antoni 01.11.2026). Klawiatura nadal widzi przez :focus-visible. {%- endcomment -%}
     .snc__strz:focus-visible,
     .snc__plus:focus-visible,
     .snc__plus.is-ok,
@@ -288,6 +288,55 @@
   (function () {
     if (window.__sncGotowe) return;
     window.__sncGotowe = true;
+
+    /* Przeciaganie zdjec myszka w kafelku, jak palcem na telefonie (Antoni 01.11.2026).
+       Tylko tam, gdzie pasek zdjec przewija sie sam (siatka kolekcji). W rzedach pasek
+       ma overflow hidden i myszka/palec przesuwa caly rzad - tego tu nie ruszamy.
+       Po puszczeniu: 1/5 szerokosci wystarczy, zeby przejsc do nastepnego zdjecia;
+       przeciagniecie nie otwiera produktu. */
+    var ciag = null, bezKliku = false;
+    document.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0 || !e.target.closest) return;
+      if (e.target.closest('.snc__strz, .snc__plus')) return;
+      var pas = e.target.closest('[data-snc-pas]');
+      if (!pas || pas.children.length < 2 || getComputedStyle(pas).overflowX === 'hidden') return;
+      ciag = { pas: pas, x: e.clientX, left: pas.scrollLeft, id: e.pointerId, ruszone: false };
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (!ciag || e.pointerId !== ciag.id) return;
+      var dx = e.clientX - ciag.x;
+      if (!ciag.ruszone && Math.abs(dx) < 6) return;
+      if (!ciag.ruszone) {
+        ciag.ruszone = true;
+        ciag.pas.style.scrollSnapType = 'none';
+        ciag.pas.style.cursor = 'grabbing';
+        document.documentElement.style.userSelect = 'none';
+      }
+      ciag.pas.scrollLeft = ciag.left - dx;
+    });
+    function puscZdjecia() {
+      if (!ciag) return;
+      var c = ciag;
+      ciag = null;
+      if (!c.ruszone) return;
+      document.documentElement.style.userSelect = '';
+      c.pas.style.cursor = '';
+      var w = Math.max(1, c.pas.clientWidth), ile = c.pas.children.length;
+      var start = Math.round(c.left / w), przesun = (c.left - c.pas.scrollLeft) / w;
+      var cel = przesun < -0.2 ? start + 1 : przesun > 0.2 ? start - 1 : start;
+      c.pas.scrollLeft = Math.max(0, Math.min(ile - 1, cel)) * w;
+      c.pas.style.scrollSnapType = '';
+      bezKliku = true;
+      setTimeout(function () { bezKliku = false; }, 60);
+    }
+    document.addEventListener('pointerup', puscZdjecia);
+    document.addEventListener('pointercancel', puscZdjecia);
+    document.addEventListener('click', function (e) {
+      if (bezKliku) { e.preventDefault(); e.stopPropagation(); bezKliku = false; }
+    }, true);
+    document.addEventListener('dragstart', function (e) {
+      if (e.target.closest && e.target.closest('[data-snc-pas]')) e.preventDefault();
+    });
 
     document.addEventListener('click', function (e) {
       if (!e.target.closest) return;
