@@ -4,6 +4,10 @@
   Zmiana tutaj zmienia kapsulke na kazdej karcie produktu.
   ============================================================================
 
+  01.11.2026: teksty, rozmiar czcionki, kolory, zaokraglenie i ikona sa tez
+  w edytorze motywu: sekcja strony produktu -> "Model fit line" (ss = section.settings).
+  Ustawienie z edytora wygrywa; wartosci ponizej to zapas, gdy pole jest puste.
+
   TEKSTY (ponizej, w bloku liquid):
     tekst_model    - gdy produkt ma prawdziwe dane modela (wzrost, rozmiar, zrodlo)
     tekst_przyklad - gdy produkt ma tylko przykladowe wartosci
@@ -23,11 +27,39 @@
   @param {number} wzrost    - cm
   @param {string} rozmiar   - wartosc wariantu
   @param {string} section_id
+  @param {object} ss        - section.settings (fit_text_model, fit_text_example, fit_font, fit_pill, fit_icon, fit_bg, fit_border, fit_color, fit_strong)
 {%- endcomment -%}
 {%- liquid
   assign tekst_model = 'Model is [height] cm tall and wears size [size].'
   assign tekst_przyklad = 'Illustrative fit example: [height] cm · Size [size].'
   assign znacznik_przykladu = 'Illustrative fit example: '
+  if ss.fit_text_model != blank
+    assign tekst_model = ss.fit_text_model
+  endif
+  if ss.fit_text_example != blank
+    assign tekst_przyklad = ss.fit_text_example
+  endif
+
+  capture styl
+    if ss.fit_font
+      echo '--dp-fit-font-size:' | append: ss.fit_font | append: 'px;'
+    endif
+    if ss.fit_pill == false
+      echo '--dp-fit-radius:6px;'
+    endif
+    if ss.fit_bg != blank
+      echo '--dp-fit-bg:' | append: ss.fit_bg | append: ';'
+    endif
+    if ss.fit_border != blank
+      echo '--dp-fit-border:' | append: ss.fit_border | append: ';'
+    endif
+    if ss.fit_color != blank
+      echo '--dp-fit-text:' | append: ss.fit_color | append: ';'
+    endif
+    if ss.fit_strong != blank
+      echo '--dp-fit-strong:' | append: ss.fit_strong | append: ';'
+    endif
+  endcapture
 
   if rodzaj == 'example'
     assign szablon = tekst_przyklad
@@ -54,8 +86,10 @@
   endcapture
   assign tresc = szablon | escape | replace: '[height]', h_html | replace: '[ft]', ft | replace: '[size]', s_html
 -%}
-<p class="dp-fit{% if rodzaj == 'example' %} dp-fit--example{% endif %}" data-dp-fit="{{ rodzaj }}">
+<p class="dp-fit{% if rodzaj == 'example' %} dp-fit--example{% endif %}" data-dp-fit="{{ rodzaj }}"{% if styl != blank %} style="{{ styl | strip }}"{% endif %}>
+  {%- unless ss.fit_icon == false %}
   <svg class="dp-fit__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="8" width="19" height="8" rx="1.5"/><path d="M6.5 8v3M10 8v4.5M13.5 8v3M17 8v4.5"/></svg>
+  {%- endunless %}
   <span class="dp-fit__text">{{ tresc }}</span>
 </p>
 <style>
