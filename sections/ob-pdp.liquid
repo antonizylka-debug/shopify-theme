@@ -723,6 +723,35 @@
     #shopify-section-{{ section.id }} .pdp__sizes { grid-template-columns: repeat({{ section.settings.size_cols_m }}, minmax(0, 1fr)); }
     #shopify-section-{{ section.id }} .pdp__crumbs { font-size: 11.5px; white-space: nowrap; overflow-x: auto; }
   }
+
+  /* ========== UPROSZCZENIE KARTY (Antoni 01.11.2026) ==========
+     Nad przyciskiem tylko: nazwa, cena, kolor, rozmiar, "Add to cart".
+     Ukryte (znaczniki zostaja, latwo cofnac - usun regule):
+       kategoria pod nazwa, plakietka "SALE −46%" (rabat jest przy cenie),
+       tabela Mix & Match (zostaje linijka "As low as ... with Mix & Match").
+     Wiersze wysylka/zwroty: jedna zwarta linijka zamiast 4 kafli. */
+  #shopify-section-{{ section.id }} .pdp__sub,
+  #shopify-section-{{ section.id }} .pdp__pbs,
+  #shopify-section-{{ section.id }} .pdp__akcja { display: none !important; }
+
+  #shopify-section-{{ section.id }} .pdp__help--link {
+    display: block; margin: 0 0 8px; padding: 0; border: 0; background: none;
+    font-size: 13px; text-align: right;
+  }
+  #shopify-section-{{ section.id }} .pdp__help--link a { color: var(--pdp-text); text-decoration: underline; text-underline-offset: 3px; }
+
+  #shopify-section-{{ section.id }} .pdp__rows {
+    display: flex; flex-wrap: wrap; gap: 6px 16px;
+    margin-top: 14px;
+  }
+  #shopify-section-{{ section.id }} .pdp__row {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 0; border: 0;
+  }
+  #shopify-section-{{ section.id }} .pdp__row-ico,
+  #shopify-section-{{ section.id }} .pdp__row-ico svg { width: 15px; height: 15px; margin: 0; }
+  #shopify-section-{{ section.id }} .pdp__row-title { font-size: 12.5px; font-weight: 500; color: var(--pdp-muted); }
+  #shopify-section-{{ section.id }} .pdp__row-sub { display: none; }
 {%- endstyle -%}
 
 {%- capture gwiazdka -%}<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>{%- endcapture -%}
@@ -1085,18 +1114,15 @@
         {%- endif -%}
 
         {%- comment -%} ---------- pomoc przy rozmiarze (produkt bez wariantow nie ma czego dobierac) ---------- {%- endcomment -%}
-        {%- if section.settings.help_text != blank and product.has_only_default_variant == false -%}
-          <div class="pdp__help">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7h13l5 5-5 5H3z"/><path d="M7 12h.01M11 12h.01"/></svg>
-            <div>
-              {%- capture dp_fit -%}{%- render 'dp-fit-note', product: product -%}{%- endcapture -%}
-              {%- if dp_fit != blank -%}{{ dp_fit | strip }}{%- else -%}{{ section.settings.help_text }}{%- endif -%}
-              {%- if section.settings.help_link != blank and section.settings.help_link_label != blank -%}
-                {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
-                <br><a href="{{ section.settings.help_link }}"{% if sg_html contains 'data-sgm' %} data-sg-open{% endif %}>{{ section.settings.help_link_label }}</a>
-                {{- sg_html -}}
-              {%- endif -%}
-            </div>
+        {%- comment -%}
+          Uproszczenie 01.11.2026: zamiast ramki z porada - sam link do tabeli rozmiarow (okno sn-sizechart zostaje).
+          Poprzednia ramka (ikona + dp-fit-note / help_text) jest w historii git przed tym commitem.
+        {%- endcomment -%}
+        {%- if product.has_only_default_variant == false and section.settings.help_link != blank and section.settings.help_link_label != blank -%}
+          {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
+          <div class="pdp__help pdp__help--link">
+            <a href="{{ section.settings.help_link }}"{% if sg_html contains 'data-sgm' %} data-sg-open{% endif %}>{{ section.settings.help_link_label }}</a>
+            {{- sg_html -}}
           </div>
         {%- endif -%}
 
