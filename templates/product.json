@@ -213,7 +213,6 @@
     },
     "ob_reviews_strip_QRDkmM": {
       "type": "ob-reviews-strip",
-      "disabled": true,
       "blocks": {
         "review_L36cp8": {
           "type": "review",
@@ -308,7 +307,7 @@
         "space_bottom_mobile": 28
       }
     },
-    "mix_match": { "type": "dp-mix-match", "disabled": true, "settings": {} }, "bestsellers": {
+    "mix_match": { "type": "dp-mix-match", "settings": {} }, "bestsellers": {
       "type": "sn-bestsellers", "disabled": true,
       "blocks": {
         "t1": {

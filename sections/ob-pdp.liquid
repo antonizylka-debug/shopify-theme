@@ -732,12 +732,11 @@
   /* ========== UPROSZCZENIE KARTY (Antoni 01.11.2026) ==========
      Nad przyciskiem tylko: nazwa, cena, kolor, rozmiar, "Add to cart".
      Ukryte (znaczniki zostaja, latwo cofnac - usun regule):
-       kategoria pod nazwa, plakietka "SALE −46%" (rabat jest przy cenie),
-       tabela Mix & Match (zostaje linijka "As low as ... with Mix & Match").
+       kategoria pod nazwa, plakietka "SALE −46%" (rabat jest przy cenie).
+     Tabela Mix & Match przy cenie wrocila (Antoni: "za bardzo uproszczone").
      Wiersze wysylka/zwroty: jedna zwarta linijka zamiast 4 kafli. */
   #shopify-section-{{ section.id }} .pdp__sub,
-  #shopify-section-{{ section.id }} .pdp__pbs,
-  #shopify-section-{{ section.id }} .pdp__akcja { display: none !important; }
+  #shopify-section-{{ section.id }} .pdp__pbs { display: none !important; }
 
   #shopify-section-{{ section.id }} .pdp__help--link {
     display: block; margin: 0 0 8px; padding: 0; border: 0; background: none;
