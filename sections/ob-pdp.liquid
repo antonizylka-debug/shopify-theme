@@ -771,6 +771,10 @@
   #shopify-section-{{ section.id }} .pdp--flat .pdp__stars svg { width: 11px; height: 11px; }
   #shopify-section-{{ section.id }} .pdp--flat .pdp__rating-logo { display: block; height: 15px; width: auto; }
   #shopify-section-{{ section.id }} .pdp--flat .pdp__grid { gap: 0; }
+  @media only screen and (min-width: {{ section.settings.breakpoint | plus: 1 }}px) {
+    {%- comment -%} Wzor ma zawsze pary zdjec; pierwsze zdjecie na cala szerokosc przy nieparzystej liczbie (regula domyslnej strony) dawaloby 969x1384 px. {%- endcomment -%}
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__photo--wide { grid-column: span 3; }
+  }
   #shopify-section-{{ section.id }} .pdp--flat .pdp__price { font-size: 16px; }
   #shopify-section-{{ section.id }} .pdp--flat .pdp__title { font-size: 16px; font-weight: 400; letter-spacing: 0; line-height: 1.3; margin: 0 0 6px; }
   #shopify-section-{{ section.id }} .pdp--flat .pdp__sub { display: none; }
