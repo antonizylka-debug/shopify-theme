@@ -1,0 +1,774 @@
+{%- comment -%}
+  Strona produktu "Catalog" - OSOBNA sekcja, napisana od zera (02.11.2026, na zyczenie Antoniego:
+  ma wygladac 1:1 jak strona ze zrzutow, bez dotykania ob-pdp.liquid).
+  Uklad, rozmiary, kolory i odstepy sa zmierzone na stronie wzorcowej; teksty, zdjecia i dane sa nasze.
+
+  Co jest tutaj, a czego nie ma:
+    - jest: ocena nad tytulem, tytul i cena, plakietki cech (metapole custom.pdp_features), kolory jako
+      kafle ze zdjeciem ("+N colors"), "Size advice" (metapole custom.size_recommendation albo ustawienie),
+      "Size help" z przyciskiem i linkiem do tabeli rozmiarow, zielona linia "In stock", plaski rzad
+      rozmiarow, ciemny przycisk, wiersze obietnic (bloki "row"), "Shop the look" jako rozwijany wiersz,
+      akordeony (bloki "acc"), pasek na zdjeciu (licznik, model, "Shop the look"), galeria 2 kolumny na PC.
+    - nie ma: licznika "ludzie ogladali" (wymyslony), Mix & Match, przycisku serca, doklejanego paska koszyka.
+
+  Szablon: templates/product.catalog.json (podglad ?view=catalog). Domyslny product.json uzywa ob-pdp.
+{%- endcomment -%}
+
+{%- liquid
+  assign war = product.selected_or_first_available_variant
+  assign n_rozm = 0
+
+  assign poz_koloru = 0
+  for opt in product.options_with_values
+    assign n = opt.name | downcase
+    if n contains 'farve' or n contains 'color' or n contains 'colour'
+      assign poz_koloru = forloop.index
+    endif
+  endfor
+
+  comment
+    Slownik wyswietlania: dane produktow zostaja angielskie, podmieniamy tylko to, co widzi klient.
+  endcomment
+  assign mapa = ''
+  assign pary = section.settings.dictionary | split: ','
+  for para in pary
+    assign kv = para | split: '='
+    if kv.size == 2
+      assign k = kv[0] | strip | downcase
+      assign v = kv[1] | strip
+      assign mapa = mapa | append: '[' | append: k | append: ']=' | append: v | append: ';'
+    endif
+  endfor
+
+  assign na_przecenie = false
+  assign rabat = 0
+  if war.compare_at_price > war.price
+    assign na_przecenie = true
+    assign rabat = war.compare_at_price | minus: war.price | times: 100.0 | divided_by: war.compare_at_price | round
+  endif
+
+  comment Rada o rozmiarze: metapole produktu wygrywa z ustawieniem sekcji. endcomment
+  assign rada = product.metafields.custom.size_recommendation.value
+  if rada == blank
+    assign rada = section.settings.advice_text
+  endif
+
+  comment Plakietki cech pod cena - tekst oddzielony przecinkami albo lista. Brak = nic. endcomment
+  assign cechy = product.metafields.custom.pdp_features.value | join: ','
+  assign cechy_lista = cechy | split: ','
+
+  comment Data wysylki dla wierszy obietnic: dzis + 3 dni robocze (gorna granica 1-3 dni z polityki). endcomment
+  assign ship_ts = 'now' | date: '%s' | plus: 0
+  assign ship_left = 3
+  for i in (1..7)
+    if ship_left > 0
+      assign ship_ts = ship_ts | plus: 86400
+      assign ship_wd = ship_ts | date: '%u'
+      if ship_wd != '6' and ship_wd != '7'
+        assign ship_left = ship_left | minus: 1
+      endif
+    endif
+  endfor
+  assign ship_date = ship_ts | date: '%a, %b %-d'
+-%}
+
+{%- capture gwiazdka -%}<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>{%- endcapture -%}
+
+{%- render 'product-template-variables', product: product -%}
+
+{%- comment -%} Wzrost i rozmiar modela jako pastylka na zdjeciu (ten sam snippet co na domyslnej stronie). {%- endcomment -%}
+{%- capture dp_foto_fit -%}
+  {%- render 'dp-model-info', section_id: section.id, miejsce: 'photo' -%}
+{%- endcapture -%}
+{%- assign dp_foto_fit = dp_foto_fit | strip -%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .cp {
+    --cp-line: #e5e5e5;
+    --cp-soft: #f9f9f9;
+    --cp-chip: #f4f0ed;
+    --cp-dark: #2d2d2d;
+    --cp-mute: #939393;
+    --cp-green: #5e8d13;
+    background: #fff; color: #000;
+    font-size: 12px; line-height: 18px; letter-spacing: 0.36px; font-weight: 400;
+  }
+  #shopify-section-{{ section.id }} .cp * { box-sizing: border-box; }
+  #shopify-section-{{ section.id }} .cp button { font: inherit; letter-spacing: inherit; color: inherit; }
+  #shopify-section-{{ section.id }} .cp [hidden] { display: none !important; }
+  #shopify-section-{{ section.id }} .cp__lbl { font-size: 10px; line-height: 13px; letter-spacing: 0.3px; text-transform: uppercase; }
+
+  {%- comment -%} ---------- galeria ---------- {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__media { position: relative; }
+  #shopify-section-{{ section.id }} .cp__photos { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  #shopify-section-{{ section.id }} .cp__photos::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .cp__photo { position: relative; flex: 0 0 100%; margin: 0; aspect-ratio: 375 / 544; background: var(--cp-soft); scroll-snap-align: start; }
+  #shopify-section-{{ section.id }} .cp__photo img { display: block; width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; }
+  #shopify-section-{{ section.id }} .cp__tags { position: absolute; z-index: 3; top: 10px; left: 10px; right: 10px; display: flex; gap: 4px; pointer-events: none; }
+  #shopify-section-{{ section.id }} .cp__tag { display: inline-block; padding: 3px 6px; background: var(--cp-soft); color: #646464; font-size: 10px; line-height: 13px; letter-spacing: 0.3px; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .cp__tag--dark { margin-left: auto; background: #000; color: #fff; }
+  #shopify-section-{{ section.id }} .cp__bar { position: absolute; z-index: 4; left: 15px; right: 15px; bottom: 18px; display: flex; gap: 6px; align-items: stretch; }
+  #shopify-section-{{ section.id }} .cp__count,
+  #shopify-section-{{ section.id }} .cp__bar .dp-photo-fit,
+  #shopify-section-{{ section.id }} .cp__photo > .dp-photo-fit {
+    --dp-photo-fit-bg: #d4d4d4; --dp-photo-fit-text: #000; --dp-photo-fit-font-size: 11px; --dp-photo-fit-padding: 6px 10px; --dp-photo-fit-radius: 0;
+  }
+  #shopify-section-{{ section.id }} .cp__count { display: flex; align-items: center; padding: 6px 10px; background: #d4d4d4; font-size: 11px; line-height: 20px; }
+  #shopify-section-{{ section.id }} .cp__bar .dp-photo-fit { display: flex; align-items: center; line-height: 20px; }
+  #shopify-section-{{ section.id }} .cp__look-btn { margin-left: auto; padding: 9px 14px; border: 0; background: var(--cp-dark); color: #fff; font-size: 12px; line-height: 14px; letter-spacing: 0.36px; text-transform: uppercase; white-space: nowrap; cursor: pointer; }
+  #shopify-section-{{ section.id }} .cp__photo > .dp-photo-fit { display: none; }
+
+  {%- comment -%} ---------- kolumna z informacjami ---------- {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__info { padding: 0 15px; background: #fff; }
+
+  #shopify-section-{{ section.id }} .cp__rating { display: flex; align-items: center; gap: 7px; padding: 15px 0 0; margin: 0 0 -10px; color: inherit; text-decoration: none; font-size: 9px; line-height: 18px; }
+  #shopify-section-{{ section.id }} .cp__rating-logo { display: block; height: 15px; width: auto; }
+  #shopify-section-{{ section.id }} .cp__stars { display: flex; gap: 1px; color: #E4B528; }
+  #shopify-section-{{ section.id }} .cp__stars svg { display: block; width: 9px; height: 9px; }
+  #shopify-section-{{ section.id }} .cp__head { display: flex; flex-direction: column; gap: 6px; padding: 15px 0 10px; }
+  #shopify-section-{{ section.id }} .cp__title { margin: 0; padding-right: 36px; font-size: 16px; line-height: 20.8px; font-weight: 400; letter-spacing: 0; text-transform: none; }
+  #shopify-section-{{ section.id }} .cp__price { margin: 0; display: flex; gap: 6px; align-items: baseline; font-size: 14px; line-height: 18.2px; }
+  #shopify-section-{{ section.id }} .cp__was { color: var(--cp-mute); }
+  #shopify-section-{{ section.id }} .cp__chips { display: flex; gap: 5px; margin: 0; padding: 5px 0; list-style: none; }
+  #shopify-section-{{ section.id }} .cp__chip { display: block; padding: 4px 9px; background: #f2f0ed; color: #666; font-size: 10px; line-height: 12.5px; letter-spacing: 0.2px; }
+
+  {%- comment -%} kolory: kafle 3:4 ze zdjeciem, aktywny z szara ramka, "+N colors" {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__colour { margin: 5px 0 20px; }
+  #shopify-section-{{ section.id }} .cp__colour-title { margin: 0 0 10px; }
+  #shopify-section-{{ section.id }} .cp__tiles { display: flex; gap: 4px; margin: 0 -15px; padding: 0 15px; overflow-x: auto; scrollbar-width: none; }
+  #shopify-section-{{ section.id }} .cp__tiles::-webkit-scrollbar { display: none; }
+  #shopify-section-{{ section.id }} .cp__tile { flex: 0 0 76px; aspect-ratio: 3 / 4; padding: 0; border: 1px solid transparent; background: var(--cp-soft); cursor: pointer; overflow: hidden; }
+  #shopify-section-{{ section.id }} .cp__tile.is-on { border-color: var(--cp-mute); }
+  #shopify-section-{{ section.id }} .cp__tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  #shopify-section-{{ section.id }} .cp__tile-dot { display: block; width: 100%; height: 100%; }
+  #shopify-section-{{ section.id }} .cp__tile--x:not(.is-on) { display: none; }
+  #shopify-section-{{ section.id }} .cp__tiles.is-open .cp__tile--x { display: block; }
+  #shopify-section-{{ section.id }} .cp__more { flex: 0 0 76px; aspect-ratio: 3 / 4; padding: 0 4px; border: 1px solid var(--cp-soft); background: var(--cp-soft); color: var(--cp-mute); font-size: 8px; line-height: 10.4px; letter-spacing: 0.24px; text-transform: uppercase; cursor: pointer; }
+
+  {%- comment -%} rada o rozmiarze {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__advice { padding: 15px 0 15px; border-top: 1px solid var(--cp-line); display: grid; gap: 5px; }
+  #shopify-section-{{ section.id }} .cp__advice-txt { font-size: 11px; line-height: 16.5px; letter-spacing: 0.3px; color: #525252; }
+
+  {%- comment -%} formularz: "Size help", linia "In stock", rzad rozmiarow, przycisk {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__help { display: grid; gap: 5px; padding: 5px 0 15px; }
+  #shopify-section-{{ section.id }} .cp__help-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 25px; }
+  #shopify-section-{{ section.id }} .cp__help-btn { display: inline-flex; align-items: center; padding: 5px 12px; background: var(--cp-chip); border: 0; border-radius: 4px; color: #000; text-decoration: none; font-size: 12px; line-height: 15px; cursor: pointer; }
+  #shopify-section-{{ section.id }} .cp__help-link { padding: 0; border: 0; background: none; color: #000; font-size: 12px; text-decoration: underline; cursor: pointer; }
+  #shopify-section-{{ section.id }} .cp__stock { display: flex; align-items: center; margin: 5px 0 15px; color: var(--cp-green); }
+  #shopify-section-{{ section.id }} .cp__stock-dot { flex: 0 0 6px; width: 6px; height: 6px; margin-right: 6px; border-radius: 50%; background: var(--cp-green); }
+  #shopify-section-{{ section.id }} .cp__optname { margin: 5px 0 8px; }
+  #shopify-section-{{ section.id }} .cp__sizes { display: grid; grid-template-columns: repeat(var(--cp-cols, 5), minmax(0, 1fr)); }
+  #shopify-section-{{ section.id }} .cp__size { height: 50px; padding: 0 6px; border: 1px solid var(--cp-soft); background: var(--cp-soft); font-size: 12px; line-height: 13px; letter-spacing: 0.3px; cursor: pointer; }
+  #shopify-section-{{ section.id }} .cp__size.is-on { background: var(--cp-line); }
+  #shopify-section-{{ section.id }} .cp__size.is-out { color: #b3b3b3; text-decoration: line-through; cursor: not-allowed; }
+  #shopify-section-{{ section.id }} .cp__sizes.is-flash { animation: cp-flash 1.2s ease; }
+  @keyframes cp-flash { 0%, 100% { outline: 2px solid transparent; } 30% { outline: 2px solid #000; } }
+  #shopify-section-{{ section.id }} .cp__atc { display: flex; align-items: center; justify-content: center; width: 100%; height: 50px; margin: 0 0 30px; padding: 17px 15px; border: 1px solid var(--cp-dark); background: var(--cp-dark); color: #fff; font-size: 12px; line-height: 14.4px; letter-spacing: 0.36px; text-transform: uppercase; cursor: pointer; }
+  #shopify-section-{{ section.id }} .cp__atc[disabled] { opacity: 0.45; cursor: not-allowed; }
+
+  {%- comment -%} wiersze obietnic: kolko 30 px z ikona i dwie linie tekstu {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__usps { display: flex; flex-direction: column; gap: 12px; margin: 0 0 20px; }
+  #shopify-section-{{ section.id }} .cp__usp { display: flex; align-items: center; gap: 14px; }
+  #shopify-section-{{ section.id }} .cp__usp-chip { display: flex; flex: 0 0 30px; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--cp-chip); color: #191919; }
+  #shopify-section-{{ section.id }} .cp__usp-chip svg { width: 16px; height: 16px; }
+  #shopify-section-{{ section.id }} .cp__usp-txt { display: flex; flex-direction: column; gap: 1px; }
+  #shopify-section-{{ section.id }} .cp__usp-title { font-weight: 500; }
+
+  {%- comment -%} akordeony: wersaliki, kreska u gory, znak po tytule {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__accs { margin: 0 -15px; }
+  #shopify-section-{{ section.id }} .cp__acc { border-top: 1px solid var(--cp-line); }
+  #shopify-section-{{ section.id }} .cp__acc-title { display: flex; align-items: center; gap: 5px; width: 100%; margin: 0; padding: 17.32px 15px; border: 0; background: none; font-size: 12px; line-height: 14.4px; letter-spacing: 0.36px; font-weight: 400; text-transform: uppercase; text-align: left; cursor: pointer; list-style: none; }
+  #shopify-section-{{ section.id }} .cp__acc-title::-webkit-details-marker { display: none; }
+  #shopify-section-{{ section.id }} .cp__acc-title::after { content: '+'; }
+  #shopify-section-{{ section.id }} details[open] > .cp__acc-title::after,
+  #shopify-section-{{ section.id }} .cp__look.is-open > .cp__acc-title::after { content: '-'; }
+  #shopify-section-{{ section.id }} .cp__acc-body { padding: 0 15px 20px; }
+  #shopify-section-{{ section.id }} .cp__acc-body p { margin: 0 0 12px; }
+  #shopify-section-{{ section.id }} .cp__acc-body p:last-child { margin-bottom: 0; }
+  #shopify-section-{{ section.id }} .cp__acc-body a { color: inherit; text-decoration: underline; }
+  #shopify-section-{{ section.id }} .cp__acc-body ul { margin: 0 0 12px; padding-left: 18px; }
+  #shopify-section-{{ section.id }} .cp__look-body { display: none; padding: 0 0 18px; }
+  #shopify-section-{{ section.id }} .cp__look.is-open .cp__look-body { display: block; }
+
+  {%- comment -%} karty "Shop the look": te same karty sklepu (sn-karta), tylko w wygladzie wzoru {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__look .dp-combine { margin: 0; }
+  #shopify-section-{{ section.id }} .cp__look .dp-combine__head { display: none; }
+  #shopify-section-{{ section.id }} .cp__look .dp-combine__track { gap: 2px; padding: 0 15px; scroll-snap-type: x mandatory; }
+  #shopify-section-{{ section.id }} .cp__look .dp-combine__card { flex: 0 0 152px; }
+  #shopify-section-{{ section.id }} .cp__look .snc { font-size: 10px; line-height: 13px; letter-spacing: 0.3px; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .cp__look .snc__foto,
+  #shopify-section-{{ section.id }} .cp__look .snc__pas { border-radius: 0; background: var(--cp-soft); }
+  #shopify-section-{{ section.id }} .cp__look .snc__strz { display: none; }
+  #shopify-section-{{ section.id }} .cp__look .snc__plus { width: 42px; height: 42px; right: 0; bottom: 0; border-radius: 0; background: transparent; box-shadow: none; color: #000; opacity: 1; }
+  #shopify-section-{{ section.id }} .cp__look .snc__plus:hover { background: transparent; transform: none; }
+  #shopify-section-{{ section.id }} .cp__look .snc__nazwa,
+  #shopify-section-{{ section.id }} .cp__look .snc__ceny { font-size: 10px; line-height: 13px; font-weight: 400; letter-spacing: 0.3px; }
+
+  {%- comment -%} powiekszenie zdjecia {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__zoom { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.97); }
+  #shopify-section-{{ section.id }} .cp__zoom img { max-width: 94vw; max-height: 90vh; object-fit: contain; }
+  #shopify-section-{{ section.id }} .cp__zoom button { position: absolute; border: 0; background: none; font-size: 34px; line-height: 1; padding: 10px 16px; cursor: pointer; color: #000; }
+  #shopify-section-{{ section.id }} .cp__zoom-x { top: 8px; right: 8px; }
+  #shopify-section-{{ section.id }} .cp__zoom-p { left: 6px; top: 50%; }
+  #shopify-section-{{ section.id }} .cp__zoom-n { right: 6px; top: 50%; }
+
+  {%- comment -%} ---------- PC: 12 kolumn, galeria 8, informacje 4 (zmierzone: 943 / 462 px przy 1425 px) ---------- {%- endcomment -%}
+  @media only screen and (min-width: {{ section.settings.breakpoint | plus: 1 }}px) {
+    #shopify-section-{{ section.id }} .cp__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 20px; align-items: start; }
+    #shopify-section-{{ section.id }} .cp__media { grid-column: 1 / span 8; position: sticky; top: var(--cp-top, 0px); }
+    #shopify-section-{{ section.id }} .cp__photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; overflow: visible; }
+    #shopify-section-{{ section.id }} .cp__photo { flex: none; aspect-ratio: 471 / 674; }
+    #shopify-section-{{ section.id }} .cp__info { grid-column: 9 / span 4; position: sticky; top: var(--cp-top-info, 70px); padding: 20px 20px 0 0; }
+    #shopify-section-{{ section.id }} .cp__rating { padding: 0 0 7px; margin: 0; font-size: 10px; }
+    #shopify-section-{{ section.id }} .cp__head { padding: 0; gap: 6px; margin: 0 0 2px; }
+    #shopify-section-{{ section.id }} .cp__chips { padding: 8px 0 0; }
+    #shopify-section-{{ section.id }} .cp__colour { margin: 20px 0; }
+    #shopify-section-{{ section.id }} .cp__tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin: 0; padding: 0; overflow: visible; }
+    #shopify-section-{{ section.id }} .cp__tile,
+    #shopify-section-{{ section.id }} .cp__more { flex: none; }
+    #shopify-section-{{ section.id }} .cp__usps { gap: 10px; }
+    #shopify-section-{{ section.id }} .cp__accs { margin: 0; }
+    #shopify-section-{{ section.id }} .cp__acc-title { padding: 17.32px 0; }
+    #shopify-section-{{ section.id }} .cp__acc-body { padding: 0 0 20px; }
+    #shopify-section-{{ section.id }} .cp__look .dp-combine__track { padding: 0; }
+    #shopify-section-{{ section.id }} .cp__look .dp-combine__card { flex-basis: 146px; }
+    #shopify-section-{{ section.id }} .cp__bar { display: block; position: static; }
+    #shopify-section-{{ section.id }} .cp__bar .dp-photo-fit,
+    #shopify-section-{{ section.id }} .cp__count { display: none; }
+    #shopify-section-{{ section.id }} .cp__look-btn { position: absolute; z-index: 4; top: 10px; right: 10px; margin: 0; }
+    #shopify-section-{{ section.id }} .cp__photo:first-child > .dp-photo-fit { display: flex; position: absolute; z-index: 4; left: 10px; bottom: 10px; align-items: center; line-height: 20px; }
+  }
+{%- endstyle -%}
+
+<div class="cp">
+  <div class="cp__grid">
+
+    {%- comment -%} ---------- zdjecia ---------- {%- endcomment -%}
+    <div class="cp__media" data-cp-media>
+      <div class="cp__photos" data-cp-photos>
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media -%}
+            <figure class="cp__photo" data-media-id="{{ media.id }}" data-zoom="{{ media.preview_image | image_url: width: 1800 }}">
+              {{ media.preview_image
+                | image_url: width: 1200
+                | image_tag: loading: 'lazy', widths: '360, 540, 750, 1080, 1200', sizes: '(min-width: 901px) 33vw, 100vw', alt: media.alt | default: product.title }}
+              {%- if forloop.first -%}{{ dp_foto_fit }}{%- endif -%}
+            </figure>
+          {%- endfor -%}
+        {%- else -%}
+          <figure class="cp__photo">{{ 'product-1' | placeholder_svg_tag }}</figure>
+        {%- endif -%}
+      </div>
+
+      {%- if na_przecenie -%}
+        <div class="cp__tags"><span class="cp__tag">Sale &minus;{{ rabat }}%</span></div>
+      {%- endif -%}
+
+      <div class="cp__bar" data-cp-bar>
+        <span class="cp__count" data-cp-count{% if product.media.size < 2 %} hidden{% endif %}>1/{{ product.media.size }}</span>
+        {{- dp_foto_fit -}}
+        {%- if section.settings.look_label != blank -%}
+          <button type="button" class="cp__look-btn" data-cp-look-btn>{{ section.settings.look_label }}</button>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---------- informacje ---------- {%- endcomment -%}
+    <div class="cp__info" data-cp-info>
+
+      <a class="cp__rating" href="#{{ section.settings.rating_anchor | default: 'reviews' | handleize }}">
+        {%- if section.settings.rating_logo != blank -%}
+          {{ section.settings.rating_logo | image_url: width: 240 | image_tag: class: 'cp__rating-logo', alt: section.settings.rating_logo.alt | default: 'Reviews', loading: 'eager' }}
+        {%- endif -%}
+        <span class="cp__stars" aria-hidden="true">{{ gwiazdka }}{{ gwiazdka }}{{ gwiazdka }}{{ gwiazdka }}{{ gwiazdka }}</span>
+        <span>{{ section.settings.rating_manual }}/5 | {{ section.settings.rating_text }}</span>
+      </a>
+
+      <div class="cp__head">
+        <h1 class="cp__title">{{ product.title }}</h1>
+        <p class="cp__price">
+          <s class="cp__was" data-cp-was{% unless na_przecenie %} hidden{% endunless %}>{%- if na_przecenie -%}{%- render 'sn-cena', kwota: war.compare_at_price -%}{%- endif -%}</s>
+          <span data-cp-now>{%- render 'sn-cena', kwota: war.price -%}</span>
+        </p>
+        {%- if cechy != blank -%}
+          <ul class="cp__chips">
+            {%- for c in cechy_lista -%}
+              {%- assign c_txt = c | strip -%}
+              {%- if c_txt != blank -%}<li class="cp__chip">{{ c_txt | escape }}</li>{%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ---------- kolor ---------- {%- endcomment -%}
+      {%- for opt in product.options_with_values -%}
+        {%- if forloop.index == poz_koloru -%}
+          {%- assign idx0 = forloop.index | minus: 1 -%}
+          {%- assign ile_kolorow = opt.values.size -%}
+          <div class="cp__colour">
+            <p class="cp__lbl cp__colour-title" id="CpOpt-{{ section.id }}-{{ forloop.index }}">{% render 'ob-da', mapa: mapa, tekst: opt.name %}: <span data-cp-optval>{% render 'ob-da', mapa: mapa, tekst: opt.selected_value %}</span></p>
+            <div class="cp__tiles" data-cp-opt="{{ forloop.index }}" role="group" aria-labelledby="CpOpt-{{ section.id }}-{{ forloop.index }}">
+              {%- for val in opt.values -%}
+                {%- liquid
+                  assign zdj = blank
+                  for v in product.variants
+                    if v.options[idx0] == val and v.featured_media != blank
+                      assign zdj = v.featured_media.preview_image
+                      break
+                    endif
+                  endfor
+                  assign kolor = val | downcase | split: ' ' | last
+                -%}
+                {%- capture val_pl -%}{% render 'ob-da', mapa: mapa, tekst: val %}{%- endcapture -%}
+                <button type="button" class="cp__tile{% if ile_kolorow > 4 and forloop.index > 3 %} cp__tile--x{% endif %}{% if val == opt.selected_value %} is-on{% endif %}"
+                        aria-pressed="{% if val == opt.selected_value %}true{% else %}false{% endif %}"
+                        data-cp-val="{{ val | escape }}" data-cp-label="{{ val_pl | strip | escape }}" aria-label="{{ val_pl | strip | escape }}">
+                  {%- if zdj != blank -%}
+                    {{ zdj | image_url: width: 240 | image_tag: loading: 'lazy', alt: val }}
+                  {%- else -%}
+                    <span class="cp__tile-dot" style="background: {{ kolor }};"></span>
+                  {%- endif -%}
+                </button>
+              {%- endfor -%}
+              {%- if ile_kolorow > 4 -%}
+                <button type="button" class="cp__more" data-cp-more hidden></button>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+        {%- if product.has_only_default_variant -%}{%- break -%}{%- endif -%}
+      {%- endfor -%}
+
+      {%- comment -%} ---------- rada o rozmiarze ---------- {%- endcomment -%}
+      {%- if rada != blank and product.has_only_default_variant == false -%}
+        <div class="cp__advice">
+          <span class="cp__lbl">{{ section.settings.advice_label }}</span>
+          <span class="cp__advice-txt">{{ rada | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ---------- formularz ---------- {%- endcomment -%}
+      {%- form 'product', product, novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" value="{{ war.id }}" data-cp-id>
+
+        {%- if product.has_only_default_variant == false -%}
+          {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
+          {%- assign sg_otwiera = false -%}
+          {%- if sg_html contains 'data-sgm' -%}{%- assign sg_otwiera = true -%}{%- endif -%}
+          {%- if section.settings.size_link != blank or sg_otwiera -%}
+            <div class="cp__help">
+              <span class="cp__lbl">{{ section.settings.help_label }}</span>
+              <div class="cp__help-row">
+                <a class="cp__help-btn" href="{{ section.settings.size_link | default: '#' }}"{% if sg_otwiera %} data-sg-open{% endif %}>{{ section.settings.help_btn }}</a>
+                <a class="cp__help-link" href="{{ section.settings.size_link | default: '#' }}"{% if sg_otwiera %} data-sg-open{% endif %}>{{ section.settings.chart_label }}</a>
+              </div>
+              {{- sg_html -}}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- if section.settings.stock_label != blank -%}
+          <div class="cp__stock cp__lbl" data-cp-stock{% unless war.available %} hidden{% endunless %}><span class="cp__stock-dot" aria-hidden="true"></span>{{ section.settings.stock_label }}</div>
+        {%- endif -%}
+
+        {%- for opt in product.options_with_values -%}
+          {%- if product.has_only_default_variant -%}{%- break -%}{%- endif -%}
+          {%- unless forloop.index == poz_koloru -%}
+            {%- assign kolumny = opt.values.size -%}
+            {%- if kolumny > 5 -%}{%- assign kolumny = 5 -%}{%- endif -%}
+            {%- assign n_rozm = n_rozm | plus: 1 -%}
+            {%- if n_rozm > 1 -%}
+              <p class="cp__lbl cp__optname" id="CpOpt-{{ section.id }}-{{ forloop.index }}">{% render 'ob-da', mapa: mapa, tekst: opt.name %}</p>
+            {%- endif -%}
+            <div class="cp__sizes" style="--cp-cols: {{ kolumny }};" data-cp-opt="{{ forloop.index }}" role="group" aria-label="{{ opt.name | escape }}">
+              {%- for val in opt.values -%}
+                <button type="button" class="cp__size{% if val == opt.selected_value %} is-on{% endif %}" aria-pressed="{% if val == opt.selected_value %}true{% else %}false{% endif %}" data-cp-val="{{ val | escape }}">{{ val }}</button>
+              {%- endfor -%}
+            </div>
+          {%- endunless -%}
+        {%- endfor -%}
+
+        <button type="submit" name="add" class="cp__atc" data-cp-atc{% unless war.available %} disabled{% endunless %}>
+          <span data-cp-atc-txt>{%- if war.available -%}{{ section.settings.atc_label }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}</span>
+        </button>
+      {%- endform -%}
+
+      {%- comment -%} ---------- wiersze obietnic (bloki "row") ---------- {%- endcomment -%}
+      {%- assign wiersze = section.blocks | where: 'type', 'row' -%}
+      {%- if wiersze.size > 0 -%}
+        <div class="cp__usps">
+          {%- for block in wiersze -%}
+            {%- assign row_title = block.settings.text | replace: '#date', ship_date -%}
+            <div class="cp__usp" {{ block.shopify_attributes }}>
+              <span class="cp__usp-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  {%- case block.settings.icon -%}
+                    {%- when 'return' -%}<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>
+                    {%- when 'clock' -%}<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+                    {%- when 'lock' -%}<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>
+                    {%- when 'pin' -%}<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>
+                    {%- when 'card' -%}<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/>
+                    {%- when 'chat' -%}<path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 9.5h8M8 12.5h5"/>
+                    {%- else -%}<path d="M2.5 6h10v10h-10z"/><path d="M12.5 9h4l3.5 3.5V16h-7.5"/><circle cx="6" cy="17.5" r="2"/><circle cx="16.5" cy="17.5" r="2"/>
+                  {%- endcase -%}
+                </svg>
+              </span>
+              <span class="cp__usp-txt">
+                <strong class="cp__usp-title">{{ row_title }}{% if block.settings.hi != blank %} {{ block.settings.hi }}{% endif %}</strong>
+                {%- if block.settings.sub != blank -%}<span>{{ block.settings.sub }}</span>{%- endif -%}
+              </span>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ---------- "Shop the look" + akordeony ---------- {%- endcomment -%}
+      <div class="cp__accs">
+        {%- if section.settings.look_label != blank -%}
+          <div class="cp__acc cp__look is-open" data-cp-look hidden>
+            <button type="button" class="cp__acc-title" data-cp-look-title aria-expanded="true">{{ section.settings.look_label }}</button>
+            <div class="cp__look-body">{%- render 'dp-combine-with', product: product -%}</div>
+          </div>
+        {%- endif -%}
+        {%- assign akordeony = section.blocks | where: 'type', 'acc' -%}
+        {%- assign typ_produktu = ',' | append: product.type | downcase | remove: ' ' | append: ',' -%}
+        {%- for block in akordeony -%}
+          {%- assign pokaz = true -%}
+          {%- if block.settings.only_types != blank -%}
+            {%- assign tylko = ',' | append: block.settings.only_types | downcase | remove: ' ' | append: ',' -%}
+            {%- unless tylko contains typ_produktu -%}{%- assign pokaz = false -%}{%- endunless -%}
+          {%- endif -%}
+          {%- if block.settings.except_types != blank -%}
+            {%- assign oprocz = ',' | append: block.settings.except_types | downcase | remove: ' ' | append: ',' -%}
+            {%- if oprocz contains typ_produktu -%}{%- assign pokaz = false -%}{%- endif -%}
+          {%- endif -%}
+          {%- if pokaz -%}
+            <details class="cp__acc" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary class="cp__acc-title">{{ block.settings.title }}</summary>
+              <div class="cp__acc-body">
+                {%- if block.settings.use_desc -%}{{ product.description }}{%- else -%}{{ block.settings.text }}{%- endif -%}
+              </div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </div>
+
+  <div class="cp__zoom" data-cp-zoom hidden>
+    <button type="button" class="cp__zoom-x" data-cp-zoom-x aria-label="{{ 'general.accessibility.close' | t }}">&times;</button>
+    <button type="button" class="cp__zoom-p" data-cp-zoom-p aria-label="{{ 'general.pagination.previous' | t }}">&#8249;</button>
+    <img data-cp-zoom-img src="" width="1800" height="2400" alt="{{ product.title | escape }}">
+    <button type="button" class="cp__zoom-n" data-cp-zoom-n aria-label="{{ 'general.pagination.next' | t }}">&#8250;</button>
+  </div>
+</div>
+
+<script type="application/json" data-cp-variants>{{ product.variants | json }}</script>
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section.id }}');
+    if (!root) return;
+    var prog = {{ section.settings.breakpoint | json }};
+
+    /* ---------- kolumny przyklejone przy przewijaniu (PC) ----------
+       Krotsza kolumna zostaje na miejscu, dluzsza jedzie dalej. Gdy kolumna jest wyzsza niz okno, jej DOL
+       przykleja sie do dolu okna - inaczej koniec kolumny nigdy by sie nie pokazal. */
+    (function () {
+      var kolumny = [root.querySelector('[data-cp-media]'), root.querySelector('[data-cp-info]')];
+      var zmienne = ['--cp-top', '--cp-top-info'];
+      function naglowek() {
+        var h = document.querySelector('.shopify-section-group-header-group');
+        if (!h) return 0;
+        var p = getComputedStyle(h).position;
+        return (p === 'sticky' || p === 'fixed') ? h.offsetHeight : 0;
+      }
+      function ustaw() {
+        kolumny.forEach(function (k, i) {
+          if (!k) return;
+          if (window.innerWidth <= prog) { k.style.removeProperty(zmienne[i]); return; }
+          var odstep = 16;
+          var gora = naglowek() + odstep;
+          var top = Math.min(gora, window.innerHeight - k.offsetHeight - odstep);
+          k.style.setProperty(zmienne[i], Math.round(top) + 'px');
+        });
+      }
+      ustaw();
+      window.addEventListener('resize', ustaw);
+      window.addEventListener('load', ustaw);
+      if (window.ResizeObserver) kolumny.forEach(function (k) { if (k) new ResizeObserver(ustaw).observe(k); });
+    })();
+
+    /* ---------- warianty, cena, linia "In stock", dodawanie do koszyka ---------- */
+    var warianty;
+    try { warianty = JSON.parse(root.querySelector('[data-cp-variants]').textContent); } catch (e) { return; }
+    var grupy = root.querySelectorAll('[data-cp-opt]');
+    var pole = root.querySelector('[data-cp-id]');
+    var atc = root.querySelector('[data-cp-atc]');
+    var atcTxt = root.querySelector('[data-cp-atc-txt]');
+    var teraz = root.querySelector('[data-cp-now]');
+    var bylo = root.querySelector('[data-cp-was]');
+    var stok = root.querySelector('[data-cp-stock]');
+    var DODAJ = {{ section.settings.atc_label | json }};
+    var BRAK = {{ 'products.product.sold_out' | t | json }};
+    var WALUTA = {{ cart.currency.iso_code | json }};
+    var FORMAT = {{ shop.money_format | json }};
+    var LICZBA_OPCJI = {{ product.options.size | json }};
+
+    /* AJAX motywu: bez niego formularz przenosilby na /cart zamiast otworzyc szuflade koszyka. */
+    (function () {
+      var formularz = atc && atc.closest('form');
+      if (!formularz) return;
+      function podepnij() {
+        if (formularz.__snAjax || !window.theme || !theme.AjaxProduct) return;
+        if (!theme.settings || theme.settings.cartType !== 'drawer') return;
+        formularz.__snAjax = true;
+        new theme.AjaxProduct(formularz, '[data-cp-atc]');
+      }
+      if (window.theme && theme.AjaxProduct) podepnij();
+      else document.addEventListener('DOMContentLoaded', podepnij);
+    })();
+
+    function kwota(gr) {
+      if (window.snCena && WALUTA === 'DKK') return window.snCena(gr);
+      if (WALUTA !== 'DKK') {
+        try { return new Intl.NumberFormat('en-CA', { style: 'currency', currency: WALUTA }).format(gr / 100); } catch (e) {}
+      }
+      if (window.theme && window.theme.Currency && window.theme.Currency.formatMoney) return window.theme.Currency.formatMoney(gr, FORMAT);
+      if (window.Shopify && window.Shopify.formatMoney) return window.Shopify.formatMoney(gr, FORMAT);
+      return (gr / 100).toFixed(2).replace('.', ',') + ' kr';
+    }
+
+    /* wybor wg numeru opcji (data-cp-opt = pozycja opcji w produkcie), nie wg kolejnosci w kodzie strony */
+    function wybor() {
+      var w = new Array(LICZBA_OPCJI);
+      for (var i = 0; i < w.length; i++) w[i] = null;
+      Array.prototype.forEach.call(grupy, function (g) {
+        var a = g.querySelector('.is-on');
+        w[Number(g.getAttribute('data-cp-opt')) - 1] = a ? a.dataset.cpVal : null;
+      });
+      return w;
+    }
+    function znajdz(w) {
+      for (var i = 0; i < warianty.length; i++) {
+        var ok = true;
+        for (var k = 0; k < w.length; k++) {
+          if (w[k] !== null && warianty[i].options[k] !== w[k]) { ok = false; break; }
+        }
+        if (ok) return warianty[i];
+      }
+      return null;
+    }
+
+    function odswiez() {
+      Array.prototype.forEach.call(grupy, function (g) {
+        var gi = Number(g.getAttribute('data-cp-opt')) - 1;
+        Array.prototype.forEach.call(g.querySelectorAll('[data-cp-val]'), function (b) {
+          var proba = wybor();
+          proba[gi] = b.dataset.cpVal;
+          var k = znajdz(proba);
+          b.classList.toggle('is-out', !(k && k.available));
+          b.setAttribute('aria-pressed', b.classList.contains('is-on') ? 'true' : 'false');
+          if (b.classList.contains('is-out')) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled');
+        });
+      });
+      var w = znajdz(wybor());
+      if (stok) stok.hidden = !(w && w.available);
+      if (!w) { atc.disabled = true; atcTxt.textContent = BRAK; return; }
+      if (pole) pole.value = w.id;
+      atc.disabled = !w.available;
+      atcTxt.textContent = w.available ? DODAJ : BRAK;
+      teraz.innerHTML = kwota(w.price);
+      if (bylo) {
+        var przecena = w.compare_at_price && w.compare_at_price > w.price;
+        bylo.hidden = !przecena;
+        if (przecena) bylo.innerHTML = kwota(w.compare_at_price);
+      }
+      if (history.replaceState) {
+        var u = new URL(window.location.href);
+        u.searchParams.set('variant', w.id);
+        history.replaceState({}, '', u.toString());
+      }
+    }
+
+    var tor = root.querySelector('[data-cp-photos]');
+    var startW = znajdz(wybor());
+    var ostatnieZdj = startW && startW.featured_media ? startW.featured_media.id : null;
+    function pokazZdjecie() {
+      var w = znajdz(wybor());
+      var m = w && w.featured_media;
+      if (!m || !tor || m.id === ostatnieZdj) return;
+      ostatnieZdj = m.id;
+      var zdj = tor.querySelector('[data-media-id="' + m.id + '"]');
+      if (!zdj) return;
+      if (tor.scrollWidth > tor.clientWidth + 2) {
+        var r = tor.getBoundingClientRect();
+        var cel = zdj.offsetLeft - tor.offsetLeft;
+        if (r.bottom > 0 && r.top < window.innerHeight) tor.scrollTo({ left: cel, behavior: 'smooth' }); else tor.scrollLeft = cel;
+      } else if (window.innerWidth > prog) {
+        var b = zdj.getBoundingClientRect();
+        if (b.top < 0 || b.bottom > window.innerHeight) window.scrollBy({ top: b.top - 90, behavior: 'smooth' });
+      }
+    }
+
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-cp-val]');
+      if (!b || b.classList.contains('is-out')) return;
+      var g = b.closest('[data-cp-opt]');
+      Array.prototype.forEach.call(g.querySelectorAll('[data-cp-val]'), function (x) { x.classList.remove('is-on'); });
+      b.classList.add('is-on');
+      var etykieta = root.querySelector('[data-cp-optval]');
+      if (etykieta && g.querySelector('.cp__tile')) etykieta.textContent = b.dataset.cpLabel || b.dataset.cpVal;
+      odswiez();
+      pokazZdjecie();
+    });
+    odswiez();
+
+    /* ---------- "+N colors" rozwija reszte kafli, wybrany kolor zawsze widac ---------- */
+    (function () {
+      var g = root.querySelector('.cp__tiles');
+      var wiecej = g && g.querySelector('[data-cp-more]');
+      if (!wiecej) return;
+      function ustaw() {
+        var ukryte = 0;
+        if (!g.classList.contains('is-open')) {
+          Array.prototype.forEach.call(g.querySelectorAll('.cp__tile--x'), function (b) { if (!b.classList.contains('is-on')) ukryte++; });
+        }
+        wiecej.hidden = ukryte === 0;
+        wiecej.textContent = '+' + ukryte + ' ' + {{ section.settings.more_label | default: 'colors' | json }};
+      }
+      wiecej.addEventListener('click', function () { g.classList.add('is-open'); ustaw(); });
+      g.addEventListener('click', function () { setTimeout(ustaw, 0); });
+      ustaw();
+    })();
+
+    /* ---------- pasek na zdjeciu: licznik i "Shop the look" ---------- */
+    (function () {
+      var licznik = root.querySelector('[data-cp-count]');
+      var ile = tor ? tor.querySelectorAll('.cp__photo').length : 0;
+      function pokaz() {
+        if (!licznik || ile < 2) return;
+        var i = Math.round(tor.scrollLeft / (tor.clientWidth || 1)) + 1;
+        licznik.textContent = Math.min(ile, Math.max(1, i)) + '/' + ile;
+      }
+      if (tor) tor.addEventListener('scroll', pokaz, { passive: true });
+      pokaz();
+      var przycisk = root.querySelector('[data-cp-look-btn]');
+      if (przycisk) przycisk.addEventListener('click', function () {
+        var cel = root.querySelector('[data-cp-look]:not([hidden])');
+        if (!cel) return;
+        cel.classList.add('is-open');
+        cel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
+
+    /* ---------- wiersz "Shop the look": widoczny tylko, gdy sa karty; klik zwija i rozwija ---------- */
+    (function () {
+      var wiersz = root.querySelector('[data-cp-look]');
+      if (!wiersz) return;
+      var tytul = wiersz.querySelector('[data-cp-look-title]');
+      function synchronizuj() {
+        var ramka = wiersz.querySelector('[data-dp-combine]');
+        wiersz.hidden = !ramka || ramka.hidden;
+      }
+      var ramka = wiersz.querySelector('[data-dp-combine]');
+      if (!ramka) { wiersz.hidden = true; return; }
+      new MutationObserver(synchronizuj).observe(ramka, { attributes: true, attributeFilter: ['hidden'] });
+      synchronizuj();
+      tytul.addEventListener('click', function () {
+        var otwarty = wiersz.classList.toggle('is-open');
+        tytul.setAttribute('aria-expanded', otwarty ? 'true' : 'false');
+      });
+    })();
+
+    /* ---------- powiekszenie zdjecia ---------- */
+    (function () {
+      var warstwa = root.querySelector('[data-cp-zoom]');
+      var obraz = root.querySelector('[data-cp-zoom-img]');
+      if (!warstwa || !tor) return;
+      var zdjecia = Array.prototype.slice.call(tor.querySelectorAll('.cp__photo'));
+      var teraz2 = 0;
+      function pokaz(i) {
+        teraz2 = (i + zdjecia.length) % zdjecia.length;
+        obraz.src = zdjecia[teraz2].getAttribute('data-zoom') || '';
+        warstwa.hidden = false;
+      }
+      function zamknij() { warstwa.hidden = true; obraz.removeAttribute('src'); }
+      tor.addEventListener('click', function (e) {
+        var f = e.target.closest('.cp__photo');
+        if (!f || !e.target.closest('img')) return;
+        if (tor.__przeciagniete) return;
+        pokaz(zdjecia.indexOf(f));
+      });
+      root.querySelector('[data-cp-zoom-x]').addEventListener('click', zamknij);
+      root.querySelector('[data-cp-zoom-p]').addEventListener('click', function () { pokaz(teraz2 - 1); });
+      root.querySelector('[data-cp-zoom-n]').addEventListener('click', function () { pokaz(teraz2 + 1); });
+      warstwa.addEventListener('click', function (e) { if (e.target === warstwa) zamknij(); });
+      document.addEventListener('keydown', function (e) {
+        if (warstwa.hidden) return;
+        if (e.key === 'Escape') zamknij();
+        if (e.key === 'ArrowLeft') pokaz(teraz2 - 1);
+        if (e.key === 'ArrowRight') pokaz(teraz2 + 1);
+      });
+    })();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product page catalog",
+  "tag": "section",
+  "class": "dp-pdp-catalog",
+  "settings": [
+    { "type": "paragraph", "content": "Catalogue-style product page, separate from the default one. Texts are yours; layout and sizes follow the reference page." },
+    { "type": "text", "id": "dictionary", "label": "Display dictionary", "info": "English=Display, comma separated. Only changes what the customer sees.", "default": "Colour=Color, Farve=Color, Størrelse=Size" },
+    { "type": "range", "id": "breakpoint", "label": "Phone layout up to", "default": 900, "min": 700, "max": 1100, "step": 10, "unit": "px" },
+    { "type": "header", "content": "Rating above the title" },
+    { "type": "text", "id": "rating_manual", "label": "Rating", "default": "4.8" },
+    { "type": "text", "id": "rating_text", "label": "Text after the rating", "default": "Based on 2.850+ Reviews" },
+    { "type": "text", "id": "rating_anchor", "label": "Anchor of the reviews section", "default": "reviews" },
+    { "type": "image_picker", "id": "rating_logo", "label": "Logo before the stars (optional)", "info": "Only the logo of a review platform you really have a profile on, with real numbers." },
+    { "type": "header", "content": "Texts" },
+    { "type": "text", "id": "atc_label", "label": "Add to cart button", "default": "Add to bag" },
+    { "type": "text", "id": "look_label", "label": "Shop the look (row and button on the photo)", "info": "Empty = both hidden.", "default": "Shop the look" },
+    { "type": "text", "id": "more_label", "label": "Colour tile when more than four", "info": "Shown as +3 colors.", "default": "colors" },
+    { "type": "text", "id": "stock_label", "label": "Stock line", "info": "Empty = hidden. Disappears when the selected variant is sold out.", "default": "In stock, ready to be shipped" },
+    { "type": "text", "id": "advice_label", "label": "Size advice heading", "default": "Size advice" },
+    { "type": "text", "id": "advice_text", "label": "Size advice text", "info": "A product's own custom.size_recommendation metafield wins.", "default": "Not sure about the size? Go by the measurements rather than the size you usually wear." },
+    { "type": "text", "id": "help_label", "label": "Size help heading", "default": "Size help" },
+    { "type": "text", "id": "help_btn", "label": "Size help button", "default": "What is my size?" },
+    { "type": "text", "id": "chart_label", "label": "Size chart link", "default": "Size chart" },
+    { "type": "url", "id": "size_link", "label": "Size chart page", "info": "Used when the product has no size chart of its own." }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Promise row",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "truck", "options": [
+          { "value": "truck", "label": "Delivery" }, { "value": "clock", "label": "Clock" }, { "value": "return", "label": "Return" },
+          { "value": "lock", "label": "Secure" }, { "value": "pin", "label": "Pin" }, { "value": "card", "label": "Card" }, { "value": "chat", "label": "Chat" }
+        ] },
+        { "type": "text", "id": "text", "label": "Title", "info": "#date = shipping day (today + 3 business days).", "default": "Free shipping" },
+        { "type": "text", "id": "hi", "label": "Highlighted word after the title" },
+        { "type": "text", "id": "sub", "label": "Second line" }
+      ]
+    },
+    {
+      "type": "acc",
+      "name": "Accordion",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Description" },
+        { "type": "checkbox", "id": "use_desc", "label": "Use the product description", "default": false },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Write your text here.</p>" },
+        { "type": "checkbox", "id": "open", "label": "Open by default", "default": false },
+        { "type": "text", "id": "only_types", "label": "Only for product types", "info": "Comma separated. Empty = all." },
+        { "type": "text", "id": "except_types", "label": "Not for product types", "info": "Comma separated." }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Product page catalog" }
+  ]
+}
+{% endschema %}
