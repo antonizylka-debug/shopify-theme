@@ -270,6 +270,7 @@
   #shopify-section-{{ section.id }} .pdp__rating-num {
     font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
   }
+  #shopify-section-{{ section.id }} .pdp__rating-logo { display: block; height: 18px; width: auto; }
   #shopify-section-{{ section.id }} .pdp__stars { display: flex; gap: 1px; color: #E4B528; }
   #shopify-section-{{ section.id }} .pdp__stars svg { width: 14px; height: 14px; }
   #shopify-section-{{ section.id }} .pdp__rating-link {
@@ -744,13 +745,109 @@
   }
 {%- endstyle -%}
 
+{%- assign flat = false -%}
+{%- if section.settings.look == 'flat' -%}{%- assign flat = true -%}{%- endif -%}
+
+{%- if flat -%}
+<style>
+  {%- comment -%}
+    WYGLAD "FLAT" (02.11.2026, wzor: katalogowa strona produktu ze zrzutow Antoniego): zdjecia od krawedzi do krawedzi,
+    drobna typografia (10-16 px), plaskie przyciski rozmiarow, ciemny przycisk koszyka, akordeony wersalikami.
+    Wlaczane tylko ustawieniem "Page look" = Flat (szablon product.flat). Domyslna strona nie zmienia sie ani o piksel.
+    Wszystko ponizej ma przedrostek .pdp--flat, wiec nie dotyka wygladu domyslnego.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp--flat { padding: 0 0 40px; font-size: 12px; }
+  #shopify-section-{{ section.id }} .pdp--flat .page-width { max-width: none; padding: 0; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__crumbs { display: none; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__info { padding: 0 15px 24px; }
+  @media only screen and (min-width: {{ section.settings.breakpoint | plus: 1 }}px) {
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__info { padding: 28px 24px 40px; }
+  }
+
+  {%- comment -%} gora: ocena, tytul, plakietki cech {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__rating { margin: 15px 0 8px; gap: 7px; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__rating-num { font-size: 11px; font-weight: 400; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__rating-link { font-size: 11px; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__stars svg { width: 11px; height: 11px; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__rating-logo { display: block; height: 15px; width: auto; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__title { font-size: 16px; font-weight: 400; letter-spacing: 0; line-height: 1.3; margin: 0 0 6px; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__sub { display: none; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 16px; padding: 0; list-style: none; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__chips li { background: var(--pdp-soft); padding: 5px 8px; font-size: 11px; line-height: 1.2; }
+
+  {%- comment -%} kolory: duze kafle ze zdjeciem, "+N colors" rozwija reszte; wybrany kolor zawsze widac {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__info > .pdp__optlabel { font-size: 10px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__swatches { display: grid; grid-template-columns: repeat(4, minmax(0, 76px)); justify-content: start; gap: 4px; margin-bottom: 18px; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__swatch { width: auto; height: auto; aspect-ratio: 3 / 4; padding: 0; border: 1px solid transparent; background: var(--pdp-soft); overflow: hidden; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__swatch.is-on { border-color: #939393; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__swatches:not(.is-open) .pdp__swatch--x:not(.is-on) { display: none; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__swatch-more { aspect-ratio: 3 / 4; padding: 0 4px; border: 0; background: var(--pdp-soft); cursor: pointer; font: inherit; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pdp-muted); }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__swatch-more[hidden] { display: none; }
+
+  {%- comment -%} "Size advice" i "Size help": ten sam tekst i link co w szarej ramce, tylko bez ramki {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__help { display: block; background: none; padding: 0; margin: 0 0 16px; font-size: 12px; line-height: 1.5; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__help > svg { display: none; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__help > div::before { content: 'Size advice'; display: block; margin: 0 0 4px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__help br { display: none; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__help a { position: relative; display: block; width: max-content; margin: 30px 0 0; padding: 7px 12px; background: var(--pdp-soft); text-decoration: none; font-size: 12px; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__help a::before { content: 'Size help'; position: absolute; left: 0; top: -19px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  {%- comment -%} zielona kropka i napis nad rozmiarami {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__stock { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--pdp-text); }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__stock[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__stock-dot { flex: 0 0 6px; width: 6px; height: 6px; border-radius: 50%; background: #5a9a2e; }
+
+  {%- comment -%} rozmiary: plaski rzad szarych pol, wybrany ciemniejszy; przycisk koszyka ciemny, wersaliki {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__sizehead { display: none; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__sizes { gap: 2px; margin-bottom: 12px; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__size { height: 50px; border: 0; border-radius: 0; background: var(--pdp-soft); font-size: 12px; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__size.is-on { border: 0; background: #e4e4e4; font-weight: 400; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__size.is-out { border: 0; background: var(--pdp-soft); color: #b3b3b3; text-decoration: line-through; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__atc { height: 50px; border-radius: 0; font-size: 12px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  {%- comment -%} akordeony wersalikami, plus po prawej; "Combine it with" jako wiersz pod przyciskiem {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__accs { margin-top: 0; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__acc summary { padding: 16px 0; font-size: 11px; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__acc summary::after { font-size: 16px; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__acc-body { padding: 0 0 18px; font-size: 12px; }
+  #shopify-section-{{ section.id }} .pdp--flat .dp-combine { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--pdp-line); }
+  #shopify-section-{{ section.id }} .pdp--flat .dp-combine__title { font-size: 11px; font-weight: 400; letter-spacing: 0.06em; }
+
+  {%- comment -%} zdjecia: pasek na dole zdjecia (licznik, model, "Shop the look"); na PC sam przycisk w prawym gornym rogu {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__fab { display: none; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__bar { display: none; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__bar .dp-photo-fit,
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__photo > .dp-photo-fit { --dp-photo-fit-bg: rgba(249, 249, 249, 0.96); --dp-photo-fit-font-size: 10px; --dp-photo-fit-padding: 7px 9px; --dp-photo-fit-radius: 0; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__counter { background: rgba(249, 249, 249, 0.96); font-size: 10px; line-height: 1.2; padding: 7px 9px; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__counter[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__lookbtn { background: #2b2b2b; color: #fff; border: 0; cursor: pointer; font: inherit; font-size: 10px; letter-spacing: 0.06em; line-height: 1.2; padding: 7px 12px; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .pdp--flat .pdp__lookbtn[hidden] { display: none; }
+  @media only screen and (min-width: {{ section.settings.breakpoint | plus: 1 }}px) {
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__bar { display: block; }
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__bar .dp-photo-fit,
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__counter { display: none; }
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__lookbtn { position: absolute; top: 10px; right: 10px; z-index: 5; }
+  }
+  @media only screen and (max-width: {{ section.settings.breakpoint }}px) {
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__grid { gap: 0; }
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__thumbs { display: none; }
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__bar { display: flex; align-items: stretch; gap: 2px; position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 5; }
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__bar .dp-photo-fit { display: inline-block; position: static; min-width: 0; }
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__lookbtn { margin-left: auto; white-space: nowrap; }
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__overlay { bottom: 46px; }
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__info > .pdp__chips { order: 1; }
+    #shopify-section-{{ section.id }} .pdp--flat .pdp__info > .pdp__stock { order: 2; }
+  }
+</style>
+{%- endif -%}
+
 {%- capture gwiazdka -%}<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>{%- endcapture -%}
 {%- capture gwiazdka_pusta -%}<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M10 1l2.39 4.84 5.35.78-3.87 3.77.91 5.32L10 13.27l-4.78 2.44.91-5.32L2.26 6.62l5.35-.78z"/></svg>{%- endcapture -%}
 
 {%- comment -%} Dane strukturalne Product dla Google (06.10.2026) - wczesniej ich brakowalo. {%- endcomment -%}
 {%- render 'product-template-variables', product: product -%}
 
-<div class="pdp">
+<div class="pdp{% if flat %} pdp--flat{% endif %}">
   <div class="page-width">
 
     {%- if section.settings.show_crumbs -%}
@@ -816,7 +913,7 @@
               {%- if notka != blank -%}
                 <span class="pdp__flag pdp__flag--note">{{ notka }}</span>
               {%- endif -%}
-              {{- dp_foto_fit -}}
+              {%- unless flat -%}{{- dp_foto_fit -}}{%- endunless -%}
             </div>
           </div>
         {%- endif -%}
@@ -894,6 +991,17 @@
           </button>
         {%- endif -%}
 
+        {%- if flat -%}
+          {%- comment -%} Pasek na dole zdjecia: licznik, wzrost i rozmiar modela, "Shop the look" (wyglad flat). {%- endcomment -%}
+          <div class="pdp__bar" data-pdp-bar>
+            <span class="pdp__counter" data-pdp-counter{% if product.media.size < 2 %} hidden{% endif %}>1/{{ product.media.size }}</span>
+            {{- dp_foto_fit -}}
+            {%- if section.settings.shop_look_label != blank -%}
+              <button type="button" class="pdp__lookbtn" data-pdp-look>{{ section.settings.shop_look_label }}</button>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
         {%- if product.media.size > 1 -%}
           <div class="pdp__thumbs" data-pdp-thumbs>
             {%- for media in product.media -%}
@@ -962,6 +1070,9 @@
         {%- endcomment -%}
         {%- if section.settings.show_rating -%}
           <a class="pdp__rating" href="#{{ section.settings.rating_anchor | default: 'anmeldelser' | handleize }}" data-pdp-rating hidden>
+            {%- if section.settings.rating_logo != blank -%}
+              {{ section.settings.rating_logo | image_url: width: 240 | image_tag: class: 'pdp__rating-logo', alt: section.settings.rating_logo.alt | default: 'Reviews', loading: 'eager' }}
+            {%- endif -%}
             <span class="pdp__stars" data-pdp-stars aria-hidden="true"></span>
             <span class="pdp__rating-num" data-pdp-score></span>
             <span class="pdp__rating-link" data-pdp-count></span>
@@ -972,6 +1083,16 @@
         {%- if product.type != blank -%}
           {%- assign typ_produktu = product.type -%}
           <p class="pdp__sub">{% render 'ob-da', mapa: mapa, tekst: typ_produktu %}</p>
+        {%- endif -%}
+        {%- if flat -%}
+          {%- comment -%} Plakietki cech pod tytulem (np. "100% Cotton", "Boxy Fit") z metapola custom.pdp_features: tekst oddzielony przecinkami albo lista. Brak = nic. {%- endcomment -%}
+          {%- assign dp_cechy = product.metafields.custom.pdp_features.value | join: ',' -%}
+          {%- if dp_cechy != blank -%}
+            <ul class="pdp__chips">
+              {%- assign dp_cechy_lista = dp_cechy | split: ',' -%}
+              {%- for c in dp_cechy_lista -%}{%- assign c_txt = c | strip -%}{%- if c_txt != blank -%}<li>{{ c_txt | escape }}</li>{%- endif -%}{%- endfor -%}
+            </ul>
+          {%- endif -%}
         {%- endif -%}
 
         {%- comment -%} ---------- kolor ---------- {%- endcomment -%}
@@ -998,7 +1119,7 @@
                   koloru nie wstawial z powrotem angielskiej wartosci.
                 {%- endcomment -%}
                 {%- capture val_da -%}{% render 'ob-da', mapa: mapa, tekst: val %}{%- endcapture -%}
-                <button type="button" class="pdp__swatch{% if val == opt.selected_value %} is-on{% endif %}" aria-pressed="{% if val == opt.selected_value %}true{% else %}false{% endif %}"
+                <button type="button" class="pdp__swatch{% if flat and opt.values.size > 4 and forloop.index > 3 %} pdp__swatch--x{% endif %}{% if val == opt.selected_value %} is-on{% endif %}" aria-pressed="{% if val == opt.selected_value %}true{% else %}false{% endif %}"
                         data-pdp-val="{{ val | escape }}" data-pdp-label="{{ val_da | strip | escape }}"
                         aria-label="{{ val_da | strip | escape }}">
                   {%- if zdj != blank -%}
@@ -1008,6 +1129,9 @@
                   {%- endif -%}
                 </button>
               {%- endfor -%}
+              {%- if flat and opt.values.size > 4 -%}
+                <button type="button" class="pdp__swatch-more" data-pdp-sw-more hidden></button>
+              {%- endif -%}
             </div>
           {%- endif -%}
         {%- endfor -%}
@@ -1153,6 +1277,10 @@
               {%- endif -%}
             </div>
           </div>
+        {%- endif -%}
+
+        {%- if flat and section.settings.show_stock and section.settings.stock_label != blank -%}
+          <p class="pdp__stock" data-pdp-stock{% unless war.available %} hidden{% endunless %}><span class="pdp__stock-dot" aria-hidden="true"></span>{{ section.settings.stock_label }}</p>
         {%- endif -%}
 
         {%- comment -%} ---------- rozmiary i pozostale opcje (bez przycisku "Default Title" przy produkcie bez wariantow) ---------- {%- endcomment -%}
@@ -1442,6 +1570,8 @@
       });
 
       var w = znajdz(wybor());
+      var stok = root.querySelector('[data-pdp-stock]');
+      if (stok) stok.hidden = !(w && w.available);
       if (!w) { atc.disabled = true; atcTxt.textContent = BRAK; return; }
 
       if (pole) pole.value = w.id;
@@ -1505,6 +1635,45 @@
       if (r.bottom > 0 && r.top < window.innerHeight) siatkaZdj.scrollTo({ left: cel, behavior: 'smooth' });
       else siatkaZdj.scrollLeft = cel;
     }
+
+    // ---------- wyglad flat: "+N colors" rozwija reszte kafli, wybrany kolor zawsze widac ----------
+    (function () {
+      var g = root.querySelector('.pdp__swatches');
+      var wiecej = g && g.querySelector('[data-pdp-sw-more]');
+      if (!wiecej) return;
+      function ustaw() {
+        var ukryte = 0;
+        if (!g.classList.contains('is-open')) {
+          Array.prototype.forEach.call(g.querySelectorAll('.pdp__swatch--x'), function (b) { if (!b.classList.contains('is-on')) ukryte++; });
+        }
+        wiecej.hidden = ukryte === 0;
+        wiecej.textContent = '+' + ukryte + ' ' + {{ section.settings.swatch_more_label | default: 'colors' | json }};
+      }
+      wiecej.addEventListener('click', function () { g.classList.add('is-open'); ustaw(); });
+      g.addEventListener('click', function () { setTimeout(ustaw, 0); });
+      ustaw();
+    })();
+
+    // ---------- wyglad flat: licznik zdjec i "Shop the look" na zdjeciu ----------
+    (function () {
+      var pasek = root.querySelector('[data-pdp-bar]');
+      var tor = root.querySelector('[data-pdp-photos]');
+      if (!pasek || !tor) return;
+      var licznik = pasek.querySelector('[data-pdp-counter]');
+      var ile = tor.querySelectorAll('.pdp__photo').length;
+      function pokaz() {
+        if (!licznik || ile < 2) return;
+        var i = Math.round(tor.scrollLeft / (tor.clientWidth || 1)) + 1;
+        licznik.textContent = Math.min(ile, Math.max(1, i)) + '/' + ile;
+      }
+      tor.addEventListener('scroll', pokaz, { passive: true });
+      pokaz();
+      var przycisk = pasek.querySelector('[data-pdp-look]');
+      if (przycisk) przycisk.addEventListener('click', function () {
+        var cel = document.querySelector('[data-dp-combine]:not([hidden])');
+        if (cel) cel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    })();
 
     // ---------- pokaz wiecej zdjec ----------
     (function () {
@@ -1768,6 +1937,21 @@
     { "type": "paragraph", "content": "Model note under the photos, split by department because the models differ in height and size. A product's own custom.model_size metafield wins over both — that is also where you clear it for a product photographed without a model. Leave a field empty and nothing shows." },
     { "type": "text", "id": "model_note_women", "label": "Model note — women" },
     { "type": "text", "id": "model_note_men", "label": "Model note — men" },
+    { "type": "header", "content": "Page look" },
+    {
+      "type": "select", "id": "look", "label": "Page look",
+      "info": "Flat = photos edge to edge, small type, flat size buttons, bar on the photo. Only the template using it changes.",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "flat", "label": "Flat" }
+      ]
+    },
+    { "type": "text", "id": "shop_look_label", "label": "Button on the photo (Flat)", "info": "Scrolls to the Combine it with row. Leave empty to hide.", "default": "Shop the look" },
+    { "type": "checkbox", "id": "show_stock", "label": "Stock line above the sizes (Flat)", "default": true },
+    { "type": "text", "id": "stock_label", "label": "Stock line text (Flat)", "default": "In stock, ready to be shipped" },
+    { "type": "text", "id": "swatch_more_label", "label": "Colour tile when more than four (Flat)", "info": "Shown as +3 colors.", "default": "colors" },
+    { "type": "image_picker", "id": "rating_logo", "label": "Logo before the stars (optional)", "info": "Only the logo of a review platform you really have a profile on, with real numbers." },
     {
       "type": "select", "id": "fit_place", "label": "Model height and size",
       "info": "From each product's model metafields. Text and look: snippets/dp-model-info-text.liquid.",
