@@ -47,17 +47,17 @@
     assign rabat = war.compare_at_price | minus: war.price | times: 100.0 | divided_by: war.compare_at_price | round
   endif
 
-  comment Rada o rozmiarze: metapole produktu wygrywa z ustawieniem sekcji. endcomment
+  # Rada o rozmiarze: metapole produktu wygrywa z ustawieniem sekcji.
   assign rada = product.metafields.custom.size_recommendation.value
   if rada == blank
     assign rada = section.settings.advice_text
   endif
 
-  comment Plakietki cech pod cena - tekst oddzielony przecinkami albo lista. Brak = nic. endcomment
+  # Plakietki cech pod cena - tekst oddzielony przecinkami albo lista. Brak = nic.
   assign cechy = product.metafields.custom.pdp_features.value | join: ','
   assign cechy_lista = cechy | split: ','
 
-  comment Data wysylki dla wierszy obietnic: dzis + 3 dni robocze (gorna granica 1-3 dni z polityki). endcomment
+  # Data wysylki dla wierszy obietnic: dzis + 3 dni robocze (gorna granica 1-3 dni z polityki).
   assign ship_ts = 'now' | date: '%s' | plus: 0
   assign ship_left = 3
   for i in (1..7)
