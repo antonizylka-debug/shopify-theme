@@ -16,7 +16,11 @@
   Brak danych / rozmiar spoza wariantow = nic.
   Buty (typ produktu z listy dp_typy_butow) = nic - wzrost modela nic nie mowi o rozmiarze buta (Antoni, 01.11).
 
+  Waga (02.11.2026): custom.model_weight_kg (40-150), tylko przy prawdziwych danych modela.
+  Przy przykladzie wagi nie ma nigdy - nie zgadujemy wagi konkretnej osoby.
+
   @param {string} section_id
+  @param {string} miejsce - 'photo' = pastylka na zdjeciu (ob-pdp, galeria); puste = linia pod rozmiarami
   @param {object} ss - section.settings z ob-pdp (teksty i wyglad, sekcja "Model fit line")
 {%- endcomment -%}
 {%- liquid
@@ -102,13 +106,17 @@
 
     if dp_h >= 140 and dp_h <= 210 and dp_real_size != blank and dp_zrodlo != blank
       assign dp_rodzaj = 'model'
+      assign dp_waga = product.metafields.custom.model_weight_kg.value | times: 1
+      if dp_waga < 40 or dp_waga > 150
+        assign dp_waga = 0
+      endif
     elsif dp_ex_h >= 140 and dp_ex_h <= 210 and dp_ex_size != blank
       assign dp_rodzaj = 'example'
     endif
   endif
 -%}
 {%- if dp_rodzaj == 'model' -%}
-  {%- render 'dp-model-info-text', rodzaj: 'model', wzrost: dp_h, rozmiar: dp_real_size, section_id: section_id, ss: ss -%}
+  {%- render 'dp-model-info-text', rodzaj: 'model', wzrost: dp_h, rozmiar: dp_real_size, waga: dp_waga, miejsce: miejsce, section_id: section_id, ss: ss -%}
 {%- elsif dp_rodzaj == 'example' -%}
-  {%- render 'dp-model-info-text', rodzaj: 'example', wzrost: dp_ex_h, rozmiar: dp_ex_size, section_id: section_id, ss: ss -%}
+  {%- render 'dp-model-info-text', rodzaj: 'example', wzrost: dp_ex_h, rozmiar: dp_ex_size, waga: 0, miejsce: miejsce, section_id: section_id, ss: ss -%}
 {%- endif -%}
