@@ -178,17 +178,21 @@
   #shopify-section-{{ section.id }} .cp__accs { margin: 0 -15px; }
   #shopify-section-{{ section.id }} .cp__acc { border-top: 1px solid var(--cp-line); }
   #shopify-section-{{ section.id }} .cp__acc-title { display: flex; align-items: center; gap: 5px; width: 100%; margin: 0; padding: 17.32px 15px; border: 0; background: none; font-size: 12px; line-height: 14.4px; letter-spacing: 0.36px; font-weight: 400; text-transform: uppercase; text-align: left; cursor: pointer; list-style: none; }
-  #shopify-section-{{ section.id }} .cp__acc-title::-webkit-details-marker { display: none; }
   #shopify-section-{{ section.id }} .cp__acc-title::after { content: '+'; }
-  #shopify-section-{{ section.id }} details[open] > .cp__acc-title::after,
-  #shopify-section-{{ section.id }} .cp__look.is-open > .cp__acc-title::after { content: '-'; }
+  #shopify-section-{{ section.id }} .cp__acc.is-open > .cp__acc-title::after { content: '-'; }
+  {%- comment -%} animacja jak na wzorze: max-height 0.36 s, krzywa 0.25 / 0.9 / 0.32 / 1 {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__acc-wrap { max-height: 0; overflow: hidden; transition: max-height 0.36s cubic-bezier(0.25, 0.9, 0.32, 1); }
+  #shopify-section-{{ section.id }} .cp__acc.is-open > .cp__acc-wrap { max-height: none; }
   #shopify-section-{{ section.id }} .cp__acc-body { padding: 0 15px 20px; }
   #shopify-section-{{ section.id }} .cp__acc-body p { margin: 0 0 12px; }
   #shopify-section-{{ section.id }} .cp__acc-body p:last-child { margin-bottom: 0; }
   #shopify-section-{{ section.id }} .cp__acc-body a { color: inherit; text-decoration: underline; }
   #shopify-section-{{ section.id }} .cp__acc-body ul { margin: 0 0 12px; padding-left: 18px; }
-  #shopify-section-{{ section.id }} .cp__look-body { display: none; padding: 0 0 18px; }
-  #shopify-section-{{ section.id }} .cp__look.is-open .cp__look-body { display: block; }
+  #shopify-section-{{ section.id }} .cp__look-body { padding: 0 0 18px; }
+
+  {%- comment -%} paski koszyka na telefonie: dolny przycisk (gdy glowny jest pod ekranem) i gorny pasek (gdy glowny juz minal) {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__sbar,
+  #shopify-section-{{ section.id }} .cp__sbtn { display: none; }
 
   {%- comment -%} karty "Shop the look": te same karty sklepu (sn-karta), tylko w wygladzie wzoru {%- endcomment -%}
   #shopify-section-{{ section.id }} .cp__look .dp-combine { margin: 0; }
@@ -211,6 +215,31 @@
   #shopify-section-{{ section.id }} .cp__zoom-x { top: 8px; right: 8px; }
   #shopify-section-{{ section.id }} .cp__zoom-p { left: 6px; top: 50%; }
   #shopify-section-{{ section.id }} .cp__zoom-n { right: 6px; top: 50%; }
+
+  {%- comment -%}
+    ---------- telefon: zdjecie zostaje przyklejone, a kolumna z informacjami wsuwa sie na nie przy przewijaniu
+    (zmierzone na wzorze: galeria sticky 50 px od gory, kolumna bialym tlem nad nia) ----------
+  {%- endcomment -%}
+  @media only screen and (max-width: {{ section.settings.breakpoint }}px) {
+    #shopify-section-{{ section.id }} .cp__media { position: sticky; top: var(--cp-top, 0px); z-index: 0; }
+    #shopify-section-{{ section.id }} .cp__info { position: relative; z-index: 1; }
+    #shopify-section-{{ section.id }} .cp__sbar {
+      position: fixed; left: 0; right: 0; top: var(--cp-hh, 0px); z-index: 60; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      height: 50px; padding: 0 15px; background: #fff; border-bottom: 1px solid var(--cp-line);
+      transform: translateY(-110%); opacity: 0; pointer-events: none; transition: transform 0.3s linear, opacity 0.3s linear;
+    }
+    #shopify-section-{{ section.id }} .cp__sbar.is-on { transform: none; opacity: 1; pointer-events: auto; }
+    #shopify-section-{{ section.id }} .cp__sbar-txt { display: flex; flex-direction: column; min-width: 0; line-height: 15px; }
+    #shopify-section-{{ section.id }} .cp__sbar-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #shopify-section-{{ section.id }} .cp__sbar-btn { flex: 0 0 auto; height: 32px; padding: 0 16px; border: 0; background: var(--cp-dark); color: #fff; font-size: 12px; letter-spacing: 0.36px; text-transform: uppercase; cursor: pointer; }
+    #shopify-section-{{ section.id }} .cp__sbtn {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; display: block; height: 50px; border: 0; background: var(--cp-dark); color: #fff;
+      font-size: 12px; letter-spacing: 0.36px; text-transform: uppercase; cursor: pointer;
+      transform: translateY(100%); transition: transform 0.33s; visibility: hidden;
+    }
+    #shopify-section-{{ section.id }} .cp__sbtn.is-on { transform: none; visibility: visible; }
+    #shopify-section-{{ section.id }} .cp__sbtn[disabled], #shopify-section-{{ section.id }} .cp__sbar-btn[disabled] { opacity: 0.45; }
+  }
 
   {%- comment -%} ---------- PC: 12 kolumn, galeria 8, informacje 4 (zmierzone: 943 / 462 px przy 1425 px) ---------- {%- endcomment -%}
   @media only screen and (min-width: {{ section.settings.breakpoint | plus: 1 }}px) {
@@ -425,9 +454,9 @@
       {%- comment -%} ---------- "Shop the look" + akordeony ---------- {%- endcomment -%}
       <div class="cp__accs">
         {%- if section.settings.look_label != blank -%}
-          <div class="cp__acc cp__look is-open" data-cp-look hidden>
-            <button type="button" class="cp__acc-title" data-cp-look-title aria-expanded="true">{{ section.settings.look_label }}</button>
-            <div class="cp__look-body">{%- render 'dp-combine-with', product: product -%}</div>
+          <div class="cp__acc cp__look is-open" data-cp-acc data-cp-look hidden>
+            <button type="button" class="cp__acc-title" aria-expanded="true">{{ section.settings.look_label }}</button>
+            <div class="cp__acc-wrap"><div class="cp__look-body">{%- render 'dp-combine-with', product: product -%}</div></div>
           </div>
         {%- endif -%}
         {%- assign akordeony = section.blocks | where: 'type', 'acc' -%}
@@ -443,18 +472,27 @@
             {%- if oprocz contains typ_produktu -%}{%- assign pokaz = false -%}{%- endif -%}
           {%- endif -%}
           {%- if pokaz -%}
-            <details class="cp__acc" {% if block.settings.open %}open{% endif %} {{ block.shopify_attributes }}>
-              <summary class="cp__acc-title">{{ block.settings.title }}</summary>
-              <div class="cp__acc-body">
-                {%- if block.settings.use_desc -%}{{ product.description }}{%- else -%}{{ block.settings.text }}{%- endif -%}
+            <div class="cp__acc{% if block.settings.open %} is-open{% endif %}" data-cp-acc {{ block.shopify_attributes }}>
+              <button type="button" class="cp__acc-title" aria-expanded="{% if block.settings.open %}true{% else %}false{% endif %}">{{ block.settings.title }}</button>
+              <div class="cp__acc-wrap">
+                <div class="cp__acc-body">
+                  {%- if block.settings.use_desc -%}{{ product.description }}{%- else -%}{{ block.settings.text }}{%- endif -%}
+                </div>
               </div>
-            </details>
+            </div>
           {%- endif -%}
         {%- endfor -%}
       </div>
 
     </div>
   </div>
+
+  {%- comment -%} Telefon: gorny pasek (po minieciu przycisku) i dolny przycisk (zanim przycisk sie pojawi), jak na wzorze. {%- endcomment -%}
+  <div class="cp__sbar" data-cp-sbar aria-hidden="true">
+    <span class="cp__sbar-txt"><span class="cp__sbar-title">{{ product.title }}</span><span data-cp-sprice>{%- render 'sn-cena', kwota: war.price -%}</span></span>
+    <button type="button" class="cp__sbar-btn" data-cp-sbtn tabindex="-1"{% unless war.available %} disabled{% endunless %}>{%- if war.available -%}{{ section.settings.atc_label }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}</button>
+  </div>
+  <button type="button" class="cp__sbtn" data-cp-sbottom tabindex="-1"{% unless war.available %} disabled{% endunless %}>{%- if war.available -%}{{ section.settings.atc_label }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}</button>
 
   <div class="cp__zoom" data-cp-zoom hidden>
     <button type="button" class="cp__zoom-x" data-cp-zoom-x aria-label="{{ 'general.accessibility.close' | t }}">&times;</button>
@@ -484,9 +522,15 @@
         return (p === 'sticky' || p === 'fixed') ? h.offsetHeight : 0;
       }
       function ustaw() {
+        var cp = root.querySelector('.cp');
+        if (cp) cp.style.setProperty('--cp-hh', naglowek() + 'px');
         kolumny.forEach(function (k, i) {
           if (!k) return;
-          if (window.innerWidth <= prog) { k.style.removeProperty(zmienne[i]); return; }
+          /* telefon: zdjecie przyklejone pod naglowkiem, kolumna z informacjami wsuwa sie na nie */
+          if (window.innerWidth <= prog) {
+            if (i === 0) k.style.setProperty(zmienne[0], naglowek() + 'px'); else k.style.removeProperty(zmienne[i]);
+            return;
+          }
           var odstep = 16;
           var gora = naglowek() + odstep;
           var top = Math.min(gora, window.innerHeight - k.offsetHeight - odstep);
@@ -574,11 +618,16 @@
       });
       var w = znajdz(wybor());
       if (stok) stok.hidden = !(w && w.available);
+      var paskowe = [root.querySelector('[data-cp-sbtn]'), root.querySelector('[data-cp-sbottom]')];
+      var gotowy = !!(w && w.available);
+      paskowe.forEach(function (b) { if (b) { b.disabled = !gotowy; b.textContent = gotowy ? DODAJ : BRAK; } });
       if (!w) { atc.disabled = true; atcTxt.textContent = BRAK; return; }
       if (pole) pole.value = w.id;
       atc.disabled = !w.available;
       atcTxt.textContent = w.available ? DODAJ : BRAK;
       teraz.innerHTML = kwota(w.price);
+      var cenaPaska = root.querySelector('[data-cp-sprice]');
+      if (cenaPaska) cenaPaska.innerHTML = kwota(w.price);
       if (bylo) {
         var przecena = w.compare_at_price && w.compare_at_price > w.price;
         bylo.hidden = !przecena;
@@ -657,28 +706,77 @@
       if (przycisk) przycisk.addEventListener('click', function () {
         var cel = root.querySelector('[data-cp-look]:not([hidden])');
         if (!cel) return;
-        cel.classList.add('is-open');
+        if (!cel.classList.contains('is-open')) przelacz(cel);
         cel.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
     })();
 
-    /* ---------- wiersz "Shop the look": widoczny tylko, gdy sa karty; klik zwija i rozwija ---------- */
+    /* ---------- akordeony: animacja wysokosci jak na wzorze (max-height 0.36 s) ----------
+       Otwarty akordeon ma max-height: none (tresc moze sie doladowac, np. karty), a animujemy tylko
+       przejscie: przy zamykaniu najpierw wstawiamy aktualna wysokosc w px, potem 0. */
+    function przelacz(acc) {
+      var wrap = acc.querySelector('.cp__acc-wrap');
+      var tytul = acc.querySelector('.cp__acc-title');
+      if (!wrap) return;
+      var otwarty = acc.classList.contains('is-open');
+      if (otwarty) {
+        wrap.style.maxHeight = wrap.scrollHeight + 'px';
+        void wrap.offsetHeight;
+        acc.classList.remove('is-open');
+        wrap.style.maxHeight = '0px';
+      } else {
+        wrap.style.maxHeight = '0px';
+        acc.classList.add('is-open');
+        wrap.style.maxHeight = wrap.scrollHeight + 'px';
+        var koniec = function (e) {
+          if (e && e.propertyName !== 'max-height') return;
+          wrap.removeEventListener('transitionend', koniec);
+          if (acc.classList.contains('is-open')) wrap.style.maxHeight = '';
+        };
+        wrap.addEventListener('transitionend', koniec);
+      }
+      if (tytul) tytul.setAttribute('aria-expanded', otwarty ? 'false' : 'true');
+    }
+    root.addEventListener('click', function (e) {
+      var t = e.target.closest('.cp__acc-title');
+      if (!t) return;
+      var acc = t.closest('[data-cp-acc]');
+      if (acc) przelacz(acc);
+    });
+
+    /* ---------- wiersz "Shop the look": widoczny tylko, gdy sa karty ---------- */
     (function () {
       var wiersz = root.querySelector('[data-cp-look]');
       if (!wiersz) return;
-      var tytul = wiersz.querySelector('[data-cp-look-title]');
-      function synchronizuj() {
-        var ramka = wiersz.querySelector('[data-dp-combine]');
-        wiersz.hidden = !ramka || ramka.hidden;
-      }
       var ramka = wiersz.querySelector('[data-dp-combine]');
       if (!ramka) { wiersz.hidden = true; return; }
+      function synchronizuj() { wiersz.hidden = ramka.hidden; }
       new MutationObserver(synchronizuj).observe(ramka, { attributes: true, attributeFilter: ['hidden'] });
       synchronizuj();
-      tytul.addEventListener('click', function () {
-        var otwarty = wiersz.classList.toggle('is-open');
-        tytul.setAttribute('aria-expanded', otwarty ? 'true' : 'false');
-      });
+    })();
+
+    /* ---------- telefon: dolny przycisk koszyka i gorny pasek ----------
+       Dolny przycisk jest widoczny, dopoki glowny przycisk jest pod ekranem; gorny pasek wjezdza, gdy glowny juz
+       minal (na wzorze: oba przyklejone, pasek z nazwa, cena i "Add to bag"). */
+    (function () {
+      var pasek = root.querySelector('[data-cp-sbar]');
+      var dol = root.querySelector('[data-cp-sbottom]');
+      if (!pasek || !dol || !atc) return;
+      function klik() { if (!atc.disabled) atc.click(); }
+      [root.querySelector('[data-cp-sbtn]'), dol].forEach(function (b) { if (b) b.addEventListener('click', klik); });
+      var czeka = false;
+      function sprawdz() {
+        czeka = false;
+        if (window.innerWidth > prog) { pasek.classList.remove('is-on'); dol.classList.remove('is-on'); return; }
+        var r = atc.getBoundingClientRect();
+        var hh = parseInt(getComputedStyle(root.querySelector('.cp')).getPropertyValue('--cp-hh'), 10) || 0;
+        dol.classList.toggle('is-on', r.top > window.innerHeight);
+        pasek.classList.toggle('is-on', r.bottom < hh + 4);
+      }
+      function planuj() { if (!czeka) { czeka = true; requestAnimationFrame(sprawdz); } }
+      window.addEventListener('scroll', planuj, { passive: true });
+      window.addEventListener('resize', planuj);
+      sprawdz();
     })();
 
     /* ---------- powiekszenie zdjecia ---------- */
