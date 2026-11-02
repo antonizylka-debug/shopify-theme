@@ -30,6 +30,7 @@
   @param {object} ss        - section.settings (fit_text_model, fit_text_example, fit_font, fit_pill, fit_icon, fit_bg, fit_border, fit_color, fit_strong)
   @param {number} waga      - kg, 0 = brak (tylko prawdziwe dane modela)
   @param {string} miejsce   - 'photo' = pastylka na zdjeciu (jak hang-eleven.com), puste = linia pod rozmiarami
+  @param {boolean} pelny    - tylko z miejsce 'photo': cale zdanie "Model is 166 cm (5′5″) tall and wears size S."
 
   PASTYLKA NA ZDJECIU (02.11.2026, Antoni): krotszy tekst, lewy dolny rog zdjecia.
     tekst_foto_model    - prawdziwe dane; [weight] = ", 62 kg" albo nic, gdy wagi nie ma
@@ -52,6 +53,26 @@
     endif
     assign rozmiar_bezp = rozmiar | escape
     assign tresc = szablon | escape | replace: '[height]', wzrost | replace: '[weight]', waga_txt | replace: '[size]', rozmiar_bezp
+
+    comment
+      pelny = cale zdanie jak w linii na zywo (strona catalog, 02.11.2026): "Model is 166 cm (5′5″) tall and wears size S."
+      Z waga (tylko prawdziwe dane): "Model is 166 cm (5′5″) tall, 62 kg and wears size S."
+    endcomment
+    if pelny
+      assign cale = wzrost | divided_by: 2.54 | round
+      assign stopy = cale | divided_by: 12
+      assign reszta = cale | modulo: 12
+      capture ft
+        echo stopy | append: '′' | append: reszta | append: '″'
+      endcapture
+      assign waga_pelny = ''
+      if rodzaj == 'model' and waga > 0
+        assign waga_pelny = ', ' | append: waga | append: ' kg'
+      endif
+      capture tresc
+        echo 'Model is ' | append: wzrost | append: ' cm (' | append: ft | append: ') tall' | append: waga_pelny | append: ' and wears size ' | append: rozmiar_bezp | append: '.' | escape_once
+      endcapture
+    endif
   -%}
   <span class="dp-photo-fit" data-dp-fit="{{ rodzaj }}">{{ tresc }}</span>
   <style>

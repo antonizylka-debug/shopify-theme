@@ -21,6 +21,7 @@
 
   @param {string} section_id
   @param {string} miejsce - 'photo' = pastylka na zdjeciu (ob-pdp, galeria); puste = linia pod rozmiarami
+  @param {boolean} pelny  - tylko z 'photo': cale zdanie "Model is 166 cm (5′5″) tall and wears size S." (strona catalog)
   @param {object} ss - section.settings z ob-pdp (teksty i wyglad, sekcja "Model fit line")
 {%- endcomment -%}
 {%- liquid
@@ -116,7 +117,7 @@
   endif
 -%}
 {%- if dp_rodzaj == 'model' -%}
-  {%- render 'dp-model-info-text', rodzaj: 'model', wzrost: dp_h, rozmiar: dp_real_size, waga: dp_waga, miejsce: miejsce, section_id: section_id, ss: ss -%}
+  {%- render 'dp-model-info-text', rodzaj: 'model', wzrost: dp_h, rozmiar: dp_real_size, waga: dp_waga, miejsce: miejsce, pelny: pelny, section_id: section_id, ss: ss -%}
 {%- elsif dp_rodzaj == 'example' -%}
-  {%- render 'dp-model-info-text', rodzaj: 'example', wzrost: dp_ex_h, rozmiar: dp_ex_size, waga: 0, miejsce: miejsce, section_id: section_id, ss: ss -%}
+  {%- render 'dp-model-info-text', rodzaj: 'example', wzrost: dp_ex_h, rozmiar: dp_ex_size, waga: 0, miejsce: miejsce, pelny: pelny, section_id: section_id, ss: ss -%}
 {%- endif -%}

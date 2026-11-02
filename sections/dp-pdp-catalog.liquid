@@ -47,11 +47,26 @@
     assign rabat = war.compare_at_price | minus: war.price | times: 100.0 | divided_by: war.compare_at_price | round
   endif
 
-  # Rada o rozmiarze: metapole produktu wygrywa z ustawieniem sekcji.
-  assign rada = product.metafields.custom.size_recommendation.value
-  if rada == blank
-    assign rada = section.settings.advice_text
+  # Mix & Match: progi "ilosc:procent" z ustawienia, np. 2:10, 3:20, 4:25, 5:30 (znizki naliczane automatycznie w koszyku).
+  assign mm_progi = section.settings.mm_tiers | split: ','
+  assign mm_max = 0
+  assign mm_ile = 0
+  for p in mm_progi
+    assign kv = p | split: ':'
+    if kv.size == 2
+      assign mm_pct = kv[1] | strip | plus: 0
+      if mm_pct > mm_max
+        assign mm_max = mm_pct
+      endif
+      assign mm_ile = mm_ile | plus: 1
+    endif
+  endfor
+  assign mm_wlaczony = false
+  if section.settings.mm_show and mm_max > 0
+    assign mm_wlaczony = true
   endif
+  assign mm_mnoznik = 100 | minus: mm_max
+  assign mm_od = war.price | times: mm_mnoznik | divided_by: 100
 
   # Plakietki cech pod cena - tekst oddzielony przecinkami albo lista. Brak = nic.
   assign cechy = product.metafields.custom.pdp_features.value | join: ','
@@ -78,7 +93,7 @@
 
 {%- comment -%} Wzrost i rozmiar modela jako pastylka na zdjeciu (ten sam snippet co na domyslnej stronie). {%- endcomment -%}
 {%- capture dp_foto_fit -%}
-  {%- render 'dp-model-info', section_id: section.id, miejsce: 'photo' -%}
+  {%- render 'dp-model-info', section_id: section.id, miejsce: 'photo', pelny: true -%}
 {%- endcapture -%}
 {%- assign dp_foto_fit = dp_foto_fit | strip -%}
 
@@ -114,8 +129,7 @@
     --dp-photo-fit-bg: #d4d4d4; --dp-photo-fit-text: #000; --dp-photo-fit-font-size: 11px; --dp-photo-fit-padding: 6px 10px; --dp-photo-fit-radius: 0;
   }
   #shopify-section-{{ section.id }} .cp__count { display: flex; align-items: center; padding: 6px 10px; background: #d4d4d4; font-size: 11px; line-height: 20px; }
-  #shopify-section-{{ section.id }} .cp__bar .dp-photo-fit { display: flex; align-items: center; line-height: 20px; }
-  #shopify-section-{{ section.id }} .cp__look-btn { margin-left: auto; padding: 9px 14px; border: 0; background: var(--cp-dark); color: #fff; font-size: 12px; line-height: 14px; letter-spacing: 0.36px; text-transform: uppercase; white-space: nowrap; cursor: pointer; }
+  #shopify-section-{{ section.id }} .cp__bar .dp-photo-fit { display: flex; flex: 1 1 auto; align-items: center; min-width: 0; line-height: 16px; white-space: normal; overflow: visible; text-overflow: clip; }
   #shopify-section-{{ section.id }} .cp__photo > .dp-photo-fit { display: none; }
 
   {%- comment -%} ---------- kolumna z informacjami ---------- {%- endcomment -%}
@@ -145,15 +159,23 @@
   #shopify-section-{{ section.id }} .cp__tiles.is-open .cp__tile--x { display: block; }
   #shopify-section-{{ section.id }} .cp__more { flex: 0 0 76px; aspect-ratio: 3 / 4; padding: 0 4px; border: 1px solid var(--cp-soft); background: var(--cp-soft); color: var(--cp-mute); font-size: 8px; line-height: 10.4px; letter-spacing: 0.24px; text-transform: uppercase; cursor: pointer; }
 
-  {%- comment -%} rada o rozmiarze {%- endcomment -%}
-  #shopify-section-{{ section.id }} .cp__advice { padding: 15px 0 15px; border-top: 1px solid var(--cp-line); display: grid; gap: 5px; }
-  #shopify-section-{{ section.id }} .cp__advice-txt { font-size: 11px; line-height: 16.5px; letter-spacing: 0.3px; color: #525252; }
+  {%- comment -%} "As low as" pod cena i Mix & Match: plaskie, szare, bez zaokraglen (nowy styl) {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__aslow { margin: 0; font-size: 11px; line-height: 16px; letter-spacing: 0.3px; color: #525252; }
+  #shopify-section-{{ section.id }} .cp__aslow b { font-weight: 500; color: #000; }
+  #shopify-section-{{ section.id }} .cp__mm { margin: 0 0 14px; padding: 14px 15px 12px; background: var(--cp-soft); }
+  #shopify-section-{{ section.id }} .cp__mm-title { margin: 3px 0 10px; font-size: 12px; line-height: 14.4px; font-weight: 500; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .cp__mm-tiers { display: grid; grid-template-columns: repeat(var(--cp-mm, 4), minmax(0, 1fr)); gap: 2px; margin: 0 0 10px; padding: 0; list-style: none; }
+  #shopify-section-{{ section.id }} .cp__mm-tier { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; background: #fff; text-align: center; }
+  #shopify-section-{{ section.id }} .cp__mm-tier span { font-size: 10px; line-height: 13px; letter-spacing: 0.3px; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .cp__mm-tier b { font-size: 14px; line-height: 18px; font-weight: 500; }
+  #shopify-section-{{ section.id }} .cp__mm-note { margin: 0; font-size: 11px; line-height: 16.5px; letter-spacing: 0.3px; color: #525252; }
 
-  {%- comment -%} formularz: "Size help", linia "In stock", rzad rozmiarow, przycisk {%- endcomment -%}
-  #shopify-section-{{ section.id }} .cp__help { display: grid; gap: 5px; padding: 5px 0 15px; }
-  #shopify-section-{{ section.id }} .cp__help-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 25px; }
-  #shopify-section-{{ section.id }} .cp__help-btn { display: inline-flex; align-items: center; padding: 5px 12px; background: var(--cp-chip); border: 0; border-radius: 4px; color: #000; text-decoration: none; font-size: 12px; line-height: 15px; cursor: pointer; }
-  #shopify-section-{{ section.id }} .cp__help-link { padding: 0; border: 0; background: none; color: #000; font-size: 12px; text-decoration: underline; cursor: pointer; }
+  {%- comment -%} szara ramka pomocy w rozmiarze - jak na dotychczasowej stronie {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__helpbox { display: flex; align-items: flex-start; gap: 10px; margin: 0 0 15px; padding: 12px 15px; background: var(--cp-soft); font-size: 11px; line-height: 16.5px; letter-spacing: 0.3px; color: #525252; }
+  #shopify-section-{{ section.id }} .cp__helpbox svg { flex: 0 0 15px; width: 15px; height: 15px; margin-top: 1px; color: #000; }
+  #shopify-section-{{ section.id }} .cp__helpbox a { display: inline-block; margin-top: 4px; color: #000; text-decoration: underline; text-underline-offset: 2px; }
+
+  {%- comment -%} formularz: linia "In stock", rzad rozmiarow, przycisk {%- endcomment -%}
   #shopify-section-{{ section.id }} .cp__stock { display: flex; align-items: center; margin: 5px 0 15px; color: var(--cp-green); }
   #shopify-section-{{ section.id }} .cp__stock-dot { flex: 0 0 6px; width: 6px; height: 6px; margin-right: 6px; border-radius: 50%; background: var(--cp-green); }
   #shopify-section-{{ section.id }} .cp__optname { margin: 5px 0 8px; }
@@ -264,7 +286,6 @@
     #shopify-section-{{ section.id }} .cp__bar { display: block; position: static; }
     #shopify-section-{{ section.id }} .cp__bar .dp-photo-fit,
     #shopify-section-{{ section.id }} .cp__count { display: none; }
-    #shopify-section-{{ section.id }} .cp__look-btn { position: absolute; z-index: 4; top: 10px; right: 10px; margin: 0; }
     #shopify-section-{{ section.id }} .cp__photo:first-child > .dp-photo-fit { display: flex; position: absolute; z-index: 4; left: 10px; bottom: 10px; align-items: center; line-height: 20px; }
   }
 {%- endstyle -%}
@@ -296,9 +317,6 @@
       <div class="cp__bar" data-cp-bar>
         <span class="cp__count" data-cp-count{% if product.media.size < 2 %} hidden{% endif %}>1/{{ product.media.size }}</span>
         {{- dp_foto_fit -}}
-        {%- if section.settings.look_label != blank -%}
-          <button type="button" class="cp__look-btn" data-cp-look-btn>{{ section.settings.look_label }}</button>
-        {%- endif -%}
       </div>
     </div>
 
@@ -319,6 +337,9 @@
           <s class="cp__was" data-cp-was{% unless na_przecenie %} hidden{% endunless %}>{%- if na_przecenie -%}{%- render 'sn-cena', kwota: war.compare_at_price -%}{%- endif -%}</s>
           <span data-cp-now>{%- render 'sn-cena', kwota: war.price -%}</span>
         </p>
+        {%- if mm_wlaczony -%}
+          <p class="cp__aslow">{{ section.settings.mm_aslow }} <b data-cp-aslow>{%- render 'sn-cena', kwota: mm_od -%}</b> {{ section.settings.mm_with }}</p>
+        {%- endif -%}
         {%- if cechy != blank -%}
           <ul class="cp__chips">
             {%- for c in cechy_lista -%}
@@ -368,33 +389,25 @@
         {%- if product.has_only_default_variant -%}{%- break -%}{%- endif -%}
       {%- endfor -%}
 
-      {%- comment -%} ---------- rada o rozmiarze ---------- {%- endcomment -%}
-      {%- if rada != blank and product.has_only_default_variant == false -%}
-        <div class="cp__advice">
-          <span class="cp__lbl">{{ section.settings.advice_label }}</span>
-          <span class="cp__advice-txt">{{ rada | escape }}</span>
+      {%- comment -%} ---------- szara ramka pomocy w rozmiarze (ta sama co na dotychczasowej stronie: dp-fit-note + "See measurements") ---------- {%- endcomment -%}
+      {%- if section.settings.help_text != blank and product.has_only_default_variant == false -%}
+        <div class="cp__helpbox">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7h13l5 5-5 5H3z"/><path d="M7 12h.01M11 12h.01"/></svg>
+          <div>
+            {%- capture dp_fit -%}{%- render 'dp-fit-note', product: product -%}{%- endcapture -%}
+            {%- if dp_fit != blank -%}{{ dp_fit | strip }}{%- else -%}{{ section.settings.help_text }}{%- endif -%}
+            {%- if section.settings.size_link != blank and section.settings.help_link_label != blank -%}
+              {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
+              <br><a href="{{ section.settings.size_link }}"{% if sg_html contains 'data-sgm' %} data-sg-open{% endif %}>{{ section.settings.help_link_label }}</a>
+              {{- sg_html -}}
+            {%- endif -%}
+          </div>
         </div>
       {%- endif -%}
 
       {%- comment -%} ---------- formularz ---------- {%- endcomment -%}
       {%- form 'product', product, novalidate: 'novalidate' -%}
         <input type="hidden" name="id" value="{{ war.id }}" data-cp-id>
-
-        {%- if product.has_only_default_variant == false -%}
-          {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
-          {%- assign sg_otwiera = false -%}
-          {%- if sg_html contains 'data-sgm' -%}{%- assign sg_otwiera = true -%}{%- endif -%}
-          {%- if section.settings.size_link != blank or sg_otwiera -%}
-            <div class="cp__help">
-              <span class="cp__lbl">{{ section.settings.help_label }}</span>
-              <div class="cp__help-row">
-                <a class="cp__help-btn" href="{{ section.settings.size_link | default: '#' }}"{% if sg_otwiera %} data-sg-open{% endif %}>{{ section.settings.help_btn }}</a>
-                <a class="cp__help-link" href="{{ section.settings.size_link | default: '#' }}"{% if sg_otwiera %} data-sg-open{% endif %}>{{ section.settings.chart_label }}</a>
-              </div>
-              {{- sg_html -}}
-            </div>
-          {%- endif -%}
-        {%- endif -%}
 
         {%- if section.settings.stock_label != blank -%}
           <div class="cp__stock cp__lbl" data-cp-stock{% unless war.available %} hidden{% endunless %}><span class="cp__stock-dot" aria-hidden="true"></span>{{ section.settings.stock_label }}</div>
@@ -416,6 +429,22 @@
             </div>
           {%- endunless -%}
         {%- endfor -%}
+
+        {%- if mm_wlaczony -%}
+          <div class="cp__mm" style="--cp-mm: {{ mm_ile }};">
+            <span class="cp__lbl">{{ section.settings.mm_title }}</span>
+            <p class="cp__mm-title">{{ section.settings.mm_sub | replace: '#', mm_max }}</p>
+            <ul class="cp__mm-tiers">
+              {%- for p in mm_progi -%}
+                {%- assign kv = p | split: ':' -%}
+                {%- if kv.size == 2 -%}
+                  <li class="cp__mm-tier"><span>{{ kv[0] | strip }}{% if forloop.last %}+{% endif %} {{ section.settings.mm_items }}</span><b>&minus;{{ kv[1] | strip }}%</b></li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+            <p class="cp__mm-note">{{ section.settings.mm_note }}</p>
+          </div>
+        {%- endif -%}
 
         <button type="submit" name="add" class="cp__atc" data-cp-atc{% unless war.available %} disabled{% endunless %}>
           <span data-cp-atc-txt>{%- if war.available -%}{{ section.settings.atc_label }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}</span>
@@ -628,6 +657,8 @@
       teraz.innerHTML = kwota(w.price);
       var cenaPaska = root.querySelector('[data-cp-sprice]');
       if (cenaPaska) cenaPaska.innerHTML = kwota(w.price);
+      var odCeny = root.querySelector('[data-cp-aslow]');
+      if (odCeny) odCeny.innerHTML = kwota(Math.floor(w.price * (100 - {{ mm_max | default: 0 | json }}) / 100));
       if (bylo) {
         var przecena = w.compare_at_price && w.compare_at_price > w.price;
         bylo.hidden = !przecena;
@@ -702,13 +733,6 @@
       }
       if (tor) tor.addEventListener('scroll', pokaz, { passive: true });
       pokaz();
-      var przycisk = root.querySelector('[data-cp-look-btn]');
-      if (przycisk) przycisk.addEventListener('click', function () {
-        var cel = root.querySelector('[data-cp-look]:not([hidden])');
-        if (!cel) return;
-        if (!cel.classList.contains('is-open')) przelacz(cel);
-        cel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      });
     })();
 
     /* ---------- akordeony: animacja wysokosci jak na wzorze (max-height 0.36 s) ----------
@@ -828,15 +852,21 @@
     { "type": "image_picker", "id": "rating_logo", "label": "Logo before the stars (optional)", "info": "Only the logo of a review platform you really have a profile on, with real numbers." },
     { "type": "header", "content": "Texts" },
     { "type": "text", "id": "atc_label", "label": "Add to cart button", "default": "Add to bag" },
-    { "type": "text", "id": "look_label", "label": "Shop the look (row and button on the photo)", "info": "Empty = both hidden.", "default": "Shop the look" },
+    { "type": "text", "id": "look_label", "label": "Row with product cards", "info": "Empty = row hidden.", "default": "Combine it with" },
     { "type": "text", "id": "more_label", "label": "Colour tile when more than four", "info": "Shown as +3 colors.", "default": "colors" },
     { "type": "text", "id": "stock_label", "label": "Stock line", "info": "Empty = hidden. Disappears when the selected variant is sold out.", "default": "In stock, ready to be shipped" },
-    { "type": "text", "id": "advice_label", "label": "Size advice heading", "default": "Size advice" },
-    { "type": "text", "id": "advice_text", "label": "Size advice text", "info": "A product's own custom.size_recommendation metafield wins.", "default": "Not sure about the size? Go by the measurements rather than the size you usually wear." },
-    { "type": "text", "id": "help_label", "label": "Size help heading", "default": "Size help" },
-    { "type": "text", "id": "help_btn", "label": "Size help button", "default": "What is my size?" },
-    { "type": "text", "id": "chart_label", "label": "Size chart link", "default": "Size chart" },
-    { "type": "url", "id": "size_link", "label": "Size chart page", "info": "Used when the product has no size chart of its own." }
+    { "type": "text", "id": "help_text", "label": "Size help text", "info": "The grey box above the sizes. A per-product tip from the size chart wins when there is one.", "default": "Not sure about the size? Go by the measurements rather than the size you usually wear." },
+    { "type": "text", "id": "help_link_label", "label": "Size help link", "default": "See measurements" },
+    { "type": "url", "id": "size_link", "label": "Size chart page", "info": "Where the link goes when the product has no size chart of its own." },
+    { "type": "header", "content": "Mix & Match" },
+    { "type": "checkbox", "id": "mm_show", "label": "Show Mix & Match", "default": true },
+    { "type": "text", "id": "mm_title", "label": "Label", "default": "Mix & Match" },
+    { "type": "text", "id": "mm_sub", "label": "Heading", "info": "# = the highest percentage.", "default": "Save up to #%" },
+    { "type": "text", "id": "mm_tiers", "label": "Tiers", "info": "items:percent, e.g. 2:10, 3:20, 4:25, 5:30. Must match the automatic discounts in the cart.", "default": "2:10, 3:20, 4:25, 5:30" },
+    { "type": "text", "id": "mm_items", "label": "Word after the number", "default": "items" },
+    { "type": "text", "id": "mm_note", "label": "Note", "default": "Seasonal prices apply automatically in your cart – no code needed. Free shipping on every order." },
+    { "type": "text", "id": "mm_aslow", "label": "Under the price: start", "default": "As low as" },
+    { "type": "text", "id": "mm_with", "label": "Under the price: end", "default": "with Mix & Match" }
   ],
   "blocks": [
     {
