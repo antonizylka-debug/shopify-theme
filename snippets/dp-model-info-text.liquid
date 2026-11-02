@@ -28,7 +28,51 @@
   @param {string} rozmiar   - wartosc wariantu
   @param {string} section_id
   @param {object} ss        - section.settings (fit_text_model, fit_text_example, fit_font, fit_pill, fit_icon, fit_bg, fit_border, fit_color, fit_strong)
+  @param {number} waga      - kg, 0 = brak (tylko prawdziwe dane modela)
+  @param {string} miejsce   - 'photo' = pastylka na zdjeciu (jak hang-eleven.com), puste = linia pod rozmiarami
+
+  PASTYLKA NA ZDJECIU (02.11.2026, Antoni): krotszy tekst, lewy dolny rog zdjecia.
+    tekst_foto_model    - prawdziwe dane; [weight] = ", 62 kg" albo nic, gdy wagi nie ma
+    tekst_foto_przyklad - przyklad: bez "Model is" i bez wagi, tak jak linia na zywo
+  Wyglad: zmienne --dp-photo-fit-* nizej.
 {%- endcomment -%}
+{%- if miejsce == 'photo' -%}
+  {%- liquid
+    assign tekst_foto_model = 'Model is [height] cm[weight] · Wears [size]'
+    assign tekst_foto_przyklad = '[height] cm · Size [size]'
+
+    if rodzaj == 'model'
+      assign szablon = tekst_foto_model
+    else
+      assign szablon = tekst_foto_przyklad
+    endif
+    assign waga_txt = ''
+    if rodzaj == 'model' and waga > 0
+      assign waga_txt = ', ' | append: waga | append: ' kg'
+    endif
+    assign rozmiar_bezp = rozmiar | escape
+    assign tresc = szablon | escape | replace: '[height]', wzrost | replace: '[weight]', waga_txt | replace: '[size]', rozmiar_bezp
+  -%}
+  <span class="dp-photo-fit" data-dp-fit="{{ rodzaj }}">{{ tresc }}</span>
+  <style>
+    .dp-photo-fit {
+      /* ---- wyglad pastylki na zdjeciu: zmieniaj tutaj ---- */
+      --dp-photo-fit-bg: rgba(239, 239, 239, 0.92);
+      --dp-photo-fit-text: #1c1d1d;
+      --dp-photo-fit-font-size: 12px;
+      --dp-photo-fit-padding: 8px 11px;
+      --dp-photo-fit-radius: 2px;
+      /* --------------------------------------------------- */
+      display: inline-block; max-width: 100%;
+      padding: var(--dp-photo-fit-padding);
+      background: var(--dp-photo-fit-bg); color: var(--dp-photo-fit-text);
+      border-radius: var(--dp-photo-fit-radius);
+      font-size: var(--dp-photo-fit-font-size); line-height: 1.2; letter-spacing: 0.01em;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      pointer-events: none;
+    }
+  </style>
+{%- else -%}
 {%- liquid
   assign tekst_model = 'Model is [height] cm tall and wears size [size].'
   assign tekst_przyklad = 'Illustrative fit example: [height] cm · Size [size].'
@@ -118,3 +162,4 @@
   /* telefon: ob-pdp uklada dzieci .pdp__info - kapsulka w tym samym miejscu co rozmiary, nad "Add to cart" */
   #shopify-section-{{ section_id }} .pdp__info > .dp-fit { order: 2; margin-bottom: 14px; }
 </style>
+{%- endif -%}

@@ -240,6 +240,14 @@
     font-size: 12.5px; color: var(--pdp-muted); margin: 12px 0 0;
   }
 
+  /* wzrost i rozmiar modela na zdjeciu: PC - lewy dolny rog pierwszego zdjecia, telefon - pod plakietkami (nizej) */
+  #shopify-section-{{ section.id }} .pdp__photo { position: relative; }
+  #shopify-section-{{ section.id }} .pdp__photo > .dp-photo-fit {
+    position: absolute; left: 14px; bottom: 14px; z-index: 2;
+    max-width: calc(100% - 28px);
+  }
+  #shopify-section-{{ section.id }} .pdp__flags > .dp-photo-fit { display: none; }
+
   /* ---------- prawa kolumna ---------- */
   #shopify-section-{{ section.id }} .pdp__title {
     font-size: {{ section.settings.title_size }}px; font-weight: 700;
@@ -680,6 +688,12 @@
       position: absolute; top: auto; bottom: 78px; left: 0; right: 0;
     }
     #shopify-section-{{ section.id }} .pdp__flags { top: auto; bottom: 0; }
+    {%- comment -%} Na karuzeli pastylka stoi w miejscu (w plakietkach), a nie na pierwszym zdjeciu, ktore odjezdza w bok. {%- endcomment -%}
+    #shopify-section-{{ section.id }} .pdp__photo > .dp-photo-fit { display: none; }
+    #shopify-section-{{ section.id }} .pdp__flags > .dp-photo-fit {
+      display: inline-block; margin: 0 0 8px 10px;
+      max-width: calc(100vw - 92px);
+    }
     #shopify-section-{{ section.id }} .pdp__fab {
       display: flex; bottom: 86px;
     }
@@ -781,7 +795,19 @@
           endif
         -%}
 
-        {%- if jest_plakietka or notka != blank -%}
+        {%- comment -%}
+          Wzrost i rozmiar modela na zdjeciu, w lewym dolnym rogu (02.11.2026, wzor hang-eleven.com).
+          Telefon: pod plakietkami na karuzeli, stoi w miejscu przy przesuwaniu zdjec.
+          PC: na pierwszym zdjeciu. Tekst i wyglad: snippets/dp-model-info-text.liquid.
+        {%- endcomment -%}
+        {%- capture dp_foto_fit -%}
+          {%- unless section.settings.fit_place == 'sizes' -%}
+            {%- render 'dp-model-info', section_id: section.id, miejsce: 'photo' -%}
+          {%- endunless -%}
+        {%- endcapture -%}
+        {%- assign dp_foto_fit = dp_foto_fit | strip -%}
+
+        {%- if jest_plakietka or notka != blank or dp_foto_fit != blank -%}
           <div class="pdp__overlay">
             <div class="pdp__flags">
               {%- if jest_plakietka -%}
@@ -790,6 +816,7 @@
               {%- if notka != blank -%}
                 <span class="pdp__flag pdp__flag--note">{{ notka }}</span>
               {%- endif -%}
+              {{- dp_foto_fit -}}
             </div>
           </div>
         {%- endif -%}
@@ -845,6 +872,7 @@
                 {{ media.preview_image
                   | image_url: width: 1200
                   | image_tag: loading: lad, widths: '360, 540, 750, 1080, 1200', alt: alt }}
+                {%- if forloop.first %}{{ dp_foto_fit }}{% endif -%}
               </figure>
             {%- endfor -%}
           {%- else -%}
@@ -899,27 +927,25 @@
 
             Dzial czytamy z tagu "Department: ...", tego samego, na ktorym
             opieraja sie kolekcje.
+
+            02.11.2026: custom.model_size trzyma teraz sam rozmiar (np. "S") dla
+            dp-model-info, wiec ta linia wypisywala pod zdjeciami samo "S".
+            Metapola juz nie czytamy - zostaja tylko notki dzialu z ustawien.
           endcomment
           assign model_txt = ''
-          assign model_meta = product.metafields.custom.model_size
-
-          if model_meta != blank and model_meta.value != blank
-            assign model_txt = model_meta.value
-          else
-            assign dzial = ''
-            for t in product.tags
-              assign tl = t | downcase | strip
-              if tl contains 'department:'
-                assign dzial = tl | split: ':' | last | strip
-                break
-              endif
-            endfor
-
-            if dzial contains 'women' or dzial contains 'dame'
-              assign model_txt = section.settings.model_note_women
-            elsif dzial contains 'men' or dzial contains 'herre'
-              assign model_txt = section.settings.model_note_men
+          assign dzial = ''
+          for t in product.tags
+            assign tl = t | downcase | strip
+            if tl contains 'department:'
+              assign dzial = tl | split: ':' | last | strip
+              break
             endif
+          endfor
+
+          if dzial contains 'women' or dzial contains 'dame'
+            assign model_txt = section.settings.model_note_women
+          elsif dzial contains 'men' or dzial contains 'herre'
+            assign model_txt = section.settings.model_note_men
           endif
         -%}
         {%- if model_txt != blank -%}
@@ -1154,7 +1180,9 @@
         {%- comment -%} dp-size-fit line removed from the page 31.10.2026 (Antoni) - snippet kept {%- endcomment -%}
         {%- comment -%} Model height + size worn, from custom.model_* metafields (31.10.2026) {%- endcomment -%}
         {%- capture dp_model_info -%}
-          {%- render 'dp-model-info', section_id: section.id -%}
+          {%- unless section.settings.fit_place == 'photo' -%}
+            {%- render 'dp-model-info', section_id: section.id -%}
+          {%- endunless -%}
         {%- endcapture -%}
         {{- dp_model_info | replace: 'Illustrative fit example: ', '' | replace: 'Illustrative fit example:', '' -}}
 
@@ -1740,6 +1768,16 @@
     { "type": "paragraph", "content": "Model note under the photos, split by department because the models differ in height and size. A product's own custom.model_size metafield wins over both — that is also where you clear it for a product photographed without a model. Leave a field empty and nothing shows." },
     { "type": "text", "id": "model_note_women", "label": "Model note — women" },
     { "type": "text", "id": "model_note_men", "label": "Model note — men" },
+    {
+      "type": "select", "id": "fit_place", "label": "Model height and size",
+      "info": "From each product's model metafields. Text and look: snippets/dp-model-info-text.liquid.",
+      "default": "photo",
+      "options": [
+        { "value": "photo", "label": "On the photo" },
+        { "value": "sizes", "label": "Under the sizes" },
+        { "value": "both", "label": "Both" }
+      ]
+    },
 
     { "type": "header", "content": "Text" },
     { "type": "range", "id": "title_size", "label": "Title", "default": 26, "min": 18, "max": 40, "step": 1, "unit": "px" },
