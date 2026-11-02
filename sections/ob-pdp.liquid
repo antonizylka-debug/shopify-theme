@@ -270,6 +270,14 @@
   #shopify-section-{{ section.id }} .pdp__rating-num {
     font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
   }
+  #shopify-section-{{ section.id }} .pdp__rating-logo { display: block; height: 18px; width: auto; margin-right: 2px; }
+  {%- comment -%} Zielona kropka i napis nad rozmiarami (02.11.2026, jak na hang-eleven.com); znika, gdy wybrany wariant jest niedostepny. {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp__stock {
+    display: flex; align-items: center; gap: 8px; margin: 0 0 12px;
+    font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--pdp-text);
+  }
+  #shopify-section-{{ section.id }} .pdp__stock[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .pdp__stock-dot { flex: 0 0 7px; width: 7px; height: 7px; border-radius: 50%; background: #5a9a2e; }
   #shopify-section-{{ section.id }} .pdp__stars { display: flex; gap: 1px; color: #E4B528; }
   #shopify-section-{{ section.id }} .pdp__stars svg { width: 14px; height: 14px; }
   #shopify-section-{{ section.id }} .pdp__rating-link {
@@ -284,12 +292,29 @@
   }
   #shopify-section-{{ section.id }} .pdp__optlabel span { font-weight: 400; }
 
-  #shopify-section-{{ section.id }} .pdp__swatches { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
+  {%- comment -%}
+    Kolory jak na hang-eleven.com (02.11.2026): duze pionowe kafle ze zdjeciem, cztery w rzedzie,
+    napis "COLOR: NAZWA" wersalikami. Gdy kolorow jest wiecej niz cztery - trzy kafle i kafel
+    "+N colors", ktory rozwija reszte (wybrany kolor zawsze zostaje widoczny).
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .pdp__info > .pdp__optlabel {
+    font-size: 12px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  #shopify-section-{{ section.id }} .pdp__swatches {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px;
+    max-width: 420px; margin-bottom: 18px;
+  }
   #shopify-section-{{ section.id }} .pdp__swatch {
-    width: 54px; height: 54px; padding: 2px; cursor: pointer;
-    border: 1px solid var(--pdp-line); background: none; position: relative;
+    width: auto; height: auto; aspect-ratio: 4 / 5; padding: 0; cursor: pointer;
+    border: 1px solid transparent; background: var(--pdp-soft); position: relative; overflow: hidden;
   }
   #shopify-section-{{ section.id }} .pdp__swatch.is-on { border-color: var(--pdp-text); }
+  #shopify-section-{{ section.id }} .pdp__swatches:not(.is-open) .pdp__swatch--x:not(.is-on) { display: none; }
+  #shopify-section-{{ section.id }} .pdp__swatch-more {
+    aspect-ratio: 4 / 5; padding: 0 4px; border: 0; background: var(--pdp-soft); cursor: pointer;
+    font: inherit; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--pdp-muted);
+  }
+  #shopify-section-{{ section.id }} .pdp__swatch-more[hidden] { display: none; }
   #shopify-section-{{ section.id }} .pdp__swatch img { width: 100%; height: 100%; object-fit: cover; display: block; }
   #shopify-section-{{ section.id }} .pdp__swatch-dot { display: block; width: 100%; height: 100%; }
 
@@ -634,6 +659,7 @@
     #shopify-section-{{ section.id }} .pdp__info > .pdp__optlabel,
     #shopify-section-{{ section.id }} .pdp__info > .pdp__swatches,
     #shopify-section-{{ section.id }} .pdp__info > .pdp__help,
+    #shopify-section-{{ section.id }} .pdp__info > .pdp__stock,
     #shopify-section-{{ section.id }} .pdp__info > .pdp__opt,
     #shopify-section-{{ section.id }} .pdp__info > .shopify-product-form { order: 2; }
     {%- comment -%}
@@ -962,6 +988,9 @@
         {%- endcomment -%}
         {%- if section.settings.show_rating -%}
           <a class="pdp__rating" href="#{{ section.settings.rating_anchor | default: 'anmeldelser' | handleize }}" data-pdp-rating hidden>
+            {%- if section.settings.rating_logo != blank -%}
+              {{ section.settings.rating_logo | image_url: width: 240 | image_tag: class: 'pdp__rating-logo', alt: section.settings.rating_logo.alt | default: 'Reviews', loading: 'eager' }}
+            {%- endif -%}
             <span class="pdp__stars" data-pdp-stars aria-hidden="true"></span>
             <span class="pdp__rating-num" data-pdp-score></span>
             <span class="pdp__rating-link" data-pdp-count></span>
@@ -998,7 +1027,7 @@
                   koloru nie wstawial z powrotem angielskiej wartosci.
                 {%- endcomment -%}
                 {%- capture val_da -%}{% render 'ob-da', mapa: mapa, tekst: val %}{%- endcapture -%}
-                <button type="button" class="pdp__swatch{% if val == opt.selected_value %} is-on{% endif %}" aria-pressed="{% if val == opt.selected_value %}true{% else %}false{% endif %}"
+                <button type="button" class="pdp__swatch{% if opt.values.size > 4 and forloop.index > 3 %} pdp__swatch--x{% endif %}{% if val == opt.selected_value %} is-on{% endif %}" aria-pressed="{% if val == opt.selected_value %}true{% else %}false{% endif %}"
                         data-pdp-val="{{ val | escape }}" data-pdp-label="{{ val_da | strip | escape }}"
                         aria-label="{{ val_da | strip | escape }}">
                   {%- if zdj != blank -%}
@@ -1008,6 +1037,9 @@
                   {%- endif -%}
                 </button>
               {%- endfor -%}
+              {%- if opt.values.size > 4 -%}
+                <button type="button" class="pdp__swatch-more" data-pdp-sw-more hidden></button>
+              {%- endif -%}
             </div>
           {%- endif -%}
         {%- endfor -%}
@@ -1153,6 +1185,10 @@
               {%- endif -%}
             </div>
           </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_stock and section.settings.stock_label != blank -%}
+          <p class="pdp__stock" data-pdp-stock{% unless war.available %} hidden{% endunless %}><span class="pdp__stock-dot" aria-hidden="true"></span>{{ section.settings.stock_label }}</p>
         {%- endif -%}
 
         {%- comment -%} ---------- rozmiary i pozostale opcje (bez przycisku "Default Title" przy produkcie bez wariantow) ---------- {%- endcomment -%}
@@ -1442,6 +1478,8 @@
       });
 
       var w = znajdz(wybor());
+      var stok = root.querySelector('[data-pdp-stock]');
+      if (stok) stok.hidden = !(w && w.available);
       if (!w) { atc.disabled = true; atcTxt.textContent = BRAK; return; }
 
       if (pole) pole.value = w.id;
@@ -1505,6 +1543,24 @@
       if (r.bottom > 0 && r.top < window.innerHeight) siatkaZdj.scrollTo({ left: cel, behavior: 'smooth' });
       else siatkaZdj.scrollLeft = cel;
     }
+
+    // ---------- kolory: "+N colors" rozwija reszte kafli, wybrany kolor zawsze widac ----------
+    (function () {
+      var g = root.querySelector('.pdp__swatches');
+      var wiecej = g && g.querySelector('[data-pdp-sw-more]');
+      if (!wiecej) return;
+      function ustaw() {
+        var ukryte = 0;
+        if (!g.classList.contains('is-open')) {
+          Array.prototype.forEach.call(g.querySelectorAll('.pdp__swatch--x'), function (b) { if (!b.classList.contains('is-on')) ukryte++; });
+        }
+        wiecej.hidden = ukryte === 0;
+        wiecej.textContent = '+' + ukryte + ' ' + {{ section.settings.swatch_more_label | default: 'colors' | json }};
+      }
+      wiecej.addEventListener('click', function () { g.classList.add('is-open'); ustaw(); });
+      g.addEventListener('click', function () { setTimeout(ustaw, 0); });
+      ustaw();
+    })();
 
     // ---------- pokaz wiecej zdjec ----------
     (function () {
@@ -1861,6 +1917,10 @@
     { "type": "checkbox", "id": "show_rating", "label": "Show rating", "default": true },
     { "type": "text", "id": "rating_manual", "label": "Rating shown under the title", "info": "Typed by hand, e.g. 4.8. Leave empty to take it from the reviews section.", "default": "4.8" },
     { "type": "text", "id": "rating_manual_text", "label": "Text after the rating", "info": "Shown after the typed rating, e.g. Based on 48,500+ Reviews.", "default": "Based on 48,500+ Reviews" },
+    { "type": "image_picker", "id": "rating_logo", "label": "Logo before the stars (optional)", "info": "Only use the logo of a review platform you really have a profile on, with real numbers." },
+    { "type": "checkbox", "id": "show_stock", "label": "Show the stock line above the sizes", "default": true },
+    { "type": "text", "id": "stock_label", "label": "Stock line text", "default": "In stock, ready to be shipped" },
+    { "type": "text", "id": "swatch_more_label", "label": "Colour tile when there are more than four", "info": "Shown as +3 colors.", "default": "colors" },
     { "type": "range", "id": "rating_min", "label": "Hide below this many reviews", "default": 5, "min": 1, "max": 20, "step": 1 },
     { "type": "text", "id": "rating_anchor", "label": "Anchor of the reviews section", "default": "reviews" },
     { "type": "text", "id": "rating_link_label", "label": "Link text", "default": "See reviews" },
