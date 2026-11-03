@@ -82,13 +82,13 @@
 <style>
 .sgm { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(0, 0, 0, 0.5); }
 .sgm[hidden] { display: none; }
-.sgm__card { background: #fff; color: #1c1d1d; width: 100%; max-width: 560px; max-height: calc(100dvh - 32px); overflow: auto; border-radius: 4px; padding: 22px 20px 20px; position: relative; }
+.sgm__card { background: #fff; color: #1c1d1d; width: 100%; max-width: 560px; max-height: calc(100dvh - 32px); overflow: auto; border-radius: 0; padding: 22px 20px 20px; position: relative; }
 .sgm__x { position: absolute; top: 6px; right: 6px; width: 44px; height: 44px; border: 0; background: none; font-size: 28px; line-height: 1; cursor: pointer; color: inherit; }
 .sgm__h { font-size: 18px; margin: 0 40px 4px 0; font-weight: 600; }
 .sgm__prod { display: block; margin-top: 4px; font-size: 14px; font-weight: 400; color: #6b6f76; }
-.sgm__units { display: inline-flex; margin: 10px 0 12px; border: 1px solid #c4c4c4; border-radius: 3px; overflow: hidden; }
+.sgm__units { display: inline-flex; margin: 10px 0 12px; border: 1px solid #1c1d1d; border-radius: 0; overflow: hidden; }
 .sgm__units button { border: 0; background: #fff; padding: 9px 16px; min-height: 40px; font: inherit; font-size: 14px; cursor: pointer; }
-.sgm__units button[aria-pressed="true"] { background: #1c1d1d; color: #fff; }
+.sgm__units button[aria-pressed="true"] { background: #1c1d1d; color: #fff; font-weight: 600; }
 .sgm__t { width: 100%; border-collapse: collapse; font-size: 14px; }
 .sgm__t th, .sgm__t td { padding: 9px 6px; text-align: left; border-bottom: 1px solid #e8e8e1; }
 .sgm__t thead th { font-weight: 600; border-bottom: 1px solid #c4c4c4; }

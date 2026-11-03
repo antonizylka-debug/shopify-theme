@@ -10,18 +10,18 @@
 {%- endcomment -%}
 {%- assign dp_ochrona = all_products['delivery-protection'] -%}
 <style>
-  .dp-protection { display: flex; align-items: center; gap: 10px; padding: 9px 12px; margin: 0; background: #f6f6f4; border-radius: 8px; color: #1c1d1d; }
+  .dp-protection { display: flex; align-items: center; gap: 10px; padding: 9px 12px; margin: 0; background: #f2f3f5; border: 1px solid #e4e6ea; border-radius: 0; color: #1c1d1d; }
   .dp-protection[hidden] { display: none; }
   .dp-protection__icon { flex: 0 0 18px; color: #1c1d1d; }
   .dp-protection__text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; cursor: pointer; margin: 0; }
   .dp-protection__text, .dp-protection__title, .dp-protection__subtitle { text-transform: none; letter-spacing: 0; font-family: inherit; }
-  .dp-protection__title { font-size: 13px; font-weight: 600; }
-  .dp-protection__subtitle { font-size: 11.5px; color: #6b6f76; }
-  .dp-protection__price { font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .dp-protection__title { font-size: 12px; font-weight: 500; letter-spacing: 0.2px; }
+  .dp-protection__subtitle { font-size: 11px; color: #6b6f76; }
+  .dp-protection__price { font-size: 12px; font-weight: 500; white-space: nowrap; }
   .dp-protection__switch { position: relative; flex: 0 0 36px; width: 36px; height: 20px; }
   .dp-protection__input { position: absolute; inset: -12px -4px; width: calc(100% + 8px); height: calc(100% + 24px); margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
-  .dp-protection__track { position: absolute; inset: 0; border-radius: 20px; background: #c9cbcf; transition: background .2s; }
-  .dp-protection__track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+  .dp-protection__track { position: absolute; inset: 0; border-radius: 2px; background: #c9cbcf; transition: background .2s; }
+  .dp-protection__track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 2px; background: #fff; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
   .dp-protection__input:checked + .dp-protection__track { background: #1c1d1d; }
   .dp-protection__input:checked + .dp-protection__track::after { transform: translateX(16px); }
   .dp-protection__input:focus-visible + .dp-protection__track { outline: 2px solid #1c1d1d; outline-offset: 2px; }

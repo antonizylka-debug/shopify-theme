@@ -203,8 +203,8 @@
         "i-3"
       ],
       "settings": {
-        "bg": "#000000",
-        "fg": "#ffffff",
+        "bg": "#f2f3f5",
+        "fg": "#1c1d1d",
         "size": 12,
         "weight": 600,
         "tracking": 0.7,
