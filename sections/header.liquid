@@ -204,13 +204,13 @@
   }
 
   /* --- wysokosc naglowka (odstep nad i pod logo) --- */
-  .site-header:not(.site-header--stuck) {
+  .site-header {
     padding-top: {{ section.settings.header_padding_mobile | default: 7 }}px;
     padding-bottom: {{ section.settings.header_padding_mobile | default: 7 }}px;
   }
 
   @media only screen and (min-width: 769px) {
-    .site-header:not(.site-header--stuck) {
+    .site-header {
       padding-top: {{ section.settings.header_padding | default: 20 }}px;
       padding-bottom: {{ section.settings.header_padding | default: 20 }}px;
     }
