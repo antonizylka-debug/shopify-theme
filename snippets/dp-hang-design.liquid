@@ -59,4 +59,9 @@
   /* karty produktow: zdjecie bez zaokraglen i bez ramki */
   .snc { border: 0 !important; box-shadow: none !important; }
   .site-footer, .site-footer ul, .site-footer li, .site-footer a, .site-footer p, .site-footer div { text-align: left !important; justify-content: flex-start; }
+
+  /* rzad kategorii (40 px) podniosl naglowek: filtry w kolekcji maja sie przyklejac pod nim, nie pod nim zagubione */
+  @media (min-width: 769px) {
+    .collection-sidebar, .grid__item:has(> .collection-sidebar), .grid__item:has(.collection-sidebar) { top: 174px !important; }
+  }
 </style>
