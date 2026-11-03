@@ -196,3 +196,10 @@
   /* karty produktow jak u hang-eleven: bez kolek kolorow i bez drugiej plakietki rabatu pod nazwa (zostaje jedna czarna na zdjeciu) */
   .snc__kolory, .snc__pigulka, .snc__wiecej { display: none !important; }
 </style>
+<style>
+  /* panel wyszukiwania: elementy jedne pod drugimi na calej szerokosci (motyw ukladal je obok siebie), panel nad przyciemnieniem strony */
+  .site-header__search .page-width { display: block !important; width: 100%; }
+  .site-header__search predictive-search { display: block !important; width: 100% !important; max-width: none !important; }
+  .site-header__search .dps { position: relative; z-index: 4; }
+  .site-header__search predictive-search form { z-index: 4; }
+</style>
