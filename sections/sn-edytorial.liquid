@@ -120,8 +120,10 @@
     {%- endif -%}
     <div class="sne__cien" aria-hidden="true"></div>
     <div class="sne__txt">
+      {%- assign sne_end_ts = settings.campaign_end | date: '%s' | plus: 0 -%}
+      {%- assign sne_now_ts = 'now' | date: '%s' | plus: 0 -%}
       {%- if nadtytul != blank -%}
-        <p class="sne__over"><span class="sne__dot" aria-hidden="true"></span>{{ nadtytul | escape }}{% if settings.campaign_end != blank %} · {{ section.settings.timer_label | escape }}{% endif %}</p>
+        <p class="sne__over"><span class="sne__dot" aria-hidden="true"></span>{{ nadtytul | escape }}{% if settings.campaign_end != blank and sne_end_ts > sne_now_ts %} · {{ section.settings.timer_label | escape }}{% endif %}</p>
       {%- endif -%}
 
       {%- if settings.campaign_end != blank -%}
