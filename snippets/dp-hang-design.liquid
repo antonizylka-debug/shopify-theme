@@ -65,3 +65,67 @@
     .collection-sidebar, .grid__item:has(> .collection-sidebar), .grid__item:has(.collection-sidebar) { top: 174px !important; }
   }
 </style>
+<style>
+  /* ==== Strona produktu pod zdjeciami i stopka w stylu hang-eleven (03.11.2026, Antoni: "wszystko ladnie dopracowane, minimalizm") ====
+     Tylko wyglad, tresci bez zmian: naglowki po lewej z marginesem 15 px, zdjecia i slidery od krawedzi do krawedzi z odstepem 2 px,
+     cienkie linie #e5e5e5, zero zaokraglen i cieni, male czarne przyciski. */
+
+  /* naglowki sekcji pod produktem: po lewej, 15 px od krawedzi */
+  .dp-mix__head, .rvw__head, .rvw__top, .snb2__head, .obf__inner > .obf__eyebrow, .obf__title, .obf__sub { text-align: left !important; padding-left: var(--dp-gutter); padding-right: var(--dp-gutter); }
+  .dp-mix__head, .rvw__head { margin-bottom: 14px !important; }
+  .dp-mix, .rvw, .sns, .obf, .snb2, .sne { border-radius: 0 !important; box-shadow: none !important; }
+
+  /* baner z promocja (sne): zdjecie od krawedzi do krawedzi, tekst na srodku, maly czarny przycisk jak w hero */
+  .sne { margin: 0 !important; }
+  .sne__txt, .sne__over { display: flex !important; flex-direction: column; align-items: center !important; justify-content: center !important; text-align: center !important; padding: 0 var(--dp-gutter) !important; }
+  .sne__tytul { font-size: 24px !important; line-height: 31.2px !important; }
+  .sne__btn { width: auto !important; min-height: 32px; padding: 9px 12px !important; background: #000 !important; color: #fff !important; border: 0 !important; border-radius: 0 !important; font-size: 10px !important; font-weight: 500 !important; letter-spacing: 0.36px !important; text-transform: uppercase !important; }
+
+  /* mix & match: plaski rzad warunkow z cienkimi liniami zamiast pastylek */
+  .dp-mix { padding-left: 0 !important; padding-right: 0 !important; }
+  .dp-mix__tiers { display: flex; justify-content: flex-start; gap: 0 !important; padding: 0 var(--dp-gutter); }
+  .dp-mix__tiers > * { padding: 0 14px 0 0; }
+  .dp-mix__subtitle { padding: 0 var(--dp-gutter); text-align: left !important; }
+
+  /* slidery z kartami: bez odstepow, od krawedzi do krawedzi (2 px jak linie miedzy zdjeciami) */
+  .dp-mix__track, .sno__track, .snb2__track { gap: 2px !important; }
+  .dp-mix__track { padding-left: 0 !important; padding-right: 0 !important; }
+
+  /* gwarancja zwrotu (sns): tekst po lewej, bez ramek */
+  .sns__body { text-align: left !important; padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; }
+  .sns__media, .sns__media img { border-radius: 0 !important; }
+
+  /* opinie: plaskie karty z cienka linia */
+  .rvw__card, .rvs__card, [class*="rvw__card"], [class*="rvs__card"] { background: #fff !important; border: 1px solid var(--dp-line) !important; border-radius: 0 !important; box-shadow: none !important; }
+  .rvw__reply, .rvs__reply { border-left: 0 !important; border-top: 1px solid var(--dp-line); border-radius: 0 !important; background: transparent !important; padding-left: 0 !important; }
+
+  /* FAQ pod produktem: wiersze z cienkimi liniami */
+  .obf__item { border-top: 1px solid var(--dp-line) !important; border-bottom: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; padding-left: 0; padding-right: 0; }
+  .obf__inner { padding-left: 0; padding-right: 0; }
+
+  /* stopka na telefonie jak u nich: jedna kolumna, rozwijane bloki z "+" */
+  @media (max-width: 768px) {
+    .site-footer .grid { display: block !important; margin-left: 0 !important; }
+    .site-footer .grid__item { width: 100% !important; padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; float: none !important; }
+    .site-footer .footer__title.small--hide { display: none !important; }
+    .site-footer button.footer__title.collapsible-trigger { display: flex !important; justify-content: space-between; align-items: center; width: 100%; padding: 17px 0; border: 0; border-top: 1px solid var(--dp-line); background: none; color: #000; font-size: 12px !important; font-weight: 400 !important; letter-spacing: 0.36px !important; text-transform: uppercase !important; text-align: left; }
+    .site-footer button.footer__title.collapsible-trigger::after { content: '+'; font-size: 12px; }
+    .site-footer .footer__item--menu_shop.dp-open button.footer__title::after, .site-footer .footer__item--menu_help.dp-open button.footer__title::after, .site-footer .footer__item--menu_policies.dp-open button.footer__title::after { content: '\2212'; }
+    .site-footer .footer__item--menu_shop .footer__collapsible, .site-footer .footer__item--menu_help .footer__collapsible, .site-footer .footer__item--menu_policies .footer__collapsible { display: none !important; }
+    .site-footer .footer__item--menu_shop.dp-open .footer__collapsible, .site-footer .footer__item--menu_help.dp-open .footer__collapsible, .site-footer .footer__item--menu_policies.dp-open .footer__collapsible { display: block !important; padding-bottom: 12px; }
+    .site-footer .footer__item--menu_shop, .site-footer .footer__item--menu_help, .site-footer .footer__item--menu_policies { padding-top: 0 !important; padding-bottom: 0 !important; margin: 0 !important; }
+    .site-footer .footer__collapsible a { display: block; padding: 8px 0; }
+  }
+</style>
+<script>
+  /* rozwijane bloki w stopce na telefonie (jak u hang-eleven): klik w tytul pokazuje albo chowa linki */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.site-footer button.footer__title.collapsible-trigger') : null;
+    if (!b || window.innerWidth > 768) return;
+    e.preventDefault(); e.stopPropagation();
+    var item = b.closest('.grid__item');
+    if (!item) return;
+    var open = item.classList.toggle('dp-open');
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }, true);
+</script>
