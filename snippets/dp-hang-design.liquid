@@ -552,3 +552,10 @@
     .site-header .cart-link__bubble.cart-link__bubble--visible { left: 15px !important; top: -7px !important; width: 15px; min-width: 15px !important; height: 15px !important; font-size: 10px !important; }
   }
 </style>
+<style>
+  /* torba tej samej wysokosci co lupa (znak lupy ma ok. 14,5 px, torba byla 20 px) */
+  .site-header .dp-bag { width: 16px; height: 17px; }
+  .site-header .cart-link { width: 16px; height: 19px; }
+  .site-header .cart-link__bubble.cart-link__bubble--visible { left: 11px !important; top: -7px !important; }
+  @media (max-width: 768px) { .site-header .cart-link { transform: translateY(1px); } }
+</style>
