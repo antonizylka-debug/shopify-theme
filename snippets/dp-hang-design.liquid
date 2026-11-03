@@ -704,3 +704,7 @@
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
   })();
 </script>
+<style>
+  /* aktywny link kolekcji: tekst z podkresleniem zamiast czarnego przycisku (custom-styles ma regule o wyzszej sile) */
+  html body.template-collection .collection-links a.collection-links__item.collection-links__item--current { background: none !important; color: #000 !important; box-shadow: inset 0 -1px 0 #000 !important; border: 0 !important; }
+</style>
