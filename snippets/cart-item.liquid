@@ -28,9 +28,11 @@
   <div class="snk-item__info">
     <div class="snk-item__top">
       {%- if sn_dodatek -%}<span class="cart__item-name snk-item__name">{{ product.product.title }}</span>{%- else -%}<a href="{{ product.url }}" class="cart__item-name snk-item__name">{{ product.product.title }}</a>{%- endif -%}
+      {%- if sn_dodatek -%}
       <button type="button" class="snk-item__trash" data-snk-remove aria-label="{{ 'cart.general.remove' | t }}">
         <svg aria-hidden="true" focusable="false" viewBox="0 0 20 20" width="18" height="18"><path d="M3.5 5.5h13M8 5.5V3.8c0-.5.4-.8.8-.8h2.4c.4 0 .8.3.8.8v1.7M5.2 5.5l.8 11c0 .6.5 1 1 1h6c.5 0 1-.4 1-1l.8-11M8.3 8.5v6M11.7 8.5v6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
+      {%- endif -%}
     </div>
 
     <div class="snk-item__price">
@@ -76,6 +78,8 @@
       <div class="snk-item__variant snk-item__dodatek-opis">Covers lost, stolen or damaged parcels. Optional – you can remove it.</div>
     {%- endif -%}
     <div class="snk-item__row"{% if sn_dodatek %} hidden{% endif %}>
+      {%- comment -%} 03.11.2026 (Antoni): "Remove" jako tekst w rzedzie z iloscia; kosz zostaje tylko przy dodatku (ochrona dostawy). {%- endcomment -%}
+      <button type="button" class="snk-item__remove" data-snk-remove>{{ 'cart.general.remove' | t }}</button>
       <div class="js-qty__wrapper snk-qty">
         <label for="cart_updates_{{ product.key }}" class="hidden-label">{{ 'cart.label.quantity' | t }}</label>
         <button type="button" class="js-qty__adjust js-qty__adjust--minus snk-qty__btn" aria-label="{{ 'cart.general.reduce_quantity' | t }}">
