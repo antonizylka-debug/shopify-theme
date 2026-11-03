@@ -245,6 +245,47 @@
   .snq__opis-tekst p { margin: 0 0 10px; }
   .snq__opis-tekst img { max-width: 100%; height: auto; }
   .snq__link { display: block; margin-top: 18px; text-align: center; font-size: 14px; font-weight: 600; color: #1c1d1d; text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ==== Styl katalogu (03.11.2026, Antoni: "ten podglad mniej wiecej w stylu mojego PDP") ====
+     Te same wymiary i kolory co nowa strona produktu: zdjecie od krawedzi do krawedzi, drobna typografia (10-16 px),
+     kafle koloru 3:4, plaski rzad szarych rozmiarow, ciemny przycisk, akordeon z "+" po tytule. */
+  .snq__okno { letter-spacing: 0.36px; }
+  .snq__pasek { padding: 0 15px; height: 50px; }
+  .snq__nag { font-size: 12px; font-weight: 400; letter-spacing: 0.36px; }
+  .snq__zamknij { width: 36px; height: 36px; margin-right: -8px; }
+  .snq__zamknij svg { width: 20px; height: 20px; stroke-width: 1.5; }
+  .snq__tresc { padding: 0 0 calc(28px + env(safe-area-inset-bottom, 0px)); }
+  .snq__tresc > *:not(.snq__galeria) { margin-left: 15px; margin-right: 15px; }
+  .snq__zdjecia { background: #f9f9f9; }
+  .snq__zdjecia img { aspect-ratio: 375 / 544; }
+  .snq__nawig { margin: 8px 15px 14px; gap: 14px; font-size: 11px; letter-spacing: 0.3px; }
+  .snq__strz { width: 32px; height: 28px; font-size: 18px; }
+  .snq__tytul { margin: 0 15px 6px; font-size: 16px; font-weight: 400; letter-spacing: 0; text-transform: none; line-height: 1.3; }
+  .snq__ceny { font-size: 14px; gap: 8px; }
+  .snq__bylo { color: #939393; }
+  .snq__jest { font-weight: 400; }
+  .snq__spar { color: #525252; font-size: 11px; font-weight: 400; letter-spacing: 0.3px; text-transform: uppercase; }
+  .snq__opcje { margin-top: 16px; }
+  .snq__grupa + .snq__grupa { margin-top: 16px; }
+  .snq__etykieta { margin: 0 0 8px; font-size: 10px; line-height: 13px; letter-spacing: 0.3px; text-transform: uppercase; color: #000; }
+  .snq__etykieta b { font-weight: 400; }
+  .snq__wartosci { gap: 4px; }
+  .snq__foto { width: 76px; height: auto; aspect-ratio: 3 / 4; border: 1px solid transparent; background-color: #f9f9f9; }
+  .snq__foto:hover { border-color: #939393; }
+  .snq__foto.is-on { border: 1px solid #939393; }
+  .snq__grupa:has(.snq__chip) .snq__wartosci { gap: 0; }
+  .snq__chip { flex: 1 1 40px; min-width: 40px; height: 50px; padding: 0 2px; border: 1px solid #f9f9f9; background: #f9f9f9; font-size: 12px; font-weight: 400; letter-spacing: 0.3px; }
+  .snq__chip:hover { border-color: #f9f9f9; background: #efefef; }
+  .snq__chip.is-on { border: 1px solid #e5e5e5; background: #e5e5e5; color: #000; font-weight: 400; }
+  .snq__chip.is-brak { color: #b3b3b3; border-color: #f9f9f9; background: #f9f9f9; }
+  .snq__dodaj { margin: 14px 15px 0; width: calc(100% - 30px); padding: 0; height: 50px; background: #2d2d2d; font-size: 12px; font-weight: 400; letter-spacing: 0.36px; }
+  .snq__dodaj:hover { background: #000; }
+  .snq__opis-prod { margin-top: 20px; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; }
+  .snq__opis-prod summary { justify-content: flex-start; gap: 5px; padding: 17px 0; font-size: 12px; font-weight: 400; letter-spacing: 0.36px; }
+  .snq__opis-prod summary::after { content: '+'; font-size: 12px; }
+  .snq__opis-prod[open] summary::after { content: '-'; }
+  .snq__opis-tekst { font-size: 12px; line-height: 18px; color: #525252; }
+  .snq__link { margin-top: 16px; font-size: 12px; font-weight: 400; letter-spacing: 0.36px; }
 </style>
 
 <script>
