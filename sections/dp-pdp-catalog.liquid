@@ -173,16 +173,17 @@
   #shopify-section-{{ section.id }} .cp__mm-note { margin: 0; font-size: 11px; line-height: 16.5px; letter-spacing: 0.3px; color: #525252; }
 
   {%- comment -%} szara ramka pomocy w rozmiarze - jak na dotychczasowej stronie {%- endcomment -%}
-  #shopify-section-{{ section.id }} .cp__helpbox { display: flex; align-items: flex-start; gap: 10px; margin: 0 0 15px; padding: 12px 15px; background: var(--cp-soft); font-size: 11px; line-height: 16.5px; letter-spacing: 0.3px; color: #525252; }
-  #shopify-section-{{ section.id }} .cp__helpbox svg { flex: 0 0 15px; width: 15px; height: 15px; margin-top: 1px; color: #000; }
-  #shopify-section-{{ section.id }} .cp__helpbox a { display: inline-block; margin-top: 4px; color: #000; text-decoration: underline; text-underline-offset: 2px; }
+  #shopify-section-{{ section.id }} .cp__advice { display: grid; gap: 5px; padding: 15px 0; border-top: 1px solid var(--cp-line); }
+  #shopify-section-{{ section.id }} .cp__advice-txt { font-size: 11px; line-height: 16.5px; letter-spacing: 0.3px; color: #525252; }
+  #shopify-section-{{ section.id }} .cp__advice-link { display: inline-block; margin-left: 4px; color: #000; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
 
   {%- comment -%} formularz: linia "In stock", rzad rozmiarow, przycisk {%- endcomment -%}
   #shopify-section-{{ section.id }} .cp__stock { display: flex; align-items: center; margin: 5px 0 15px; color: var(--cp-green); }
   #shopify-section-{{ section.id }} .cp__stock-dot { flex: 0 0 6px; width: 6px; height: 6px; margin-right: 6px; border-radius: 50%; background: var(--cp-green); }
   #shopify-section-{{ section.id }} .cp__optname { margin: 5px 0 8px; }
   #shopify-section-{{ section.id }} .cp__sizes { display: grid; grid-template-columns: repeat(var(--cp-cols, 5), minmax(0, 1fr)); }
-  #shopify-section-{{ section.id }} .cp__size { height: 50px; padding: 0 6px; border: 1px solid var(--cp-soft); background: var(--cp-soft); font-size: 12px; line-height: 13px; letter-spacing: 0.3px; cursor: pointer; }
+  #shopify-section-{{ section.id }} .cp__size--long { grid-column: 1 / -1; }
+  #shopify-section-{{ section.id }} .cp__size { height: 50px; padding: 0 2px; border: 1px solid var(--cp-soft); background: var(--cp-soft); font-size: 12px; line-height: 13px; letter-spacing: 0.3px; cursor: pointer; }
   #shopify-section-{{ section.id }} .cp__size.is-on { background: var(--cp-line); }
   #shopify-section-{{ section.id }} .cp__size.is-out { color: #b3b3b3; text-decoration: line-through; cursor: not-allowed; }
   #shopify-section-{{ section.id }} .cp__sizes.is-flash { animation: cp-flash 1.2s ease; }
@@ -195,6 +196,12 @@
   #shopify-section-{{ section.id }} .cp__usp { display: flex; align-items: center; gap: 14px; }
   #shopify-section-{{ section.id }} .cp__usp-chip { display: flex; flex: 0 0 30px; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--cp-chip); color: #191919; }
   #shopify-section-{{ section.id }} .cp__usp-chip svg { width: 16px; height: 16px; }
+  #shopify-section-{{ section.id }} .cp__usp-chip { position: relative; }
+  {%- comment -%} zielona kropka przy dostawie (jak na wzorze), delikatnie pulsuje {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__usp-chip--dot::before { content: ''; position: absolute; top: 0; left: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--cp-green); box-shadow: 0 0 0 2px #fff; z-index: 1; }
+  #shopify-section-{{ section.id }} .cp__usp-chip--dot::after { content: ''; position: absolute; top: 0; left: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--cp-green); opacity: 0.5; animation: cp-pulse 2s ease-out infinite; }
+  @keyframes cp-pulse { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(2.6); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { #shopify-section-{{ section.id }} .cp__usp-chip--dot::after { animation: none; display: none; } }
   #shopify-section-{{ section.id }} .cp__usp-txt { display: flex; flex-direction: column; gap: 1px; }
   #shopify-section-{{ section.id }} .cp__usp-title { font-weight: 500; }
 
@@ -409,19 +416,19 @@
         {%- if product.has_only_default_variant -%}{%- break -%}{%- endif -%}
       {%- endfor -%}
 
-      {%- comment -%} ---------- szara ramka pomocy w rozmiarze (ta sama co na dotychczasowej stronie: dp-fit-note + "See measurements") ---------- {%- endcomment -%}
+      {%- comment -%} ---------- Size advice: etykieta nad tekstem (dp-fit-note albo tekst z ustawien) + link do tabeli rozmiarow ---------- {%- endcomment -%}
       {%- if section.settings.help_text != blank and product.has_only_default_variant == false -%}
-        <div class="cp__helpbox">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7h13l5 5-5 5H3z"/><path d="M7 12h.01M11 12h.01"/></svg>
-          <div>
+        <div class="cp__advice">
+          <span class="cp__lbl">{{ section.settings.advice_label }}</span>
+          <span class="cp__advice-txt">
             {%- capture dp_fit -%}{%- render 'dp-fit-note', product: product -%}{%- endcapture -%}
             {%- if dp_fit != blank -%}{{ dp_fit | strip }}{%- else -%}{{ section.settings.help_text }}{%- endif -%}
             {%- if section.settings.size_link != blank and section.settings.help_link_label != blank -%}
               {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
-              <br><a href="{{ section.settings.size_link }}"{% if sg_html contains 'data-sgm' %} data-sg-open{% endif %}>{{ section.settings.help_link_label }}</a>
+              <a class="cp__advice-link" href="{{ section.settings.size_link }}"{% if sg_html contains 'data-sgm' %} data-sg-open{% endif %}>{{ section.settings.help_link_label }}</a>
               {{- sg_html -}}
             {%- endif -%}
-          </div>
+          </span>
         </div>
       {%- endif -%}
 
@@ -436,15 +443,18 @@
         {%- for opt in product.options_with_values -%}
           {%- if product.has_only_default_variant -%}{%- break -%}{%- endif -%}
           {%- unless forloop.index == poz_koloru -%}
-            {%- assign kolumny = opt.values.size -%}
-            {%- if kolumny > 5 -%}{%- assign kolumny = 5 -%}{%- endif -%}
+            {%- comment -%} Wszystkie rozmiary w jednym rzedzie (do 9); wiecej - rowno na 2 albo 3 rzedy. {%- endcomment -%}
+            {%- assign ile_rozm = opt.values.size -%}
+            {%- assign kolumny = ile_rozm -%}
+            {%- if ile_rozm > 9 -%}{%- assign kolumny = ile_rozm | divided_by: 2.0 | ceil -%}{%- endif -%}
+            {%- if kolumny > 9 -%}{%- assign kolumny = ile_rozm | divided_by: 3.0 | ceil -%}{%- endif -%}
             {%- assign n_rozm = n_rozm | plus: 1 -%}
             {%- if n_rozm > 1 -%}
               <p class="cp__lbl cp__optname" id="CpOpt-{{ section.id }}-{{ forloop.index }}">{% render 'ob-da', mapa: mapa, tekst: opt.name %}</p>
             {%- endif -%}
             <div class="cp__sizes" style="--cp-cols: {{ kolumny }};" data-cp-opt="{{ forloop.index }}" role="group" aria-label="{{ opt.name | escape }}">
               {%- for val in opt.values -%}
-                <button type="button" class="cp__size{% if val == opt.selected_value %} is-on{% endif %}" aria-pressed="{% if val == opt.selected_value %}true{% else %}false{% endif %}" data-cp-val="{{ val | escape }}">{{ val }}</button>
+                <button type="button" class="cp__size{% if val.size > 9 %} cp__size--long{% endif %}{% if val == opt.selected_value %} is-on{% endif %}" aria-pressed="{% if val == opt.selected_value %}true{% else %}false{% endif %}" data-cp-val="{{ val | escape }}">{{ val }}</button>
               {%- endfor -%}
             </div>
           {%- endunless -%}
@@ -462,7 +472,7 @@
           {%- for block in wiersze -%}
             {%- assign row_title = block.settings.text | replace: '#date', ship_date -%}
             <div class="cp__usp" {{ block.shopify_attributes }}>
-              <span class="cp__usp-chip">
+              <span class="cp__usp-chip{% if block.settings.icon == 'truck' %} cp__usp-chip--dot{% endif %}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                   {%- case block.settings.icon -%}
                     {%- when 'return' -%}<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>
@@ -859,8 +869,9 @@
     { "type": "text", "id": "look_label", "label": "Row with product cards", "info": "Empty = row hidden.", "default": "Combine it with" },
     { "type": "text", "id": "more_label", "label": "Colour tile when more than four", "info": "Shown as +3 colors.", "default": "colors" },
     { "type": "text", "id": "stock_label", "label": "Stock line", "info": "Empty = hidden. Disappears when the selected variant is sold out.", "default": "In stock, ready to be shipped" },
-    { "type": "text", "id": "help_text", "label": "Size help text", "info": "The grey box above the sizes. A per-product tip from the size chart wins when there is one.", "default": "Not sure about the size? Go by the measurements rather than the size you usually wear." },
-    { "type": "text", "id": "help_link_label", "label": "Size help link", "default": "See measurements" },
+    { "type": "text", "id": "advice_label", "label": "Size advice heading", "default": "Size advice" },
+    { "type": "text", "id": "help_text", "label": "Size advice text", "info": "Shown above the sizes. A per-product tip from the size chart wins when there is one.", "default": "Not sure about the size? Go by the measurements rather than the size you usually wear." },
+    { "type": "text", "id": "help_link_label", "label": "Size advice link", "default": "See measurements" },
     { "type": "url", "id": "size_link", "label": "Size chart page", "info": "Where the link goes when the product has no size chart of its own." },
     { "type": "header", "content": "Mix & Match" },
     { "type": "checkbox", "id": "mm_show", "label": "Show Mix & Match", "default": true },
