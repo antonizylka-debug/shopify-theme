@@ -661,15 +661,14 @@
   },
   "order": [
     "slideshow",
-    "collection_banners",
     "our_favourites",
     "trustpilot_strip",
-    "brand_story",
     "featured_popular",
     "popular_men",
-    "wide_banner",
     "featured_picks",
     "featured_men",
-    "bestsellers"
+    "brand_story",
+    "bestsellers",
+    "wide_banner"
   ]
 }
