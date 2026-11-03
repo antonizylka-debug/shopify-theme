@@ -136,7 +136,8 @@
   #shopify-section-{{ section.id }} .cp__info { padding: 0 15px; background: #fff; }
 
   #shopify-section-{{ section.id }} .cp__rating { display: flex; align-items: center; gap: 7px; padding: 15px 0 0; margin: 0 0 -10px; color: inherit; text-decoration: none; font-size: 11px; line-height: 21px; }
-  #shopify-section-{{ section.id }} .cp__rating-logo { display: block; height: 15px; width: auto; }
+  #shopify-section-{{ section.id }} .cp__rating-logo { display: block; height: 17px; width: auto; }
+  #shopify-section-{{ section.id }} .cp__rating-stars { display: block; height: 15px; width: auto; }
   #shopify-section-{{ section.id }} .cp__stars { display: flex; gap: 1px; color: #E4B528; }
   #shopify-section-{{ section.id }} .cp__stars svg { display: block; width: 9px; height: 9px; }
   #shopify-section-{{ section.id }} .cp__head { display: flex; flex-direction: column; gap: 6px; padding: 15px 0 10px; }
@@ -357,10 +358,9 @@
     <div class="cp__info" data-cp-info>
 
       <a class="cp__rating" href="#{{ section.settings.rating_anchor | default: 'reviews' | handleize }}">
-        {%- if section.settings.rating_logo != blank -%}
-          {{ section.settings.rating_logo | image_url: width: 240 | image_tag: class: 'cp__rating-logo', alt: section.settings.rating_logo.alt | default: 'Reviews', loading: 'eager' }}
-        {%- endif -%}
-        <span class="cp__stars" aria-hidden="true">{{ gwiazdka }}{{ gwiazdka }}{{ gwiazdka }}{{ gwiazdka }}{{ gwiazdka }}</span>
+        {%- comment -%} Logo Trustpilot i gwiazdki 4.5 z plikow SVG (03.11.2026): kolejnosc logo, gwiazdki, tekst {%- endcomment -%}
+        <img class="cp__rating-logo" src="{{ 'dp-tp-logo.svg' | asset_url }}" alt="Trustpilot" width="61" height="15" loading="eager">
+        <img class="cp__rating-stars" src="{{ 'dp-tp-stars.svg' | asset_url }}" alt="Rated 4.5 out of 5 stars on Trustpilot" width="75" height="14" loading="eager">
         <span>{{ section.settings.rating_manual }}/5 | {{ section.settings.rating_text }}</span>
       </a>
 
