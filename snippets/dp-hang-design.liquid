@@ -797,3 +797,8 @@
   .tag-list--chips .tag--active .tag__checkbox-wrapper, .tag-list--chips .tag__checkbox-wrapper[aria-pressed="true"], .tag-list--chips .tag__checkbox-wrapper.is-active { background: #2d2d2d !important; color: #fff !important; }
   #FilterDrawer .drawer__contents { height: 100dvh !important; max-height: 100dvh; }
 </style>
+<style>
+  /* siatka dokladnie od krawedzi do krawedzi: zewnetrzny .grid motywu ma ujemny margines -22 px, ktory ucinal lewy brzeg */
+  .template-collection [id$="__main-collection"] .page-width > .grid { margin-left: 0 !important; margin-right: 0 !important; }
+  @media (min-width: 769px) { .template-collection [id$="__main-collection"] .grid__item--content { padding-left: 0 !important; padding-right: 0 !important; } }
+</style>
