@@ -204,7 +204,7 @@
   @media (prefers-reduced-motion: reduce) { #shopify-section-{{ section.id }} .cp__usp-chip--dot::after { animation: none; display: none; } }
   #shopify-section-{{ section.id }} .cp__usp-txt { display: flex; flex-direction: column; gap: 1px; }
   #shopify-section-{{ section.id }} .cp__usp-title { font-weight: 500; }
-  #shopify-section-{{ section.id }} .cp__pay { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 20px; }
+  #shopify-section-{{ section.id }} .cp__pay { display: flex; flex-wrap: wrap; gap: 4px; margin: 10px 0 0; }
   #shopify-section-{{ section.id }} .cp__pay-i { display: inline-flex; filter: grayscale(1); opacity: 0.75; }
   #shopify-section-{{ section.id }} .cp__pay-icon { display: block; width: 32px; height: 20px; }
   #shopify-section-{{ section.id }} .cp__sizes[style*="--cp-cols: 1;"] { grid-template-columns: max-content; }
@@ -486,6 +486,15 @@
         </button>
       {%- endform -%}
 
+      {%- comment -%} ---------- metody platnosci (te, ktore sklep ma wlaczone w Shopify) ---------- {%- endcomment -%}
+      {%- if section.settings.show_pay and shop.enabled_payment_types != empty -%}
+        <div class="cp__pay" role="list" aria-label="{{ section.settings.pay_label | escape }}">
+          {%- for type in shop.enabled_payment_types -%}
+            {%- unless type == 'shopify_pay' -%}<span class="cp__pay-i" role="listitem">{{ type | payment_type_svg_tag: class: 'cp__pay-icon' }}</span>{%- endunless -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
       {%- comment -%} ---------- wiersze obietnic (bloki "row") ---------- {%- endcomment -%}
       {%- assign wiersze = section.blocks | where: 'type', 'row' -%}
       {%- if wiersze.size > 0 -%}
@@ -511,15 +520,6 @@
                 {%- if block.settings.sub != blank -%}<span>{{ block.settings.sub }}</span>{%- endif -%}
               </span>
             </div>
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
-
-      {%- comment -%} ---------- metody platnosci (te, ktore sklep ma wlaczone w Shopify) ---------- {%- endcomment -%}
-      {%- if section.settings.show_pay and shop.enabled_payment_types != empty -%}
-        <div class="cp__pay" role="list" aria-label="{{ section.settings.pay_label | escape }}">
-          {%- for type in shop.enabled_payment_types -%}
-            {%- unless type == 'shopify_pay' -%}<span class="cp__pay-i" role="listitem">{{ type | payment_type_svg_tag: class: 'cp__pay-icon' }}</span>{%- endunless -%}
           {%- endfor -%}
         </div>
       {%- endif -%}
