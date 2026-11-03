@@ -108,24 +108,12 @@
     .site-footer .grid { display: block !important; margin-left: 0 !important; }
     .site-footer .grid__item { width: 100% !important; padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; float: none !important; }
     .site-footer .footer__title.small--hide { display: none !important; }
+    .site-footer .footer__title.collapsible-trigger[aria-expanded="true"]::after { content: "2"; }
+    .site-footer .footer__title.collapsible-trigger .collapsible-trigger__icon { display: none !important; }
+    .site-footer .site-footer__linklist a, .site-footer .footer__collapsible a { justify-content: flex-start !important; min-height: 0 !important; }
     .site-footer button.footer__title.collapsible-trigger { display: flex !important; justify-content: space-between; align-items: center; width: 100%; padding: 17px 0; border: 0; border-top: 1px solid var(--dp-line); background: none; color: #000; font-size: 12px !important; font-weight: 400 !important; letter-spacing: 0.36px !important; text-transform: uppercase !important; text-align: left; }
     .site-footer button.footer__title.collapsible-trigger::after { content: '+'; font-size: 12px; }
-    .site-footer .footer__item--menu_shop.dp-open button.footer__title::after, .site-footer .footer__item--menu_help.dp-open button.footer__title::after, .site-footer .footer__item--menu_policies.dp-open button.footer__title::after { content: '\2212'; }
-    .site-footer .footer__item--menu_shop .footer__collapsible, .site-footer .footer__item--menu_help .footer__collapsible, .site-footer .footer__item--menu_policies .footer__collapsible { display: none !important; }
-    .site-footer .footer__item--menu_shop.dp-open .footer__collapsible, .site-footer .footer__item--menu_help.dp-open .footer__collapsible, .site-footer .footer__item--menu_policies.dp-open .footer__collapsible { display: block !important; padding-bottom: 12px; }
     .site-footer .footer__item--menu_shop, .site-footer .footer__item--menu_help, .site-footer .footer__item--menu_policies { padding-top: 0 !important; padding-bottom: 0 !important; margin: 0 !important; }
     .site-footer .footer__collapsible a { display: block; padding: 8px 0; }
   }
 </style>
-<script>
-  /* rozwijane bloki w stopce na telefonie (jak u hang-eleven): klik w tytul pokazuje albo chowa linki */
-  document.addEventListener('click', function (e) {
-    var b = e.target.closest ? e.target.closest('.site-footer button.footer__title.collapsible-trigger') : null;
-    if (!b || window.innerWidth > 768) return;
-    e.preventDefault(); e.stopPropagation();
-    var item = b.closest('.grid__item');
-    if (!item) return;
-    var open = item.classList.toggle('dp-open');
-    b.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }, true);
-</script>

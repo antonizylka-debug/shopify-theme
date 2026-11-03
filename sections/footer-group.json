@@ -216,7 +216,7 @@
         "link_spacing": 10,
         "link_spacing_mobile": 8,
         "hide_mobile_separators": true,
-        "collapse_menus_mobile": false
+        "collapse_menus_mobile": true
       }
     }
   },
