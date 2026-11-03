@@ -199,7 +199,16 @@
                     <div class="parallax-image" data-movement="15%" data-parallax-image data-angle="{{ block.settings.parallax_direction }}">
                 {%- endif -%}
 
-                  {%- if block.settings.image != blank -%}
+                  {%- if block.settings.asset_desktop != blank -%}
+                    {%- comment -%} Zdjecia z folderu assets motywu (03.11.2026): nazwy plikow w ustawieniach slajdu, desktop i opcjonalnie telefon. {%- endcomment -%}
+                    {%- if block.settings.asset_mobile != blank -%}
+                      <image-element class="small--hide hero__image hero__image--{{ block.id }}"><img src="{{ block.settings.asset_desktop | asset_url }}" alt="" width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async"></image-element>
+                      <image-element class="medium-up--hide hero__image hero__image--{{ block.id }}"><img src="{{ block.settings.asset_mobile | asset_url }}" alt="" width="1024" height="1536" loading="eager" fetchpriority="high" decoding="async"></image-element>
+                    {%- else -%}
+                      <image-element class="hero__image hero__image--{{ block.id }}"><img src="{{ block.settings.asset_desktop | asset_url }}" alt="" width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async"></image-element>
+                    {%- endif -%}
+
+                  {%- elsif block.settings.image != blank -%}
 
                     {% comment %} Full width images so don't need to adjust sizes attribute, fallback is 100vw {% endcomment %}
                     {%- liquid
@@ -561,6 +570,17 @@
           "type": "image_picker",
           "id": "image_mobile",
           "label": "t:sections.slideshow.blocks.slide.settings.image_mobile.label"
+        },
+        {
+          "type": "text",
+          "id": "asset_desktop",
+          "label": "Theme asset file, desktop",
+          "info": "File name in the theme assets folder. When set, it replaces the image above."
+        },
+        {
+          "type": "text",
+          "id": "asset_mobile",
+          "label": "Theme asset file, phone"
         },
         {
           "type": "select",
