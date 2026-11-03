@@ -8,7 +8,7 @@
   body { font-size: 12px; font-weight: 400; letter-spacing: 0.36px; line-height: 1.5; }
 
   /* pasek ogloszen: 10 px, wielkie litery, odstep 0.5 px */
-  .announcement-arrows, .announcement-arrows * { font-size: 10px !important; line-height: 12px !important; font-weight: 400 !important; letter-spacing: 0.5px !important; text-transform: uppercase !important; }
+  .announcement-arrows, .announcement-arrows * { font-size: 10px !important; line-height: 12px !important; letter-spacing: 0.5px !important; text-transform: uppercase !important; }
 
   /* pasek korzysci pod naglowkiem (infobar) i inne paski informacyjne */
   .usp-bar, .usp-bar * { font-size: 10px !important; line-height: 13px !important; font-weight: 400 !important; letter-spacing: 0.3px !important; text-transform: uppercase !important; }
@@ -36,11 +36,14 @@
   .snc__sale { font-size: 10px !important; font-weight: 400 !important; letter-spacing: 0.3px !important; text-transform: uppercase !important; }
 
   /* przyciski: 12 px, wielkie litery, odstep 0.36 px, bez pogrubienia */
-  .btn, .button, button[type="submit"], .hero__cta, .hero a[class*="btn"], .snk-card__add { font-size: 12px !important; font-weight: 400 !important; letter-spacing: 0.36px !important; text-transform: uppercase !important; }
+  .btn, .button, button[type="submit"], .hero__cta, .hero a[class*="btn"], .snk-card__add { font-size: 12px !important; font-weight: 500 !important; letter-spacing: 0.36px !important; text-transform: uppercase !important; }
   /* nic nie jest pogrubione: kazdy element ma grubosc 400, duze naglowki 300 jak u hang-eleven (03.11.2026) */
   body *, body *::before, body *::after { font-weight: 400 !important; }
   h1, h2, h3, .hero__title, .section-header__title, .collection-banner__heading { font-weight: 300 !important; text-transform: none !important; letter-spacing: normal !important; }
   .collection-banner__heading { font-size: 24px !important; line-height: 31.2px !important; }
   .section-header__eyebrow, .collection-banner__eyebrow, .collection-banner__btn, .section-header__link--plain, .ob-usp__title { font-size: 10px !important; line-height: 13px !important; letter-spacing: 0.3px !important; text-transform: uppercase !important; }
-  .hero .animation-contents:first-child { font-size: 10px !important; line-height: 12px !important; letter-spacing: 0.5px !important; text-transform: uppercase !important; }
+  .hero__top-subtitle .animation-contents { font-size: 10px !important; line-height: 12px !important; letter-spacing: 0.5px !important; text-transform: uppercase !important; }
+  /* jedyne pogrubienia jak u hang-eleven: tytul na pasku ogloszen (700); przyciski 500, naglowki 300, reszta 400 */
+  .announcement-arrows .announcement-arrows__title, .announcement-arrows strong, .announcement-arrows b { font-weight: 700 !important; }
+  .btn, .button, button[type="submit"], .hero__cta, .hero a[class*="btn"], .snk-card__add { font-weight: 500 !important; }
 </style>
