@@ -66,7 +66,7 @@
     assign mm_wlaczony = true
   endif
   assign mm_mnoznik = 100 | minus: mm_max
-  assign mm_od = war.price | times: mm_mnoznik | divided_by: 100
+  assign mm_od = war.price | times: mm_mnoznik | plus: 50 | divided_by: 100
 
   # Plakietki cech pod cena - tekst oddzielony przecinkami albo lista. Brak = nic.
   assign cechy = product.metafields.custom.pdp_features.value | join: ','
@@ -162,11 +162,13 @@
   {%- comment -%} "As low as" pod cena i Mix & Match: plaskie, szare, bez zaokraglen (nowy styl) {%- endcomment -%}
   #shopify-section-{{ section.id }} .cp__aslow { margin: 0; font-size: 11px; line-height: 16px; letter-spacing: 0.3px; color: #525252; }
   #shopify-section-{{ section.id }} .cp__aslow b { font-weight: 500; color: #000; }
-  #shopify-section-{{ section.id }} .cp__mm { margin: 0 0 14px; padding: 14px 15px 12px; background: var(--cp-soft); }
-  #shopify-section-{{ section.id }} .cp__mm-title { margin: 3px 0 10px; font-size: 12px; line-height: 14.4px; font-weight: 500; text-transform: uppercase; }
-  #shopify-section-{{ section.id }} .cp__mm-tiers { display: grid; grid-template-columns: repeat(var(--cp-mm, 4), minmax(0, 1fr)); gap: 2px; margin: 0 0 10px; padding: 0; list-style: none; }
-  #shopify-section-{{ section.id }} .cp__mm-tier { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; background: #fff; text-align: center; }
-  #shopify-section-{{ section.id }} .cp__mm-tier span { font-size: 10px; line-height: 13px; letter-spacing: 0.3px; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .cp__mm { margin: 0 0 20px; padding: 12px 15px; background: var(--cp-soft); }
+  #shopify-section-{{ section.id }} .cp__mm-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 0 0 10px; }
+  #shopify-section-{{ section.id }} .cp__mm-sub { font-size: 10px; line-height: 13px; letter-spacing: 0.3px; text-transform: uppercase; color: #525252; }
+  #shopify-section-{{ section.id }} .cp__mm-tiers { display: grid; grid-template-columns: repeat(var(--cp-mm, 4), minmax(0, 1fr)); margin: 0 0 10px; padding: 0; list-style: none; }
+  #shopify-section-{{ section.id }} .cp__mm-tier { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 2px 4px; border-left: 1px solid var(--cp-line); text-align: center; }
+  #shopify-section-{{ section.id }} .cp__mm-tier:first-child { border-left: 0; }
+  #shopify-section-{{ section.id }} .cp__mm-tier span { font-size: 10px; line-height: 13px; letter-spacing: 0.3px; text-transform: uppercase; color: #525252; }
   #shopify-section-{{ section.id }} .cp__mm-tier b { font-size: 14px; line-height: 18px; font-weight: 500; }
   #shopify-section-{{ section.id }} .cp__mm-note { margin: 0; font-size: 11px; line-height: 16.5px; letter-spacing: 0.3px; color: #525252; }
 
@@ -350,6 +352,21 @@
         {%- endif -%}
       </div>
 
+      {%- if mm_wlaczony -%}
+        <div class="cp__mm" style="--cp-mm: {{ mm_ile }};">
+          <p class="cp__mm-head"><span class="cp__lbl">{{ section.settings.mm_title }}</span><span class="cp__mm-sub">{{ section.settings.mm_sub | replace: '#', mm_max }}</span></p>
+          <ul class="cp__mm-tiers">
+            {%- for p in mm_progi -%}
+              {%- assign kv = p | split: ':' -%}
+              {%- if kv.size == 2 -%}
+                <li class="cp__mm-tier"><span>{{ kv[0] | strip }}{% if forloop.last %}+{% endif %} {{ section.settings.mm_items }}</span><b>&minus;{{ kv[1] | strip }}%</b></li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+          <p class="cp__mm-note">{{ section.settings.mm_note }}</p>
+        </div>
+      {%- endif -%}
+
       {%- comment -%} ---------- kolor ---------- {%- endcomment -%}
       {%- for opt in product.options_with_values -%}
         {%- if forloop.index == poz_koloru -%}
@@ -429,22 +446,6 @@
             </div>
           {%- endunless -%}
         {%- endfor -%}
-
-        {%- if mm_wlaczony -%}
-          <div class="cp__mm" style="--cp-mm: {{ mm_ile }};">
-            <span class="cp__lbl">{{ section.settings.mm_title }}</span>
-            <p class="cp__mm-title">{{ section.settings.mm_sub | replace: '#', mm_max }}</p>
-            <ul class="cp__mm-tiers">
-              {%- for p in mm_progi -%}
-                {%- assign kv = p | split: ':' -%}
-                {%- if kv.size == 2 -%}
-                  <li class="cp__mm-tier"><span>{{ kv[0] | strip }}{% if forloop.last %}+{% endif %} {{ section.settings.mm_items }}</span><b>&minus;{{ kv[1] | strip }}%</b></li>
-                {%- endif -%}
-              {%- endfor -%}
-            </ul>
-            <p class="cp__mm-note">{{ section.settings.mm_note }}</p>
-          </div>
-        {%- endif -%}
 
         <button type="submit" name="add" class="cp__atc" data-cp-atc{% unless war.available %} disabled{% endunless %}>
           <span data-cp-atc-txt>{%- if war.available -%}{{ section.settings.atc_label }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}</span>
@@ -658,7 +659,7 @@
       var cenaPaska = root.querySelector('[data-cp-sprice]');
       if (cenaPaska) cenaPaska.innerHTML = kwota(w.price);
       var odCeny = root.querySelector('[data-cp-aslow]');
-      if (odCeny) odCeny.innerHTML = kwota(Math.floor(w.price * (100 - {{ mm_max | default: 0 | json }}) / 100));
+      if (odCeny) odCeny.innerHTML = kwota(Math.round(w.price * (100 - {{ mm_max | default: 0 | json }}) / 100));
       if (bylo) {
         var przecena = w.compare_at_price && w.compare_at_price > w.price;
         bylo.hidden = !przecena;
