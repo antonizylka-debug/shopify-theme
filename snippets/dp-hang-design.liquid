@@ -1,0 +1,60 @@
+{%- comment -%}
+  Wyglad 1:1 z hang-eleven.com (zmierzone 03.11.2026, Antoni: "design, wyglad, grubosc scianek... spojnosc i minimalizm").
+  Tylko styl - tresci sie nie zmieniaja. Zasady hang-eleven:
+  - biale tlo, czarny tekst, cienkie linie #E5E5E5, zero zaokraglen,
+  - zdjecia od krawedzi do krawedzi, bez odstepow miedzy bannerami,
+  - boczne marginesy tekstu 15 px,
+  - male czarne przyciski 32 px (10 px / 500 / wielkie litery),
+  - naglowek sekcji 18 px Light, napisy na zdjeciach wysrodkowane.
+  Reguly stoja po custom-styles i dp-typografia, wiec wygrywaja przez !important tylko tam, gdzie sekcje maja wlasne style.
+{%- endcomment -%}
+<style>
+  :root { --dp-gutter: 15px; --dp-line: #e5e5e5; }
+
+  /* zero zaokraglen na przyciskach, polach i kafelkach */
+  .btn, .button, button[type="submit"], input[type="text"], input[type="email"], input[type="search"], input[type="password"], select, textarea,
+  .snc__foto, .snc__pas, .collection-banner, .collection-banner__btn, .site-footer .btn { border-radius: 0 !important; }
+
+  /* boczne marginesy 15 px jak u nich */
+  .page-width { padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; }
+  @media (max-width: 768px) { .page-width--flush-small { padding-left: 0 !important; padding-right: 0 !important; } }
+
+  /* hero na caly ekran (u nich pelna wysokosc okna pod naglowkiem), bez bocznych marginesow */
+  .index-section--hero .page-width { padding-left: 0 !important; padding-right: 0 !important; max-width: none !important; }
+  @media (max-width: 768px) {
+    .index-section--hero, .index-section--hero .page-width, .index-section--hero [class*="slideshow"] { min-height: calc(100svh - 86px) !important; height: calc(100svh - 86px) !important; }
+  }
+
+  /* male czarne przyciski: 32 px, 10 px / 500 / wielkie litery */
+  .btn:not(.btn--full):not([class*="cart"]):not(.snk-card__add):not(.cp__atc) { min-height: 32px; padding: 9px 12px !important; font-size: 10px !important; line-height: 12px !important; letter-spacing: 0.36px !important; font-weight: 500 !important; text-transform: uppercase !important; }
+  .collection-banner__btn { padding: 9px 12px !important; font-size: 10px !important; letter-spacing: 0.36px !important; }
+
+  /* banery kolekcji: od krawedzi do krawedzi, jeden pod drugim, bez przerw, napis na srodku (18 px Light) */
+  .shopify-section .page-width:has(> .collection-banners) { padding-left: 0 !important; padding-right: 0 !important; max-width: none !important; }
+  .collection-banners { gap: 0 !important; margin: 0 !important; }
+  .collection-banner { margin: 0 !important; }
+  @media (max-width: 768px) {
+    .collection-banners { display: block !important; }
+    .collection-banner { display: block !important; width: 100% !important; aspect-ratio: 375 / 482; height: auto !important; min-height: 0 !important; }
+  }
+  .collection-banner__content { display: flex !important; flex-direction: column; align-items: center !important; justify-content: center !important; text-align: center !important; inset: 0; padding: 0 var(--dp-gutter) !important; }
+  .collection-banner__heading { font-size: 18px !important; line-height: 23.4px !important; }
+  .collection-banner__eyebrow { margin-bottom: 6px; }
+
+  /* sekcje z produktami: tytul po lewej z marginesem 15 px, mniejsze odstepy pionowe, bez zaokraglen */
+  .section-header { padding-left: 0; padding-right: 0; margin-bottom: 12px !important; }
+  .section-header__title { text-align: left; }
+  .index-section { margin-top: 24px !important; margin-bottom: 24px !important; }
+
+  /* stopka: biala, wyrownana do lewej, cienkie linie miedzy blokami */
+  .site-footer { background: #fff !important; color: #000 !important; border-top: 1px solid var(--dp-line); text-align: left !important; }
+  .site-footer .footer__item--brand, .site-footer .footer__brand-text, .site-footer .footer__title, .site-footer .footer__collapsible, .site-footer .grid__item { text-align: left !important; }
+  .site-footer .footer__title.collapsible-trigger { border-top: 1px solid var(--dp-line); }
+  .site-footer a { text-decoration: none; }
+
+  /* naglowek: cienka linia pod spodem jak u nich */
+  .site-header { border-bottom: 1px solid var(--dp-line); box-shadow: none !important; }
+
+  /* karty produktow: zdjecie bez zaokraglen i bez ramki */
+  .snc { border: 0 !important; box-shadow: none !important; }
+</style>
