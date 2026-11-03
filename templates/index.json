@@ -21,7 +21,7 @@
             "subheading": "Considered pieces for the modern wardrobe. Up to 50% off, applied automatically.",
             "asset_desktop": "dp-hero-desktop.jpg",
             "asset_mobile": "dp-hero-mobile.jpg",
-            "subheading_caps": true,
+            "subheading_caps": false,
             "title_bold": false,
             "link_arrow": false,
             "link": "/collections/all",
@@ -29,10 +29,10 @@
             "link_2": "",
             "link_text_2": "",
             "color_accent": "#ffffff",
-            "text_align": "vertical-center horizontal-center",
+            "text_align": "vertical-bottom horizontal-center",
             "image": "shopify://shop_images/stilhusetnord-homepage-hero.webp",
             "parallax_direction": "top",
-            "overlay_opacity": 6
+            "overlay_opacity": 22
           }
         }
       },
