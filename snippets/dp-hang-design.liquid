@@ -582,7 +582,7 @@
   .template-collection .snc-item { padding-left: 2px !important; padding-right: 2px !important; margin-bottom: 18px !important; }
 </style>
 <style>
-  /* przelacznik gestosci siatki jak u Hang Eleven: telefon 2 lub 1 w rzedzie, komputer 4 lub 6 */
+  /* przelacznik gestosci siatki jak u Hang Eleven: telefon 2 lub 1 w rzedzie, komputer 4 / 6 / 8 */
   .dp-gridbtn { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-right: 10px; padding: 0; background: none; border: 0; cursor: pointer; color: #000; vertical-align: middle; }
   .dp-gridbtn svg { width: 18px; height: 18px; display: block; }
   .collection-links-row__sort { display: flex; align-items: center; }
@@ -591,6 +591,7 @@
   }
   @media (min-width: 769px) {
     html.dp-cols-6 .template-collection .grid__item--content .snc-item { width: 16.6667% !important; }
+    html.dp-cols-8 .template-collection .grid__item--content .snc-item { width: 12.5% !important; }
   }
 </style>
 <script>
@@ -606,11 +607,11 @@
       var v = null;
       try { v = parseInt(localStorage.getItem(mobile() ? "dp-cols-m" : "dp-cols-d"), 10); } catch (e) {}
       if (mobile()) return v === 1 ? 1 : 2;
-      return v === 6 ? 6 : 4;
+      return v === 6 || v === 8 ? v : 4;
     }
     function ustaw(n, zapisz) {
-      h.classList.remove("dp-cols-1", "dp-cols-6");
-      if (n === 1 || n === 6) h.classList.add("dp-cols-" + n);
+      h.classList.remove("dp-cols-1", "dp-cols-6", "dp-cols-8");
+      if (n === 1 || n === 6 || n === 8) h.classList.add("dp-cols-" + n);
       var b = document.querySelector(".dp-gridbtn");
       if (b) b.innerHTML = ikona();
       if (zapisz) { try { localStorage.setItem(mobile() ? "dp-cols-m" : "dp-cols-d", String(n)); } catch (e) {} }
@@ -623,7 +624,7 @@
       b.type = "button"; b.className = "dp-gridbtn"; b.setAttribute("aria-label", "Change number of products per row");
       b.addEventListener("click", function () {
         var n = stan();
-        var nx = mobile() ? (n === 2 ? 1 : 2) : (n === 4 ? 6 : 4);
+        var nx = mobile() ? (n === 2 ? 1 : 2) : (n === 4 ? 6 : n === 6 ? 8 : 4);
         ustaw(nx, true);
       });
       box.insertBefore(b, box.firstChild);
@@ -635,5 +636,5 @@
 </script>
 <style>
   /* motyw lamie wiersz co 4 karty (clear:left) - przy 6 w rzedzie trzeba to wylaczyc */
-  html.dp-cols-6 .template-collection .grid--uniform > .grid__item, html.dp-cols-1 .template-collection .grid--uniform > .grid__item { clear: none !important; }
+  html.dp-cols-6 .template-collection .grid--uniform > .grid__item, html.dp-cols-8 .template-collection .grid--uniform > .grid__item, html.dp-cols-1 .template-collection .grid--uniform > .grid__item { clear: none !important; }
 </style>
