@@ -25,13 +25,8 @@
 
     <a href="{{ routes.cart_url }}" class="site-nav__link site-nav__link--icon js-drawer-open-cart" aria-controls="CartDrawer" data-icon="{{ settings.cart_icon }}">
       <span class="cart-link">
-        {%- if settings.cart_icon == 'cart' -%}
-          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-cart" viewBox="0 0 64 64"><path style="stroke-miterlimit:10" d="M14 17.44h46.79l-7.94 25.61H20.96l-9.65-35.1H3"/><circle cx="27" cy="53" r="2"/><circle cx="47" cy="53" r="2"/></svg>
-        {%- elsif settings.cart_icon == 'bag-minimal' -%}
-          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-bag-minimal" viewBox="0 0 64 64"><title>icon-bag-minimal</title><path stroke="null" fill-opacity="null" stroke-opacity="null" fill="null" d="M11.375 17.863h41.25v36.75h-41.25z"/><path stroke="null" d="M22.25 18c0-7.105 4.35-9 9.75-9s9.75 1.895 9.75 9"/></svg>
-        {%- else -%}
-          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-bag" viewBox="0 0 64 64"><g fill="none" stroke="#000" stroke-width="2"><path d="M25 26c0-15.79 3.57-20 8-20s8 4.21 8 20"/><path d="M14.74 18h36.51l3.59 36.73h-43.7z"/></g></svg>
-        {%- endif -%}
+        {%- comment -%} 03.11.2026: ikona torby skopiowana z Hang Eleven {%- endcomment -%}
+        <svg aria-hidden="true" focusable="false" role="presentation" class="dp-bag" width="15" height="16" viewBox="0 0 15 16" fill="none"><path d="M13.6779 0.644C13.6779 0.572 13.6049 0.5 13.5318 0.5H2.11434C2.04127 0.5 1.9682 0.554 1.9682 0.644L1 14.738C1 14.774 1.01827 14.828 1.03654 14.846C1.07307 14.882 1.10961 14.9 1.14614 14.9H14.3539C14.3904 14.9 14.4269 14.882 14.4635 14.846C14.5 14.81 14.5 14.774 14.5 14.738L13.6779 0.644ZM1.31055 14.594L2.26049 0.788H13.3857L14.2077 14.594H1.31055Z" fill="currentColor" stroke="currentColor" stroke-width="0.5"/><path d="M10.6622 1.90405C10.5708 1.90405 10.516 1.97605 10.516 2.04805V3.90205C10.516 5.36005 9.31036 6.56605 7.81239 6.56605C6.31442 6.56605 5.127 5.36005 5.127 3.90205V2.04805C5.127 1.95805 5.05393 1.90405 4.98086 1.90405C4.88952 1.90405 4.83472 1.97605 4.83472 2.04805V3.90205C4.83472 5.54005 6.18654 6.85405 7.83066 6.85405C9.47477 6.85405 10.8266 5.52205 10.8266 3.90205V2.04805C10.8083 1.97605 10.7535 1.90405 10.6622 1.90405Z" fill="currentColor" stroke="currentColor" stroke-width="0.5"/></svg>
         <span class="icon__fallback-text">{{ 'layout.cart.title' | t }}</span>
         <span class="cart-link__bubble{% if cart.item_count > 0 %} cart-link__bubble--visible{% endif %}"></span>
       </span>
