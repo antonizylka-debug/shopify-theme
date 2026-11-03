@@ -582,7 +582,7 @@
   .template-collection .snc-item { padding-left: 2px !important; padding-right: 2px !important; margin-bottom: 18px !important; }
 </style>
 <style>
-  /* przelacznik gestosci siatki jak u Hang Eleven: telefon 2 lub 1 w rzedzie, komputer 3 / 4 / 5 */
+  /* przelacznik gestosci siatki jak u Hang Eleven: telefon 2 lub 1 w rzedzie, komputer 4 lub 6 */
   .dp-gridbtn { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-right: 10px; padding: 0; background: none; border: 0; cursor: pointer; color: #000; vertical-align: middle; }
   .dp-gridbtn svg { width: 18px; height: 18px; display: block; }
   .collection-links-row__sort { display: flex; align-items: center; }
@@ -590,32 +590,29 @@
     html.dp-cols-1 .template-collection .grid__item--content .snc-item, html.dp-cols-1 .template-collection .snc-item { width: 100% !important; }
   }
   @media (min-width: 769px) {
-    html.dp-cols-3 .template-collection .grid__item--content .snc-item { width: 33.3333% !important; }
-    html.dp-cols-5 .template-collection .grid__item--content .snc-item { width: 20% !important; }
+    html.dp-cols-6 .template-collection .grid__item--content .snc-item { width: 16.6667% !important; }
   }
 </style>
 <script>
   (function () {
     var h = document.documentElement;
     function mobile() { return window.matchMedia("(max-width: 768px)").matches; }
-    function ikona(n) {
-      var s = '', i;
-      if (n === 1) return '<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3.5" y="1.5" width="11" height="15"/></svg>';
-      var g = 18 / n;
-      for (i = 0; i < n; i++) s += '<rect x="' + (i * g + 1) + '" y="1.5" width="' + (g - 2) + '" height="15" fill="currentColor"/>';
-      return '<svg viewBox="0 0 18 18">' + s + '</svg>';
+    function ikona() {
+      var s = '', r, c;
+      for (r = 0; r < 3; r++) for (c = 0; c < 3; c++) s += '<rect x="' + (c * 6) + '" y="' + (r * 6) + '" width="4.4" height="4.4" fill="currentColor"/>';
+      return '<svg viewBox="0 0 17 17">' + s + '</svg>';
     }
     function stan() {
       var v = null;
       try { v = parseInt(localStorage.getItem(mobile() ? "dp-cols-m" : "dp-cols-d"), 10); } catch (e) {}
       if (mobile()) return v === 1 ? 1 : 2;
-      return v === 3 || v === 5 ? v : 4;
+      return v === 6 ? 6 : 4;
     }
     function ustaw(n, zapisz) {
-      h.classList.remove("dp-cols-1", "dp-cols-3", "dp-cols-5");
-      if (n === 1 || n === 3 || n === 5) h.classList.add("dp-cols-" + n);
+      h.classList.remove("dp-cols-1", "dp-cols-6");
+      if (n === 1 || n === 6) h.classList.add("dp-cols-" + n);
       var b = document.querySelector(".dp-gridbtn");
-      if (b) b.innerHTML = ikona(n);
+      if (b) b.innerHTML = ikona();
       if (zapisz) { try { localStorage.setItem(mobile() ? "dp-cols-m" : "dp-cols-d", String(n)); } catch (e) {} }
     }
     function start() {
@@ -626,7 +623,7 @@
       b.type = "button"; b.className = "dp-gridbtn"; b.setAttribute("aria-label", "Change number of products per row");
       b.addEventListener("click", function () {
         var n = stan();
-        var nx = mobile() ? (n === 2 ? 1 : 2) : (n === 4 ? 5 : n === 5 ? 3 : 4);
+        var nx = mobile() ? (n === 2 ? 1 : 2) : (n === 4 ? 6 : 4);
         ustaw(nx, true);
       });
       box.insertBefore(b, box.firstChild);
