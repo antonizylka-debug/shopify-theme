@@ -450,7 +450,7 @@
       function wstaw(h) { fit.innerHTML = h || ''; }
       if (uchwyt in pastylki) { wstaw(pastylki[uchwyt]); return; }
       var korzen = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
-      fetch(korzen + 'products/' + uchwyt + '?section_id=catalog')
+      fetch(korzen + 'products/' + uchwyt)
         .then(function (o) { return o.ok ? o.text() : ''; })
         .then(function (h) {
           var d = document.createElement('div'); d.innerHTML = h;
