@@ -218,3 +218,14 @@
     [id*="featured_popular"] .grid__item a > span, [id*="popular_men"] .grid__item a > span { display: block; padding: 10px var(--dp-gutter) 18px; font-size: 14px; letter-spacing: 0.36px; text-align: left; }
   }
 </style>
+<style>
+  /* kafle kategorii: stala wysokosc 350 px przycinala zdjecia na szerokim ekranie - proporcje 4:5, zdjecie w calosci jak u hang-eleven */
+  @media (min-width: 769px) {
+    [id*="featured_popular"] .collection-image, [id*="popular_men"] .collection-image { height: auto !important; aspect-ratio: 4 / 5; }
+    [id*="featured_popular"] .collection-image image-element, [id*="popular_men"] .collection-image image-element,
+    [id*="featured_popular"] .collection-image img, [id*="popular_men"] .collection-image img { height: 100% !important; width: 100% !important; object-fit: cover; object-position: center 25%; }
+  }
+  /* Recently viewed: tytul i podpowiedz na srodku (reguly sekcji maja wyzszy priorytet) */
+  .sno .sno__head, .sno .sno__head--flat { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; text-align: center !important; gap: 4px; }
+  .sno .sno__title, .sno .sno__hint { text-align: center !important; }
+</style>
