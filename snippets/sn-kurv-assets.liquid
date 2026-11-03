@@ -618,10 +618,19 @@
   odswiezaniu szuflady, wiec co sekunde szukamy go od nowa.
 {%- endcomment -%}
 <style>
-  .snk-cutoff { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 0 0 10px; font-size: 13px; line-height: 1.4; color: #474b52; text-align: center; }
+  /* 03.11.2026 (Antoni): dolna linia zajmowala za duzo miejsca - mniejsza, jeden wiersz na telefonie */
+  .snk-cutoff { display: flex; align-items: center; justify-content: center; gap: 5px; margin: 0 0 8px; font-size: 11.5px; line-height: 1.3; color: #474b52; text-align: center; }
   .snk-cutoff[hidden] { display: none; }
-  .snk-cutoff svg { width: 15px; height: 15px; flex: 0 0 15px; }
+  .snk-cutoff svg { width: 13px; height: 13px; flex: 0 0 13px; }
   .snk-cutoff b { font-weight: 700; color: #1c1d1d; font-variant-numeric: tabular-nums; }
+
+  /* 03.11.2026 (Antoni): szary komunikat i czerwony licznik w jednym pudelku */
+  .snk-info { margin: 0 0 14px; border: 1px solid #e4e6ea; background: #f2f3f5; }
+  .snk-info:not(:has(> :not([hidden]))) { display: none; }
+  .snk-info .snk-note { margin: 0; padding: 10px 14px; border: 0; background: none; font-size: 12.5px; line-height: 1.4; }
+  .snk-info .snk-rez { margin: 0; padding: 8px 14px; border: 0; border-top: 1px solid #e4e6ea; background: #fdf3f2; font-size: 12.5px; line-height: 1.3; }
+  .snk-info .snk-rez:first-child { border-top: 0; }
+  .snk-info .snk-rez svg { width: 14px; height: 14px; flex: 0 0 14px; }
 </style>
 <script>
   (function () {

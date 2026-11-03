@@ -30,6 +30,11 @@
             Pasek "Saesonudsalg slutter om ..." usuniety z szuflady 06.10.2026 na
             prosbe Antoniego (zostaje na kolekcjach i stronie produktu).
           {%- endcomment -%}
+          {%- comment -%}
+            03.11.2026 (Antoni): szary komunikat i czerwony licznik w jednym pudelku (.snk-info),
+            zamiast dwoch osobnych ramek. Styl na koncu sn-kurv-assets.
+          {%- endcomment -%}
+          <div class="snk-info">
           {%- if settings.sn_kurv_note != blank -%}
             <p class="snk-note">{{ settings.sn_kurv_note }}</p>
           {%- endif -%}
@@ -46,6 +51,7 @@
               <span data-sn-rez-txt></span>
             </p>
           {%- endif -%}
+          </div>
           {%- render 'sn-prog-rabatu', kompakt: true -%}
 
           <div data-products class="appear-animation appear-delay-2"></div>
