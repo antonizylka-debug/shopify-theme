@@ -581,3 +581,58 @@
   .template-collection .grid__item--content .grid { margin-left: -2px; margin-right: -2px; }
   .template-collection .snc-item { padding-left: 2px !important; padding-right: 2px !important; margin-bottom: 18px !important; }
 </style>
+<style>
+  /* przelacznik gestosci siatki jak u Hang Eleven: telefon 2 lub 1 w rzedzie, komputer 3 / 4 / 5 */
+  .dp-gridbtn { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-right: 10px; padding: 0; background: none; border: 0; cursor: pointer; color: #000; vertical-align: middle; }
+  .dp-gridbtn svg { width: 18px; height: 18px; display: block; }
+  .collection-links-row__sort { display: flex; align-items: center; }
+  @media (max-width: 768px) {
+    html.dp-cols-1 .template-collection .grid__item--content .snc-item, html.dp-cols-1 .template-collection .snc-item { width: 100% !important; }
+  }
+  @media (min-width: 769px) {
+    html.dp-cols-3 .template-collection .grid__item--content .snc-item { width: 33.3333% !important; }
+    html.dp-cols-5 .template-collection .grid__item--content .snc-item { width: 20% !important; }
+  }
+</style>
+<script>
+  (function () {
+    var h = document.documentElement;
+    function mobile() { return window.matchMedia("(max-width: 768px)").matches; }
+    function ikona(n) {
+      var k = n === 1 ? 1 : (n >= 4 ? 4 : n === 3 ? 3 : 2), s = "", i, r = 18;
+      if (n === 1) return "<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3.5" y="1.5" width="11" height="15"/></svg>";
+      var c = n, g = 18 / c;
+      for (i = 0; i < c; i++) s += "<rect x="" + (i * g + 1) + "" y="1.5" width="" + (g - 2) + "" height="15" fill="currentColor"/>";
+      return "<svg viewBox="0 0 18 18">" + s + "</svg>";
+    }
+    function stan() {
+      var v = null;
+      try { v = parseInt(localStorage.getItem(mobile() ? "dp-cols-m" : "dp-cols-d"), 10); } catch (e) {}
+      if (mobile()) return v === 1 ? 1 : 2;
+      return v === 3 || v === 5 ? v : 4;
+    }
+    function ustaw(n, zapisz) {
+      h.classList.remove("dp-cols-1", "dp-cols-3", "dp-cols-5");
+      if (n === 1 || n === 3 || n === 5) h.classList.add("dp-cols-" + n);
+      var b = document.querySelector(".dp-gridbtn");
+      if (b) b.innerHTML = ikona(n);
+      if (zapisz) { try { localStorage.setItem(mobile() ? "dp-cols-m" : "dp-cols-d", String(n)); } catch (e) {} }
+    }
+    function start() {
+      if (!document.body.classList.contains("template-collection")) return;
+      var box = document.querySelector(".collection-links-row__sort");
+      if (!box || box.querySelector(".dp-gridbtn")) return;
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "dp-gridbtn"; b.setAttribute("aria-label", "Change number of products per row");
+      b.addEventListener("click", function () {
+        var n = stan();
+        var nx = mobile() ? (n === 2 ? 1 : 2) : (n === 4 ? 5 : n === 5 ? 3 : 4);
+        ustaw(nx, true);
+      });
+      box.insertBefore(b, box.firstChild);
+      ustaw(stan(), false);
+      window.addEventListener("resize", function () { ustaw(stan(), false); });
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+  })();
+</script>
