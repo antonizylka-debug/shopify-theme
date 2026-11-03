@@ -286,6 +286,12 @@
   .snq__opis-prod[open] summary::after { content: '-'; }
   .snq__opis-tekst { font-size: 12px; line-height: 18px; color: #525252; }
   .snq__link { margin-top: 16px; font-size: 12px; font-weight: 400; letter-spacing: 0.36px; }
+  /* galeria jak na stronie produktu: zdjecia jedno pod drugim, bez przewijania na boki; scrolluje caly panel (pasek ukryty) */
+  .snq__zdjecia { display: block; overflow: visible; cursor: default; }
+  .snq__zdjecia img { width: 100%; margin-bottom: 2px; }
+  .snq__nawig { display: none !important; }
+  .snq__tresc { scrollbar-width: none; }
+  .snq__tresc::-webkit-scrollbar { display: none; }
 </style>
 
 <script>
@@ -423,7 +429,7 @@
         if (!u) return;
         var im = document.createElement('img');
         im.src = duzy(u); im.alt = i === 0 ? produkt.title : '';
-        im.loading = i < 2 ? 'eager' : 'lazy';
+        im.loading = 'eager'; im.decoding = 'async';
         im.width = 450; im.height = 600;
         zdjecia.appendChild(im);
       });

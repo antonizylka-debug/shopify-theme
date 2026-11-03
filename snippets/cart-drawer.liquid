@@ -129,7 +129,7 @@
           {%- if shop.enabled_payment_types != empty -%}
             <div class="snk-pay" role="list" aria-label="Accepted payment methods">
               {%- for type in shop.enabled_payment_types -%}
-                <span class="snk-pay__i" role="listitem">{{ type | payment_type_svg_tag: class: 'snk-pay__icon' }}</span>
+                {%- unless type == 'shopify_pay' -%}<span class="snk-pay__i" role="listitem">{{ type | payment_type_svg_tag: class: 'snk-pay__icon' }}</span>{%- endunless -%}
               {%- endfor -%}
             </div>
           {%- endif -%}

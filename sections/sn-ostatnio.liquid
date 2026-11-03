@@ -172,12 +172,12 @@
     (function () {
       var hint = korzen.querySelector('[data-sno-hint]');
       if (!hint) return;
-      function cel() { return document.querySelector('[data-cp-atc]') || document.querySelector('[data-pdp-atc]'); }
+      function cel() { return document.querySelector('.cp__title') || document.querySelector('[data-pdp-atc]'); }
       if (!cel()) return;
       hint.hidden = false;
       hint.addEventListener('click', function () {
         var c = cel();
-        if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (c) window.scrollTo({ top: Math.max(0, c.getBoundingClientRect().top + window.pageYOffset - 70), behavior: 'smooth' });
       });
     })();
 
