@@ -497,11 +497,25 @@
   @media (min-width: 769px) { .dpr__track { justify-content: center !important; } }
 </style>
 <script>
-  /* znacznik "przewiniete": naglowek na stronie glownej jest przezroczysty tylko na samej gorze */
+  /* znacznik "przewiniete" ustawiany DOKLADNIE wtedy, gdy motyw robi naglowek bialy (klasa site-header--stuck), zeby menu i rzad kategorii zmienialy sie razem */
   (function () {
     var h = document.documentElement;
-    function f() { h.classList.toggle('dp-scrolled', (window.pageYOffset || 0) > 8); }
-    f();
-    window.addEventListener('scroll', f, { passive: true });
+    function sync() {
+      var s = document.querySelector('.site-header');
+      h.classList.toggle('dp-scrolled', !!(s && s.classList.contains('site-header--stuck')));
+    }
+    function start() {
+      sync();
+      var s = document.querySelector('.site-header');
+      if (s && window.MutationObserver) new MutationObserver(sync).observe(s, { attributes: true, attributeFilter: ['class'] });
+      window.addEventListener('scroll', sync, { passive: true });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
   })();
 </script>
+<style>
+  /* hero na komputerze: tekst w pustej prawej czesci zdjecia, nie na parze po lewej (Antoni 03.11.2026); telefon zostaje na dole */
+  @media (min-width: 769px) {
+    .index-section--hero .hero__text-content { vertical-align: middle !important; text-align: center !important; padding-left: 50% !important; padding-right: 5% !important; padding-top: 90px; }
+  }
+</style>
