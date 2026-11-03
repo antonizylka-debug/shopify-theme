@@ -32,7 +32,7 @@
             "text_align": "vertical-bottom horizontal-center",
             "image": "shopify://shop_images/stilhusetnord-homepage-hero.webp",
             "parallax_direction": "top",
-            "overlay_opacity": 22
+            "overlay_opacity": 24
           }
         }
       },
