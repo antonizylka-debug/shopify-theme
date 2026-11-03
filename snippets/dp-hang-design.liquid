@@ -599,11 +599,11 @@
     var h = document.documentElement;
     function mobile() { return window.matchMedia("(max-width: 768px)").matches; }
     function ikona(n) {
-      var k = n === 1 ? 1 : (n >= 4 ? 4 : n === 3 ? 3 : 2), s = "", i, r = 18;
-      if (n === 1) return "<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3.5" y="1.5" width="11" height="15"/></svg>";
-      var c = n, g = 18 / c;
-      for (i = 0; i < c; i++) s += "<rect x="" + (i * g + 1) + "" y="1.5" width="" + (g - 2) + "" height="15" fill="currentColor"/>";
-      return "<svg viewBox="0 0 18 18">" + s + "</svg>";
+      var s = '', i;
+      if (n === 1) return '<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3.5" y="1.5" width="11" height="15"/></svg>';
+      var g = 18 / n;
+      for (i = 0; i < n; i++) s += '<rect x="' + (i * g + 1) + '" y="1.5" width="' + (g - 2) + '" height="15" fill="currentColor"/>';
+      return '<svg viewBox="0 0 18 18">' + s + '</svg>';
     }
     function stan() {
       var v = null;
