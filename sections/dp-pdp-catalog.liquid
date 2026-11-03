@@ -206,6 +206,8 @@
   #shopify-section-{{ section.id }} .cp__usp-txt { display: flex; flex-direction: column; gap: 1px; }
   #shopify-section-{{ section.id }} .cp__usp-title { font-weight: 500; }
   #shopify-section-{{ section.id }} .cp__pay { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: -16px 0 22px; }
+  #shopify-section-{{ section.id }} .cp__tp { display: flex; justify-content: center; margin: -8px 0 22px; }
+  #shopify-section-{{ section.id }} .cp__tp img { display: block; height: 20px; width: auto; }
   #shopify-section-{{ section.id }} .cp__pay-i { display: inline-flex; border: 1px solid #e5e5e5; border-radius: 3px; overflow: hidden; background: #fff; }
   #shopify-section-{{ section.id }} .cp__pay-icon { display: block; width: 36px; height: 23px; }
   #shopify-section-{{ section.id }} .cp__sizes[style*="--cp-cols: 1;"] { grid-template-columns: max-content; }
@@ -496,6 +498,9 @@
           {%- endfor -%}
         </div>
       {%- endif -%}
+
+      {%- comment -%} Trustpilot "Excellent" pod metodami platnosci (03.11.2026) {%- endcomment -%}
+      <a class="cp__tp" href="#{{ section.settings.rating_anchor | default: 'reviews' | handleize }}"><img src="{{ 'dp-tp-excellent.svg' | asset_url }}" alt="Excellent on Trustpilot" width="266" height="20" loading="lazy"></a>
 
       {%- comment -%} ---------- wiersze obietnic (bloki "row") ---------- {%- endcomment -%}
       {%- assign wiersze = section.blocks | where: 'type', 'row' -%}
