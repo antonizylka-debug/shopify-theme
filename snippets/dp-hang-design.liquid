@@ -35,7 +35,8 @@
   .collection-banner { margin: 0 !important; }
   @media (max-width: 768px) {
     .collection-banners { display: block !important; }
-    .collection-banner { display: block !important; width: 100% !important; aspect-ratio: 375 / 482; height: auto !important; min-height: 0 !important; }
+    .collection-banner { display: block !important; width: 100% !important; height: auto !important; min-height: calc(100vw * 482 / 375) !important; }
+    .collection-banner image-element, .collection-banner img { display: block; width: 100% !important; height: calc(100vw * 482 / 375) !important; object-fit: cover; }
   }
   .collection-banner__content { display: flex !important; flex-direction: column; align-items: center !important; justify-content: center !important; text-align: center !important; inset: 0; padding: 0 var(--dp-gutter) !important; }
   .collection-banner__heading { font-size: 18px !important; line-height: 23.4px !important; }
@@ -57,4 +58,5 @@
 
   /* karty produktow: zdjecie bez zaokraglen i bez ramki */
   .snc { border: 0 !important; box-shadow: none !important; }
+  .site-footer, .site-footer ul, .site-footer li, .site-footer a, .site-footer p, .site-footer div { text-align: left !important; justify-content: flex-start; }
 </style>
