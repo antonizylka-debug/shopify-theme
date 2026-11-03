@@ -351,3 +351,61 @@
     [id*="our_favourites"] .grid__item { flex: 0 0 calc(50% - 1px) !important; width: calc(50% - 1px) !important; padding: 0 !important; margin: 0 !important; }
   }
 </style>
+<style>
+  /* ==== Kafle kategorii i rzedy produktow na stronie glownej dokladnie jak u hang-eleven (03.11.2026, Antoni: "stosuj sie do hang-eleven") ====
+     Kafel: zdjecie z tytulem na srodku (biale, 17 px Light), na telefonie jeden kafel na szerokosc ekranu.
+     Rzad produktow: link "Shop all" po prawej jako podkreslony tekst, pod rzedem cienkie kreski postepu. */
+  [id*="featured_popular"] .collection-item, [id*="popular_men"] .collection-item { position: relative; display: block; }
+  [id*="featured_popular"] .collection-image::after, [id*="popular_men"] .collection-image::after { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.12); pointer-events: none; z-index: 2; }
+  [id*="featured_popular"] .collection-item__title, [id*="popular_men"] .collection-item__title { position: absolute !important; left: 0; right: 0; top: 50%; transform: translateY(-50%); z-index: 3; margin: 0 !important; padding: 0 var(--dp-gutter) !important; text-align: center !important; color: #fff !important; font-size: 17px !important; font-weight: 300 !important; letter-spacing: 0.36px !important; line-height: 22px !important; text-transform: none !important; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.25); }
+  [id*="featured_popular"] .collection-item__title *, [id*="popular_men"] .collection-item__title * { color: #fff !important; font-size: inherit !important; font-weight: inherit !important; }
+  @media (max-width: 768px) {
+    [id*="featured_popular"] .grid, [id*="popular_men"] .grid { grid-template-columns: 1fr !important; }
+  }
+
+  [id*="featured_picks"] .section-header__link--plain, [id*="featured_men"] .section-header__link--plain, [id*="our_favourites"] .section-header__link--plain,
+  [id*="featured_popular"] .section-header__link--plain, [id*="popular_men"] .section-header__link--plain { font-size: 12px !important; letter-spacing: 0.3px !important; text-transform: uppercase !important; text-decoration: underline; text-underline-offset: 3px; }
+  [id*="featured_picks"] .section-header__link--plain svg, [id*="featured_men"] .section-header__link--plain svg, [id*="our_favourites"] .section-header__link--plain svg,
+  [id*="featured_popular"] .section-header__link--plain svg, [id*="popular_men"] .section-header__link--plain svg { display: none !important; }
+
+  .dp-seg { display: none; }
+  @media (max-width: 768px) {
+    .dp-seg { display: flex; gap: 6px; justify-content: center; margin: 14px 0 8px; }
+    .dp-seg span { width: 44px; height: 2px; background: #e5e5e5; }
+    .dp-seg span.is-on { background: #000; }
+  }
+</style>
+<script>
+  /* cienkie kreski postepu pod rzedami produktow na telefonie (jak u hang-eleven): tyle kresek, ile "stron" przewijania */
+  (function () {
+    function buduj(w) {
+      if (w.__dpSeg) return;
+      var bar = document.createElement('div');
+      bar.className = 'dp-seg';
+      bar.setAttribute('aria-hidden', 'true');
+      w.parentNode.insertBefore(bar, w.nextSibling);
+      w.__dpSeg = bar;
+      function odswiez() {
+        var max = w.scrollWidth - w.clientWidth;
+        if (max < 4) { bar.hidden = true; return; }
+        bar.hidden = false;
+        var stron = Math.max(2, Math.ceil(w.scrollWidth / w.clientWidth));
+        if (bar.children.length !== stron) {
+          bar.innerHTML = '';
+          for (var i = 0; i < stron; i++) bar.appendChild(document.createElement('span'));
+        }
+        var akt = Math.round((w.scrollLeft / max) * (stron - 1));
+        Array.prototype.forEach.call(bar.children, function (s, i) { s.classList.toggle('is-on', i === akt); });
+      }
+      w.addEventListener('scroll', odswiez, { passive: true });
+      window.addEventListener('resize', odswiez);
+      odswiez();
+      setTimeout(odswiez, 800);
+    }
+    function start() {
+      Array.prototype.forEach.call(document.querySelectorAll('[id*="featured_picks"] .grid-overflow-wrapper, [id*="featured_men"] .grid-overflow-wrapper, [id*="our_favourites"] .grid-overflow-wrapper'), buduj);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+    window.addEventListener('load', start);
+  })();
+</script>

@@ -195,6 +195,111 @@
         "divider": false
       }
     },
+    "trustpilot_strip": {
+      "type": "ob-reviews-strip",
+      "blocks": {
+        "review_L36cp8": {
+          "type": "review",
+          "settings": {
+            "rating": "4",
+            "verified": true,
+            "name": "Brianna Mayes",
+            "date": "4 days ago",
+            "title": "absolutely love my Pajamas",
+            "body": "absolutely love my Pajamas!\nI bought 4 pairs, they wash well and are 100% cotton which is amazing! Great quality and styles!!!",
+            "is_sample": false
+          }
+        },
+        "review_tBkiRP": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "is_sample": false
+          }
+        },
+        "review_kjadfc": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "is_sample": false
+          }
+        },
+        "review_PAyNdT": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "is_sample": false
+          }
+        }
+      },
+      "block_order": [
+        "review_L36cp8",
+        "review_tBkiRP",
+        "review_kjadfc",
+        "review_PAyNdT"
+      ],
+      "name": "Reviews carousel",
+      "settings": {
+        "content_source": "sample",
+        "verdict": "Great",
+        "rating": "4.8",
+        "based_text": "Based on",
+        "count_text": "2.850+ reviews",
+        "count_url": "",
+        "verified_label": "Verified",
+        "note": "Showing our favourite reviews",
+        "per_row": 5,
+        "star_style": "boxed",
+        "c_text": "#1c1d1d",
+        "c_bg": "#ffffff",
+        "pad_y": 40,
+        "logo_alt": "Review platform",
+        "show_summary": true
+      }
+    },
+    "brand_story": {
+      "type": "sn-story",
+      "settings": {
+        "layout": "left",
+        "image": "shopify://shop_images/Beige_trench_coat_city_portrait-2.png",
+        "bleed": true,
+        "ratio": "4 / 5",
+        "title": "Made to be worn, not just looked at",
+        "text": "<p>Every piece in our collection is chosen to work on real days: the commute, the dinner, the long weekend. Considered cuts and soft fabrics, so getting dressed feels easy again.</p><p>Free shipping across Canada and 14 days to change your mind, so you can try it at home, in your own light.</p><p><a href=\"/collections/all\">Explore the collection</a></p>",
+        "list": "",
+        "text_after": "",
+        "note": "",
+        "image_width": 40,
+        "max_width": 900,
+        "gap": 48,
+        "gap_mobile": 20,
+        "title_size": 28,
+        "title_size_mobile": 21,
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#56524c",
+        "color_accent": "#1c1d1d"
+      }
+    },
     "featured_picks": {
       "type": "featured-collection",
       "blocks": {
@@ -558,6 +663,8 @@
     "slideshow",
     "collection_banners",
     "our_favourites",
+    "trustpilot_strip",
+    "brand_story",
     "featured_popular",
     "wide_banner",
     "popular_men",
