@@ -165,6 +165,10 @@
           {%- endif -%}
         </span>
       {%- endif -%}
+      {%- comment -%} 03.11.2026: nazwa koloru tekstem (ukryta; pokazuje ja tylko wiersz "Combine it with" na stronie produktu) {%- endcomment -%}
+      {%- if opcja_koloru != nil and opcja_koloru.values.size > 0 -%}
+        <span class="snc__kolor-nazwa">{{ opcja_koloru.values.first | escape }}</span>
+      {%- endif -%}
     </a>
   </div>
 

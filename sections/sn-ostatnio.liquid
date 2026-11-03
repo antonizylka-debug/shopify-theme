@@ -28,6 +28,11 @@
     endcapture
     assign tytul = tytul | replace: slowo, zamiennik
   endif
+
+  # Naglowek plaski: jedna linia, zwykla wielkosc liter ("Recently viewed"), bez koloru akcentu.
+  if section.settings.flat_head
+    assign tytul = section.settings.title | escape | newline_to_br | replace: '<br />', ' ' | strip_newlines | downcase | capitalize
+  endif
 -%}
 
 {%- style -%}
@@ -45,6 +50,12 @@
     text-wrap: balance;
   }
   #shopify-section-{{ section.id }} .sno__akcent { color: {{ section.settings.color_accent }}; }
+  {%- comment -%} 03.11.2026 (Antoni): naglowek jak na wzorze - "Recently viewed" czarnym, obok szary link, cienka linia pod spodem {%- endcomment -%}
+  #shopify-section-{{ section.id }} .sno__head--flat { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; text-align: left; margin-bottom: 16px; padding-top: 0; padding-bottom: 14px; border-bottom: 1px solid #e5e5e5; }
+  #shopify-section-{{ section.id }} .sno__head--flat .sno__title { font-family: var(--typeBasePrimary), var(--typeBaseFallback); font-size: 16px; font-weight: 400; line-height: 1.3; letter-spacing: 0; text-wrap: wrap; }
+  #shopify-section-{{ section.id }} .sno__hint { padding: 0; border: 0; background: none; font: inherit; font-family: var(--typeBasePrimary), var(--typeBaseFallback); font-size: 16px; line-height: 1.3; letter-spacing: 0; color: #b3b3b3; cursor: pointer; text-align: left; }
+  #shopify-section-{{ section.id }} .sno__hint:hover { color: #1c1d1d; }
+  #shopify-section-{{ section.id }} .sno__hint[hidden] { display: none; }
 
   #shopify-section-{{ section.id }} .sno__wrap { position: relative; }
   #shopify-section-{{ section.id }} .sno__track {
@@ -92,6 +103,7 @@
       padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px;
     }
     #shopify-section-{{ section.id }} .sno__title { font-size: 20px; }
+    #shopify-section-{{ section.id }} .sno__head--flat .sno__title, #shopify-section-{{ section.id }} .sno__hint { font-size: 14px; }
     #shopify-section-{{ section.id }} .sno__card {
       flex-basis: calc((100% - {{ per_m | minus: 1 | times: odstep }}px) / {{ per_m }});
     }
@@ -102,8 +114,11 @@
 
 <div class="sno" data-sno hidden>
   {%- if section.settings.title != blank -%}
-    <div class="page-width sno__head">
+    <div class="page-width sno__head{% if section.settings.flat_head %} sno__head--flat{% endif %}">
       <h2 class="sno__title">{{ tytul }}</h2>
+      {%- if section.settings.flat_head and section.settings.hint != blank -%}
+        <button type="button" class="sno__hint" data-sno-hint hidden>{{ section.settings.hint }}</button>
+      {%- endif -%}
     </div>
   {%- endif -%}
   <div class="sno__wrap">
@@ -125,6 +140,19 @@
     var tor = korzen.querySelector('[data-sno-track]');
     var wstecz = korzen.querySelector('[data-sno-krok="-1"]');
     var dalej = korzen.querySelector('[data-sno-krok="1"]');
+
+    /* "Don't forget to add these": przewija do glownego przycisku koszyka na stronie produktu (nowa strona: [data-cp-atc], stara: [data-pdp-atc]) */
+    (function () {
+      var hint = korzen.querySelector('[data-sno-hint]');
+      if (!hint) return;
+      function cel() { return document.querySelector('[data-cp-atc]') || document.querySelector('[data-pdp-atc]'); }
+      if (!cel()) return;
+      hint.hidden = false;
+      hint.addEventListener('click', function () {
+        var c = cel();
+        if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    })();
 
     var KLUCZ = 'sn-ostatnio';
     var ILE = {{ section.settings.count | json }};
@@ -253,6 +281,8 @@
 {
   "name": "Recently viewed (cards)",
   "settings": [
+    { "type": "checkbox", "id": "flat_head", "label": "Flat heading with a link", "info": "Heading and a grey link on one line with a thin rule under it (catalogue look).", "default": true },
+    { "type": "text", "id": "hint", "label": "Grey link next to the heading", "info": "Scrolls up to the Add to cart button.", "default": "Don't forget to add these" },
     { "type": "textarea", "id": "title", "label": "Heading", "default": "RECENTLY\nVIEWED" },
     { "type": "text", "id": "accent_word", "label": "Word in colour", "info": "Must match the heading exactly.", "default": "VIEWED" },
     { "type": "color", "id": "color_accent", "label": "Colour of that word", "default": "#d6332e" },
