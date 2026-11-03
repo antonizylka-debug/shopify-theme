@@ -14,7 +14,6 @@
 {%- endstyle -%}
 {%- comment -%} 03.11.2026: Aktiv Grotesk (licencja Antoniego, ta sama czcionka co na hang-eleven.com) {%- endcomment -%}
 <style>
-  @font-face { font-family: 'Aktiv Grotesk'; font-weight: 400; font-style: normal; font-display: swap; src: url({{ 'aktiv-grotesk-400.otf' | asset_url }}) format('opentype'); }
-  @font-face { font-family: 'Aktiv Grotesk'; font-weight: 500; font-style: normal; font-display: swap; src: url({{ 'aktiv-grotesk-500.otf' | asset_url }}) format('opentype'); }
-  @font-face { font-family: 'Aktiv Grotesk'; font-weight: 700; font-style: normal; font-display: swap; src: url({{ 'aktiv-grotesk-700.otf' | asset_url }}) format('opentype'); }
+  /* hang-eleven nie uzywa pogrubien: jedna grubosc (Regular) obsluguje kazda wartosc font-weight, wiec nic nie robi sie pogrubione ani sztucznie pogrubione */
+  @font-face { font-family: 'Aktiv Grotesk'; font-weight: 100 900; font-style: normal; font-display: swap; src: url({{ 'aktiv-grotesk-400.otf' | asset_url }}) format('opentype'); }
 </style>
