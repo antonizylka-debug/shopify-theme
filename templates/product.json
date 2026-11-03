@@ -9,15 +9,14 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "ob-pdp",
+    "catalog": {
+      "type": "dp-pdp-catalog",
       "blocks": {
         "row-1": {
           "type": "row",
           "settings": {
             "icon": "truck",
             "text": "Free shipping",
-            "hi": "",
             "sub": "On every order, no minimum"
           }
         },
@@ -25,9 +24,7 @@
           "type": "row",
           "settings": {
             "icon": "clock",
-            "text": "Ships by #date",
-            "hi": "",
-            "sub": ""
+            "text": "Ships by #date"
           }
         },
         "row-3": {
@@ -35,7 +32,6 @@
           "settings": {
             "icon": "return",
             "text": "14-day money-back guarantee",
-            "hi": "",
             "sub": "From the day you receive your package"
           }
         },
@@ -44,74 +40,63 @@
           "settings": {
             "icon": "lock",
             "text": "Secure checkout",
-            "hi": "",
             "sub": "Encrypted payment"
           }
         },
-        "acc-1": {
+        "acc-desc": {
           "type": "acc",
           "settings": {
-            "title": "Product information",
+            "title": "Description",
             "use_desc": true,
             "text": "<p>Write your text here.</p>",
-            "open": true,
-            "only_types": "",
-            "except_types": ""
+            "open": false
           }
         },
-        "acc-5": {
+        "acc-care-knit": {
           "type": "acc",
           "settings": {
-            "title": "Care",
+            "title": "Material & Care",
             "use_desc": false,
             "text": "<p>With just a little care, your knitwear will stay beautiful for years to come. We recommend professional dry cleaning to preserve its softness and shape.</p><p>For a deeper clean, gently handwash in cool water up to 30°C with a wool-safe detergent, then lay flat to dry. Always follow the care label in the garment – it takes priority over any general advice.</p>",
             "open": false,
-            "only_types": "Sweaters,Cardigans",
-            "except_types": ""
+            "only_types": "Sweaters,Cardigans"
           }
         },
-        "acc-6": {
+        "acc-care": {
           "type": "acc",
           "settings": {
-            "title": "Care",
+            "title": "Material & Care",
             "use_desc": false,
             "text": "<p>Follow the care label in the garment – it takes priority over any general advice.</p><p>As a rule of thumb: wash at 30°C on a gentle cycle, turn prints and dark colours inside out, skip the dryer and dry flat rather than on a hanger.</p>",
             "open": false,
-            "only_types": "",
             "except_types": "Sweaters,Cardigans,Sneakers,Loafers,Boots,Dress Shoes,Sandals,Heels,Slides,Mules,Clogs,Espadrilles,Sunglasses,Jewelry,Bags,Belts,Underwear"
           }
         },
-        "acc-2": {
+        "acc-ship": {
           "type": "acc",
           "settings": {
-            "title": "Free shipping",
+            "title": "Shipping & Returns",
             "use_desc": false,
-            "text": "<p>We're offering free shipping within Canada for all orders.</p><p>We ship our packages with a Track &amp; Trace code so you can always monitor your order.</p><p>You will receive the Track &amp; Trace code via email within 24-72 hours after placing your order.</p>",
-            "open": false,
-            "only_types": "",
-            "except_types": ""
+            "text": "<p>We're offering free shipping within Canada for all orders.</p><p>We ship our packages with a Track &amp; Trace code so you can always monitor your order.</p><p>You will receive the Track &amp; Trace code via email within 24-72 hours after placing your order.</p><p>If our product does not meet your expectations, you can return it within 14 days upon receipt.</p><p>Before returning the goods, please contact our customer service at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> and let us know the reason for the return so we can process your request correctly.</p><p>Please review our <a href=\"/pages/return-and-refund-policy\">return policy</a> for more information!</p>",
+            "open": false
           }
         },
-        "acc-4": {
+        "acc-pay": {
           "type": "acc",
           "settings": {
-            "title": "14-day money-back guarantee",
+            "title": "Payment",
             "use_desc": false,
-            "text": "<p>If our product does not meet your expectations, you can return it within 14 days upon receipt.</p><p>Before returning the goods, please contact our customer service at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> and let us know the reason for the return so we can process your request correctly.</p><p>Please review our <a href=\"/pages/return-and-refund-policy\">return policy</a> for more information!</p>",
-            "open": false,
-            "only_types": "",
-            "except_types": ""
+            "text": "<p>All payments are processed through a fully encrypted SSL connection, ensuring your personal and payment details are always protected.</p>",
+            "open": false
           }
         },
-        "acc-3": {
+        "acc-cs": {
           "type": "acc",
           "settings": {
             "title": "Customer service",
             "use_desc": false,
             "text": "<p>Our customer service team is here to answer all your questions and comments. Whether you need advice on a product or help with an order, we are here to support you.</p><p>Don't hesitate to contact us; we're happy to help!</p><p>Please contact us at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a>. We aim to respond within 1 business day.</p><p>Customer service hours: Monday–Friday, 9:00 AM–6:00 PM ET; Saturday–Sunday, 10:00 AM–4:00 PM ET.</p>",
-            "open": false,
-            "only_types": "",
-            "except_types": ""
+            "open": false
           }
         }
       },
@@ -120,95 +105,25 @@
         "row-2",
         "row-3",
         "row-4",
-        "acc-1",
-        "acc-5",
-        "acc-6",
-        "acc-2",
-        "acc-4",
-        "acc-3"
+        "acc-desc",
+        "acc-care-knit",
+        "acc-care",
+        "acc-ship",
+        "acc-pay",
+        "acc-cs"
       ],
       "settings": {
         "dictionary": "Colour=Color, Farve=Color, Størrelse=Size",
-        "show_crumbs": true,
-        "media_w": 54,
-        "info_w": 42,
-        "gap": 40,
         "breakpoint": 900,
-        "radius": 4,
-        "big_count": 0,
-        "big_per_row": "2",
-        "small_per_row": "2",
-        "photo_visible": 6,
-        "more_label": "Show more images",
-        "photo_gap": 6,
-        "photo_ratio": "3 / 4",
-        "model_note_women": "",
-        "model_note_men": "",
-        "title_size": 26,
-        "title_size_m": 22,
-        "price_size": 28,
-        "price_size_m": 24,
-        "atc_label": "Add to cart",
-        "pilne_show": true,
-        "pilne_text": "Seasonal prices apply automatically in your cart – no code needed. Free shipping on every order.",
-        "vat_note": "Taxes calculated at checkout",
-        "label_normal": "Regular price:",
-        "label_omnibus": "Lowest price in the 30 days before the discount:",
-        "show_omnibus": true,
-        "pb_sale_label": "SALE",
-        "pb_extra_label": "",
-        "show_promo": true,
-        "promo_title": "Seasonal discounts",
-        "promo_sub": "Seasonal discounts are applied automatically in the cart. Items don't need to match.",
-        "promo_tiers": "2:10, 3:20, 4:25, 5:30",
-        "promo_qty_word": "items",
-        "promo_head2": "Seasonal discount",
-        "promo_buy_word": "Buy",
-        "promo_off_word": "off",
-        "promo_border": "#e4e6ea",
-        "promo_bg": "#f2f3f5",
-        "promo_accent": "#23213a",
-        "size_cols": 5,
-        "size_cols_m": 4,
+        "rating_manual": "4.8",
+        "rating_text": "Based on 2.850+ Reviews",
+        "rating_anchor": "reviews",
+        "size_link": "/pages/size-guide",
         "help_text": "Not sure about the size? Go by the measurements rather than the size you usually wear.",
         "help_link_label": "See measurements",
-        "help_link": "/pages/size-guide",
-        "low_stock": "all",
-        "low_stock_tag": "Few left",
-        "show_flag": true,
-        "flag_label": "Sale",
-        "flag_top": 90,
-        "flag_left": 0,
-        "flag_inset": 14,
-        "flag_radius": 3,
-        "flag_gap": 7,
-        "last_label": "Last pieces",
-        "note_label": "Only a few left",
-        "note_bg": "#ffffff",
-        "note_text": "#1c1d1d",
-        "show_fab": true,
-        "show_sticky_atc": true,
-        "row_accent": "#6b1f2d",
-        "row_hi": "#1f7a3d",
-        "cross_show": false,
-        "upgrade_show": false,
-        "cross_title": "Style it with",
-        "cross_add": "Add to cart",
-        "cross_collection": "",
-        "cross_count": 8,
-        "show_rating": true,
-        "rating_manual": "4.8",
-        "rating_manual_text": "Based on  2.850+ Reviews",
-        "rating_min": 4,
-        "rating_anchor": "Reviews",
-        "rating_link_label": "Reviews",
-        "c_text": "#1c1d1d",
-        "c_muted": "#6b6f76",
-        "c_line": "#d9d6d1",
-        "c_soft": "#f4f3f1",
-        "c_sale": "#6b1f2d",
-        "c_low": "#b05f2e",
-        "c_button": "#6b1f2d"
+        "mm_tiers": "2:10, 3:20, 4:25, 5:30",
+        "mm_items": "items",
+        "mm_note": "Seasonal prices apply automatically in your cart – no code needed. Free shipping on every order."
       }
     },
     "ob_reviews_strip_QRDkmM": {
@@ -1165,7 +1080,7 @@
     }
   },
   "order": [
-    "main",
+    "catalog",
     "ob_reviews_strip_QRDkmM",
     "edytorial_kampanii",
     "mix_match", "bestsellers",
