@@ -1,12 +1,15 @@
 /*
  * ------------------------------------------------------------
- * Product template "catalog" (section dp-pdp-catalog). Created 2026-11-02.
- * The contents of this file may also be updated by the Shopify theme editor.
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
 {
   "sections": {
-    "main": {
+    "catalog": {
       "type": "dp-pdp-catalog",
       "blocks": {
         "row-1": {
@@ -86,6 +89,15 @@
             "text": "<p>All payments are processed through a fully encrypted SSL connection, ensuring your personal and payment details are always protected.</p>",
             "open": false
           }
+        },
+        "acc-cs": {
+          "type": "acc",
+          "settings": {
+            "title": "Customer service",
+            "use_desc": false,
+            "text": "<p>Our customer service team is here to answer all your questions and comments. Whether you need advice on a product or help with an order, we are here to support you.</p><p>Don't hesitate to contact us; we're happy to help!</p><p>Please contact us at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a>. We aim to respond within 1 business day.</p><p>Customer service hours: Monday–Friday, 9:00 AM–6:00 PM ET; Saturday–Sunday, 10:00 AM–4:00 PM ET.</p>",
+            "open": false
+          }
         }
       },
       "block_order": [
@@ -97,7 +109,8 @@
         "acc-care-knit",
         "acc-care",
         "acc-ship",
-        "acc-pay"
+        "acc-pay",
+        "acc-cs"
       ],
       "settings": {
         "dictionary": "Colour=Color, Farve=Color, Størrelse=Size",
@@ -105,7 +118,763 @@
         "rating_manual": "4.8",
         "rating_text": "Based on 2.850+ Reviews",
         "rating_anchor": "reviews",
-        "size_link": "/pages/size-guide"
+        "size_link": "/pages/size-guide",
+        "help_text": "Not sure about the size? Go by the measurements rather than the size you usually wear.",
+        "help_link_label": "See measurements",
+        "mm_tiers": "2:10, 3:20, 4:25, 5:30",
+        "mm_items": "items",
+        "mm_note": "Seasonal prices apply automatically in your cart – no code needed. Free shipping on every order."
+      }
+    },
+    "ob_reviews_strip_QRDkmM": {
+      "type": "ob-reviews-strip",
+      "blocks": {
+        "review_L36cp8": {
+          "type": "review",
+          "settings": {
+            "rating": "4",
+            "verified": true,
+            "name": "Brianna Mayes",
+            "date": "4 days ago",
+            "title": "absolutely love my Pajamas",
+            "body": "absolutely love my Pajamas!\nI bought 4 pairs, they wash well and are 100% cotton which is amazing! Great quality and styles!!!",
+            "is_sample": false
+          }
+        },
+        "review_tBkiRP": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "is_sample": false
+          }
+        },
+        "review_kjadfc": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "is_sample": false
+          }
+        },
+        "review_PAyNdT": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "verified": false,
+            "name": "Customer name",
+            "date": "",
+            "title": "",
+            "body": "",
+            "is_sample": false
+          }
+        }
+      },
+      "block_order": [
+        "review_L36cp8",
+        "review_tBkiRP",
+        "review_kjadfc",
+        "review_PAyNdT"
+      ],
+      "name": "Reviews carousel",
+      "settings": {
+        "content_source": "sample",
+        "verdict": "Great",
+        "rating": "4.8",
+        "based_text": "Based on",
+        "count_text": "2.850+ reviews",
+        "count_url": "",
+        "verified_label": "Verified",
+        "note": "Showing our favourite reviews",
+        "per_row": 5,
+        "star_style": "boxed",
+        "c_text": "#1c1d1d",
+        "c_bg": "#ffffff",
+        "pad_y": 40,
+        "logo_alt": "Review platform",
+        "show_summary": true
+      }
+    },
+    "edytorial_kampanii": {
+      "type": "sn-edytorial",
+      "settings": {
+        "image_position": "center",
+        "ratio": "21 / 9",
+        "overline": "",
+        "timer_label": "Ends in",
+        "heading": "Seasonal sale – up to 50% off",
+        "text": "Discounts are applied automatically – no code needed.",
+        "link_label": "Buy now",
+        "button_action": "scroll",
+        "link": "",
+        "space_top": 48,
+        "space_bottom": 48,
+        "space_top_mobile": 28,
+        "space_bottom_mobile": 28
+      }
+    },
+    "mix_match": { "type": "dp-mix-match", "settings": {} }, "bestsellers": {
+      "type": "sn-bestsellers", "disabled": true,
+      "blocks": {
+        "t1": {
+          "type": "tab",
+          "settings": {
+            "label": "Dresses",
+            "collection": "womens-dresses",
+            "audience": "women"
+          }
+        },
+        "t2": {
+          "type": "tab",
+          "settings": {
+            "label": "Tops",
+            "collection": "womens-tops",
+            "audience": "women"
+          }
+        },
+        "t3": {
+          "type": "tab",
+          "settings": {
+            "label": "Shoes",
+            "collection": "womens-footwear",
+            "audience": "women"
+          }
+        },
+        "t4": {
+          "type": "tab",
+          "settings": {
+            "label": "Shop all",
+            "collection": "womens",
+            "audience": "women"
+          }
+        },
+        "m1": {
+          "type": "tab",
+          "settings": {
+            "label": "Jackets",
+            "collection": "mens-jackets-and-coats",
+            "audience": "men"
+          }
+        },
+        "m2": {
+          "type": "tab",
+          "settings": {
+            "label": "Shirts",
+            "collection": "mens-shirts",
+            "audience": "men"
+          }
+        },
+        "m3": {
+          "type": "tab",
+          "settings": {
+            "label": "Shoes",
+            "collection": "mens-footwear",
+            "audience": "men"
+          }
+        },
+        "m4": {
+          "type": "tab",
+          "settings": {
+            "label": "Shop all",
+            "collection": "mens",
+            "audience": "men"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
+      "settings": {
+        "title": "DISCOVER\nOUR BESTSELLERS",
+        "accent_word": "BESTSELLERS",
+        "subtitle": "The styles our customers keep coming back to.",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens",
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Sale",
+        "add_where": "hover",
+        "add_label": "Add to cart",
+        "pick_label": "Select size",
+        "show_dots": true,
+        "dots_max": 3,
+        "dots_size": 22,
+        "note_source": "type",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 32,
+        "title_size": 26,
+        "title_size_mobile": 20,
+        "head_gap": 28,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea",
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f2f3f5",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e",
+        "color_add_bg": "#ffffff",
+        "color_add_hover": "#f2f3f5",
+        "color_add_icon": "#1c1d1d",
+        "color_add_ok": "#1f7a3d"
+      }
+    },
+    "rzad_kurtki": {
+      "type": "sn-bestsellers",
+      "blocks": {
+        "k1": {
+          "type": "tab",
+          "settings": {
+            "label": "Jackets & coats",
+            "collection": "womens-jackets-and-coats",
+            "audience": "women"
+          }
+        },
+        "k2": {
+          "type": "tab",
+          "settings": {
+            "label": "Jackets & coats",
+            "collection": "mens-jackets-and-coats",
+            "audience": "men"
+          }
+        }
+      },
+      "block_order": [
+        "k1",
+        "k2"
+      ],
+      "settings": {
+        "title": "JACKETS & COATS",
+        "accent_word": "COATS",
+        "subtitle": "Warm layers for the season ahead.",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens",
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Sale",
+        "add_where": "hover",
+        "add_label": "Add to cart",
+        "pick_label": "Select size",
+        "show_dots": true,
+        "dots_max": 3,
+        "dots_size": 22,
+        "note_source": "type",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 32,
+        "title_size": 26,
+        "title_size_mobile": 20,
+        "head_gap": 28,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea",
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f2f3f5",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e",
+        "color_add_bg": "#ffffff",
+        "color_add_hover": "#f2f3f5",
+        "color_add_icon": "#1c1d1d",
+        "color_add_ok": "#1f7a3d"
+      }
+    },
+    "rzad_dzianina": {
+      "type": "sn-bestsellers",
+      "blocks": {
+        "d1": {
+          "type": "tab",
+          "settings": {
+            "label": "Knits & sweaters",
+            "collection": "womens-sweaters-and-knitwear",
+            "audience": "women"
+          }
+        },
+        "d2": {
+          "type": "tab",
+          "settings": {
+            "label": "Knits & sweaters",
+            "collection": "mens-sweaters-and-knitwear",
+            "audience": "men"
+          }
+        }
+      },
+      "block_order": [
+        "d1",
+        "d2"
+      ],
+      "settings": {
+        "title": "KNITS & SWEATERS",
+        "accent_word": "SWEATERS",
+        "subtitle": "Soft knits to wear on repeat.",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens",
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Sale",
+        "add_where": "hover",
+        "add_label": "Add to cart",
+        "pick_label": "Select size",
+        "show_dots": true,
+        "dots_max": 3,
+        "dots_size": 22,
+        "note_source": "type",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 32,
+        "title_size": 26,
+        "title_size_mobile": 20,
+        "head_gap": 28,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea",
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f2f3f5",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e",
+        "color_add_bg": "#ffffff",
+        "color_add_hover": "#f2f3f5",
+        "color_add_icon": "#1c1d1d",
+        "color_add_ok": "#1f7a3d"
+      }
+    },
+    "rzad_spodnie": {
+      "type": "sn-bestsellers",
+      "blocks": {
+        "s1": {
+          "type": "tab",
+          "settings": {
+            "label": "Pants",
+            "collection": "womens-bottoms",
+            "audience": "women"
+          }
+        },
+        "s2": {
+          "type": "tab",
+          "settings": {
+            "label": "Pants",
+            "collection": "mens-pants",
+            "audience": "men"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2"
+      ],
+      "settings": {
+        "title": "PANTS",
+        "accent_word": "PANTS",
+        "subtitle": "Easy fits that go with everything.",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens",
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Sale",
+        "add_where": "hover",
+        "add_label": "Add to cart",
+        "pick_label": "Select size",
+        "show_dots": true,
+        "dots_max": 3,
+        "dots_size": 22,
+        "note_source": "type",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 32,
+        "title_size": 26,
+        "title_size_mobile": 20,
+        "head_gap": 28,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea",
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f2f3f5",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e",
+        "color_add_bg": "#ffffff",
+        "color_add_hover": "#f2f3f5",
+        "color_add_icon": "#1c1d1d",
+        "color_add_ok": "#1f7a3d"
+      }
+    },
+    "rzad_buty_torby": {
+      "type": "sn-bestsellers",
+      "blocks": {
+        "b1": {
+          "type": "tab",
+          "settings": {
+            "label": "Shoes",
+            "collection": "womens-footwear",
+            "audience": "women"
+          }
+        },
+        "b2": {
+          "type": "tab",
+          "settings": {
+            "label": "Bags & accessories",
+            "collection": "womens-accessories",
+            "audience": "women"
+          }
+        },
+        "b3": {
+          "type": "tab",
+          "settings": {
+            "label": "Shoes",
+            "collection": "mens-footwear",
+            "audience": "men"
+          }
+        },
+        "b4": {
+          "type": "tab",
+          "settings": {
+            "label": "Bags & accessories",
+            "collection": "mens-accessories",
+            "audience": "men"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "title": "SHOES & BAGS",
+        "accent_word": "BAGS",
+        "subtitle": "The finishing touch for every outfit.",
+        "audience_default": "women",
+        "women_handle": "womens",
+        "men_handle": "mens",
+        "count": 12,
+        "per_view": 4,
+        "per_view_mobile": 2,
+        "gap": 2,
+        "ratio": "3 / 4",
+        "hover_photo": true,
+        "show_sale": true,
+        "sale_label": "Sale",
+        "add_where": "hover",
+        "add_label": "Add to cart",
+        "pick_label": "Select size",
+        "show_dots": true,
+        "dots_max": 3,
+        "dots_size": 22,
+        "note_source": "type",
+        "show_bar": true,
+        "bar_width": 40,
+        "bar_gap": 32,
+        "title_size": 26,
+        "title_size_mobile": 20,
+        "head_gap": 28,
+        "padding_top": 0,
+        "padding_bottom": 56,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea",
+        "color_accent": "#d6332e",
+        "color_tab_on": "#f2f3f5",
+        "color_photo_bg": "#f1efec",
+        "color_sale_bg": "#ffffff",
+        "color_sale_text": "#1c1d1d",
+        "color_sale_price": "#d6332e",
+        "color_add_bg": "#ffffff",
+        "color_add_hover": "#f2f3f5",
+        "color_add_icon": "#1c1d1d",
+        "color_add_ok": "#1f7a3d"
+      }
+    },
+    "guarantee": {
+      "type": "sn-story",
+      "settings": {
+        "layout": "left",
+        "image": "shopify://shop_images/about_us_image_2.webp",
+        "bleed": true,
+        "ratio": "4 / 3",
+        "title": "14-day money-back guarantee",
+        "text": "<p>If our product does not meet your expectations, you can return it within 14 days upon receipt.</p><p>Before returning the goods, please contact our customer service at <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> and let us know the reason for the return so we can process your request correctly.</p><p>Please review our <a href=\"/pages/return-and-refund-policy\">return policy</a> for more information!</p>",
+        "list": "",
+        "text_after": "",
+        "note": "Tell us the reason for your return so we can process your request correctly.",
+        "image_width": 40,
+        "max_width": 900,
+        "gap": 48,
+        "gap_mobile": 20,
+        "title_size": 28,
+        "title_size_mobile": 21,
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#56524c",
+        "color_accent": "#1c1d1d"
+      }
+    },
+    "reviews": {
+      "type": "ob-reviews",
+      "blocks": {
+        "review_8nFQDm": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Really great customer service",
+            "text": "A great experience from start to finish. Customer service was friendly and very helpful!",
+            "author": "Sofie L.",
+            "country": "DK",
+            "date": "04.10.2026",
+            "verified": true
+          }
+        },
+        "review_JXwaPk": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Beautiful products and great quality",
+            "text": "The product looks even better in real life. I'm very happy with the quality",
+            "author": "Emma N",
+            "country": "DK",
+            "date": "01.10.2026",
+            "verified": true
+          }
+        },
+        "review_wXzmJH": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "A fantastic shopping experience",
+            "text": "A really lovely store with beautiful products and fantastic service. Highly recommended!",
+            "author": "Clara H.",
+            "country": "DK",
+            "date": "27.09.2026",
+            "verified": true
+          }
+        },
+        "review_kANkmC": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Fast delivery and fantastic service",
+            "text": "Everything was quick and easy, and the product fully lives up to my expectations. I'd happily shop here again!",
+            "author": "Laura J.",
+            "country": "DK",
+            "date": "23.09.2026",
+            "verified": true
+          }
+        },
+        "review_b7mDM3": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Fantastic quality and fast delivery",
+            "text": "I'm really happy with my purchase! The product is fantastic quality, and delivery was fast.",
+            "author": "Freja M.",
+            "country": "DK",
+            "date": "19.08.2026",
+            "verified": true
+          }
+        },
+        "review_HcDfrY": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Good quality",
+            "text": "I was pleasantly surprised by the quality. It feels really well made.",
+            "author": "Anna K.",
+            "country": "DK",
+            "date": "08.08.2026",
+            "verified": true
+          }
+        },
+        "review_DBaVWx": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "I love it",
+            "text": "So beautiful and comfortable. I'm really glad I chose to order from here.",
+            "author": "Maria S.",
+            "country": "DK",
+            "date": "31.07.2026",
+            "verified": true
+          }
+        },
+        "review_ckhNxD": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Beautiful product",
+            "text": "I love the design, and the quality is really good. It definitely won't be my last purchase.",
+            "author": "Julie P.",
+            "country": "DK",
+            "date": "12.06.2026",
+            "verified": true
+          }
+        },
+        "review_m97B66": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Quick and easy",
+            "text": "Ordering was easy and the package arrived sooner than expected. Very happy!",
+            "author": "Ida R.",
+            "country": "DK",
+            "date": "02.05.2026",
+            "verified": true
+          }
+        },
+        "review_3tNYnd": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Really good service",
+            "text": "I had a question before buying and got a quick, friendly answer. Fantastic service!",
+            "author": "Nanna T.",
+            "country": "DK",
+            "date": "26.04.2026",
+            "verified": true
+          }
+        },
+        "review_HCMFfG": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Very satisfied",
+            "text": "I'm really happy with both the product and the whole shopping experience.",
+            "author": "Louise B.",
+            "country": "DK",
+            "date": "21.03.2026",
+            "verified": true
+          }
+        },
+        "review_QimQJ6": {
+          "type": "review",
+          "settings": {
+            "rating": "5",
+            "title": "Just as expected",
+            "text": "The product arrived as described and feels like really good quality.",
+            "author": "Camilla F.",
+            "country": "DK",
+            "date": "14.02.2026",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "review_8nFQDm",
+        "review_JXwaPk",
+        "review_wXzmJH",
+        "review_kANkmC",
+        "review_b7mDM3",
+        "review_HcDfrY",
+        "review_DBaVWx",
+        "review_ckhNxD",
+        "review_m97B66",
+        "review_3tNYnd",
+        "review_HCMFfG",
+        "review_QimQJ6"
+      ],
+      "disabled": true,
+      "settings": {
+        "eyebrow": "REVIEWS",
+        "title": "What customers say about Dalton Pierce",
+        "anchor": "reviews",
+        "count_label": "Based on",
+        "verdict_high": "Excellent",
+        "verdict_mid": "Good",
+        "verdict_low": "Average",
+        "rated_label": "Rated",
+        "based_label": "out of",
+        "reviews_word": "reviews",
+        "star_word": "stjerner",
+        "verified_label": "Verified purchase",
+        "empty_text": "There are no reviews yet.",
+        "show_distribution": false,
+        "columns": 4,
+        "desktop_initial": 4,
+        "more_label": "Show more reviews",
+        "title_size": 19,
+        "title_size_mobile": 17,
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#f7f6f4",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea",
+        "color_star": "#00b77f",
+        "color_star_off": "#dcdce6",
+        "color_bar": "#1c1d1d"
       }
     },
     "ob_reviews_wall_XxBbPA": {
@@ -199,6 +968,94 @@
         "note": "Showing our favourite reviews"
       }
     },
+    "faq": {
+      "type": "ob-faq",
+      "blocks": {
+        "q-1": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer free shipping?",
+            "answer": "<p>Yes! We offer free shipping on every order across Canada, with no minimum purchase. As orders are shipped internationally, customs procedures may apply upon arrival in Canada. Any applicable sales taxes are shown at checkout.</p>",
+            "open_by_default": true
+          }
+        },
+        "q-2": {
+          "type": "question",
+          "settings": {
+            "question": "How long does delivery take?",
+            "answer": "<p>Orders are processed within 1 to 3 business days. The average delivery time is 5 to 8 business days. We'll email you your tracking details so you can follow your parcel.</p><p>Business days are Monday to Friday, excluding public holidays. Delivery to remote or northern areas and during busy periods may take a few days longer.</p>",
+            "open_by_default": false
+          }
+        },
+        "q-3": {
+          "type": "question",
+          "settings": {
+            "question": "How do I choose the right size?",
+            "answer": "<p>Please check the measurements on the product page before choosing your size. If you're unsure, email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with the item name, and we'll help you choose.</p>",
+            "open_by_default": false
+          }
+        },
+        "q-4": {
+          "type": "question",
+          "settings": {
+            "question": "Can I return an item if it doesn't fit?",
+            "answer": "<p>Yes. Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> within 14 days of receiving your order with your order number and the items you'd like to return. We'll send you the return address of our supplier. Please wait for our reply before sending anything.</p><p>You may try items on as you would in a store, but wearing them is not permitted. Items must be unused, unwashed and undamaged, with all tags and labels still attached. Return shipping is at your expense.</p><p>We don't offer direct exchanges. If you need another size or colour, return the item and place a new order. Please see our <a href=\"/pages/return-and-refund-policy\">Returns and Refunds Policy</a> for full conditions and exclusions.</p>",
+            "open_by_default": false
+          }
+        },
+        "q-5": {
+          "type": "question",
+          "settings": {
+            "question": "How can I track my order?",
+            "answer": "<p>Once your parcel ships, we'll email you your tracking details. You can follow its progress on our <a href=\"/a/tracking\">Track your order</a> page.</p><p>If your order arrives in separate parcels, each will have its own tracking number at no extra shipping cost. Can't find the tracking email? Check your spam folder or contact us for help.</p>",
+            "open_by_default": false
+          }
+        },
+        "q-6": {
+          "type": "question",
+          "settings": {
+            "question": "Need more help?",
+            "answer": "<p>Email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com</a> with your question and, if you've already ordered, your order number. We aim to respond within 1 business day.</p><p>Our customer service hours are:</p><ul><li>Monday–Friday: 9:00 AM–6:00 PM ET</li><li>Saturday–Sunday: 10:00 AM–4:00 PM ET</li></ul>",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "q-1",
+        "q-2",
+        "q-3",
+        "q-4",
+        "q-5",
+        "q-6"
+      ],
+      "settings": {
+        "eyebrow": "FAQ",
+        "title": "Frequently asked questions",
+        "subtitle": "What people ask most before they order.",
+        "more_label": "See all questions and answers",
+        "more_link": "",
+        "max_width": 760,
+        "title_size": 19,
+        "title_size_mobile": 17,
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 36,
+        "color_bg": "#ffffff",
+        "color_text": "#1c1d1d",
+        "color_muted": "#6b6f76",
+        "color_line": "#e4e6ea"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "disabled": true,
+      "settings": {
+        "product_recommendations_heading": "RECOMMENDED FOR YOU",
+        "related_count": 6,
+        "products_per_row": 3
+      }
+    },
     "ostatnio_ogladane": {
       "type": "sn-ostatnio",
       "settings": {
@@ -223,8 +1080,19 @@
     }
   },
   "order": [
-    "main",
+    "catalog",
+    "ob_reviews_strip_QRDkmM",
+    "edytorial_kampanii",
+    "mix_match", "bestsellers",
+    "rzad_kurtki",
+    "rzad_dzianina",
+    "rzad_spodnie",
+    "rzad_buty_torby",
+    "guarantee",
+    "reviews",
     "ob_reviews_wall_XxBbPA",
+    "faq",
+    "product-recommendations",
     "ostatnio_ogladane",
     "apps"
   ]
