@@ -165,9 +165,9 @@
         "promo_head2": "Seasonal discount",
         "promo_buy_word": "Buy",
         "promo_off_word": "off",
-        "promo_border": "#e4e6ea",
-        "promo_bg": "#f2f3f5",
-        "promo_accent": "#23213a",
+        "promo_border": "#e5e5e5",
+        "promo_bg": "#f9f9f9",
+        "promo_accent": "#2d2d2d",
         "size_cols": 5,
         "size_cols_m": 4,
         "help_text": "Not sure about the size? Go by the measurements rather than the size you usually wear.",
@@ -188,8 +188,8 @@
         "note_text": "#1c1d1d",
         "show_fab": true,
         "show_sticky_atc": true,
-        "row_accent": "#6b1f2d",
-        "row_hi": "#1f7a3d",
+        "row_accent": "#000000",
+        "row_hi": "#366d12",
         "cross_show": false,
         "upgrade_show": false,
         "cross_title": "Style it with",
@@ -206,9 +206,9 @@
         "c_muted": "#6b6f76",
         "c_line": "#d9d6d1",
         "c_soft": "#f4f3f1",
-        "c_sale": "#6b1f2d",
-        "c_low": "#b05f2e",
-        "c_button": "#6b1f2d"
+        "c_sale": "#000000",
+        "c_low": "#be2119",
+        "c_button": "#2d2d2d"
       }
     },
     "ob_reviews_strip_QRDkmM": {
@@ -419,17 +419,17 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6b6f76",
-        "color_line": "#e4e6ea",
-        "color_accent": "#d6332e",
-        "color_tab_on": "#f2f3f5",
+        "color_line": "#e5e5e5",
+        "color_accent": "#000000",
+        "color_tab_on": "#f9f9f9",
         "color_photo_bg": "#f1efec",
         "color_sale_bg": "#ffffff",
         "color_sale_text": "#1c1d1d",
-        "color_sale_price": "#d6332e",
+        "color_sale_price": "#000000",
         "color_add_bg": "#ffffff",
-        "color_add_hover": "#f2f3f5",
+        "color_add_hover": "#f9f9f9",
         "color_add_icon": "#1c1d1d",
-        "color_add_ok": "#1f7a3d"
+        "color_add_ok": "#366d12"
       }
     },
     "rzad_kurtki": {
@@ -491,17 +491,17 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6b6f76",
-        "color_line": "#e4e6ea",
-        "color_accent": "#d6332e",
-        "color_tab_on": "#f2f3f5",
+        "color_line": "#e5e5e5",
+        "color_accent": "#000000",
+        "color_tab_on": "#f9f9f9",
         "color_photo_bg": "#f1efec",
         "color_sale_bg": "#ffffff",
         "color_sale_text": "#1c1d1d",
-        "color_sale_price": "#d6332e",
+        "color_sale_price": "#000000",
         "color_add_bg": "#ffffff",
-        "color_add_hover": "#f2f3f5",
+        "color_add_hover": "#f9f9f9",
         "color_add_icon": "#1c1d1d",
-        "color_add_ok": "#1f7a3d"
+        "color_add_ok": "#366d12"
       }
     },
     "rzad_dzianina": {
@@ -563,17 +563,17 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6b6f76",
-        "color_line": "#e4e6ea",
-        "color_accent": "#d6332e",
-        "color_tab_on": "#f2f3f5",
+        "color_line": "#e5e5e5",
+        "color_accent": "#000000",
+        "color_tab_on": "#f9f9f9",
         "color_photo_bg": "#f1efec",
         "color_sale_bg": "#ffffff",
         "color_sale_text": "#1c1d1d",
-        "color_sale_price": "#d6332e",
+        "color_sale_price": "#000000",
         "color_add_bg": "#ffffff",
-        "color_add_hover": "#f2f3f5",
+        "color_add_hover": "#f9f9f9",
         "color_add_icon": "#1c1d1d",
-        "color_add_ok": "#1f7a3d"
+        "color_add_ok": "#366d12"
       }
     },
     "rzad_spodnie": {
@@ -635,17 +635,17 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6b6f76",
-        "color_line": "#e4e6ea",
-        "color_accent": "#d6332e",
-        "color_tab_on": "#f2f3f5",
+        "color_line": "#e5e5e5",
+        "color_accent": "#000000",
+        "color_tab_on": "#f9f9f9",
         "color_photo_bg": "#f1efec",
         "color_sale_bg": "#ffffff",
         "color_sale_text": "#1c1d1d",
-        "color_sale_price": "#d6332e",
+        "color_sale_price": "#000000",
         "color_add_bg": "#ffffff",
-        "color_add_hover": "#f2f3f5",
+        "color_add_hover": "#f9f9f9",
         "color_add_icon": "#1c1d1d",
-        "color_add_ok": "#1f7a3d"
+        "color_add_ok": "#366d12"
       }
     },
     "rzad_buty_torby": {
@@ -725,17 +725,17 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6b6f76",
-        "color_line": "#e4e6ea",
-        "color_accent": "#d6332e",
-        "color_tab_on": "#f2f3f5",
+        "color_line": "#e5e5e5",
+        "color_accent": "#000000",
+        "color_tab_on": "#f9f9f9",
         "color_photo_bg": "#f1efec",
         "color_sale_bg": "#ffffff",
         "color_sale_text": "#1c1d1d",
-        "color_sale_price": "#d6332e",
+        "color_sale_price": "#000000",
         "color_add_bg": "#ffffff",
-        "color_add_hover": "#f2f3f5",
+        "color_add_hover": "#f9f9f9",
         "color_add_icon": "#1c1d1d",
-        "color_add_ok": "#1f7a3d"
+        "color_add_ok": "#366d12"
       }
     },
     "guarantee": {
@@ -956,7 +956,7 @@
         "color_bg": "#f7f6f4",
         "color_text": "#1c1d1d",
         "color_muted": "#6b6f76",
-        "color_line": "#e4e6ea",
+        "color_line": "#e5e5e5",
         "color_star": "#00b77f",
         "color_star_off": "#dcdce6",
         "color_bar": "#1c1d1d"
@@ -1129,7 +1129,7 @@
         "color_bg": "#ffffff",
         "color_text": "#1c1d1d",
         "color_muted": "#6b6f76",
-        "color_line": "#e4e6ea"
+        "color_line": "#e5e5e5"
       }
     },
     "product-recommendations": {
@@ -1146,7 +1146,7 @@
       "settings": {
         "title": "RECENTLY\nVIEWED",
         "accent_word": "VIEWED",
-        "color_accent": "#d6332e",
+        "color_accent": "#000000",
         "count": 12,
         "per_view": 4,
         "per_view_mobile": 2,

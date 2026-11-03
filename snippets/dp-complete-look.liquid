@@ -53,11 +53,11 @@
 -%}
 {%- if zrodla != blank and product.type != 'Order Add-on' -%}
 <style>
-  .dp-look { margin: 28px 0 4px; padding: 14px 14px 12px; border: 1px solid #e4e6ea; border-radius: 8px; }
+  .dp-look { margin: 28px 0 4px; padding: 14px 14px 12px; border: 1px solid #e5e5e5; border-radius: 8px; }
   .dp-look[hidden] { display: none; }
   .dp-look__head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
   .dp-look__title { margin: 0; font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
-  .dp-look__hint { margin: 0; font-size: 12px; color: #6b1f2d; font-weight: 600; text-align: right; }
+  .dp-look__hint { margin: 0; font-size: 12px; color: #000000; font-weight: 600; text-align: right; }
   .dp-look__list { list-style: none; margin: 0; padding: 0; }
   .dp-look__item { display: grid; grid-template-columns: 22px 52px minmax(0, 1fr); gap: 10px; align-items: center; padding: 8px 0; border-top: 1px solid #f0f1f3; }
   .dp-look__item:first-child { border-top: 0; padding-top: 2px; }
@@ -71,23 +71,23 @@
   .dp-look__row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .dp-look__price { font-size: 13px; font-weight: 600; white-space: nowrap; }
   .dp-look__select { max-width: 130px; height: 30px; padding: 0 26px 0 8px; font-size: 12.5px; border: 1px solid #c9cbcf; border-radius: 4px; background-color: #fff; }
-  .dp-look__select.is-err { border-color: #6b1f2d; }
+  .dp-look__select.is-err { border-color: #000000; }
   .dp-look__options { font-size: 12px; color: #6b6f76; }
-  .dp-look__summary { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 10px 0 10px; padding-top: 10px; border-top: 1px solid #e4e6ea; font-size: 13px; }
+  .dp-look__summary { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 10px 0 10px; padding-top: 10px; border-top: 1px solid #e5e5e5; font-size: 13px; }
   .dp-look__summary s { color: #6b6f76; margin-right: 6px; font-weight: 400; }
   .dp-look__summary b { font-size: 15px; }
-  .dp-look__save { color: #6b1f2d; font-weight: 600; }
+  .dp-look__save { color: #000000; font-weight: 600; }
   .dp-look__button { width: 100%; min-height: 46px; border: 1px solid #1c1d1d; background: #fff; color: #1c1d1d; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; border-radius: 0; }
   .dp-look__button:hover:not([disabled]) { background: #1c1d1d; color: #fff; }
   .dp-look__button[disabled] { opacity: .55; cursor: default; }
-  .dp-look__error { margin: 8px 0 0; font-size: 12.5px; color: #6b1f2d; }
+  .dp-look__error { margin: 8px 0 0; font-size: 12.5px; color: #000000; }
   .dp-look__error[hidden] { display: none; }
   .dp-look__lead { margin: -4px 0 8px; font-size: 12.5px; color: #6b6f76; }
   .dp-look__slot { padding: 10px 0 8px; border-top: 1px solid #f0f1f3; }
   .dp-look__slot-title { margin: 0 0 6px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #6b6f76; }
   .dp-look__strip { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 4px; scrollbar-width: none; scroll-snap-type: x proximity; }
   .dp-look__strip::-webkit-scrollbar { display: none; }
-  .dp-look__alt { position: relative; flex: 0 0 82px; padding: 0; border: 1px solid #e4e6ea; border-radius: 6px; background: #fff; color: #1c1d1d; text-align: left; cursor: pointer; overflow: hidden; scroll-snap-align: start; }
+  .dp-look__alt { position: relative; flex: 0 0 82px; padding: 0; border: 1px solid #e5e5e5; border-radius: 6px; background: #fff; color: #1c1d1d; text-align: left; cursor: pointer; overflow: hidden; scroll-snap-align: start; }
   .dp-look__alt:hover, .dp-look__alt:focus-visible { border-color: #1c1d1d; }
   .dp-look__alt[aria-pressed="true"] { border-color: #1c1d1d; box-shadow: inset 0 0 0 1px #1c1d1d; }
   .dp-look__alt[aria-pressed="true"]::after { content: "✓"; position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: #1c1d1d; color: #fff; font-size: 12px; line-height: 20px; text-align: center; }

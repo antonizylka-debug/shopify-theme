@@ -339,11 +339,11 @@
   #shopify-section-{{ section.id }} .pdp__akcja-brw {
     display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2px 8px;
     margin: 0 0 3px;
-    font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6b1f2d;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #000000;
   }
-  #shopify-section-{{ section.id }} .pdp__akcja-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #6b1f2d; flex: 0 0 7px; }
+  #shopify-section-{{ section.id }} .pdp__akcja-dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: #000000; flex: 0 0 7px; }
   #shopify-section-{{ section.id }} .pdp__akcja-dot::after {
-    content: ""; position: absolute; inset: 0; border-radius: 50%; background: #6b1f2d;
+    content: ""; position: absolute; inset: 0; border-radius: 50%; background: #000000;
     animation: pdp-akcja-puls 1.6s ease-out infinite;
   }
   @keyframes pdp-akcja-puls { from { transform: scale(1); opacity: 0.6; } to { transform: scale(2.6); opacity: 0; } }
@@ -361,7 +361,7 @@
   #shopify-section-{{ section.id }} .pdp__akcja-prog span { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--pdp-muted); white-space: nowrap; }
   #shopify-section-{{ section.id }} .pdp__akcja-prog b { font-size: 18px; font-weight: 700; line-height: 1.15; white-space: nowrap; font-variant-numeric: tabular-nums; }
   #shopify-section-{{ section.id }} .pdp__akcja-prog--max span,
-  #shopify-section-{{ section.id }} .pdp__akcja-prog--max b { color: #6b1f2d; }
+  #shopify-section-{{ section.id }} .pdp__akcja-prog--max b { color: #000000; }
   #shopify-section-{{ section.id }} .pdp__akcja-s { margin: 8px 0 0; font-size: 12.5px; line-height: 1.4; color: var(--pdp-muted); text-wrap: balance; }
   #shopify-section-{{ section.id }} .pdp__akcja { padding: 10px 12px; }
   #shopify-section-{{ section.id }} .pdp__akcja-t { display: none; }
@@ -450,14 +450,14 @@
       display: flex; align-items: center; gap: 14px;
       position: fixed; left: 0; right: 0; bottom: 0; z-index: 25;
       padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
-      background: #ffffff; border-top: 1px solid #e4e6ea;
+      background: #ffffff; border-top: 1px solid #e5e5e5;
       box-shadow: 0 -6px 18px rgba(28, 29, 29, 0.08);
       transform: translateY(110%); transition: transform 0.25s ease;
     }
     #shopify-section-{{ section.id }} .pdp__stick.is-on { transform: translateY(0); }
     #shopify-section-{{ section.id }} .pdp__stick-info { display: flex; flex-direction: column; min-width: 0; flex: 0 1 auto; }
     #shopify-section-{{ section.id }} .pdp__stick-price { font-size: 17px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
-    #shopify-section-{{ section.id }} .pdp__stick.is-sale .pdp__stick-price { color: #6b1f2d; }
+    #shopify-section-{{ section.id }} .pdp__stick.is-sale .pdp__stick-price { color: #000000; }
     {%- comment -%}
       Obok ceny obnizka produktu: przekreslona cena i procent (27.10, prosba
       Antoniego) - wczesniej pasek pokazywal sama cene i promocja znikala,
@@ -469,7 +469,7 @@
     #shopify-section-{{ section.id }} .pdp__stick-promo s { color: var(--pdp-muted); }
     #shopify-section-{{ section.id }} .pdp__stick-promo b {
       padding: 2px 6px; border-radius: 10px;
-      background: #6b1f2d; color: #fff;
+      background: #000000; color: #fff;
       font-size: 11.5px; font-weight: 600; font-variant-numeric: tabular-nums;
     }
     #shopify-section-{{ section.id }} .pdp__stick-opt { font-size: 12.5px; color: var(--pdp-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1826,9 +1826,9 @@
     { "type": "text", "id": "promo_head2", "label": "Heading above the steps", "default": "Multi-buy discount" },
     { "type": "text", "id": "promo_buy_word", "label": "Before the quantity", "default": "Buy" },
     { "type": "text", "id": "promo_off_word", "label": "After the percentage", "default": "off" },
-    { "type": "color", "id": "promo_border", "label": "Border", "default": "#e4e6ea" },
+    { "type": "color", "id": "promo_border", "label": "Border", "default": "#e5e5e5" },
     { "type": "color", "id": "promo_bg", "label": "Background", "default": "#f4f3f1" },
-    { "type": "color", "id": "promo_accent", "label": "Accent", "default": "#23213a" },
+    { "type": "color", "id": "promo_accent", "label": "Accent", "default": "#2d2d2d" },
 
     { "type": "header", "content": "Sizes" },
     { "type": "range", "id": "size_cols", "label": "Size tiles per row", "default": 5, "min": 3, "max": 8, "step": 1 },
@@ -1863,8 +1863,8 @@
     { "type": "checkbox", "id": "show_sticky_atc", "label": "Sticky add to cart bar (mobile)", "default": true },
 
     { "type": "header", "content": "Promise rows" },
-    { "type": "color", "id": "row_accent", "label": "Line at the first row", "default": "#6b1f2d" },
-    { "type": "color", "id": "row_hi", "label": "Highlighted part of a heading", "default": "#1f7a3d" },
+    { "type": "color", "id": "row_accent", "label": "Line at the first row", "default": "#000000" },
+    { "type": "color", "id": "row_hi", "label": "Highlighted part of a heading", "default": "#366d12" },
 
     { "type": "header", "content": "Suggestion under the accordions" },
     { "type": "checkbox", "id": "cross_show", "label": "Show it", "default": true },
@@ -1889,9 +1889,9 @@
     { "type": "color", "id": "c_muted", "label": "Secondary text", "default": "#6b6f76" },
     { "type": "color", "id": "c_line", "label": "Borders", "default": "#d9d6d1" },
     { "type": "color", "id": "c_soft", "label": "Soft background", "default": "#f4f3f1" },
-    { "type": "color", "id": "c_sale", "label": "Sale red", "default": "#6b1f2d" },
-    { "type": "color", "id": "c_low", "label": "Low stock dot", "default": "#b05f2e" },
-    { "type": "color", "id": "c_button", "label": "Button", "default": "#23213a" }
+    { "type": "color", "id": "c_sale", "label": "Sale red", "default": "#000000" },
+    { "type": "color", "id": "c_low", "label": "Low stock dot", "default": "#be2119" },
+    { "type": "color", "id": "c_button", "label": "Button", "default": "#2d2d2d" }
   ],
   "blocks": [
     {
