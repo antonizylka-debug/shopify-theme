@@ -172,12 +172,15 @@
     (function () {
       var hint = korzen.querySelector('[data-sno-hint]');
       if (!hint) return;
-      function cel() { return document.querySelector('.cp__title') || document.querySelector('[data-pdp-atc]'); }
+      function cel() { return document.querySelector('.cp__rating') || document.querySelector('.cp__title') || document.querySelector('[data-pdp-atc]'); }
       if (!cel()) return;
       hint.hidden = false;
       hint.addEventListener('click', function () {
         var c = cel();
-        if (c) window.scrollTo({ top: Math.max(0, c.getBoundingClientRect().top + window.pageYOffset - 70), behavior: 'smooth' });
+        if (!c) return;
+        /* PC: kolumna z informacjami jest przyklejona, wiec przewijamy do gory sekcji produktu; telefon: od linii "Based on ... Reviews" w dol */
+        var rama = window.innerWidth >= 900 ? (document.querySelector('.cp') || c) : c;
+        window.scrollTo({ top: Math.max(0, rama.getBoundingClientRect().top + window.pageYOffset - (window.innerWidth >= 900 ? 90 : 70)), behavior: 'smooth' });
       });
     })();
 

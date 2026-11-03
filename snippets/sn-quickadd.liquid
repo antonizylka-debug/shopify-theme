@@ -47,6 +47,7 @@
         <div class="snq__nawig" data-snq-nawig>
           <button type="button" class="snq__strz" data-snq-foto-krok="-1" aria-label="{{ 'general.slider.previous_slide' | t }}">&lsaquo;</button>
           <span data-snq-licznik></span>
+          <span class="snq__fit" data-snq-fit></span>
           <button type="button" class="snq__strz" data-snq-foto-krok="1" aria-label="{{ 'general.slider.next_slide' | t }}">&rsaquo;</button>
         </div>
       </div>
@@ -286,12 +287,16 @@
   .snq__opis-prod[open] summary::after { content: '-'; }
   .snq__opis-tekst { font-size: 12px; line-height: 18px; color: #525252; }
   .snq__link { margin-top: 16px; font-size: 12px; font-weight: 400; letter-spacing: 0.36px; }
-  /* galeria jak na stronie produktu: zdjecia jedno pod drugim, bez przewijania na boki; scrolluje caly panel (pasek ukryty) */
-  .snq__zdjecia { display: block; overflow: visible; cursor: default; }
-  .snq__zdjecia img { width: 100%; margin-bottom: 2px; }
-  .snq__nawig { display: none !important; }
-  .snq__tresc { scrollbar-width: none; }
-  .snq__tresc::-webkit-scrollbar { display: none; }
+  /* galeria jak na telefonie na stronie produktu: zdjecia obok siebie (przesuwane palcem/mysza, suwak ukryty), na nich licznik 1/4 i pastylka z modelem */
+  .snq__galeria { position: relative; }
+  .snq__zdjecia { scrollbar-width: none; -ms-overflow-style: none; }
+  .snq__zdjecia::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  .snq__nawig { position: absolute; left: 15px; right: 15px; bottom: 15px; margin: 0; gap: 6px; justify-content: flex-start; align-items: stretch; pointer-events: none; }
+  .snq__strz { display: none; }
+  .snq__nawig [data-snq-licznik] { display: flex; align-items: center; padding: 6px 10px; background: #d4d4d4; color: #000; font-size: 11px; line-height: 20px; letter-spacing: 0.3px; }
+  .snq__nawig [data-snq-licznik][hidden] { display: none; }
+  .snq__fit:empty { display: none; }
+  .snq__fit .dp-photo-fit { display: flex; align-items: center; min-width: 0; padding: 6px 10px; background: #d4d4d4; color: #000; font-size: 11px; line-height: 16px; letter-spacing: 0.3px; border-radius: 0; }
 </style>
 
 <script>
@@ -304,6 +309,7 @@
     var zdjecia = okno.querySelector('[data-snq-zdjecia]');
     var nawig = okno.querySelector('[data-snq-nawig]');
     var licznik = okno.querySelector('[data-snq-licznik]');
+    var fit = okno.querySelector('[data-snq-fit]');
     var opisBox = okno.querySelector('[data-snq-opis-box]');
     var opisTekst = okno.querySelector('[data-snq-opis]');
     var link = okno.querySelector('[data-snq-link]');
@@ -434,11 +440,28 @@
         zdjecia.appendChild(im);
       });
       zdjecia.scrollLeft = 0;
-      nawig.hidden = zdjecia.children.length < 2;
+      nawig.hidden = false;
       liczZdjecia();
     }
+    /* pastylka "Model is 177 cm and wears size M" - te same dane co na stronie produktu (render sekcji strony, bez przeladowania) */
+    var pastylki = {};
+    function pastylkaModelu(uchwyt) {
+      fit.innerHTML = '';
+      function wstaw(h) { fit.innerHTML = h || ''; }
+      if (uchwyt in pastylki) { wstaw(pastylki[uchwyt]); return; }
+      var korzen = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+      fetch(korzen + 'products/' + uchwyt + '?section_id=catalog')
+        .then(function (o) { return o.ok ? o.text() : ''; })
+        .then(function (h) {
+          var d = document.createElement('div'); d.innerHTML = h;
+          var el = d.querySelector('.cp__bar .dp-photo-fit');
+          pastylki[uchwyt] = el ? el.outerHTML : '';
+          wstaw(pastylki[uchwyt]);
+        })
+        .catch(function () {});
+    }
     function ktoreZdjecie() { return Math.round(zdjecia.scrollLeft / Math.max(1, zdjecia.clientWidth)); }
-    function liczZdjecia() { licznik.textContent = (ktoreZdjecie() + 1) + ' / ' + zdjecia.children.length; }
+    function liczZdjecia() { licznik.hidden = zdjecia.children.length < 2; licznik.textContent = (ktoreZdjecie() + 1) + '/' + zdjecia.children.length; }
     function idzDo(i) {
       var n = zdjecia.children.length;
       if (!n) return;
@@ -622,6 +645,7 @@
         rysujGalerie();
         rysujOpcje();
         odswiez();
+        pastylkaModelu(uchwyt);
       }
 
       if (pobrane[uchwyt]) { gotowe(pobrane[uchwyt]); return; }
