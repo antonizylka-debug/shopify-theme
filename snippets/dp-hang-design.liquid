@@ -283,3 +283,71 @@
     [id*="our_favourites"] .section-header { padding-left: var(--dp-gutter); padding-right: var(--dp-gutter); }
   }
 </style>
+
+<style>
+  /* Selected for women/men + Our favourites jak u hang-eleven (telefon i komputer): zdjecia od krawedzi, 2 px miedzy kartami, plaska karta,
+     tytul zdaniem, bez grubego paska przewijania (Antoni 03.11.2026: "slabo wyglada, nie w stylu hang-eleven") */
+  [id*="featured_picks"] .snc__foto, ,
+    [id*="featured_men"] .snc__foto, ,
+    [id*="our_favourites"] .snc__foto, [id*="featured_picks"] .snc__pas,
+    [id*="featured_men"] .snc__pas,
+    [id*="our_favourites"] .snc__pas { border-radius: 0 !important; background: #f9f9f9 !important; }
+  [id*="featured_picks"] .snc__klatka,
+    [id*="featured_men"] .snc__klatka,
+    [id*="our_favourites"] .snc__klatka { aspect-ratio: 152 / 213; }
+  [id*="featured_picks"] .snc__img,
+    [id*="featured_men"] .snc__img,
+    [id*="our_favourites"] .snc__img { width: 100%; height: 100%; object-fit: cover; }
+  [id*="featured_picks"] .snc__sale,
+    [id*="featured_men"] .snc__sale,
+    [id*="our_favourites"] .snc__sale { top: 10px; left: 10px; padding: 3px 6px; border-radius: 0; background: #000; color: #fff; }
+  [id*="featured_picks"] .snc__plus,
+    [id*="featured_men"] .snc__plus,
+    [id*="our_favourites"] .snc__plus { width: 36px; height: 36px; right: 8px; bottom: 8px; border-radius: 0; background: #fff; color: #000; box-shadow: none; }
+  [id*="featured_picks"] .snc__opis,
+    [id*="featured_men"] .snc__opis,
+    [id*="our_favourites"] .snc__opis { display: flex; flex-direction: column; gap: 2px; padding: 10px 8px 0 8px; }
+  [id*="featured_picks"] .snc__rzad,
+    [id*="featured_men"] .snc__rzad,
+    [id*="our_favourites"] .snc__rzad, [id*="featured_picks"] .snc__lewa,
+    [id*="featured_men"] .snc__lewa,
+    [id*="our_favourites"] .snc__lewa { display: contents; }
+  [id*="featured_picks"] .snc__nazwa,
+    [id*="featured_men"] .snc__nazwa,
+    [id*="our_favourites"] .snc__nazwa { order: 1; -webkit-line-clamp: 2; }
+  [id*="featured_picks"] .snc__kolor-nazwa,
+    [id*="featured_men"] .snc__kolor-nazwa,
+    [id*="our_favourites"] .snc__kolor-nazwa { order: 2; display: block; color: #939393; }
+  [id*="featured_picks"] .snc__ceny,
+    [id*="featured_men"] .snc__ceny,
+    [id*="our_favourites"] .snc__ceny { order: 3; display: flex; flex-direction: row; align-items: baseline; gap: 6px; margin-top: 4px; }
+  [id*="featured_picks"] .snc__bylo,
+    [id*="featured_men"] .snc__bylo,
+    [id*="our_favourites"] .snc__bylo { color: #939393; }
+  [id*="featured_picks"] .section-header__title,
+    [id*="featured_men"] .section-header__title,
+    [id*="our_favourites"] .section-header__title { text-transform: lowercase !important; }
+  [id*="featured_picks"] .section-header__title::first-letter,
+    [id*="featured_men"] .section-header__title::first-letter,
+    [id*="our_favourites"] .section-header__title::first-letter { text-transform: uppercase; }
+  [id*="featured_picks"] .grid-overflow-wrapper,
+    [id*="featured_men"] .grid-overflow-wrapper,
+    [id*="our_favourites"] .grid-overflow-wrapper { scrollbar-width: none !important; -ms-overflow-style: none; }
+  [id*="featured_picks"] .grid-overflow-wrapper::-webkit-scrollbar,
+    [id*="featured_men"] .grid-overflow-wrapper::-webkit-scrollbar,
+    [id*="our_favourites"] .grid-overflow-wrapper::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+  @media (max-width: 768px) {
+    [id*="featured_picks"] .page-width,
+    [id*="featured_men"] .page-width,
+    [id*="our_favourites"] .page-width { padding-left: 0 !important; padding-right: 0 !important; }
+    [id*="featured_picks"] .grid-overflow-wrapper,
+    [id*="featured_men"] .grid-overflow-wrapper,
+    [id*="our_favourites"] .grid-overflow-wrapper { padding: 0 !important; margin: 0 !important; }
+    [id*="featured_picks"] .grid,
+    [id*="featured_men"] .grid,
+    [id*="our_favourites"] .grid { gap: 2px; margin-left: 0 !important; margin-right: 0 !important; padding: 0 !important; }
+    [id*="featured_picks"] .grid__item,
+    [id*="featured_men"] .grid__item,
+    [id*="our_favourites"] .grid__item { flex: 0 0 calc(50% - 1px) !important; width: calc(50% - 1px) !important; padding: 0 !important; margin: 0 !important; }
+  }
+</style>
