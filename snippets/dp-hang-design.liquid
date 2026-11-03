@@ -73,14 +73,8 @@
   /* naglowki sekcji pod produktem: po lewej, 15 px od krawedzi */
   .dp-mix__head, .rvw__head, .rvw__top, .snb2__head, .obf__inner > .obf__eyebrow, .obf__title, .obf__sub { text-align: left !important; padding-left: var(--dp-gutter); padding-right: var(--dp-gutter); }
   .dp-mix__head, .rvw__head { margin-bottom: 14px !important; }
-  .dp-mix, .rvw, .sns, .obf, .snb2, .sne { border-radius: 0 !important; box-shadow: none !important; }
+  .dp-mix, .rvw, .sns, .obf, .snb2 { border-radius: 0 !important; box-shadow: none !important; }
 
-  /* baner z promocja (sne): zdjecie od krawedzi do krawedzi, tekst na srodku, maly czarny przycisk jak w hero */
-  .sne { margin: 0 !important; }
-  .sne__txt { display: flex !important; flex-direction: column; align-items: center !important; justify-content: flex-end !important; text-align: center !important; padding: 0 var(--dp-gutter) 24px !important; }
-  .sne__over { display: inline-flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 8px; text-align: center !important; }
-  .sne__tytul { font-size: 24px !important; line-height: 31.2px !important; }
-  .sne__btn { width: auto !important; min-height: 32px; padding: 9px 12px !important; background: #000 !important; color: #fff !important; border: 0 !important; border-radius: 0 !important; font-size: 10px !important; font-weight: 500 !important; letter-spacing: 0.36px !important; text-transform: uppercase !important; }
 
   /* mix & match: plaski rzad warunkow z cienkimi liniami zamiast pastylek */
   .dp-mix { padding-left: 0 !important; padding-right: 0 !important; }
@@ -97,8 +91,8 @@
   .sns__media, .sns__media img { border-radius: 0 !important; }
 
   /* opinie: plaskie karty z cienka linia */
-  .rvw__card, .rvs__card, [class*="rvw__card"], [class*="rvs__card"] { background: #fff !important; border: 1px solid var(--dp-line) !important; border-radius: 0 !important; box-shadow: none !important; }
-  .rvw__reply, .rvs__reply { border-left: 0 !important; border-top: 1px solid var(--dp-line); border-radius: 0 !important; background: transparent !important; padding-left: 0 !important; }
+  .rvw__card, [class*="rvw__card"] { background: #fff !important; border: 1px solid var(--dp-line) !important; border-radius: 0 !important; box-shadow: none !important; }
+  .rvw__reply { border-left: 0 !important; border-top: 1px solid var(--dp-line); border-radius: 0 !important; background: transparent !important; padding-left: 0 !important; }
 
   /* FAQ pod produktem: wiersze z cienkimi liniami */
   .obf__item { border-top: 1px solid var(--dp-line) !important; border-bottom: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; padding-left: 0; padding-right: 0; }
@@ -134,14 +128,12 @@
 <style>
   /* ==== Jedna linia po lewej pod produktem (03.11.2026, Antoni: "tytuly sekcji dziwnie wygladaja, nieschludnie") ====
      Wszystkie naglowki i teksty sekcji zaczynaja sie dokladnie 15 px od lewej krawedzi, wszystkie po lewej, w jednym stylu. */
-  .rvs__sum, .rvs__verdict, .rvs__based, .rvs__stars { text-align: left !important; align-items: flex-start !important; justify-content: flex-start !important; }
-  .rvs__sum { padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; flex: 0 0 auto !important; }
   .sns__in { padding-left: 0 !important; padding-right: 0 !important; }
   .sns__body { padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; }
   .rvw__head { padding: 0 var(--dp-gutter) !important; text-align: left !important; }
   .rvw__top { padding: 0 !important; margin: 0 !important; justify-content: flex-start !important; text-align: left !important; }
   .rvw__verdict, .rvw__stars, .rvw__rated, .rvw__logo-wrap { margin-left: 0 !important; }
-  .rvw__note, .rvs__note, .rvs__demo, .rvw__demo { padding: 0 var(--dp-gutter) !important; margin-left: 0 !important; margin-right: 0 !important; text-align: left !important; }
+  .rvw__note, .rvw__demo { padding: 0 var(--dp-gutter) !important; margin-left: 0 !important; margin-right: 0 !important; text-align: left !important; }
   .obf__item, .obf__sub, .obf__title, .obf__eyebrow, .obf__inner > * { padding-left: var(--dp-gutter); padding-right: var(--dp-gutter); }
   .obf__item { padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; }
 
@@ -162,8 +154,6 @@
   .rvw__scroll { max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; }
   .rvw__grid { width: 100%; }
 
-  .rvs__wrap { padding-left: 0 !important; padding-right: 0 !important; }
-  .rvs__sum { padding-left: var(--dp-gutter) !important; }
 
   .sns__body { padding-left: 0 !important; padding-right: 0 !important; }
   @media (min-width: 769px) { .sns__body { padding-left: 48px !important; } }
