@@ -131,3 +131,22 @@
   @media (max-width: 768px) { .hero__image-wrapper image-element.hero__image.small--hide { display: none !important; } .hero__image-wrapper image-element.hero__image.medium-up--hide { display: block; } }
   .hero__image-wrapper image-element.hero__image img { width: 100%; height: 100% !important; object-fit: cover; object-position: center 28%; }
 </style>
+<style>
+  /* ==== Jedna linia po lewej pod produktem (03.11.2026, Antoni: "tytuly sekcji dziwnie wygladaja, nieschludnie") ====
+     Wszystkie naglowki i teksty sekcji zaczynaja sie dokladnie 15 px od lewej krawedzi, wszystkie po lewej, w jednym stylu. */
+  .rvs__sum, .rvs__verdict, .rvs__based, .rvs__stars { text-align: left !important; align-items: flex-start !important; justify-content: flex-start !important; }
+  .rvs__sum { padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; flex: 0 0 auto !important; }
+  .sns__in { padding-left: 0 !important; padding-right: 0 !important; }
+  .sns__body { padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; }
+  .rvw__head { padding: 0 var(--dp-gutter) !important; text-align: left !important; }
+  .rvw__top { padding: 0 !important; margin: 0 !important; justify-content: flex-start !important; text-align: left !important; }
+  .rvw__verdict, .rvw__stars, .rvw__rated, .rvw__logo-wrap { margin-left: 0 !important; }
+  .rvw__note, .rvs__note, .rvs__demo, .rvw__demo { padding: 0 var(--dp-gutter) !important; margin-left: 0 !important; margin-right: 0 !important; text-align: left !important; }
+  .obf__item, .obf__sub, .obf__title, .obf__eyebrow, .obf__inner > * { padding-left: var(--dp-gutter); padding-right: var(--dp-gutter); }
+  .obf__item { padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; }
+
+  /* naglowki wpisane wielkimi literami w ustawieniach sekcji: zdanie z wielka pierwsza litera, jak u hang-eleven */
+  .dp-mix__title, .snb2__title { text-transform: lowercase !important; }
+  .dp-mix__title::first-letter, .snb2__title::first-letter { text-transform: uppercase; }
+  .dp-mix__title *, .snb2__title * { text-transform: lowercase !important; }
+</style>
