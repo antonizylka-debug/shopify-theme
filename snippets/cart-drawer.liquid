@@ -125,6 +125,14 @@
               <span><b>Secure checkout</b><small>Encrypted</small></span>
             </div>
           </div>
+          {%- comment -%} 03.11.2026 (Antoni): metody platnosci tez w koszyku - te same, ktore sklep ma wlaczone w Shopify {%- endcomment -%}
+          {%- if shop.enabled_payment_types != empty -%}
+            <div class="snk-pay" role="list" aria-label="Accepted payment methods">
+              {%- for type in shop.enabled_payment_types -%}
+                <span class="snk-pay__i" role="listitem">{{ type | payment_type_svg_tag: class: 'snk-pay__icon' }}</span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
         </div>
       </div>
 
