@@ -691,7 +691,7 @@
       var foot = document.createElement('div'); foot.className = 'dp-ffoot';
       foot.innerHTML = '<button type="button">Show results</button>';
       var over = document.createElement('div'); over.className = 'dp-fover';
-      side.insertBefore(head, side.firstChild); side.appendChild(foot); document.body.appendChild(over);
+      side.insertBefore(head, side.firstChild); side.appendChild(foot); document.body.appendChild(over); document.body.appendChild(side);
       var h = document.documentElement;
       function open() { h.classList.add('dp-filter-open'); }
       function close() { h.classList.remove('dp-filter-open'); }
