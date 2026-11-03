@@ -227,6 +227,11 @@
 
   {%- comment -%} karty "Shop the look": te same karty sklepu (sn-karta), tylko w wygladzie wzoru {%- endcomment -%}
   #shopify-section-{{ section.id }} .cp__look .dp-combine { margin: 0; }
+  {%- comment -%} szkielet w czasie ladowania kart - wiersz widac od razu, nawet na wolnym telefonie {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__skel { display: flex; gap: 2px; padding: 0 15px; overflow: hidden; }
+  #shopify-section-{{ section.id }} .cp__skel span { flex: 0 0 152px; height: 273px; background: linear-gradient(var(--cp-soft) 0 213px, transparent 213px); animation: cp-skel 1.4s ease-in-out infinite; }
+  @keyframes cp-skel { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+  @media (prefers-reduced-motion: reduce) { #shopify-section-{{ section.id }} .cp__skel span { animation: none; } }
   #shopify-section-{{ section.id }} .cp__look .dp-combine__head { display: none; }
   #shopify-section-{{ section.id }} .cp__look .dp-combine__track { gap: 2px; padding: 0 15px; scroll-padding: 0 15px; scroll-snap-type: x mandatory; }
   #shopify-section-{{ section.id }} .cp__look .dp-combine__card { flex: 0 0 152px; }
@@ -303,6 +308,8 @@
     #shopify-section-{{ section.id }} .cp__acc-title { padding: 17.32px 0; }
     #shopify-section-{{ section.id }} .cp__acc-body { padding: 0 0 20px; }
     #shopify-section-{{ section.id }} .cp__look .dp-combine__track { padding: 0; scroll-padding: 0; }
+    #shopify-section-{{ section.id }} .cp__skel { padding: 0; }
+    #shopify-section-{{ section.id }} .cp__skel span { flex-basis: 146px; }
     #shopify-section-{{ section.id }} .cp__look .dp-combine__card { flex-basis: 146px; }
     #shopify-section-{{ section.id }} .cp__bar { display: block; position: static; }
     #shopify-section-{{ section.id }} .cp__bar .dp-photo-fit,
@@ -506,9 +513,12 @@
       {%- comment -%} ---------- "Shop the look" + akordeony ---------- {%- endcomment -%}
       <div class="cp__accs">
         {%- if section.settings.look_label != blank -%}
-          <div class="cp__acc cp__look is-open" data-cp-acc data-cp-look hidden>
+          <div class="cp__acc cp__look is-open" data-cp-acc data-cp-look>
             <button type="button" class="cp__acc-title" aria-expanded="true">{{ section.settings.look_label }}</button>
-            <div class="cp__acc-wrap"><div class="cp__look-body">{%- render 'dp-combine-with', product: product -%}</div></div>
+            <div class="cp__acc-wrap"><div class="cp__look-body">
+                <div class="cp__skel" data-cp-skel aria-hidden="true"><span></span><span></span><span></span></div>
+                {%- render 'dp-combine-with', product: product -%}
+              </div></div>
           </div>
         {%- endif -%}
         {%- assign akordeony = section.blocks | where: 'type', 'acc' -%}
@@ -797,9 +807,16 @@
       if (!wiersz) return;
       var ramka = wiersz.querySelector('[data-dp-combine]');
       if (!ramka) { wiersz.hidden = true; return; }
-      function synchronizuj() { wiersz.hidden = ramka.hidden; }
-      new MutationObserver(synchronizuj).observe(ramka, { attributes: true, attributeFilter: ['hidden'] });
-      synchronizuj();
+      /* Wiersz jest widoczny od razu (ze szkieletem). Znika dopiero, gdy pobieranie kart sie skonczylo i kart nie ma
+         (zdarzenie dp-combine:done z dp-combine-with), albo po 15 s bez odpowiedzi. */
+      function gotowe() {
+        var szkielet = wiersz.querySelector('[data-cp-skel]');
+        if (szkielet) szkielet.remove();
+        wiersz.hidden = ramka.hidden;
+      }
+      ramka.addEventListener('dp-combine:done', gotowe);
+      new MutationObserver(function () { if (!ramka.hidden) gotowe(); }).observe(ramka, { attributes: true, attributeFilter: ['hidden'] });
+      setTimeout(function () { if (ramka.hidden) gotowe(); }, 15000);
     })();
 
     /* ---------- telefon: dolny przycisk koszyka i gorny pasek ----------

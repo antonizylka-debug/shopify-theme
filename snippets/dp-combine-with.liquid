@@ -116,11 +116,21 @@
     function start() {
       var zrodla = (ramka.getAttribute('data-dp-combine-sources') || '').split('|').filter(Boolean);
       var pamiec = window.__snKort = window.__snKort || {};
+      /* Pobranie z ponowieniami (limit zapytan Shopify potrafi odrzucic pojedyncze, 03.11.2026). Pusty wynik nie zostaje w pamieci,
+         zeby kolejne miejsce na stronie (pdp-crosssell, koszyk) probowalo jeszcze raz. */
+      function pobierz(u, proba) {
+        proba = proba || 0;
+        return fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 'section_id=sn-kurv-kort', { credentials: 'same-origin' })
+          .then(function (o) { if (o.ok) return o.text(); throw new Error('http'); })
+          .catch(function () {
+            if (proba >= 2) return '';
+            return new Promise(function (r) { setTimeout(r, 700 * (proba + 1)); }).then(function () { return pobierz(u, proba + 1); });
+          });
+      }
+      function gotowe() { ramka.dispatchEvent(new CustomEvent('dp-combine:done', { bubbles: true })); }
       Promise.all(zrodla.map(function (u) {
         if (!pamiec[u]) {
-          pamiec[u] = fetch(u + (u.indexOf('?') < 0 ? '?' : '&') + 'section_id=sn-kurv-kort', { credentials: 'same-origin' })
-            .then(function (o) { return o.ok ? o.text() : ''; })
-            .catch(function () { return ''; });
+          pamiec[u] = pobierz(u).then(function (t) { if (!t) delete pamiec[u]; return t; });
         }
         return pamiec[u];
       })).then(function (teksty) {
@@ -145,7 +155,7 @@
             karty.push(el);
           });
         }
-        if (!karty.length) return;
+        if (!karty.length) { gotowe(); return; }
         karty.forEach(function (el) {
           var kafel = el.querySelector('.snc');
           if (!kafel) return;
@@ -156,16 +166,15 @@
         });
         ramka.hidden = !tor.children.length;
         stan();
-      });
+        gotowe();
+      }).catch(function () { gotowe(); });
     }
 
-    /* pobieramy w wolnej chwili - nie konkuruje z pierwszym wyswietleniem karty */
-    function pozniej() {
-      if (window.requestIdleCallback) requestIdleCallback(start, { timeout: 2500 });
-      else setTimeout(start, 1200);
-    }
-    if (document.readyState === 'complete') pozniej();
-    else window.addEventListener('load', pozniej, { once: true });
+    /* start zaraz po zbudowaniu strony (bylo: dopiero po zdarzeniu load + chwili bezczynnosci, wiec na wolnym telefonie
+       wiersz pojawial sie po kilku sekundach albo wcale) */
+    function wczesnie() { setTimeout(start, 250); }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wczesnie, { once: true });
+    else wczesnie();
   })();
 </script>
 {%- endif -%}
