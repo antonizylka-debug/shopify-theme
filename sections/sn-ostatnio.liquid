@@ -108,11 +108,38 @@
       flex-basis: calc((100% - {{ per_m | minus: 1 | times: odstep }}px) / {{ per_m }});
     }
   }
+
+  {%- comment -%}
+    03.11.2026 (Antoni): "tu nie pasuje do niczego" - naglowek i karty w stylu nowej strony produktu:
+    jedna linia z lewej (15 px telefon / 20 px PC) dla naglowka i kart, karty jak w "Combine it with"
+    (szare zdjecie, czarna odznaka, plus w rogu, NAZWA, kolor szary, cena) - bez rozowej pigulki i kropek koloru.
+  {%- endcomment -%}
+  #shopify-section-{{ section.id }} .sno--flat .sno__head { max-width: none; padding-left: 15px; padding-right: 15px; }
+  #shopify-section-{{ section.id }} .sno--flat .sno__track { padding: 0 15px; scroll-padding: 0 15px; }
+  @media only screen and (min-width: 769px) {
+    #shopify-section-{{ section.id }} .sno--flat .sno__head { padding-left: 20px; padding-right: 20px; }
+    #shopify-section-{{ section.id }} .sno--flat .sno__track { padding: 0 20px; scroll-padding: 0 20px; }
+  }
+  #shopify-section-{{ section.id }} .sno--flat .snc { font-size: 10px; line-height: 13px; letter-spacing: 0.3px; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__foto, #shopify-section-{{ section.id }} .sno--flat .snc__pas { border-radius: 0; background: #f9f9f9; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__klatka { aspect-ratio: 152 / 213; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__img { width: 100%; height: 100%; object-fit: cover; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__sale { top: 10px; left: 10px; padding: 3px 6px; border-radius: 0; background: #000; color: #fff; font-size: 10px; font-weight: 400; line-height: 13px; letter-spacing: 0.3px; text-transform: uppercase; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__plus { width: 42px; height: 42px; right: 0; bottom: 0; border-radius: 0; background: transparent; box-shadow: none; color: #000; opacity: 1; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__plus:hover { background: transparent; transform: none; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__opis { display: flex; flex-direction: column; gap: 2px; padding: 10px 8px 0 0; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__rzad, #shopify-section-{{ section.id }} .sno--flat .snc__lewa { display: contents; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__nazwa { order: 1; font-size: 10px; line-height: 13px; font-weight: 400; letter-spacing: 0.3px; text-transform: uppercase; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__pigulka, #shopify-section-{{ section.id }} .sno--flat .snc__kolory { display: none; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__kolor-nazwa { order: 2; display: block; font-size: 10px; line-height: 13px; letter-spacing: 0.3px; text-transform: uppercase; color: #939393; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__ceny { order: 3; display: flex; gap: 6px; align-items: baseline; margin-top: 4px; font-size: 10px; line-height: 13px; font-weight: 400; letter-spacing: 0.3px; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__jest { font-size: 10px; font-weight: 400; }
+  #shopify-section-{{ section.id }} .sno--flat .snc__bylo { font-size: 10px; color: #939393; }
 {%- endstyle -%}
 
 {%- render 'sn-card-assets' -%}
 
-<div class="sno" data-sno hidden>
+<div class="sno{% if section.settings.flat_head %} sno--flat{% endif %}" data-sno hidden>
   {%- if section.settings.title != blank -%}
     <div class="page-width sno__head{% if section.settings.flat_head %} sno__head--flat{% endif %}">
       <h2 class="sno__title">{{ tytul }}</h2>
