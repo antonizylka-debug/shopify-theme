@@ -204,7 +204,7 @@
   @media (prefers-reduced-motion: reduce) { #shopify-section-{{ section.id }} .cp__usp-chip--dot::after { animation: none; display: none; } }
   #shopify-section-{{ section.id }} .cp__usp-txt { display: flex; flex-direction: column; gap: 1px; }
   #shopify-section-{{ section.id }} .cp__usp-title { font-weight: 500; }
-  #shopify-section-{{ section.id }} .cp__pay { display: flex; flex-wrap: wrap; gap: 5px; margin: -16px 0 22px; }
+  #shopify-section-{{ section.id }} .cp__pay { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: -16px 0 22px; }
   #shopify-section-{{ section.id }} .cp__pay-i { display: inline-flex; border: 1px solid #e5e5e5; border-radius: 3px; overflow: hidden; background: #fff; }
   #shopify-section-{{ section.id }} .cp__pay-icon { display: block; width: 36px; height: 23px; }
   #shopify-section-{{ section.id }} .cp__sizes[style*="--cp-cols: 1;"] { grid-template-columns: max-content; }
@@ -469,13 +469,15 @@
             {%- assign kolumny = ile_rozm -%}
             {%- if ile_rozm > 9 -%}{%- assign kolumny = ile_rozm | divided_by: 2.0 | ceil -%}{%- endif -%}
             {%- if kolumny > 9 -%}{%- assign kolumny = ile_rozm | divided_by: 3.0 | ceil -%}{%- endif -%}
+            {%- assign wybrany_rozm = false -%}
+            {%- if product.selected_variant or opt.values.size == 1 -%}{%- assign wybrany_rozm = true -%}{%- endif -%}
             {%- assign n_rozm = n_rozm | plus: 1 -%}
             {%- if n_rozm > 1 -%}
               <p class="cp__lbl cp__optname" id="CpOpt-{{ section.id }}-{{ forloop.index }}">{% render 'ob-da', mapa: mapa, tekst: opt.name %}</p>
             {%- endif -%}
             <div class="cp__sizes" style="--cp-cols: {{ kolumny }};" data-cp-opt="{{ forloop.index }}" role="group" aria-label="{{ opt.name | escape }}">
               {%- for val in opt.values -%}
-                <button type="button" class="cp__size{% if val.size > 9 %} cp__size--long{% endif %}{% if val == opt.selected_value %} is-on{% endif %}" aria-pressed="{% if val == opt.selected_value %}true{% else %}false{% endif %}" data-cp-val="{{ val | escape }}">{{ val }}</button>
+                <button type="button" class="cp__size{% if val.size > 9 %} cp__size--long{% endif %}{% if val == opt.selected_value and wybrany_rozm %} is-on{% endif %}" aria-pressed="{% if val == opt.selected_value and wybrany_rozm %}true{% else %}false{% endif %}" data-cp-val="{{ val | escape }}">{{ val }}</button>
               {%- endfor -%}
             </div>
           {%- endunless -%}
@@ -649,6 +651,28 @@
       else document.addEventListener('DOMContentLoaded', podepnij);
     })();
 
+    /* Bez wybranego rozmiaru nic nie trafia do koszyka: zaznaczamy rzad rozmiarow i przewijamy do niego (dotyczy tez dolnego przycisku i paska) */
+    (function () {
+      var f = atc && atc.closest('form');
+      if (!f) return;
+      function brak() {
+        for (var i = 0; i < grupy.length; i++) {
+          if (grupy[i].classList.contains('cp__sizes') && !grupy[i].querySelector('.is-on')) return grupy[i];
+        }
+        return null;
+      }
+      function blok(e) {
+        var g = brak();
+        if (!g) return;
+        e.preventDefault(); e.stopImmediatePropagation();
+        var r = g.getBoundingClientRect();
+        if (r.top < 120 || r.bottom > window.innerHeight - 80) window.scrollTo({ top: Math.max(0, r.top + window.pageYOffset - 200), behavior: 'smooth' });
+        g.classList.remove('is-flash'); void g.offsetWidth; g.classList.add('is-flash');
+      }
+      atc.addEventListener('click', blok, true);
+      f.addEventListener('submit', blok, true);
+    })();
+
     function kwota(gr) {
       if (window.snCena && WALUTA === 'DKK') return window.snCena(gr);
       if (WALUTA !== 'DKK') {
@@ -711,7 +735,8 @@
         bylo.hidden = !przecena;
         if (przecena) bylo.innerHTML = kwota(w.compare_at_price);
       }
-      if (history.replaceState) {
+      var komplet = wybor().every(function (x) { return x !== null; });
+      if (history.replaceState && komplet) {
         var u = new URL(window.location.href);
         u.searchParams.set('variant', w.id);
         history.replaceState({}, '', u.toString());
