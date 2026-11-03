@@ -6,6 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
+ 
+ * Default product page: dp-pdp-catalog (section key "catalog"). Previous page: product.backup.json.
  */
 {
   "sections": {
