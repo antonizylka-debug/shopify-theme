@@ -71,16 +71,10 @@
      cienkie linie #e5e5e5, zero zaokraglen i cieni, male czarne przyciski. */
 
   /* naglowki sekcji pod produktem: po lewej, 15 px od krawedzi */
-  .dp-mix__head, .snb2__head, .obf__inner > .obf__eyebrow, .obf__title, .obf__sub { text-align: left !important; padding-left: var(--dp-gutter); padding-right: var(--dp-gutter); }
-  .dp-mix__head { margin-bottom: 14px !important; }
   .dp-mix, .sns, .obf, .snb2 { border-radius: 0 !important; box-shadow: none !important; }
 
 
   /* mix & match: plaski rzad warunkow z cienkimi liniami zamiast pastylek */
-  .dp-mix { padding-left: 0 !important; padding-right: 0 !important; }
-  .dp-mix__tiers { display: flex; justify-content: flex-start; gap: 0 !important; padding: 0 var(--dp-gutter); }
-  .dp-mix__tiers > * { padding: 0 14px 0 0; }
-  .dp-mix__subtitle { padding: 0 var(--dp-gutter); text-align: left !important; }
 
   /* slidery z kartami: bez odstepow, od krawedzi do krawedzi (2 px jak linie miedzy zdjeciami) */
   .dp-mix__track, .sno__track, .snb2__track { gap: 2px !important; }
@@ -93,8 +87,6 @@
   /* opinie: plaskie karty z cienka linia */
 
   /* FAQ pod produktem: wiersze z cienkimi liniami */
-  .obf__item { border-top: 1px solid var(--dp-line) !important; border-bottom: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; padding-left: 0; padding-right: 0; }
-  .obf__inner { padding-left: 0; padding-right: 0; }
 
   /* stopka na telefonie jak u nich: jedna kolumna, rozwijane bloki z "+" */
   @media (max-width: 768px) {
@@ -113,7 +105,6 @@
   /* stopka biala: logo (jasna wersja z ciemnej stopki) robimy czarne; kontakt i tresci po lewej */
   .site-footer .footer__logo img, .site-footer .footer__logo image-element img { filter: brightness(0) !important; }
   .site-footer .footer__contact-row, .site-footer .ob-support, .site-footer .footer__brand-text, .site-footer .footer__contact { justify-content: flex-start !important; margin-left: 0 !important; margin-right: 0 !important; text-align: left !important; }
-  .dp-mix__tiers { justify-content: flex-start !important; text-align: left !important; flex-wrap: wrap; }
 </style>
 <style>
   /* zdjecia hero z folderu assets: wypelniaja caly slajd (cover), twarze zostaja w gornej czesci kadru; desktop i telefon osobno */
@@ -127,9 +118,6 @@
   /* ==== Jedna linia po lewej pod produktem (03.11.2026, Antoni: "tytuly sekcji dziwnie wygladaja, nieschludnie") ====
      Wszystkie naglowki i teksty sekcji zaczynaja sie dokladnie 15 px od lewej krawedzi, wszystkie po lewej, w jednym stylu. */
   .sns__in { padding-left: 0 !important; padding-right: 0 !important; }
-  .sns__body { padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; }
-  .obf__item, .obf__sub, .obf__title, .obf__eyebrow, .obf__inner > * { padding-left: var(--dp-gutter); padding-right: var(--dp-gutter); }
-  .obf__item { padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; }
 
   /* naglowki wpisane wielkimi literami w ustawieniach sekcji: zdanie z wielka pierwsza litera, jak u hang-eleven */
   .dp-mix__title, .snb2__title { text-transform: lowercase !important; }
@@ -142,8 +130,6 @@
      rozciagniete na caly uklad od lewej, tak zeby wszystkie tytuly i linie zaczynaly sie w tym samym miejscu. */
   @media (min-width: 769px) { :root { --dp-gutter: 20px; } }
 
-  .obf__inner { max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; padding: 0 !important; }
-  .obf__inner > *, .obf__item, .obf__eyebrow, .obf__title, .obf__sub { padding-left: 0 !important; padding-right: 0 !important; }
 
 
 
@@ -152,24 +138,12 @@
 </style>
 <style>
   /* szeroki ekran: tytuly, podtytuly i linie zaczynaja sie tam, gdzie zdjecia w sliderach (20 px od krawedzi), nie 200 px dalej */
-  .dp-mix .page-width, .snb2 .page-width, .obf .page-width { max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; }
-  .dp-mix__subtitle, .dp-mix__tiers, .dp-mix__head { padding-left: 0 !important; padding-right: 0 !important; }
 </style>
 <style>
-  .dp-mix .page-width { padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; }
 </style>
 <style>
   /* banery Shop Women / Shop Men: zdjecia pionowe przycinane do poziomego kadru - trzymamy glowe w kadrze */
   [id*="collection_banners"] .collection-banner img, [id*="collection_banners"] .collection-banner image-element img { object-position: center 14% !important; }
-</style>
-<style>
-  /* FAQ pod produktem na komputerze: naglowek po lewej, lista pytan w wygodnej kolumnie obok (zamiast linii przez caly ekran) */
-  @media (min-width: 1000px) {
-    .obf__inner { display: grid !important; grid-template-columns: minmax(240px, 340px) minmax(0, 900px); column-gap: 80px; justify-content: start; align-items: start; grid-auto-flow: row dense; }
-    .obf__eyebrow, .obf__title, .obf__sub { grid-column: 1; }
-    .obf__item { grid-column: 2; max-width: 900px; }
-    .obf__item:first-of-type { margin-top: 0; }
-  }
 </style>
 <style>
   /* sciana opinii: troche szersza, szare boxy (oryginalne #f7f8fa), przewijanie w dol bez widocznego suwaka, czytelniejszy tekst */
@@ -179,4 +153,13 @@
   .rvw__body { font-size: 13px !important; }
   .rvw__title { font-size: 14px !important; }
   .rvw__who, .rvw__reply-head, .rvw__more, .rvw__rated, .rvw__reply-text { font-size: 12px !important; }
+</style>
+<style>
+  /* tytuly sekcji pod produktem wysrodkowane jak w oryginale (Antoni: "za bardzo to lewe, nie pasuje"); notka opinii przypieta, nie przewija sie z kartami;
+     karty paska Trustpilot z szarym tlem jak w scianie opinii */
+  .dp-mix__head, .snb2__head, .obf__inner, .sno__head { text-align: center !important; }
+  .snb2__tabs, .snb2__head .snb2__tabs { justify-content: center !important; }
+  .sno__head { display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+  .rvw__note { position: sticky; top: 0; z-index: 3; background: #fff; text-align: center !important; padding: 8px 0 !important; margin: 0 !important; }
+  .rvs__card { background: #f7f8fa; padding: 14px 16px; }
 </style>
