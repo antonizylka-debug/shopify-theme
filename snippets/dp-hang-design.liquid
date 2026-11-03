@@ -150,3 +150,21 @@
   .dp-mix__title::first-letter, .snb2__title::first-letter { text-transform: uppercase; }
   .dp-mix__title *, .snb2__title * { text-transform: lowercase !important; }
 </style>
+<style>
+  /* ==== Jedna lewa krawedz na komputerze i telefonie (poprawka, 03.11.2026) ====
+     Komputer: marginesy 20 px jak w naglowku; sekcje, ktore byly wysrodkowane w waskiej kolumnie (FAQ 760 px, opinie 1100 px),
+     rozciagniete na caly uklad od lewej, tak zeby wszystkie tytuly i linie zaczynaly sie w tym samym miejscu. */
+  @media (min-width: 769px) { :root { --dp-gutter: 20px; } }
+
+  .obf__inner { max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; padding: 0 !important; }
+  .obf__inner > *, .obf__item, .obf__eyebrow, .obf__title, .obf__sub { padding-left: 0 !important; padding-right: 0 !important; }
+
+  .rvw__scroll { max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; padding-left: var(--dp-gutter) !important; padding-right: var(--dp-gutter) !important; }
+  .rvw__grid { width: 100%; }
+
+  .rvs__wrap { padding-left: 0 !important; padding-right: 0 !important; }
+  .rvs__sum { padding-left: var(--dp-gutter) !important; }
+
+  .sns__body { padding-left: 0 !important; padding-right: 0 !important; }
+  @media (min-width: 769px) { .sns__body { padding-left: 48px !important; } }
+</style>
