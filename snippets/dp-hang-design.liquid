@@ -203,3 +203,13 @@
   .site-header__search .dps { position: relative; z-index: 4; }
   .site-header__search predictive-search form { z-index: 4; }
 </style>
+<style>
+  /* strona glowna jak u hang-eleven: kafle kategorii i rzedy produktow od krawedzi do krawedzi, 2 px miedzy kaflami (komputer) */
+  @media (min-width: 769px) {
+    [id*="featured_popular"] .page-width, [id*="popular_men"] .page-width, [id*="featured_picks"] .page-width, [id*="featured_men"] .page-width { max-width: none !important; padding-left: 0 !important; padding-right: 0 !important; }
+    [id*="featured_popular"] .section-header, [id*="popular_men"] .section-header, [id*="featured_picks"] .section-header, [id*="featured_men"] .section-header { padding-left: var(--dp-gutter); padding-right: var(--dp-gutter); }
+    [id*="featured_popular"] .grid, [id*="popular_men"] .grid, [id*="featured_picks"] .grid, [id*="featured_men"] .grid { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; margin-left: 0 !important; margin-right: 0 !important; }
+    [id*="featured_popular"] .grid__item, [id*="popular_men"] .grid__item, [id*="featured_picks"] .grid__item, [id*="featured_men"] .grid__item { width: auto !important; float: none !important; padding: 0 !important; margin: 0 !important; }
+    [id*="featured_picks"] .grid-overflow-wrapper, [id*="featured_men"] .grid-overflow-wrapper { margin: 0 !important; }
+  }
+</style>
