@@ -285,6 +285,14 @@
     .snc__bylo { font-size: 12px; }
     .snc__kolko { width: 16px; height: 16px; }
   }
+  /* ---------- plaskie strzalki i "+" (03.11.2026, Antoni: "strzalki i + nie ten design i + niewidoczny") ----------
+     Kwadratowe biale pola z czarna ikona - widoczne na kazdym zdjeciu, jak przyciski strony produktu. */
+  :is(.snk-g, .sno--flat, .dp-combine) .snc__strz { width: 30px; height: 30px; margin-top: -15px; border-radius: 0; background: #fff; color: #000; box-shadow: none; }
+  :is(.snk-g, .sno--flat, .dp-combine) .snc__strz svg { stroke-width: 1.4; }
+  :is(.snk-g, .sno--flat, .dp-combine) .snc__plus { width: 34px; height: 34px; right: 8px; bottom: 8px; border-radius: 0; background: #fff; color: #000; box-shadow: none; }
+  :is(.snk-g, .sno--flat, .dp-combine) .snc__plus:hover { background: #000; color: #fff; transform: none; }
+  :is(.snk-g, .sno--flat, .dp-combine) .snc__plus svg { stroke-width: 1.4; }
+  :is(.snk-g, .sno--flat, .dp-combine) .snc__plus.is-ok { background: #fff; color: #366d12; }
 </style>
 
 <script>
