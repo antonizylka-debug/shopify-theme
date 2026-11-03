@@ -139,7 +139,7 @@
         "mm_hl3_badge_bg": "#a8842c",
         "main_menu_alignment": "center-split",
         "header_style": "sticky",
-        "sticky_index": false,
+        "sticky_index": true,
         "sticky_collection": false,
         "toolbar_menu": "",
         "toolbar_social": false,

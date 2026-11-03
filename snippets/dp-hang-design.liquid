@@ -409,3 +409,68 @@
     window.addEventListener('load', start);
   })();
 </script>
+<style>
+  /* ==== Strona glowna na komputerze: lewa polowa damska, prawa meska (Antoni 03.11.2026) ==== */
+  @media (min-width: 769px) {
+    .template-index #MainContent { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .template-index #MainContent > .shopify-section { grid-column: 1 / -1; min-width: 0; }
+    .template-index #MainContent > [id*="featured_popular"], .template-index #MainContent > [id*="featured_picks"] { grid-column: 1; }
+    .template-index #MainContent > [id*="popular_men"], .template-index #MainContent > [id*="featured_men"] { grid-column: 2; }
+    /* kafle kategorii: po 2 z kazdej strony */
+    [id*="featured_popular"] .grid, [id*="popular_men"] .grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    [id*="featured_popular"] .grid__item:nth-child(n+3), [id*="popular_men"] .grid__item:nth-child(n+3) { display: none !important; }
+    /* produkty "Selected for": 2 w rzedzie x 2 rzedy z kazdej strony */
+    [id*="featured_picks"] .grid, [id*="featured_men"] .grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    [id*="featured_picks"] .grid__item:nth-child(n+5), [id*="featured_men"] .grid__item:nth-child(n+5) { display: none !important; }
+  }
+
+  /* ==== Naglowek: na stronie glownej przezroczysty nad zdjeciem (biale napisy), po przewinieciu bialy; rzad kategorii tak samo ==== */
+  .template-index .site-header:not(.site-header--stuck) { background: transparent !important; border-bottom-color: rgba(255, 255, 255, 0.28) !important; }
+  .template-index .site-header:not(.site-header--stuck) .site-nav__link, .template-index .site-header:not(.site-header--stuck) .site-nav__link * { color: #fff !important; }
+  .template-index .site-header:not(.site-header--stuck) .icon path, .template-index .site-header:not(.site-header--stuck) .icon g { stroke: #fff !important; }
+  .template-index .site-header:not(.site-header--stuck) + .dpr { background: transparent; border-bottom-color: rgba(255, 255, 255, 0.28); }
+  .template-index .site-header:not(.site-header--stuck) + .dpr .dpr__list a, .template-index .site-header:not(.site-header--stuck) + .dpr .dpr__g { color: #fff; }
+  .template-index .site-header:not(.site-header--stuck) + .dpr .dpr__g[aria-pressed="false"] { color: rgba(255, 255, 255, 0.7); }
+  .template-index .site-header:not(.site-header--stuck) + .dpr .dpr__g[aria-pressed="true"] { color: #fff; }
+  .template-index .site-header:not(.site-header--stuck) + .dpr .dpr__sw { border-right-color: rgba(255, 255, 255, 0.3); }
+  @media (max-width: 768px) {
+    .index-section--hero, .index-section--hero .page-width, .index-section--hero [class*="slideshow"] { min-height: calc(100svh - 34px) !important; height: calc(100svh - 34px) !important; }
+  }
+
+  /* ikony w naglowku: mniejsze i cienkie */
+  .site-header .icon-search, .site-header .icon-bag, .site-header .icon-hamburger { width: 21px !important; height: 21px !important; }
+  .site-header .icon-search path, .site-header .icon-bag g, .site-header .icon-bag path, .site-header .icon-hamburger path { stroke-width: 1.5 !important; }
+
+  /* koszyk: numer w czarnym kolku (Antoni: "w docie musisz dac jedynke") */
+  .cart-link { position: relative; }
+  .cart-link__bubble.cart-link__bubble--visible { display: flex !important; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: #000 !important; color: #fff; font-size: 10px; line-height: 1; font-weight: 500 !important; letter-spacing: 0; top: -7px; right: -9px; box-sizing: border-box; }
+
+  /* stopka: Trustpilot Excellent */
+  .footer__tp { display: flex; justify-content: center; padding: 18px 0 8px; }
+  .footer__tp img { display: block; height: 16px; width: auto; }
+</style>
+<script>
+  /* numer produktow w czarnym kolku przy koszyku w naglowku (bez pozycji "Order Add-on" czyli ochrony dostawy) */
+  (function () {
+    function ustaw(n) {
+      Array.prototype.forEach.call(document.querySelectorAll('.cart-link__bubble'), function (b) { b.textContent = n > 0 ? String(n) : ''; });
+    }
+    function wczytaj() {
+      fetch('/cart.js', { headers: { Accept: 'application/json' } }).then(function (r) { return r.json(); }).then(function (c) {
+        var n = 0;
+        (c.items || []).forEach(function (it) { if (it.product_type !== 'Order Add-on') n += it.quantity; });
+        ustaw(n);
+      }).catch(function () {});
+    }
+    var t;
+    function wkrotce() { clearTimeout(t); t = setTimeout(wczytaj, 700); }
+    wczytaj();
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('[data-cp-atc], [name="add"], .snc__plus, [data-snk-remove], [data-snq-dodaj], .snk-item, .snq__dodaj')) wkrotce();
+    }, true);
+    var b = document.querySelector('.cart-link__bubble');
+    if (b && window.MutationObserver) new MutationObserver(wkrotce).observe(b, { attributes: true, attributeFilter: ['class'] });
+    var d = document.getElementById('CartDrawer');
+    if (d && window.MutationObserver) new MutationObserver(wkrotce).observe(d, { childList: true, subtree: true });
+  })();
+</script>
