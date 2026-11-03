@@ -1,0 +1,14 @@
+{%- comment -%} Kafelek produktu w panelu wyszukiwania (Recommended). Argument: p {%- endcomment -%}
+{%- unless p.type == 'Order Add-on' -%}
+  <a class="dps__card" href="{{ p.url }}">
+    <span class="dps__img">
+      {%- if p.featured_image -%}{{ p.featured_image | image_url: width: 480 | image_tag: loading: 'lazy', alt: p.title, widths: '240, 360, 480', sizes: '(min-width: 769px) 16vw, 45vw' }}{%- endif -%}
+      {%- if p.compare_at_price > p.price -%}
+        {%- assign dps_pct = p.compare_at_price | minus: p.price | times: 100.0 | divided_by: p.compare_at_price | round -%}
+        <span class="dps__badge">−{{ dps_pct }}%</span>
+      {%- endif -%}
+    </span>
+    <span class="dps__name">{{ p.title | split: ' - ' | first | truncate: 38 }}</span>
+    <span class="dps__price">{%- render 'sn-cena', kwota: p.price -%}</span>
+  </a>
+{%- endunless -%}

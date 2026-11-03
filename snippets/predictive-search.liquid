@@ -28,7 +28,7 @@
         autocomplete="off"
         autocapitalize="off"
         spellcheck="false"
-        placeholder="{{ 'general.search.placeholder' | t }}"
+        placeholder="Type here to search"
         tabindex="0"
       >
       <input name="options[prefix]" type="hidden" value="last">
@@ -43,4 +43,34 @@
     </button>
     <div id="predictive-search" class="search__results" tabindex="-1"></div>
   </form>
+  {%- if context == 'header' -%}
+    {%- comment -%}
+      Panel jak na hang-eleven.com (03.11.2026): po lewej "Suggested" (podpowiedzi do wyszukania), po prawej "Recommended" (4 produkty z kolekcji
+      "Our favourites": po 2 z damskiej i meskiej). Chowa sie, gdy klient zaczyna pisac (wtedy pokazuja sie wyniki).
+    {%- endcomment -%}
+    {%- liquid
+      assign dps_a = collections['womens-favorites'].products
+      assign dps_b = collections['mens-favorites'].products
+    -%}
+    <div class="dps" data-dps>
+      <div class="dps__sug">
+        <p class="dps__lbl">Suggested</p>
+        <div class="dps__chips">
+          <a href="{{ routes.search_url }}?q=Dresses">Dresses</a>
+          <a href="{{ routes.search_url }}?q=Sweaters">Sweaters</a>
+          <a href="{{ routes.search_url }}?q=Knitwear">Knitwear</a>
+          <a href="{{ routes.search_url }}?q=Jackets">Jackets</a>
+          <a href="{{ routes.search_url }}?q=Shoes">Shoes</a>
+          <a href="{{ routes.search_url }}?q=Trousers">Trousers</a>
+        </div>
+      </div>
+      <div class="dps__rec">
+        <p class="dps__title">Recommended</p>
+        <div class="dps__grid">
+          {%- for p in dps_a limit: 2 -%}{%- render 'dps-card', p: p -%}{%- endfor -%}
+          {%- for p in dps_b limit: 2 -%}{%- render 'dps-card', p: p -%}{%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
 </predictive-search>
