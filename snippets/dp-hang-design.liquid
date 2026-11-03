@@ -475,3 +475,12 @@
   #CartDrawer .snk-count[hidden] { display: none !important; }
   #CartDrawer .drawer__close { border-left: 1px solid #e5e5e5; }
 </style>
+<style>
+  /* telefon: zdjecia kart na calej szerokosci lapaly palec (kazda karta ma wlasna galerie), wiec rzedu "Our favourites" i "Selected for" nie dalo sie przesuwac.
+     Teraz gest w bok przechodzi do calego rzedu (galeria karty przewijana strzalkami na komputerze). */
+  @media (max-width: 768px) {
+    [id*="our_favourites"] .snc__pas, [id*="featured_picks"] .snc__pas, [id*="featured_men"] .snc__pas { overflow-x: hidden !important; overscroll-behavior-x: auto; touch-action: pan-y pinch-zoom !important; }
+    [id*="our_favourites"] .snc__pas *, [id*="featured_picks"] .snc__pas *, [id*="featured_men"] .snc__pas * { touch-action: pan-y pinch-zoom !important; }
+    [id*="our_favourites"] .grid-overflow-wrapper, [id*="featured_picks"] .grid-overflow-wrapper, [id*="featured_men"] .grid-overflow-wrapper { touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; }
+  }
+</style>
