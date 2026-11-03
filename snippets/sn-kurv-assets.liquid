@@ -192,8 +192,9 @@
      Pas po lewej stronie koszyka jak na voviabags.com. Blok [data-snk-forslag]
      przenosi tu JS (ulozForslag); ponizej 1100 px zostaje w szufladzie pod produktami.
      Szuflada ma 600 px (max-width wyzej), wiec pas stoi 600 px od prawej. */
-  /* 03.11.2026 (Antoni): "Complete the look" w koszyku usuniete */
-  .snk-side, [data-snk-forslag] { display: none !important; }
+  /* 03.11.2026 (Antoni): w koszyku bez widocznych suwakow (przesuwanie dziala dalej) */
+  #CartDrawer, #CartDrawer *, .snk-side, .snk-side * { scrollbar-width: none; -ms-overflow-style: none; }
+  #CartDrawer::-webkit-scrollbar, #CartDrawer *::-webkit-scrollbar, .snk-side::-webkit-scrollbar, .snk-side *::-webkit-scrollbar { display: none; width: 0; height: 0; }
   .snk-side { display: none; }
   @media only screen and (min-width: 1100px) {
     .snk-side {
