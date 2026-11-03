@@ -868,13 +868,17 @@
       function klik() { if (!atc.disabled) atc.click(); }
       [root.querySelector('[data-cp-sbtn]'), dol].forEach(function (b) { if (b) b.addEventListener('click', klik); });
       var czeka = false;
+      /* gorny pasek z nazwa i przyciskiem zastepuje naglowek (jak u hang-eleven): naglowek z rzedem kategorii chowamy, gdy pasek jest widoczny */
+      var naglSek = document.querySelector('[id^="shopify-section-"][id*="header"]:not([id*="announcement"])');
+      function chowajNaglowek(on) { if (naglSek) naglSek.style.visibility = on ? 'hidden' : ''; }
       function sprawdz() {
         czeka = false;
-        if (window.innerWidth > prog) { pasek.classList.remove('is-on'); dol.classList.remove('is-on'); return; }
+        if (window.innerWidth > prog) { pasek.classList.remove('is-on'); dol.classList.remove('is-on'); chowajNaglowek(false); return; }
         var r = atc.getBoundingClientRect();
         var hh = parseInt(getComputedStyle(root.querySelector('.cp')).getPropertyValue('--cp-hh'), 10) || 0;
         dol.classList.toggle('is-on', r.top > window.innerHeight);
         pasek.classList.toggle('is-on', r.bottom < hh + 4);
+        chowajNaglowek(pasek.classList.contains('is-on'));
       }
       function planuj() { if (!czeka) { czeka = true; requestAnimationFrame(sprawdz); } }
       window.addEventListener('scroll', planuj, { passive: true });
