@@ -479,8 +479,8 @@
   /* telefon: zdjecia kart na calej szerokosci lapaly palec (kazda karta ma wlasna galerie), wiec rzedu "Our favourites" i "Selected for" nie dalo sie przesuwac.
      Teraz gest w bok przechodzi do calego rzedu (galeria karty przewijana strzalkami na komputerze). */
   @media (max-width: 768px) {
-    [id*="our_favourites"] .snc__pas, [id*="featured_picks"] .snc__pas, [id*="featured_men"] .snc__pas { overflow-x: hidden !important; overscroll-behavior-x: auto; touch-action: pan-y pinch-zoom !important; }
-    [id*="our_favourites"] .snc__pas *, [id*="featured_picks"] .snc__pas *, [id*="featured_men"] .snc__pas * { touch-action: pan-y pinch-zoom !important; }
+    [id*="our_favourites"] .snc__pas, [id*="featured_picks"] .snc__pas, [id*="featured_men"] .snc__pas { overflow-x: hidden !important; overscroll-behavior-x: auto; touch-action: pan-x pan-y pinch-zoom !important; }
+    [id*="our_favourites"] .snc__pas *, [id*="featured_picks"] .snc__pas *, [id*="featured_men"] .snc__pas * { touch-action: pan-x pan-y pinch-zoom !important; }
     [id*="our_favourites"] .grid-overflow-wrapper, [id*="featured_picks"] .grid-overflow-wrapper, [id*="featured_men"] .grid-overflow-wrapper { touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; }
   }
 </style>
@@ -541,4 +541,14 @@
 <style>
   /* podwojny pas kategorii (collection_banners) schowany - kategorie sa w podziale kobiety/mezczyzni */
   [id$="__collection_banners"] { display: none !important; }
+</style>
+<style>
+  /* torba: cienka jak pozostale ikony (bez grubej obwodki), ten sam rozmiar; na telefonie odrobine nizej */
+  .site-header .dp-bag path { stroke-width: 0 !important; }
+  .site-header .dp-bag { width: 21px; height: 22px; }
+  .site-header .cart-link { width: 21px; height: 25px; }
+  @media (max-width: 768px) {
+    .site-header .cart-link { transform: translateY(3px); }
+    .site-header .cart-link__bubble.cart-link__bubble--visible { left: 15px !important; top: -7px !important; width: 15px; min-width: 15px !important; height: 15px !important; font-size: 10px !important; }
+  }
 </style>
