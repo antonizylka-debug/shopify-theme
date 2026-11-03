@@ -633,3 +633,7 @@
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
   })();
 </script>
+<style>
+  /* motyw lamie wiersz co 4 karty (clear:left) - przy 6 w rzedzie trzeba to wylaczyc */
+  html.dp-cols-6 .template-collection .grid--uniform > .grid__item, html.dp-cols-1 .template-collection .grid--uniform > .grid__item { clear: none !important; }
+</style>
