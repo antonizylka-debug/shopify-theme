@@ -26,8 +26,8 @@
   }
 
   /* male czarne przyciski: 32 px, 10 px / 500 / wielkie litery */
-  .btn:not(.btn--full):not([class*="cart"]):not(.snk-card__add):not(.cp__atc) { min-height: 32px; padding: 9px 12px !important; font-size: 10px !important; line-height: 12px !important; letter-spacing: 0.36px !important; font-weight: 500 !important; text-transform: uppercase !important; }
-  .collection-banner__btn { padding: 9px 12px !important; font-size: 10px !important; letter-spacing: 0.36px !important; }
+  .btn:not(.btn--full):not([class*="cart"]):not(.snk-card__add):not(.cp__atc) { min-height: 32px; padding: 9px 12px !important; font-size: 12px !important; line-height: 15px !important; letter-spacing: 0.36px !important; font-weight: 500 !important; text-transform: uppercase !important; }
+  .collection-banner__btn { padding: 9px 12px !important; font-size: 12px !important; letter-spacing: 0.36px !important; }
 
   /* banery kolekcji: od krawedzi do krawedzi, jeden pod drugim, bez przerw, napis na srodku (18 px Light) */
   .shopify-section .page-width:has(> .collection-banners) { padding-left: 0 !important; padding-right: 0 !important; max-width: none !important; }
@@ -39,7 +39,7 @@
     .collection-banner image-element, .collection-banner img { display: block; width: 100% !important; height: calc(100vw * 482 / 375) !important; object-fit: cover; }
   }
   .collection-banner__content { display: flex !important; flex-direction: column; align-items: center !important; justify-content: center !important; text-align: center !important; inset: 0; padding: 0 var(--dp-gutter) !important; }
-  .collection-banner__heading { font-size: 18px !important; line-height: 23.4px !important; }
+  .collection-banner__heading { font-size: 20px !important; line-height: 26px !important; }
   .collection-banner__eyebrow { margin-bottom: 6px; }
 
   /* sekcje z produktami: tytul po lewej z marginesem 15 px, mniejsze odstepy pionowe, bez zaokraglen */
@@ -106,8 +106,8 @@
     .site-footer .footer__title.collapsible-trigger[aria-expanded="true"]::after { content: "−"; }
     .site-footer .footer__title.collapsible-trigger .collapsible-trigger__icon { display: none !important; }
     .site-footer .site-footer__linklist a, .site-footer .footer__collapsible a { justify-content: flex-start !important; min-height: 0 !important; }
-    .site-footer button.footer__title.collapsible-trigger { display: flex !important; justify-content: space-between; align-items: center; width: 100%; padding: 17px 0; border: 0; border-top: 1px solid var(--dp-line); background: none; color: #000; font-size: 12px !important; font-weight: 400 !important; letter-spacing: 0.36px !important; text-transform: uppercase !important; text-align: left; }
-    .site-footer button.footer__title.collapsible-trigger::after { content: '+'; font-size: 12px; }
+    .site-footer button.footer__title.collapsible-trigger { display: flex !important; justify-content: space-between; align-items: center; width: 100%; padding: 17px 0; border: 0; border-top: 1px solid var(--dp-line); background: none; color: #000; font-size: 14px !important; font-weight: 400 !important; letter-spacing: 0.36px !important; text-transform: uppercase !important; text-align: left; }
+    .site-footer button.footer__title.collapsible-trigger::after { content: '+'; font-size: 14px; }
     .site-footer .footer__item--menu_shop, .site-footer .footer__item--menu_help, .site-footer .footer__item--menu_policies { padding-top: 0 !important; padding-bottom: 0 !important; margin: 0 !important; }
     .site-footer .footer__collapsible a { display: block; padding: 8px 0; }
   }
@@ -170,4 +170,13 @@
 <style>
   /* banery Shop Women / Shop Men: zdjecia pionowe przycinane do poziomego kadru - trzymamy glowe w kadrze */
   [id*="collection_banners"] .collection-banner img, [id*="collection_banners"] .collection-banner image-element img { object-position: center 14% !important; }
+</style>
+<style>
+  /* FAQ pod produktem na komputerze: naglowek po lewej, lista pytan w wygodnej kolumnie obok (zamiast linii przez caly ekran) */
+  @media (min-width: 1000px) {
+    .obf__inner { display: grid !important; grid-template-columns: minmax(260px, 1fr) minmax(0, 2fr); column-gap: 64px; align-items: start; grid-auto-flow: row dense; }
+    .obf__eyebrow, .obf__title, .obf__sub { grid-column: 1; }
+    .obf__item { grid-column: 2; max-width: 860px; }
+    .obf__item:first-of-type { margin-top: 0; }
+  }
 </style>
