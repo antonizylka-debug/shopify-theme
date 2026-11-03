@@ -638,3 +638,69 @@
   /* motyw lamie wiersz co 4 karty (clear:left) - przy 6 w rzedzie trzeba to wylaczyc */
   html.dp-cols-6 .template-collection .grid--uniform > .grid__item, html.dp-cols-8 .template-collection .grid--uniform > .grid__item, html.dp-cols-1 .template-collection .grid--uniform > .grid__item { clear: none !important; }
 </style>
+<style>
+  /* ==== Kolekcje 1:1 jak Hang Eleven (komputer): tytul, linki, pasek FILTER / SORT BY, filtry w szufladzie z lewej, siatka na calej szerokosci ==== */
+  @media (min-width: 769px) {
+    .template-collection .snp-line { display: none !important; }
+
+    /* pasek: linki w pierwszej linii, w drugiej FILTER po lewej i siatka + SORT BY po prawej */
+    .template-collection .collection-links-row { display: flex !important; flex-wrap: wrap; align-items: center; border: 0 !important; padding: 0 !important; margin: 0 0 6px !important; }
+    .template-collection .collection-links-row .collection-links { flex: 0 0 100%; order: 1; margin-bottom: 14px; }
+    .template-collection .dp-filterbtn { order: 2; display: inline-flex; align-items: center; gap: 8px; background: none; border: 0; padding: 8px 0; font-size: 12px; letter-spacing: 0.36px; text-transform: uppercase; color: #000; cursor: pointer; }
+    .template-collection .dp-filterbtn svg { width: 16px; height: 16px; display: block; }
+    .template-collection .collection-links-row__sort { order: 3; margin-left: auto; }
+    .template-collection .sort-box__prefix, .template-collection .sort-box__value { display: none !important; }
+    .template-collection .sort-box__label::before { content: "SORT BY"; font-size: 12px; letter-spacing: 0.36px; margin-right: 6px; }
+
+    /* siatka na cala szerokosc, bez bocznego panelu */
+    .template-collection [id$="__main-col"] .page-width, .template-collection .collection-links-row, .template-collection [id$="__collection-header"] .page-width { max-width: none !important; }
+    .template-collection [id$="__main-col"] .page-width { padding-left: 0 !important; padding-right: 0 !important; }
+    .template-collection .collection-links-row, .template-collection [id$="__collection-header"] .page-width { padding-left: 20px !important; padding-right: 20px !important; }
+    .template-collection .grid__item--content { width: 100% !important; float: none !important; padding-left: 0 !important; }
+    .template-collection .grid__item--content > div { padding: 0 !important; }
+    .template-collection .grid__item--content .grid { margin-left: -1px; margin-right: -1px; }
+    .template-collection .snc-item { padding-left: 1px !important; padding-right: 1px !important; margin-bottom: 8px !important; }
+
+    /* filtry: szuflada z lewej (375 px) */
+    .template-collection .grid__item--sidebar { position: fixed !important; top: 0; left: 0; bottom: 0; width: 375px !important; max-width: 90vw; padding: 0 !important; margin: 0 !important; background: #fff; z-index: 60; transform: translateX(-100%); transition: transform 0.3s ease; overflow-y: auto; float: none !important; box-shadow: none; }
+    html.dp-filter-open .template-collection .grid__item--sidebar { transform: none; box-shadow: 0 0 40px rgba(0,0,0,0.18); }
+    .template-collection .grid__item--sidebar .collection-sidebar { display: block !important; padding: 0 20px 90px; }
+    .template-collection .grid__item--sidebar .collection-sidebar__title { display: none; }
+    .dp-fhead { display: flex; align-items: center; justify-content: space-between; height: 50px; padding: 0 20px; border-bottom: 1px solid #e5e5e5; position: sticky; top: 0; background: #fff; z-index: 2; font-size: 12px; letter-spacing: 0.36px; text-transform: uppercase; }
+    .dp-fhead button { background: none; border: 0; font-size: 22px; line-height: 1; cursor: pointer; padding: 6px; }
+    .dp-ffoot { position: sticky; bottom: 0; background: #fff; border-top: 1px solid #e5e5e5; padding: 12px 20px; }
+    .dp-ffoot button { width: 100%; height: 38px; background: #000; color: #fff; border: 0; font-size: 12px; letter-spacing: 0.36px; text-transform: uppercase; cursor: pointer; }
+    .dp-fover { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 59; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    html.dp-filter-open .dp-fover { opacity: 1; pointer-events: auto; }
+  }
+  @media (max-width: 768px) { .dp-filterbtn, .dp-fhead, .dp-ffoot, .dp-fover { display: none !important; } }
+</style>
+<script>
+  (function () {
+    function start() {
+      if (!document.body.classList.contains('template-collection')) return;
+      var side = document.querySelector('.grid__item--sidebar');
+      var row = document.querySelector('.collection-links-row');
+      if (!side || !row || row.querySelector('.dp-filterbtn')) return;
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'dp-filterbtn';
+      b.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.1"><path d="M1 4h14M1 8h14M1 12h14"/><circle cx="10.5" cy="4" r="1.6" fill="#fff"/><circle cx="5.5" cy="8" r="1.6" fill="#fff"/><circle cx="9" cy="12" r="1.6" fill="#fff"/></svg><span>Filter</span>';
+      row.appendChild(b);
+      var head = document.createElement('div'); head.className = 'dp-fhead';
+      head.innerHTML = '<span>Filter</span><button type="button" aria-label="Close filters">&times;</button>';
+      var foot = document.createElement('div'); foot.className = 'dp-ffoot';
+      foot.innerHTML = '<button type="button">Show results</button>';
+      var over = document.createElement('div'); over.className = 'dp-fover';
+      side.insertBefore(head, side.firstChild); side.appendChild(foot); document.body.appendChild(over);
+      var h = document.documentElement;
+      function open() { h.classList.add('dp-filter-open'); }
+      function close() { h.classList.remove('dp-filter-open'); }
+      b.addEventListener('click', open);
+      over.addEventListener('click', close);
+      head.querySelector('button').addEventListener('click', close);
+      foot.querySelector('button').addEventListener('click', close);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+  })();
+</script>
