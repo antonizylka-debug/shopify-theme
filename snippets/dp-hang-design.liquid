@@ -653,8 +653,8 @@
     .template-collection .sort-box__label::before { content: "SORT BY"; font-size: 12px; letter-spacing: 0.36px; margin-right: 6px; }
 
     /* siatka na cala szerokosc, bez bocznego panelu */
-    .template-collection [id$="__main-col"] .page-width, .template-collection .collection-links-row, .template-collection [id$="__collection-header"] .page-width { max-width: none !important; }
-    .template-collection [id$="__main-col"] .page-width { padding-left: 0 !important; padding-right: 0 !important; }
+    .template-collection [id$="__main-collection"] .page-width, .template-collection .collection-links-row, .template-collection [id$="__collection-header"] .page-width { max-width: none !important; }
+    .template-collection [id$="__main-collection"] .page-width { padding-left: 0 !important; padding-right: 0 !important; }
     .template-collection .collection-links-row, .template-collection [id$="__collection-header"] .page-width { padding-left: 20px !important; padding-right: 20px !important; }
     .template-collection .grid__item--content { width: 100% !important; float: none !important; padding-left: 0 !important; }
     .template-collection .grid__item--content > div { padding: 0 !important; }
@@ -710,7 +710,7 @@
 </style>
 <style>
   /* szuflada filtrow jest nad naglowkiem: sekcja z siatka dostaje wyzsza warstwe tylko gdy filtry sa otwarte */
-  html.dp-filter-open [id$="__main-col"] { position: relative; z-index: 100; }
+  html.dp-filter-open [id$="__main-collection"] { position: relative; z-index: 100; }
 </style>
 <style>
   /* szuflada filtrow zawsze od gornej krawedzi okna (motyw ustawia tej kolumnie wlasny top) */
@@ -729,7 +729,7 @@
     .template-collection .collection-links-row__sort { margin-left: auto; width: auto !important; height: 44px !important; padding-right: 15px; display: flex; align-items: center; }
     .template-collection .sort-box__label { border: 0 !important; width: auto !important; height: 44px !important; padding: 0 !important; }
     .template-collection .sort-box__label svg { display: none !important; }
-    .template-collection [id$="__main-col"] .page-width { padding-left: 0 !important; padding-right: 0 !important; }
+    .template-collection [id$="__main-collection"] .page-width { padding-left: 0 !important; padding-right: 0 !important; }
     .template-collection .grid__item--content .grid { margin-left: -1px; margin-right: -1px; }
     .template-collection .snc-item { padding-left: 1px !important; padding-right: 1px !important; margin-bottom: 14px !important; }
   }
@@ -742,3 +742,52 @@
     .template-collection .collection-links-row .collection-links .collection-links__item:first-child { padding-left: 15px !important; }
   }
 </style>
+<style>
+  /* ==== Filtry jak u Hang Eleven (telefon + komputer): bez pasków przewijania, plaskie przyciski rozmiarow i kolorow, stopka CLEAR ALL / SHOW RESULTS ==== */
+  .template-collection .dp-pairs { display: none !important; }
+
+  #FilterDrawer { width: 100% !important; max-width: 404px !important; }
+  #FilterDrawer .drawer__scrollable, .template-collection .grid__item--sidebar { overflow-x: hidden !important; scrollbar-width: none; -ms-overflow-style: none; }
+  #FilterDrawer .drawer__scrollable::-webkit-scrollbar, .template-collection .grid__item--sidebar::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  #FilterDrawer .drawer__contents { overflow-x: hidden; }
+  #FilterDrawer .drawer__fixed-header .drawer__header { height: 50px !important; padding: 0 0 0 20px; border-bottom: 1px solid #e5e5e5; }
+  #FilterDrawer .drawer__title { font-size: 12px !important; letter-spacing: 0.36px; text-transform: uppercase; font-weight: 400 !important; }
+  #FilterDrawer .drawer__close { height: 50px; border-left: 1px solid #e5e5e5; }
+  #FilterDrawer .drawer__scrollable { padding-bottom: 90px; }
+  #FilterDrawer .filter-form, .template-collection .grid__item--sidebar .filter-form { padding: 0 20px; }
+  #FilterDrawer .collapsible-trigger, .template-collection .grid__item--sidebar .collapsible-trigger { font-size: 11px !important; letter-spacing: 0.33px; text-transform: uppercase; font-weight: 400 !important; padding: 22px 0 14px !important; }
+  #FilterDrawer .collection-sidebar__group, .template-collection .grid__item--sidebar .collection-sidebar__group { border-bottom: 1px solid #e5e5e5; padding-bottom: 14px; }
+  /* rozmiary: plaskie szare kafelki */
+  #FilterDrawer .tag-list__item a, #FilterDrawer .tag-list--size a, #FilterDrawer [class*="swatch--size"], #FilterDrawer .tag--size,
+  .template-collection .grid__item--sidebar .tag--size { background: #f7f8fa !important; border: 0 !important; min-width: 50px; height: 44px; display: inline-flex !important; align-items: center; justify-content: center; font-size: 14px !important; letter-spacing: 0; }
+  #FilterDrawer .drawer__scrollable .grid, #FilterDrawer .collapsible-content--sidebar { overflow: visible; }
+  /* stopka */
+  .dp-ffoot2 { position: sticky; bottom: 0; display: flex; align-items: center; gap: 10px; background: #fff; border-top: 1px solid #e5e5e5; padding: 12px 10px 12px 20px; z-index: 3; }
+  .dp-ffoot2 a { font-size: 12px; letter-spacing: 0.36px; text-transform: uppercase; color: #000; text-decoration: underline; white-space: nowrap; }
+  .dp-ffoot2 button { flex: 1; height: 44px; background: #2d2d2d; color: #fff; border: 0; font-size: 12px; letter-spacing: 0.36px; text-transform: uppercase; cursor: pointer; }
+  @media (min-width: 769px) { .dp-ffoot { display: none !important; } }
+</style>
+<script>
+  (function () {
+    function licz() {
+      var el = document.querySelector('.collection-count');
+      var m = el && el.textContent.match(/[0-9][0-9,.\s]*/);
+      return m ? m[0].replace(/[^0-9]/g, '') : '';
+    }
+    function start() {
+      if (!document.body.classList.contains('template-collection')) return;
+      var d = document.querySelector('#FilterDrawer .drawer__contents');
+      if (!d || d.querySelector('.dp-ffoot2')) return;
+      var f = document.createElement('div'); f.className = 'dp-ffoot2';
+      f.innerHTML = '<a href="' + location.pathname + '">Clear all</a><button type="button"></button>';
+      d.appendChild(f);
+      var btn = f.querySelector('button');
+      function odswiez() { var n = licz(); btn.textContent = 'Show results' + (n ? ' (' + n + ')' : ''); }
+      odswiez();
+      btn.addEventListener('click', function () { var c = d.querySelector('.js-drawer-close'); if (c) c.click(); });
+      document.addEventListener('change', function () { setTimeout(odswiez, 1500); }, true);
+      document.addEventListener('click', function () { setTimeout(odswiez, 300); }, true);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+  })();
+</script>
