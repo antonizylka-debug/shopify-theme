@@ -267,3 +267,19 @@
     #CartDrawer .snk-trust__i svg { width: 14px !important; height: 14px !important; }
   }
 </style>
+<style>
+  /* etykieta "Selling fast" w koszyku (tag selling-fast) */
+  .snk-hot { display: inline-flex; align-items: center; gap: 7px; margin: 6px 0 2px; padding: 5px 10px 5px 8px; background: #f4f4f4; font-size: 11px; line-height: 14px; letter-spacing: 0.3px; text-transform: uppercase; color: #000; }
+  .snk-hot__dot { width: 8px; height: 8px; border-radius: 50%; background: #f26a2e; flex: 0 0 8px; }
+  /* nowy rzad "Our favourites" na stronie glownej: tak samo jak pozostale rzedy produktow */
+  @media (min-width: 769px) {
+    [id*="our_favourites"] .page-width { max-width: none !important; padding-left: 0 !important; padding-right: 0 !important; }
+    [id*="our_favourites"] .section-header { padding-left: var(--dp-gutter); padding-right: var(--dp-gutter); }
+    [id*="our_favourites"] .grid { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; margin-left: 0 !important; margin-right: 0 !important; }
+    [id*="our_favourites"] .grid__item { width: auto !important; float: none !important; padding: 0 !important; margin: 0 !important; }
+    [id*="our_favourites"] .grid-overflow-wrapper { margin: 0 !important; }
+  }
+  @media (max-width: 768px) {
+    [id*="our_favourites"] .section-header { padding-left: var(--dp-gutter); padding-right: var(--dp-gutter); }
+  }
+</style>

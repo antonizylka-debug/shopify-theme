@@ -166,6 +166,35 @@
         "per_row": 4
       }
     },
+    "our_favourites": {
+      "type": "featured-collection",
+      "blocks": {
+        "f_1": { "type": "product", "settings": { "product": "adele-grace-belted-overcoat" } },
+        "f_2": { "type": "product", "settings": { "product": "harlan-relaxed-overcoat" } },
+        "f_3": { "type": "product", "settings": { "product": "marais-cashmere-turtleneck-sweater" } },
+        "f_4": { "type": "product", "settings": { "product": "blake-tailored-overcoat" } }
+      },
+      "block_order": ["f_1", "f_2", "f_3", "f_4"],
+      "settings": {
+        "title": "OUR FAVOURITES",
+        "eyebrow": "",
+        "heading_size": 34,
+        "heading_bold": true,
+        "view_all_plain": true,
+        "view_all_text": "SHOP ALL",
+        "image_crop": true,
+        "image_shape": "portrait",
+        "image_height": 500,
+        "image_height_mobile": 0,
+        "home_featured_products": "womens",
+        "sort": "collection",
+        "per_row": 4,
+        "rows": 1,
+        "mobile_scrollable": true,
+        "view_all": false,
+        "divider": false
+      }
+    },
     "featured_picks": {
       "type": "featured-collection",
       "blocks": {
@@ -528,10 +557,11 @@
   "order": [
     "slideshow",
     "collection_banners",
+    "our_favourites",
     "featured_popular",
-    "featured_picks",
     "wide_banner",
     "popular_men",
+    "featured_picks",
     "featured_men",
     "bestsellers"
   ]

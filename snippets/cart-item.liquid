@@ -77,6 +77,10 @@
     {%- if sn_dodatek -%}
       <div class="snk-item__variant snk-item__dodatek-opis">Covers lost, stolen or damaged parcels. Optional – you can remove it.</div>
     {%- endif -%}
+    {%- comment -%} 03.11.2026 (Antoni): etykieta "Selling fast" tylko przy produktach z tagiem selling-fast (ustawiasz sam w Shopify) {%- endcomment -%}
+    {%- unless sn_dodatek -%}{%- assign sn_tagi = product.product.tags | join: ',' | downcase -%}{%- if sn_tagi contains 'selling-fast' -%}
+      <div class="snk-hot"><span class="snk-hot__dot" aria-hidden="true"></span>Selling fast</div>
+    {%- endif -%}{%- endunless -%}
     <div class="snk-item__row"{% if sn_dodatek %} hidden{% endif %}>
       {%- comment -%} 03.11.2026 (Antoni): "Remove" jako tekst w rzedzie z iloscia; kosz zostaje tylko przy dodatku (ochrona dostawy). {%- endcomment -%}
       <button type="button" class="snk-item__remove" data-snk-remove>{{ 'cart.general.remove' | t }}</button>
