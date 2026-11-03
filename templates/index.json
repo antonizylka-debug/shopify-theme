@@ -110,7 +110,7 @@
         "c1": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/daltonpierce-ALL_PRODUCT_IMAGE.webp",
+            "image": "shopify://shop_images/Warm_Camel_Coat_Editorial_Portrait.png",
             "collection": "womens-jackets-and-coats",
             "title": "",
             "focal_point": "center center"
@@ -119,7 +119,7 @@
         "c2": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/daltonpierce-collection-autumn-knit-and-long-sleeve-dresses-20261010.webp",
+            "image": "shopify://shop_images/Cream_cable-knit_elegance_in_warm_studio_light-5.png",
             "collection": "womens-sweaters-and-knitwear",
             "title": "",
             "focal_point": "center center"
@@ -128,7 +128,7 @@
         "c3": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/daltonpierce-collection-autumn-trousers-20261010.webp",
+            "image": "shopify://shop_images/Silver_Bob_and_Chocolate_Trousers-7.png",
             "collection": "womens-bottoms",
             "title": "",
             "focal_point": "center center"
@@ -137,7 +137,7 @@
         "c4": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/daltonpierce-collection-accessories-pauleen-hat-20261010.webp",
+            "image": "shopify://shop_images/Black_knit_cream_scarf_brown_shoulder_bag-8.png",
             "collection": "womens-accessories",
             "title": "",
             "focal_point": "center center"
@@ -429,7 +429,7 @@
         "m1": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/mens_jackets_1.webp",
+            "image": "shopify://shop_images/Mature_Man_in_a_Stone_Bomber_Jacket-2.png",
             "collection": "mens-jackets-and-coats",
             "title": "",
             "focal_point": "center center"
@@ -438,7 +438,7 @@
         "m2": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/mens_crew_neck_and_polos_1.webp",
+            "image": "shopify://shop_images/Cream_Oxford_shirt_refined_autumn_style-4.png",
             "collection": "mens-shirts",
             "title": "",
             "focal_point": "center center"
@@ -447,7 +447,7 @@
         "m3": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/menssweater_1.webp",
+            "image": "shopify://shop_images/Silver-haired_man_in_merino_half-zip-3.png",
             "collection": "mens-sweaters-and-knitwear",
             "title": "",
             "focal_point": "center center"
@@ -456,7 +456,7 @@
         "m4": {
           "type": "collection",
           "settings": {
-            "image": "shopify://shop_images/menspants_1.webp",
+            "image": "shopify://shop_images/Silver-haired_man_in_tailored_wool_trousers-6.png",
             "collection": "mens-bottoms",
             "title": "",
             "focal_point": "center center"
