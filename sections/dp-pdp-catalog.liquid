@@ -248,6 +248,14 @@
     html.js-drawer-open #shopify-section-{{ section.id }} .cp__sbar { visibility: hidden; }
   }
 
+  {%- comment -%} znacznik przeceny (03.11.2026, Antoni: "widoczny, rzucajacy sie w oko") - przy cenie i na dolnym pasku {%- endcomment -%}
+  #shopify-section-{{ section.id }} .cp__off { display: inline-block; margin-left: 8px; padding: 3px 8px; background: #c8102e; color: #fff; font-size: 13px; font-weight: 700; letter-spacing: 0.3px; line-height: 18px; vertical-align: middle; }
+  #shopify-section-{{ section.id }} .cp__off[hidden] { display: none; }
+  #shopify-section-{{ section.id }} .cp__sbar-price { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+  #shopify-section-{{ section.id }} .cp__sbar-price .cp__off { margin-left: 0; }
+  #shopify-section-{{ section.id }} .cp__sbar-price .cp__was { text-decoration: line-through; }
+  #shopify-section-{{ section.id }} .cp__sbar-price .cp__was[hidden] { display: none; }
+
   {%- comment -%} karty "Shop the look": te same karty sklepu (sn-karta), tylko w wygladzie wzoru {%- endcomment -%}
   #shopify-section-{{ section.id }} .cp__look .dp-combine { margin: 0; }
   {%- comment -%} szkielet w czasie ladowania kart - wiersz widac od razu, nawet na wolnym telefonie {%- endcomment -%}
@@ -292,10 +300,12 @@
     #shopify-section-{{ section.id }} .cp__media { position: sticky; top: var(--cp-top, 0px); z-index: 0; }
     #shopify-section-{{ section.id }} .cp__info { position: relative; z-index: 1; }
     #shopify-section-{{ section.id }} .cp__sbar {
-      position: fixed; left: 0; right: 0; top: var(--cp-hh, 0px); z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      height: 50px; padding: 0 15px; background: #fff; border-bottom: 1px solid var(--cp-line);
-      transform: translateY(-110%); opacity: 0; pointer-events: none; transition: transform 0.3s linear, opacity 0.3s linear;
+      position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      height: 60px; padding: 0 12px 0 15px; background: #fff; border-top: 1px solid var(--cp-line); box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.12);
+      transform: translateY(110%); opacity: 0; pointer-events: none; transition: transform 0.3s linear, opacity 0.3s linear;
     }
+    #shopify-section-{{ section.id }} .cp__sbar-title { display: none; }
+    #shopify-section-{{ section.id }} .cp__sbtn { display: none !important; }
     #shopify-section-{{ section.id }} .cp__sbar.is-on { transform: none; opacity: 1; pointer-events: auto; }
     #shopify-section-{{ section.id }} .cp__sbar-txt { display: flex; flex-direction: column; min-width: 0; line-height: 18px; }
     #shopify-section-{{ section.id }} .cp__sbar-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -386,6 +396,7 @@
         <p class="cp__price">
           <s class="cp__was" data-cp-was{% unless na_przecenie %} hidden{% endunless %}>{%- if na_przecenie -%}{%- render 'sn-cena', kwota: war.compare_at_price -%}{%- endif -%}</s>
           <span data-cp-now>{%- render 'sn-cena', kwota: war.price -%}</span>
+          <b class="cp__off" data-cp-off{% unless na_przecenie %} hidden{% endunless %}>&minus;{{ rabat }}%</b>
         </p>
         {%- if mm_wlaczony -%}
           <p class="cp__aslow">{{ section.settings.mm_aslow }} <b data-cp-aslow>{%- render 'sn-cena', kwota: mm_od -%}</b> {{ section.settings.mm_with }}</p>
@@ -591,7 +602,7 @@
 
   {%- comment -%} Telefon: gorny pasek (po minieciu przycisku) i dolny przycisk (zanim przycisk sie pojawi), jak na wzorze. {%- endcomment -%}
   <div class="cp__sbar" data-cp-sbar aria-hidden="true">
-    <span class="cp__sbar-txt"><span class="cp__sbar-title">{{ product.title }}</span><span data-cp-sprice>{%- render 'sn-cena', kwota: war.price -%}</span></span>
+    <span class="cp__sbar-txt"><span class="cp__sbar-title">{{ product.title }}</span><span class="cp__sbar-price"><s class="cp__was" data-cp-swas{% unless na_przecenie %} hidden{% endunless %}>{%- if na_przecenie -%}{%- render 'sn-cena', kwota: war.compare_at_price -%}{%- endif -%}</s><span data-cp-sprice>{%- render 'sn-cena', kwota: war.price -%}</span><b class="cp__off" data-cp-soff{% unless na_przecenie %} hidden{% endunless %}>&minus;{{ rabat }}%</b></span></span>
     <button type="button" class="cp__sbar-btn" data-cp-sbtn tabindex="-1"{% unless war.available %} disabled{% endunless %}>{%- if war.available -%}{{ section.settings.atc_label }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}</button>
   </div>
   <button type="button" class="cp__sbtn" data-cp-sbottom tabindex="-1"{% unless war.available %} disabled{% endunless %}>{%- if war.available -%}{{ section.settings.atc_label }}{%- else -%}{{ 'products.product.sold_out' | t }}{%- endif -%}</button>
@@ -752,6 +763,11 @@
       teraz.innerHTML = kwota(w.price);
       var cenaPaska = root.querySelector('[data-cp-sprice]');
       if (cenaPaska) cenaPaska.innerHTML = kwota(w.price);
+      var pr = w.compare_at_price && w.compare_at_price > w.price;
+      var proc = pr ? Math.round((w.compare_at_price - w.price) * 100 / w.compare_at_price) : 0;
+      ['[data-cp-off]', '[data-cp-soff]'].forEach(function (s) { var e = root.querySelector(s); if (e) { e.hidden = !pr; e.textContent = '\u2212' + proc + '%'; } });
+      var swas = root.querySelector('[data-cp-swas]');
+      if (swas) { swas.hidden = !pr; if (pr) swas.innerHTML = kwota(w.compare_at_price); }
       var odCeny = root.querySelector('[data-cp-aslow]');
       if (odCeny) odCeny.innerHTML = kwota(Math.round(w.price * (100 - {{ mm_max | default: 0 | json }}) / 100));
       if (bylo) {
@@ -900,9 +916,8 @@
         var r = atc.getBoundingClientRect();
         var poza = r.top > window.innerHeight || r.bottom < 0;
         chowajNaglowek(false);
-        if (window.innerWidth > prog) { dol.classList.remove('is-on'); pasek.classList.toggle('is-on', poza); return; }
-        pasek.classList.remove('is-on');
-        dol.classList.toggle('is-on', poza);
+        dol.classList.remove('is-on');
+        pasek.classList.toggle('is-on', poza);
       }
       function planuj() { if (!czeka) { czeka = true; requestAnimationFrame(sprawdz); } }
       window.addEventListener('scroll', planuj, { passive: true });
