@@ -765,7 +765,6 @@
   .dp-ffoot2 { position: sticky; bottom: 0; display: flex; align-items: center; gap: 10px; background: #fff; border-top: 1px solid #e5e5e5; padding: 12px 10px 12px 20px; z-index: 3; }
   .dp-ffoot2 a { font-size: 12px; letter-spacing: 0.36px; text-transform: uppercase; color: #000; text-decoration: underline; white-space: nowrap; }
   .dp-ffoot2 button { flex: 1; height: 44px; background: #2d2d2d; color: #fff; border: 0; font-size: 12px; letter-spacing: 0.36px; text-transform: uppercase; cursor: pointer; }
-  @media (min-width: 769px) { .dp-ffoot { display: none !important; } }
 </style>
 <script>
   (function () {
@@ -786,6 +785,7 @@
       odswiez();
       btn.addEventListener('click', function () { var c = d.querySelector('.js-drawer-close'); if (c) c.click(); });
       document.addEventListener('change', function () { setTimeout(odswiez, 1500); }, true);
+      window.dpOdswiezFiltry = odswiez;
       document.addEventListener('click', function () { setTimeout(odswiez, 300); }, true);
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
@@ -806,3 +806,37 @@
   .template-collection .grid__item--content .grid { margin-left: 0 !important; margin-right: 0 !important; }
   .template-collection .grid__item--content .grid > .grid__item:first-child, .template-collection .grid__item--content .grid > .snc-item { padding-left: 1px !important; padding-right: 1px !important; }
 </style>
+<style>
+  /* szuflada filtrow na komputerze: jeden przewijany panel (motyw dawal tej kolumnie max-height 810 px i osobne przewijanie w srodku, przez co filtry byly ucinane) */
+  @media (min-width: 769px) {
+    .template-collection .grid__item--sidebar { height: 100vh !important; max-height: none !important; display: flex !important; flex-direction: column; overflow-y: auto !important; }
+    .template-collection .grid__item--sidebar > div:not(.dp-fhead):not(.dp-ffoot):not(.dp-ffoot2) { flex: 1 0 auto; }
+    .template-collection .grid__item--sidebar .collection-sidebar { position: static !important; max-height: none !important; overflow: visible !important; height: auto !important; }
+    .template-collection .grid__item--sidebar .dp-ffoot2 { margin-top: auto; }
+    .template-collection .grid__item--sidebar .dp-ffoot { display: none !important; }
+  }
+</style>
+<script>
+  (function () {
+    function start() {
+      if (!document.body.classList.contains('template-collection')) return;
+      var side = document.querySelector('.grid__item--sidebar');
+      if (!side || side.querySelector('.dp-ffoot2')) return;
+      var h = document.documentElement;
+      function licz() {
+        var el = document.querySelector('.collection-count');
+        var m = el && el.textContent.match(/[0-9][0-9,.\s]*/);
+        return m ? m[0].replace(/[^0-9]/g, '') : '';
+      }
+      var f = document.createElement('div'); f.className = 'dp-ffoot2';
+      f.innerHTML = '<a href="' + location.pathname + '">Clear all</a><button type="button"></button>';
+      side.appendChild(f);
+      var btn = f.querySelector('button');
+      function odswiez() { var n = licz(); btn.textContent = 'Show results' + (n ? ' (' + n + ')' : ''); }
+      odswiez();
+      btn.addEventListener('click', function () { h.classList.remove('dp-filter-open'); });
+      document.addEventListener('change', function () { setTimeout(odswiez, 1500); }, true);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+  })();
+</script>
