@@ -75,6 +75,41 @@
             "question": "How do I find the right size?",
             "answer": "<p>Go by the measurements on the product page rather than the size you usually wear. There's more in our <a href=\"/pages/faq\">FAQ</a>.</p>"
           }
+        },
+        "faq-6": {
+          "type": "faq",
+          "settings": {
+            "question": "How long does delivery take?",
+            "answer": "<p>Shipping is free and tracked on every order. Orders placed before 12:00 PM ET are processed within 1–3 business days, and most orders arrive within 6–10 business days.</p>"
+          }
+        },
+        "faq-7": {
+          "type": "faq",
+          "settings": {
+            "question": "Is shipping really free?",
+            "answer": "<p>Yes. Shipping is free and tracked on every order.</p>"
+          }
+        },
+        "faq-8": {
+          "type": "faq",
+          "settings": {
+            "question": "Will I have to pay customs or duties?",
+            "answer": "<p>We ship to addresses in Canada, and customs procedures may apply on arrival. We include the necessary paperwork with every shipment. If you have a question about a specific order, write to us.</p>"
+          }
+        },
+        "faq-9": {
+          "type": "faq",
+          "settings": {
+            "question": "How can I pay?",
+            "answer": "<p>All payments are processed through a fully encrypted SSL connection, so your personal and payment details are always protected. You will see the payment methods available at checkout.</p>"
+          }
+        },
+        "faq-10": {
+          "type": "faq",
+          "settings": {
+            "question": "Is my order in stock?",
+            "answer": "<p>If it is in your bag and you can check out, it is available. Items in your bag are not reserved, so order soon to make sure you get your size.</p>"
+          }
         }
       },
       "block_order": [
@@ -85,7 +120,12 @@
         "faq-2",
         "faq-3",
         "faq-4",
-        "faq-5"
+        "faq-5",
+        "faq-6",
+        "faq-7",
+        "faq-8",
+        "faq-9",
+        "faq-10"
       ],
       "settings": {
         "show_breadcrumbs": true,

@@ -14,6 +14,8 @@
       {%- unless p.available -%}{%- continue -%}{%- endunless -%}
       {%- comment -%} Buty ortopedyczne nie pasuja do kompletu (06.10.2026, Antoni). {%- endcomment -%}
       {%- if p.tags contains 'komfortsko' or p.tags contains 'orthopedic shoes' -%}{%- continue -%}{%- endif -%}
+      {%- comment -%} Jesien/zima (Nouri 03.11.2026): letnie rzeczy nie trafiaja do "Combine it with" ani do propozycji w koszyku. Na wiosne usunac ten warunek. {%- endcomment -%}
+      {%- if p.tags contains 'summer' or p.tags contains 'swimwear' or p.tags contains 'beachwear' or p.tags contains 'bikini' or p.tags contains 'sandals' or p.handle contains 'sandal' or p.handle contains 'bikini' or p.handle contains 'swim' -%}{%- continue -%}{%- endif -%}
       {%- assign n = n | plus: 1 -%}
       {%- comment -%}
         Koturny, platformy i "wygodne" buty sa w tagach jako Heels/Sandals, ale do

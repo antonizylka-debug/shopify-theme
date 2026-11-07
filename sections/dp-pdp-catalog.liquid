@@ -233,6 +233,21 @@
   #shopify-section-{{ section.id }} .cp__sbar,
   #shopify-section-{{ section.id }} .cp__sbtn { display: none; }
 
+  {%- comment -%} komputer: dolny pasek z nazwa, cena i "Add to bag", gdy glowny przycisk jest poza ekranem (03.11.2026, uwaga Nouri: brak przypietego ATC na PC) {%- endcomment -%}
+  @media only screen and (min-width: {{ section.settings.breakpoint | plus: 1 }}px) {
+    #shopify-section-{{ section.id }} .cp__sbar {
+      position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      height: 64px; padding: 0 20px; background: #fff; border-top: 1px solid var(--cp-line); box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.08);
+      transform: translateY(110%); opacity: 0; pointer-events: none; transition: transform 0.3s linear, opacity 0.3s linear;
+    }
+    #shopify-section-{{ section.id }} .cp__sbar.is-on { transform: none; opacity: 1; pointer-events: auto; }
+    #shopify-section-{{ section.id }} .cp__sbar-txt { display: flex; flex-direction: row; align-items: baseline; gap: 14px; min-width: 0; line-height: 20px; }
+    #shopify-section-{{ section.id }} .cp__sbar-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #shopify-section-{{ section.id }} .cp__sbar-btn { flex: 0 0 auto; height: 44px; padding: 0 48px; border: 0; background: var(--cp-dark); color: #fff; font-size: 14px; letter-spacing: 0.36px; text-transform: uppercase; cursor: pointer; }
+    #shopify-section-{{ section.id }} .cp__sbar-btn[disabled] { opacity: 0.45; }
+    html.js-drawer-open #shopify-section-{{ section.id }} .cp__sbar { visibility: hidden; }
+  }
+
   {%- comment -%} karty "Shop the look": te same karty sklepu (sn-karta), tylko w wygladzie wzoru {%- endcomment -%}
   #shopify-section-{{ section.id }} .cp__look .dp-combine { margin: 0; }
   {%- comment -%} szkielet w czasie ladowania kart - wiersz widac od razu, nawet na wolnym telefonie {%- endcomment -%}
@@ -402,7 +417,7 @@
 
       {%- comment -%} ---------- kolor ---------- {%- endcomment -%}
       {%- for opt in product.options_with_values -%}
-        {%- if forloop.index == poz_koloru -%}
+        {%- if forloop.index == poz_koloru and opt.values.size > 1 -%}
           {%- assign idx0 = forloop.index | minus: 1 -%}
           {%- assign ile_kolorow = opt.values.size -%}
           <div class="cp__colour">
@@ -441,14 +456,18 @@
 
       {%- comment -%} ---------- Size advice: etykieta nad tekstem (dp-fit-note albo tekst z ustawien) + link do tabeli rozmiarow ---------- {%- endcomment -%}
       {%- if section.settings.help_text != blank and product.has_only_default_variant == false -%}
+        {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
+        {%- assign ma_tabele = false -%}
+        {%- if sg_html contains 'data-sgm' -%}{%- assign ma_tabele = true -%}{%- endif -%}
         <div class="cp__advice">
-          <span class="cp__lbl">{{ section.settings.advice_label }}</span>
+          {%- unless ma_tabele -%}<span class="cp__lbl">{{ section.settings.advice_label }}</span>{%- endunless -%}
           <span class="cp__advice-txt">
-            {%- capture dp_fit -%}{%- render 'dp-fit-note', product: product -%}{%- endcapture -%}
-            {%- if dp_fit != blank -%}{{ dp_fit | strip }}{%- else -%}{{ section.settings.help_text }}{%- endif -%}
+            {%- unless ma_tabele -%}
+              {%- capture dp_fit -%}{%- render 'dp-fit-note', product: product -%}{%- endcapture -%}
+              {%- if dp_fit != blank -%}{{ dp_fit | strip }}{%- else -%}{{ section.settings.help_text }}{%- endif -%}
+            {%- endunless -%}
             {%- if section.settings.size_link != blank and section.settings.help_link_label != blank -%}
-              {%- capture sg_html -%}{%- render 'sn-sizechart', product: product -%}{%- endcapture -%}
-              <a class="cp__advice-link" href="{{ section.settings.size_link }}"{% if sg_html contains 'data-sgm' %} data-sg-open{% endif %}>{{ section.settings.help_link_label }}</a>
+              <a class="cp__advice-link"{% if ma_tabele %} style="margin-left: 0;"{% endif %} href="{{ section.settings.size_link }}"{% if ma_tabele %} data-sg-open{% endif %}>{{ section.settings.help_link_label }}</a>
               {{- sg_html -}}
             {%- endif -%}
           </span>
@@ -878,12 +897,12 @@
       function chowajNaglowek(on) { if (naglSek) naglSek.style.visibility = on ? 'hidden' : ''; }
       function sprawdz() {
         czeka = false;
-        if (window.innerWidth > prog) { pasek.classList.remove('is-on'); dol.classList.remove('is-on'); chowajNaglowek(false); return; }
         var r = atc.getBoundingClientRect();
-        var hh = parseInt(getComputedStyle(root.querySelector('.cp')).getPropertyValue('--cp-hh'), 10) || 0;
-        dol.classList.toggle('is-on', r.top > window.innerHeight);
-        pasek.classList.toggle('is-on', r.bottom < hh + 4);
-        chowajNaglowek(pasek.classList.contains('is-on'));
+        var poza = r.top > window.innerHeight || r.bottom < 0;
+        chowajNaglowek(false);
+        if (window.innerWidth > prog) { dol.classList.remove('is-on'); pasek.classList.toggle('is-on', poza); return; }
+        pasek.classList.remove('is-on');
+        dol.classList.toggle('is-on', poza);
       }
       function planuj() { if (!czeka) { czeka = true; requestAnimationFrame(sprawdz); } }
       window.addEventListener('scroll', planuj, { passive: true });
