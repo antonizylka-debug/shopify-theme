@@ -821,7 +821,7 @@
     function start() {
       if (!document.body.classList.contains('template-collection')) return;
       var side = document.querySelector('.grid__item--sidebar');
-      if (!side || side.querySelector('.dp-ffoot2')) return;
+      if (!side || side.querySelector(':scope > .dp-ffoot2')) return;
       var h = document.documentElement;
       function licz() {
         var el = document.querySelector('.collection-count');
