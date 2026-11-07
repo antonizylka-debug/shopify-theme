@@ -530,7 +530,6 @@
       {%- endif -%}
 
       {%- comment -%} Trustpilot "Excellent" pod metodami platnosci (03.11.2026) {%- endcomment -%}
-      <a class="cp__tp" href="#{{ section.settings.rating_anchor | default: 'reviews' | handleize }}"><img src="{{ 'dp-tp-excellent.svg' | asset_url }}" alt="Excellent on Trustpilot" width="266" height="20" loading="lazy"></a>
 
       {%- comment -%} ---------- wiersze obietnic (bloki "row") ---------- {%- endcomment -%}
       {%- assign wiersze = section.blocks | where: 'type', 'row' -%}
