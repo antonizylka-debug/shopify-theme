@@ -30,8 +30,8 @@
           "settings": {
             "enable_image": true,
             "image_mask": "none",
-            "title": "14-day money-back guarantee",
-            "text": "<p>Your satisfaction is our focus. If our product does not meet your expectations, you can return it within 14 days upon receipt.</p>",
+            "title": "30-day money-back guarantee",
+            "text": "<p>Your satisfaction is our focus. If our product does not meet your expectations, you can return it within 30 days upon receipt.</p>",
             "button_label": "",
             "button_link": ""
           }
@@ -74,7 +74,7 @@
           "settings": {
             "icon": "return",
             "title": "Easy returns",
-            "text": "Within 14 days of receipt"
+            "text": "Within 30 days of receipt"
           }
         },
         "tracking": {

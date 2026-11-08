@@ -66,7 +66,7 @@
           "type": "faq",
           "settings": {
             "question": "How do I return or exchange an item?",
-            "answer": "<p>Email us within 14 days of receiving your order to register your return, and we will provide you with the return address of our supplier. We don't exchange sizes directly – return the item and place a new order in the size you want.</p>"
+            "answer": "<p>Email us within 30 days of receiving your order to register your return, and we will provide you with the return address of our supplier. Need another size? Depending on availability, we may offer an exchange – otherwise, return the item and place a new order in the size you want.</p>"
           }
         },
         "faq-5": {
@@ -80,7 +80,7 @@
           "type": "faq",
           "settings": {
             "question": "How long does delivery take?",
-            "answer": "<p>Shipping is free and tracked on every order. Orders placed before 12:00 PM ET are processed within 1–3 business days, and most orders arrive within 6–10 business days.</p>"
+            "answer": "<p>Shipping is free and tracked on every order. Orders placed before 12:00 PM ET are processed within 1–3 business days, and delivery usually takes 4–8 business days after dispatch.</p>"
           }
         },
         "faq-7": {
@@ -94,7 +94,7 @@
           "type": "faq",
           "settings": {
             "question": "Will I have to pay customs or duties?",
-            "answer": "<p>We ship to addresses in Canada, and customs procedures may apply on arrival. We include the necessary paperwork with every shipment. If you have a question about a specific order, write to us.</p>"
+            "answer": "<p>We ship to addresses across Canada. Import duties and customs fees are covered by us, so nothing extra is charged on delivery. If you have a question about a specific order, write to us.</p>"
           }
         },
         "faq-9": {
