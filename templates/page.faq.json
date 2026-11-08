@@ -28,7 +28,7 @@
           "type": "question",
           "settings": {
             "title": "How do I start a return?",
-            "text": "<p>Email support@daltonpierce.com within 14 days of receiving your order to register your return. We will provide you with the return address of our supplier. Ship the item back at your own expense, including any applicable customs duties or shipping fees. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.<\/p>"
+            "text": "<p>Email support@daltonpierce.com within 30 days of receiving your order to register your return – we offer a 30 day money back guarantee. Please wait for our reply before sending anything back: we will provide you with the return address, which may be our supplier's address in China. Ship the item back at your own expense, including any applicable customs duties or shipping fees. We strongly recommend using a tracked shipping service, as we cannot be held responsible for returns lost in transit without tracking.<\/p>"
           }
         },
         "q-3": {
@@ -42,7 +42,7 @@
           "type": "question",
           "settings": {
             "title": "It doesn't fit. Can I exchange the size?",
-            "text": "<p>We don't exchange sizes directly. Return the item as described in our return policy and place a new order in the size you want.<\/p>"
+            "text": "<p>Email support@daltonpierce.com with your order number and the size you need. Depending on availability, we may offer an exchange or another solution. Otherwise, return the item as described in our return policy and place a new order in the size you want.<\/p>"
           }
         },
         "q-5": {
@@ -77,14 +77,14 @@
           "type": "question",
           "settings": {
             "title": "How long until I get my money back?",
-            "text": "<p>Once your returned item has been received and inspected, your return is processed within 14 days. You'll receive an email when your refund or store credit has been processed.<\/p>"
+            "text": "<p>Once your returned item has been received and inspected, your return is processed within 14 days. You'll receive an email when your refund has been processed. Your bank or card provider may need a few extra days to show it.<\/p>"
           }
         },
         "q-10": {
           "type": "question",
           "settings": {
             "title": "Do I get my money back?",
-            "text": "<p>It depends on what you bought. Regular-priced items: if the return meets all of our return conditions, you get a refund to your original payment method. Sale items and promotional purchases are not eligible for a refund – if the return is approved and all return conditions have been met, you receive store credit for a future purchase instead.<\/p>"
+            "text": "<p>Yes. We offer a 30 day money back guarantee. If your return is approved and meets our return conditions, you get a refund to your original payment method. Only items clearly marked as final sale, gift cards and hygiene items can't be returned for a change of mind.<\/p>"
           }
         },
         "group-11": {
@@ -98,7 +98,7 @@
           "type": "question",
           "settings": {
             "title": "How long does delivery take?",
-            "text": "<p>All orders are processed within 1 to 3 business days. The average delivery time is 5 to 8 business days. During busy periods such as holidays or sales events, delivery may take slightly longer, and customs procedures may occasionally cause delays outside our control.<\/p>"
+            "text": "<p>All orders are processed within 1 to 3 business days. The average delivery time is 3 to 7 business days. During busy periods such as holidays or sales events, delivery may take slightly longer, and customs procedures may occasionally cause delays outside our control.<\/p>"
           }
         },
         "q-13": {
@@ -133,21 +133,28 @@
           "type": "question",
           "settings": {
             "title": "Do you offer express delivery?",
-            "text": "<p>Not at the moment. All orders ship free, with tracked standard delivery, so we can't promise a specific date. If you have a deadline, allow 1–3 business days for processing plus 5–8 business days for delivery.<\/p>"
+            "text": "<p>Not at the moment. All orders ship free, with tracked standard delivery, so we can't promise a specific date. If you have a deadline, allow 1–3 business days for processing plus 3–7 business days for delivery.<\/p>"
           }
         },
         "q-18": {
           "type": "question",
           "settings": {
             "title": "Where do you ship, and do I pay duties?",
-            "text": "<p>We ship to addresses in Canada. As orders are shipped internationally, customs procedures may apply upon arrival in Canada. Delays due to customs procedures may occasionally occur but are outside of our control. Our team ensures all necessary documentation is included with every shipment to make the customs process as smooth as possible. If you have a question about import charges, email <a href=\"mailto:support@daltonpierce.com\">support@daltonpierce.com<\/a> before you order.<\/p>"
+            "text": "<p>We ship to addresses across Canada, and shipping is free. You don't pay import duties or customs fees on delivery – these are covered by us. Applicable sales taxes are shown at checkout. As orders are shipped internationally, customs checks may occasionally cause short delays outside our control.<\/p>"
+          }
+        },
+        "q-30": {
+          "type": "question",
+          "settings": {
+            "title": "Where do you ship from?",
+            "text": "<p>Many of our items ship directly from our trusted suppliers, including suppliers overseas such as in China. This saves handling time and gets your order moving faster. An order with several items may arrive in more than one parcel.<\/p>"
           }
         },
         "q-19": {
           "type": "question",
           "settings": {
             "title": "Which carriers do you use?",
-            "text": "<p>We use established carriers so your package arrives safely and on time.</p>"
+            "text": "<p>Depending on where your order ships from, we use Canada Post, local delivery partners or international shipping partners. Every order is tracked.</p>"
           }
         },
         "group-20": {
@@ -240,6 +247,7 @@
         "q-16",
         "q-17",
         "q-18",
+        "q-30",
         "q-19",
         "group-20",
         "q-21",
