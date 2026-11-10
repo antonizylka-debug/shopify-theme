@@ -442,28 +442,52 @@
   .footer__tp img { display: block; height: 16px; width: auto; }
 </style>
 <script>
-  /* numer produktow w czarnym kolku przy koszyku w naglowku (bez pozycji "Order Add-on" czyli ochrony dostawy) */
+  /* kropka z liczba produktow przy koszyku: liczba i widocznosc z jednego zrodla (/cart.js, bez pozycji "Order Add-on"),
+     odswiezana po zaladowaniu, po powrocie na strone i po kazdym zapytaniu zmieniajacym koszyk */
   (function () {
     function ustaw(n) {
-      Array.prototype.forEach.call(document.querySelectorAll('.cart-link__bubble'), function (b) { b.textContent = n > 0 ? String(n) : ''; });
+      Array.prototype.forEach.call(document.querySelectorAll('.cart-link__bubble'), function (b) {
+        b.textContent = n > 0 ? String(n) : '';
+        b.classList.toggle('cart-link__bubble--visible', n > 0);
+      });
+      var cd = document.querySelector('#CartDrawer .snk-count');
+      if (cd && n >= 0) cd.textContent = n > 0 ? String(n) : '';
     }
+    var trwa = false, ponow = false;
     function wczytaj() {
-      fetch('/cart.js', { headers: { Accept: 'application/json' } }).then(function (r) { return r.json(); }).then(function (c) {
-        var n = 0;
-        (c.items || []).forEach(function (it) { if (it.product_type !== 'Order Add-on') n += it.quantity; });
-        ustaw(n);
-      }).catch(function () {});
+      if (trwa) { ponow = true; return; }
+      trwa = true;
+      fetch('/cart.js?t=' + Date.now(), { headers: { Accept: 'application/json' }, cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (c) {
+          var n = 0;
+          (c.items || []).forEach(function (it) { if (it.product_type !== 'Order Add-on') n += it.quantity; });
+          ustaw(n);
+        })
+        .catch(function () {})
+        .then(function () { trwa = false; if (ponow) { ponow = false; wczytaj(); } });
     }
     var t;
-    function wkrotce() { clearTimeout(t); t = setTimeout(wczytaj, 700); }
+    function wkrotce(ms) { clearTimeout(t); t = setTimeout(wczytaj, ms == null ? 400 : ms); }
     wczytaj();
+    window.addEventListener('pageshow', function () { wczytaj(); });
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) wczytaj(); });
+    /* kazde zapytanie zmieniajace koszyk (dodanie, zmiana ilosci, usuniecie) */
+    if (window.fetch && !window.__dpFetchKoszyk) {
+      window.__dpFetchKoszyk = true;
+      var orig = window.fetch;
+      window.fetch = function (u) {
+        var url = typeof u === 'string' ? u : (u && u.url) || '';
+        var p = orig.apply(this, arguments);
+        if (/\/cart\/(add|change|update|clear)/.test(url)) p.then(function () { wkrotce(150); }, function () {});
+        return p;
+      };
+    }
     document.addEventListener('click', function (e) {
-      if (e.target.closest && e.target.closest('[data-cp-atc], [name="add"], .snc__plus, [data-snk-remove], [data-snq-dodaj], .snk-item, .snq__dodaj')) wkrotce();
+      if (e.target.closest && e.target.closest('[data-cp-atc], [name="add"], .snc__plus, [data-snk-remove], [data-snq-dodaj], .snk-item, .snq__dodaj')) wkrotce(900);
     }, true);
-    var b = document.querySelector('.cart-link__bubble');
-    if (b && window.MutationObserver) new MutationObserver(wkrotce).observe(b, { attributes: true, attributeFilter: ['class'] });
     var d = document.getElementById('CartDrawer');
-    if (d && window.MutationObserver) new MutationObserver(wkrotce).observe(d, { childList: true, subtree: true });
+    if (d && window.MutationObserver) new MutationObserver(function () { wkrotce(400); }).observe(d, { childList: true, subtree: true });
   })();
 </script>
 <style>
@@ -840,3 +864,16 @@
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
   })();
 </script>
+<style>
+  /* kropka z liczba: czcionka sklepu (Aktiv Grotesk), czytelna cyfra, rosnie przy 2 cyfrach */
+  .site-header .cart-link__bubble.cart-link__bubble--visible {
+    display: flex !important; align-items: center; justify-content: center;
+    width: auto !important; min-width: 16px !important; height: 16px !important; padding: 0 4px !important; box-sizing: border-box;
+    border: 0 !important; border-radius: 8px !important; background: #000 !important; color: #fff !important;
+    font-family: var(--typeBasePrimary), 'Aktiv Grotesk', Arial, sans-serif !important; font-size: 11px !important; font-weight: 500 !important;
+    line-height: 1 !important; letter-spacing: 0 !important; font-variant-numeric: tabular-nums; text-align: center;
+    left: 12px !important; right: auto !important; top: -7px !important;
+  }
+  html:not(.dp-scrolled) body.template-index .site-header .cart-link__bubble.cart-link__bubble--visible { background: #fff !important; color: #000 !important; }
+  @media (min-width: 769px) { .site-header .cart-link__bubble.cart-link__bubble--visible { min-width: 17px !important; height: 17px !important; font-size: 11px !important; left: 14px !important; top: -8px !important; } }
+</style>
