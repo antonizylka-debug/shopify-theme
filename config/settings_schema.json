@@ -1,11 +1,11 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Impulse",
-    "theme_author": "Archetype Themes",
-    "theme_version": "8.2.1",
-    "theme_documentation_url": "https://help.archetypethemes.co/hc/en-us/sections/45069343406867-Impulse",
-    "theme_support_url": "https://help.archetypethemes.co/hc/en-us/sections/45069343406867-Impulse"
+    "theme_name": "Dalton Pierce",
+    "theme_author": "Dalton Pierce",
+    "theme_version": ".0.0",
+    "theme_documentation_url": "https://daltonpierce.com/",
+    "theme_support_url": "https://daltonpierce.com/"
   },
   {
     "name": "t:settings_schema.colors.name",
