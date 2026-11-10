@@ -947,7 +947,7 @@
       { "type": "text", "id": "sn_kurv_upsell_title", "label": "Heading above those products", "default": "Complete the look" },
       { "type": "header", "content": "Order cutoff" },
       { "type": "checkbox", "id": "sn_cutoff_show", "label": "Show order cutoff timer in cart", "default": true, "info": "Only if orders placed before this hour really are processed the same day." },
-      { "type": "range", "id": "sn_cutoff_hour", "label": "Cutoff hour, Danish time, Mon-Fri", "min": 8, "max": 22, "step": 1, "unit": "h", "default": 14 },
+      { "type": "range", "id": "sn_cutoff_hour", "label": "Cutoff hour, Eastern time (ET), Mon-Fri", "min": 8, "max": 22, "step": 1, "unit": "h", "default": 12 },
       { "type": "text", "id": "sn_cutoff_text", "label": "Text before the cutoff", "default": "Order within {tid} and we'll process your order today.", "info": "{tid} = countdown to the cutoff hour." },
       { "type": "text", "id": "sn_cutoff_text_next", "label": "Text after the cutoff", "default": "Order now – we'll process your order {dag}.", "info": "{dag} = tomorrow / on Monday." },
       { "type": "header", "content": "Cart timer" },

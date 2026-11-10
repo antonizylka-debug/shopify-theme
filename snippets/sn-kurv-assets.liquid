@@ -651,8 +651,7 @@
 </script>
 
 {%- comment -%}
-  Licznik do godziny granicznej przy "Ga til kassen" (06.10.2026). Czas dunski
-  (Europe/Copenhagen), dni robocze pon-pt. Element moze byc podmieniany przy
+  Licznik do godziny granicznej przy "Ga til kassen" (06.10.2026). Czas wschodni Kanady (ET, America/Toronto; do 03.11.2026 Dania), dni robocze pon-pt. Element moze byc podmieniany przy
   odswiezaniu szuflady, wiec co sekunde szukamy go od nowa.
 {%- endcomment -%}
 <style>
@@ -677,7 +676,7 @@
     var DNI = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 0 };
     var fmt;
     try {
-      fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Copenhagen', weekday: 'short', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
+      fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/Toronto', weekday: 'short', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
     } catch (e) { return; }
     function teraz() {
       var o = {};
