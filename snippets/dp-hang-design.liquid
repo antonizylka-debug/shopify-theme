@@ -865,15 +865,20 @@
   })();
 </script>
 <style>
-  /* kropka z liczba: czcionka sklepu (Aktiv Grotesk), czytelna cyfra, rosnie przy 2 cyfrach */
+  /* kropka z liczba: czcionka sklepu, czytelna cyfra, rosnie przy 2 cyfrach */
   .site-header .cart-link__bubble.cart-link__bubble--visible {
     display: flex !important; align-items: center; justify-content: center;
     width: auto !important; min-width: 16px !important; height: 16px !important; padding: 0 4px !important; box-sizing: border-box;
     border: 0 !important; border-radius: 8px !important; background: #000 !important; color: #fff !important;
-    font-family: var(--typeBasePrimary), 'Aktiv Grotesk', Arial, sans-serif !important; font-size: 11px !important; font-weight: 500 !important;
+    font-family: var(--typeBasePrimary), var(--typeBaseFallback) !important; font-size: 11px !important; font-weight: 500 !important;
     line-height: 1 !important; letter-spacing: 0 !important; font-variant-numeric: tabular-nums; text-align: center;
     left: 12px !important; right: auto !important; top: -7px !important;
   }
   html:not(.dp-scrolled) body.template-index .site-header .cart-link__bubble.cart-link__bubble--visible { background: #fff !important; color: #000 !important; }
   @media (min-width: 769px) { .site-header .cart-link__bubble.cart-link__bubble--visible { min-width: 17px !important; height: 17px !important; font-size: 11px !important; left: 14px !important; top: -8px !important; } }
+</style>
+<style>
+  /* torba (Feather, linia 1.4 jak pozostale ikony): rozmiar i odstep dla ikony z obrysem */
+  .site-header .dp-bag { width: 17px !important; height: 17px !important; }
+  .site-header .dp-bag path, .site-header .dp-bag line { stroke-width: 1.4 !important; fill: none !important; }
 </style>

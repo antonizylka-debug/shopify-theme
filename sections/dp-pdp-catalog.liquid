@@ -384,12 +384,6 @@
     {%- comment -%} ---------- informacje ---------- {%- endcomment -%}
     <div class="cp__info" data-cp-info>
 
-      <a class="cp__rating" href="#{{ section.settings.rating_anchor | default: 'reviews' | handleize }}">
-        {%- comment -%} Logo Trustpilot i gwiazdki 4.5 z plikow SVG (03.11.2026): kolejnosc logo, gwiazdki, tekst {%- endcomment -%}
-        <img class="cp__rating-logo" src="{{ 'dp-tp-logo.svg' | asset_url }}" alt="Trustpilot" width="61" height="15" loading="eager">
-        <img class="cp__rating-stars" src="{{ 'dp-tp-stars.svg' | asset_url }}" alt="Rated 4.5 out of 5 stars on Trustpilot" width="75" height="14" loading="eager">
-        <span>{{ section.settings.rating_manual }}/5 | {{ section.settings.rating_text }}</span>
-      </a>
 
       <div class="cp__head">
         <h1 class="cp__title">{{ product.title }}</h1>
